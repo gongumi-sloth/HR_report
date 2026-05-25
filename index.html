@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>무하유 디자인 시스템 Storybook v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041D30; display: flex; height: 100vh; overflow: hidden; }
+
+/* ── 사이드바 ── */
+#sidebar { width: 240px; min-width: 240px; background: #1B2433; color: #C9D1DB; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; }
+.sb-logo { padding: 20px 16px 14px; border-bottom: 1px solid #2D3748; }
+.sb-logo .brand { font-size: 15px; font-weight: 700; color: #fff; }
+.sb-logo .sub { font-size: 11px; color: #8896A8; margin-top: 2px; }
+.sb-section { padding: 12px 0 4px; }
+.sb-section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8896A8; padding: 0 16px 6px; }
+.sb-item { display: block; padding: 7px 16px 7px 24px; font-size: 13px; color: #C9D1DB; cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; text-decoration: none; }
+.sb-item:hover { background: #263044; color: #fff; }
+.sb-item.active { background: #1E3A5F; color: #4D9FFF; border-left-color: #4D9FFF; font-weight: 700; }
+
+/* ── 메인 ── */
+#main { flex: 1; overflow-y: auto; padding: 40px 48px; height: 100vh; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── 섹션 공통 ── */
+.page-title { font-size: 24px; font-weight: 700; color: #041D30; margin-bottom: 6px; }
+.page-desc { font-size: 14px; color: #7D7D80; margin-bottom: 36px; line-height: 1.6; }
+.story-block { background: #fff; border: 1px solid #E3E3E3; border-radius: 10px; margin-bottom: 28px; overflow: hidden; }
+.story-header { padding: 14px 20px; border-bottom: 1px solid #F0F0F0; background: #FAFAFA; }
+.story-name { font-size: 13px; font-weight: 700; color: #041D30; }
+.story-desc { font-size: 12px; color: #7D7D80; margin-top: 2px; }
+.story-canvas { padding: 32px 28px; background: #fff; }
+.story-spec { padding: 12px 20px; background: #F8F9FA; border-top: 1px solid #F0F0F0; font-size: 11px; color: #7D7D80; font-family: monospace; line-height: 1.8; }
+
+/* ── 색상 스와치 ── */
+.color-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.color-swatch { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 90px; }
+.swatch-box { width: 90px; height: 60px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); }
+.swatch-name { font-size: 11px; font-weight: 700; color: #041D30; text-align: center; }
+.swatch-code { font-size: 10px; color: #7D7D80; text-align: center; font-family: monospace; }
+
+/* ── 타이포그래피 ── */
+.typo-row { display: flex; align-items: baseline; gap: 24px; padding: 14px 0; border-bottom: 1px solid #F0F0F0; }
+.typo-row:last-child { border-bottom: none; }
+.typo-label { font-size: 11px; color: #7D7D80; width: 100px; flex-shrink: 0; }
+.typo-spec { font-size: 11px; color: #A9A8AA; width: 160px; flex-shrink: 0; font-family: monospace; }
+
+/* ── 배지 ── */
+.badge-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.grade-badge { display: inline-flex; align-items: center; justify-content: center; height: 26px; padding: 0 12px; border-radius: 13px; font-size: 14px; font-weight: 700; min-width: 48px; }
+.level-badge { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 18px; border-radius: 2px; font-size: 12px; font-weight: 700; color: #fff; }
+
+/* 등급 */
+.grade-S { background: #F3E8FF; color: #9330FF; }
+.grade-A { background: #E7FFEC; color: #20AA40; }
+.grade-B { background: #FFF0DE; color: #F09000; }
+.grade-C { background: #FFE9F3; color: #FF006B; }
+.grade-D { background: #E9E9EA; color: #696969; }
+
+/* 상/중/하 */
+.level-상 { background: #0075FF; }
+.level-중 { background: rgba(0,117,255,0.6); }
+.level-하 { background: rgba(0,117,255,0.2); color: #041D30; }
+.level-없음 { background: #E9E9EA; color: #7D7D80; }
+
+/* ── 상태 알약 (Pill) ── */
+.pill { display: inline-flex; align-items: center; justify-content: center; height: 22px; padding: 0 10px; border-radius: 11px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.pill-red   { background: #FFF5F5; color: #FF3B30; border: 1px solid #FFCCCC; }
+.pill-blue  { background: #EBF4FF; color: #0075FF; border: 1px solid #B3D4FF; }
+.pill-default { background: #E9E9EA; color: #7D7D80; border: 1px solid #D0D0D0; }
+
+/* 신뢰도 헤더 뱃지 */
+.trust-head-badge { display: inline-flex; align-items: center; justify-content: center; height: 28px; padding: 0 16px; border-radius: 4px; font-size: 14px; font-weight: 700; }
+.trust-caution { background: #FF3B30; color: #fff; }
+.trust-pass    { background: #20AA40; color: #fff; }
+.trust-safe    { background: #E9E9EA; color: #7D7D80; }
+
+/* ── 종합평가 패널 ── */
+.eval-panel { background: #fff; border: 1px solid #E3E3E3; border-radius: 8px; padding: 20px; display: flex; gap: 16px; }
+.total-card { flex: 1; }
+.total-label { font-size: 12px; color: #7D7D80; margin-bottom: 6px; }
+.total-score-row { display: flex; align-items: center; gap: 10px; }
+.total-score-num { font-size: 36px; font-weight: 700; font-family: 'Noto Sans', sans-serif; color: #041D30; }
+.rank-line { font-size: 13px; color: #041D30; margin-top: 8px; }
+.rank-line strong { font-size: 16px; font-weight: 700; }
+.rank-muted { color: #7D7D80; font-size: 12px; }
+.trust-box-panel { min-width: 180px; border: 1px solid #E3E3E3; border-radius: 8px; overflow: hidden; }
+.trust-box-head { padding: 8px 14px; font-size: 14px; font-weight: 700; }
+.trust-box-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.trust-box-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+/* ── 응시개요 그리드 ── */
+.overview-grid-comp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid #E3E3E3; border-radius: 8px; overflow: hidden; font-size: 13px; }
+.overview-cell { padding: 10px 14px; border-right: 1px solid #E3E3E3; border-bottom: 1px solid #E3E3E3; }
+.overview-cell:nth-child(4n) { border-right: none; }
+.overview-cell:nth-last-child(-n+4) { border-bottom: none; }
+.overview-cell span { display: block; font-size: 11px; color: #7D7D80; margin-bottom: 3px; }
+.overview-cell strong { font-size: 13px; font-weight: 700; color: #041D30; }
+
+/* ── 메트릭 카드 스트립 ── */
+.score-strip-comp { display: flex; gap: 8px; flex-wrap: wrap; }
+.metric-card-comp { background: #F8F9FA; border-radius: 8px; padding: 12px 14px; min-width: 120px; flex: 1; }
+.metric-card-comp.back-A { background: #E7FFEC; }
+.metric-card-comp.back-B { background: #FFF0DE; }
+.metric-card-comp.back-C { background: #FFE9F3; }
+.metric-card-comp.back-D { background: #E9E9EA; }
+.metric-title-comp { font-size: 12px; color: #7D7D80; margin-bottom: 6px; }
+.metric-score-comp { font-size: 18px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; }
+.metric-grade-A { color: #20AA40; }
+.metric-grade-B { color: #F09000; }
+.metric-grade-C { color: #FF006B; }
+.metric-grade-D { color: #696969; }
+.metric-weight-comp { font-size: 11px; color: #7D7D80; margin-top: 4px; }
+
+/* ── Factor 점수 표시 ── */
+.factor-group-comp { margin-bottom: 16px; }
+.factor-group-comp h4 { font-size: 13px; font-weight: 700; color: #041D30; margin-bottom: 8px; border-bottom: 1px solid #F0F0F0; padding-bottom: 6px; }
+.factor-line-comp { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: 13px; color: #041D30; border-bottom: 1px solid #F8F9FA; }
+.factor-grade-comp { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 20px; border-radius: 2px; font-size: 11px; font-weight: 700; }
+.fg-none { background: #E9E9EA; color: #7D7D80; }
+.fg-low  { background: rgba(0,117,255,0.2); color: #041D30; }
+.fg-mid  { background: rgba(0,117,255,0.6); color: #fff; }
+.fg-high { background: #0075FF; color: #fff; }
+
+/* ── 메트릭 분석 상세 ── */
+.metric-item-comp { border: 1px solid #E9E9EA; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.metric-item-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.metric-item-head h3 { font-size: 14px; font-weight: 700; color: #041D30; }
+.guide-score-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 16px; font-size: 13px; font-weight: 700; font-family: 'Noto Sans', sans-serif; }
+.guide-score-pill.back-B { background: #FFF0DE; color: #F09000; }
+.guide-score-pill.back-C { background: #FFE9F3; color: #FF006B; }
+.guide-score-pill.back-D { background: #E9E9EA; color: #696969; }
+.guide-body-comp p { font-size: 13px; color: #041D30; line-height: 1.6; margin-bottom: 12px; }
+.guide-factor-list-comp { display: flex; flex-direction: column; gap: 6px; }
+.guide-factor-row-comp { display: flex; align-items: center; gap: 10px; }
+.guide-factor-name { font-size: 12px; color: #7D7D80; width: 90px; flex-shrink: 0; }
+.factor-bars-comp { display: flex; gap: 3px; }
+.factor-bars-comp i { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 20px; border-radius: 2px; font-size: 10px; font-weight: 700; font-style: normal; background: #E9E9EA; color: #A9A8AA; }
+.factor-bars-comp i.active-none { background: #E9E9EA; color: #7D7D80; }
+.factor-bars-comp i.active-low  { background: rgba(0,117,255,0.2); color: #041D30; }
+.factor-bars-comp i.active-mid  { background: rgba(0,117,255,0.6); color: #fff; }
+.factor-bars-comp i.active-high { background: #0075FF; color: #fff; }
+
+/* ── 근거문장 ── */
+.evidence-group-comp { margin-bottom: 20px; }
+.evidence-group-title-comp { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; border-radius: 6px 6px 0 0; font-size: 14px; font-weight: 700; }
+.eg-title-B { background: #FFF0DE; color: #F09000; }
+.eg-title-C { background: #FFE9F3; color: #FF006B; }
+.eg-title-D { background: #E9E9EA; color: #696969; }
+.evidence-factor-comp { padding: 12px 14px; border: 1px solid #E9E9EA; border-top: none; }
+.evidence-factor-comp h4 { font-size: 13px; font-weight: 700; color: #041D30; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.evidence-sentence-comp { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.sentence-no-comp { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #0075FF; color: #fff; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.evidence-sentence-comp p { font-size: 13px; color: #041D30; line-height: 1.6; }
+.empty-sentence-comp { font-size: 12px; color: #A9A8AA; font-style: italic; }
+
+/* ── 문항 상세 카드 ── */
+.question-card-comp { border: 1px solid #E3E3E3; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+.question-head-comp { background: #F8F9FA; padding: 12px 16px; border-bottom: 1px solid #E3E3E3; }
+.question-head-comp .q-num { font-size: 11px; color: #7D7D80; margin-bottom: 4px; }
+.question-head-comp .q-text { font-size: 14px; font-weight: 700; color: #041D30; }
+.question-head-comp .q-type-tag { font-size: 11px; color: #0075FF; margin-top: 3px; }
+.question-summary-comp { display: flex; gap: 0; border-bottom: 1px solid #E3E3E3; }
+.q-summary-col-comp { flex: 1; padding: 10px 12px; border-right: 1px solid #E3E3E3; font-size: 12px; }
+.q-summary-col-comp:last-child { border-right: none; }
+.q-summary-col-comp h5 { font-size: 11px; font-weight: 700; color: #7D7D80; margin-bottom: 6px; }
+.q-summary-col-comp dl { display: flex; flex-direction: column; gap: 3px; }
+.q-summary-col-comp dt { font-size: 11px; color: #A9A8AA; }
+.q-summary-col-comp dd { font-size: 12px; font-weight: 700; color: #041D30; }
+.question-body-comp { padding: 14px 16px; }
+.qtype-badge { display: inline-flex; align-items: center; justify-content: center; height: 18px; padding: 0 8px; border-radius: 3px; font-size: 11px; font-weight: 700; margin-right: 6px; }
+.qtype-basic { background: #EBF4FF; color: #0075FF; }
+.qtype-tail  { background: #F0F0F0; color: #696969; }
+.q-label-comp { font-size: 12px; font-weight: 700; color: #7D7D80; margin-right: 4px; }
+.q-question-comp { font-size: 13px; color: #041D30; }
+.answer-body-comp { font-size: 13px; color: #041D30; line-height: 1.7; padding: 10px 0; }
+.answer-body-comp b { background: rgba(0,117,255,0.08); border-radius: 2px; padding: 0 2px; }
+.answer-summary-comp { background: #F8F9FA; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px; }
+.answer-summary-comp strong { color: #041D30; font-weight: 700; margin-bottom: 4px; display: block; }
+
+/* ── 역량 카드 ── */
+.card-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+.competency-card { border-radius: 8px; border: 1px solid; padding: 14px 16px; width: 160px; display: flex; flex-direction: column; gap: 8px; }
+.card-name { font-size: 13px; font-weight: 700; }
+.card-score { font-size: 22px; font-weight: 700; font-family: 'Noto Sans', sans-serif; }
+.card-grade-row { display: flex; align-items: center; gap: 6px; }
+
+/* ── 테이블 ── */
+.ds-table { width: 100%; border-collapse: collapse; border-top: 1px solid #041D30; border-bottom: 1px solid #041D30; font-size: 14px; color: #041D30; }
+.ds-table th, .ds-table td { height: 32px; text-align: center; padding: 0 8px; }
+.ds-table thead { background: rgba(0,117,255,0.06); border-bottom: 1px solid #A9A8AA; }
+.ds-table thead th { font-weight: 700; border-bottom: 1px solid #A9A8AA; }
+.ds-table thead th:first-child { background: #E9E9EA; }
+.ds-table tbody tr { border-bottom: 1px solid #E3E3E3; }
+.ds-table tfoot { background: rgba(0,117,255,0.15); border-top: 1px solid #A9A8AA; }
+.ds-table tfoot td { font-weight: 700; }
+.ds-table tfoot td:first-child { background: #E3E3E3; }
+
+/* ── 가로 막대 차트 ── */
+.bar-chart-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { font-size: 13px; width: 80px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 18px; background: #E9E9EA; border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 2px; }
+.bar-value { font-size: 12px; color: #7D7D80; width: 40px; text-align: right; flex-shrink: 0; }
+
+/* ── 지원자 카드 ── */
+.candidate-card-preview { border-radius: 8px; padding: 32px; width: 100%; }
+
+/* ── 푸터 ── */
+.result-footer-comp { height: 34px; background: #fff; border-top: 1px solid #7D7D80; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+.footer-left { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #041D30; letter-spacing: -0.24px; }
+.footer-logo-img { display: block; height: 10px; width: auto; object-fit: contain; }
+.footer-logo-img.prism { height: 16px; }
+.footer-logo-missing { display: inline-flex; align-items: center; height: 10px; background: #F0F0F0; padding: 0 6px; border-radius: 2px; font-size: 9px; color: #999; font-style: italic; white-space: nowrap; }
+.footer-copy { font-size: 7px; color: #6E777C; line-height: 1.4; flex: 1; padding: 0 20px; }
+.footer-page { font-size: 12px; font-weight: 600; color: #041D30; letter-spacing: -0.24px; }
+
+/* ── 제품 칩 ── */
+.product-chip { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 8px; border: 1px solid #E3E3E3; margin-bottom: 10px; background: #fff; }
+.product-color-dot { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+.product-name { font-size: 14px; font-weight: 700; color: #041D30; }
+.product-code { font-size: 12px; color: #7D7D80; font-family: monospace; }
+
+/* ── 페이지 레이아웃 ── */
+.page-layout-preview { width: 200px; border: 2px solid #E3E3E3; border-radius: 8px; overflow: hidden; font-size: 11px; position: relative; }
+.layout-header { height: 32px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 11px; gap: 4px; }
+.layout-candidate { height: 56px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+.layout-body { height: 160px; background: #F8F9FA; display: flex; align-items: center; justify-content: center; color: #A9A8AA; font-size: 11px; border-bottom: 1px solid #E3E3E3; text-align: center; line-height: 1.8; }
+.layout-footer-prev { height: 24px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; color: #A9A8AA; font-size: 10px; border-top: 1px solid #7D7D80; gap: 4px; }
+.layout-label-fixed { font-size: 9px; color: #0075FF; font-weight: 700; background: rgba(0,117,255,0.1); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+.layout-label-once { font-size: 9px; color: #F09000; font-weight: 700; background: rgba(240,144,0,0.1); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+.layout-page-badge { font-size: 10px; font-weight: 700; color: #041D30; text-align: center; padding: 4px 0 2px; }
+
+/* ── 문서 헤더 ── */
+.page-doc-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 24px; border-bottom: 1px solid #939395; width: 100%; background: #fff; }
+.doc-header-title { font-size: 12px; font-weight: 600; color: #041D30; letter-spacing: -0.24px; font-family: 'Noto Sans KR', sans-serif; white-space: nowrap; }
+.doc-header-info { display: flex; align-items: center; gap: 6px; }
+.doc-header-name { font-size: 12px; font-weight: 600; color: #041D30; letter-spacing: -0.24px; font-family: 'Noto Sans KR', sans-serif; white-space: nowrap; }
+.doc-header-divider { display: inline-block; width: 1px; height: 11px; background: #939395; flex-shrink: 0; }
+.doc-header-num { font-size: 12px; font-weight: 300; color: #041D30; letter-spacing: -0.24px; font-family: 'Noto Sans', sans-serif; white-space: nowrap; }
+
+/* ── 경고 박스 ── */
+.warn-box { background: #FFF9E6; border: 1px solid #FFD700; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #7D5A00; margin-bottom: 16px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR ════ -->
+<nav id="sidebar">
+  <div class="sb-logo">
+    <div class="brand">무하유 디자인 시스템</div>
+    <div class="sub">HR 결과지 컴포넌트 라이브러리 v3</div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title">Foundation</div>
+    <a class="sb-item active" onclick="show('colors')">색상 (Colors)</a>
+    <a class="sb-item" onclick="show('typography')">폰트 (Typography)</a>
+    <a class="sb-item" onclick="show('spacing')">레이아웃 규격</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title">Basic Components</div>
+    <a class="sb-item" onclick="show('badges')">등급 배지</a>
+    <a class="sb-item" onclick="show('levelBadges')">상/중/하 배지</a>
+    <a class="sb-item" onclick="show('pills')">상태 알약 (Pills)</a>
+    <a class="sb-item" onclick="show('cards')">역량 카드</a>
+    <a class="sb-item" onclick="show('table')">테이블</a>
+    <a class="sb-item" onclick="show('barChart')">가로 막대 차트</a>
+    <a class="sb-item" onclick="show('radarChart')">레이더 차트</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title">Result Sheet Components</div>
+    <a class="sb-item" onclick="show('docHeader')">문서 헤더</a>
+    <a class="sb-item" onclick="show('candidateCard')">지원자 카드</a>
+    <a class="sb-item" onclick="show('evalPanel')">종합평가 패널</a>
+    <a class="sb-item" onclick="show('overviewCard')">응시개요 카드</a>
+    <a class="sb-item" onclick="show('metricStrip')">메트릭 카드 스트립</a>
+    <a class="sb-item" onclick="show('factorScore')">Factor 점수 표시</a>
+    <a class="sb-item" onclick="show('metricDetail')">메트릭 분석 상세</a>
+    <a class="sb-item" onclick="show('evidence')">근거문장</a>
+    <a class="sb-item" onclick="show('questionCard')">문항 상세 카드</a>
+    <a class="sb-item" onclick="show('footer')">푸터 (제품별)</a>
+    <a class="sb-item" onclick="show('lastPageNotice')">결과지 맨뒤 안내사항</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title">Products</div>
+    <a class="sb-item" onclick="show('products')">제품별 색상 테마</a>
+    <a class="sb-item" onclick="show('pageLayout')">페이지 레이아웃</a>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main id="main">
+
+<!-- 1. 색상 -->
+<div class="section active" id="sec-colors">
+  <div class="page-title">색상 (Colors)</div>
+  <div class="page-desc">Figma BP-4.2 파일에서 추출한 공식 색상 토큰. 이 색상 외 임의 색상 사용 금지.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">기본 색상</div></div>
+    <div class="story-canvas">
+      <div class="color-grid">
+        <div class="color-swatch"><div class="swatch-box" style="background:#041D30;"></div><div class="swatch-name">주 텍스트</div><div class="swatch-code">#041D30</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#7D7D80;"></div><div class="swatch-name">보조 텍스트</div><div class="swatch-code">#7D7D80</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#6E777C;"></div><div class="swatch-name">비활성</div><div class="swatch-code">#6E777C</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FFFFFF;border:1px solid #E3E3E3;"></div><div class="swatch-name">흰색 배경</div><div class="swatch-code">#FFFFFF</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#E9E9EA;"></div><div class="swatch-name">중립 배경</div><div class="swatch-code">#E9E9EA</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#BBBABF;"></div><div class="swatch-name">테두리(진)</div><div class="swatch-code">#BBBABF</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#E3E3E3;"></div><div class="swatch-name">테두리(연)</div><div class="swatch-code">#E3E3E3</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#A9A8AA;"></div><div class="swatch-name">테두리(중)</div><div class="swatch-code">#A9A8AA</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">기능 색상</div><div class="story-desc">강조, 위험, 경고 상태</div></div>
+    <div class="story-canvas">
+      <div class="color-grid">
+        <div class="color-swatch"><div class="swatch-box" style="background:#0075FF;"></div><div class="swatch-name">Primary Blue</div><div class="swatch-code">#0075FF</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FF3B30;"></div><div class="swatch-name">위험/FAIL</div><div class="swatch-code">#FF3B30</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FF7A00;"></div><div class="swatch-name">경고/주의</div><div class="swatch-code">#FF7A00</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#20AA40;"></div><div class="swatch-name">통과/PASS</div><div class="swatch-code">#20AA40</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">등급별 색상 (S~D)</div></div>
+    <div class="story-canvas">
+      <div class="color-grid">
+        <div class="color-swatch"><div class="swatch-box" style="background:#F3E8FF;border:2px solid #9330FF;"></div><div class="swatch-name">S 배경</div><div class="swatch-code">#F3E8FF</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#9330FF;"></div><div class="swatch-name">S 색상</div><div class="swatch-code">#9330FF</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#E7FFEC;border:2px solid #20AA40;"></div><div class="swatch-name">A 배경</div><div class="swatch-code">#E7FFEC</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#20AA40;"></div><div class="swatch-name">A 색상</div><div class="swatch-code">#20AA40</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FFF0DE;border:2px solid #F09000;"></div><div class="swatch-name">B 배경</div><div class="swatch-code">#FFF0DE</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#F09000;"></div><div class="swatch-name">B 색상</div><div class="swatch-code">#F09000</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FFE9F3;border:2px solid #FF006B;"></div><div class="swatch-name">C 배경</div><div class="swatch-code">#FFE9F3</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#FF006B;"></div><div class="swatch-name">C 색상</div><div class="swatch-code">#FF006B</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#E9E9EA;border:2px solid #696969;"></div><div class="swatch-name">D 배경</div><div class="swatch-code">#E9E9EA</div></div>
+        <div class="color-swatch"><div class="swatch-box" style="background:#696969;"></div><div class="swatch-name">D 색상</div><div class="swatch-code">#696969</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 폰트 -->
+<div class="section" id="sec-typography">
+  <div class="page-title">폰트 (Typography)</div>
+  <div class="page-desc">Noto Sans KR (한국어) / Noto Sans (영문·숫자)</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">타입 스케일</div></div>
+    <div class="story-canvas">
+      <div class="typo-row"><div class="typo-label">대제목</div><div class="typo-spec">Bold · 32px · 1.4</div><div style="font-size:32px;font-weight:700;color:#041D30;">역량 평가 결과지</div></div>
+      <div class="typo-row"><div class="typo-label">중제목 h5</div><div class="typo-spec">Bold · 24px · 1.4</div><div style="font-size:24px;font-weight:700;color:#041D30;">직무적합도 분석</div></div>
+      <div class="typo-row"><div class="typo-label">소제목 h6</div><div class="typo-spec">Bold · 18px · 1.4</div><div style="font-size:18px;font-weight:700;color:#041D30;">역량별 세부 점수</div></div>
+      <div class="typo-row"><div class="typo-label">본문 강조</div><div class="typo-spec">Bold · 16px · 1.6</div><div style="font-size:16px;font-weight:700;color:#041D30;">지원자의 핵심 역량이 상위 수준으로 확인되었습니다.</div></div>
+      <div class="typo-row"><div class="typo-label">본문</div><div class="typo-spec">Regular · 16px · 1.6</div><div style="font-size:16px;font-weight:400;color:#041D30;">본 결과지는 AI 기술을 활용하여 분석한 참고 자료입니다.</div></div>
+      <div class="typo-row"><div class="typo-label">캡션 강조</div><div class="typo-spec">Bold · 14px · 1.6</div><div style="font-size:14px;font-weight:700;color:#041D30;">직무 경험 · 직무 지식 · 직무 동기</div></div>
+      <div class="typo-row"><div class="typo-label">캡션</div><div class="typo-spec">Regular · 14px · 1.6</div><div style="font-size:14px;font-weight:400;color:#041D30;">동일 직무 지원자 142명 기준, 상위 26% 해당</div></div>
+      <div class="typo-row"><div class="typo-label">극소</div><div class="typo-spec">Regular · 12px · 1.6</div><div style="font-size:12px;font-weight:400;color:#7D7D80;">Prism BP v2.1 · 분석일시: 2026-05-23</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 레이아웃 규격 -->
+<div class="section" id="sec-spacing">
+  <div class="page-title">레이아웃 규격</div>
+  <div class="page-desc">모든 결과지에 공통 적용되는 규격</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">페이지 기본 규격</div></div>
+    <div class="story-canvas">
+      <table style="border-collapse:collapse;font-size:14px;color:#041D30;">
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">페이지 너비</td><td style="font-family:monospace;">990px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">페이지 높이</td><td style="font-family:monospace;">1399px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">기본 좌우 여백</td><td style="font-family:monospace;">24px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">섹션 간격</td><td style="font-family:monospace;">20px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">카드 내부 여백</td><td style="font-family:monospace;">12~20px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">카드 모서리</td><td style="font-family:monospace;">8px</td></tr>
+        <tr><td style="padding:8px 24px 8px 0;font-weight:700;color:#7D7D80;">기본 테두리</td><td style="font-family:monospace;">1px solid #E3E3E3</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 등급 배지 -->
+<div class="section" id="sec-badges">
+  <div class="page-title">등급 배지 (S~D)</div>
+  <div class="page-desc">5단계 등급 배지. 높이 26px, 모서리 13px pill 형태.</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">전체 등급 (S → D)</div></div>
+    <div class="story-canvas">
+      <div class="badge-row">
+        <span class="grade-badge grade-S">S</span>
+        <span class="grade-badge grade-A">A</span>
+        <span class="grade-badge grade-B">B</span>
+        <span class="grade-badge grade-C">C</span>
+        <span class="grade-badge grade-D">D</span>
+      </div>
+    </div>
+    <div class="story-spec">높이: 26px · 모서리: 13px · Bold 14px · 패딩: 0 12px</div>
+  </div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">PASS / FAIL / 신뢰불가</div><div class="story-desc">역량검사 제품에서 사용하는 상태 배지</div></div>
+    <div class="story-canvas">
+      <div class="badge-row">
+        <span class="grade-badge" style="background:#E7FFEC;color:#20AA40;min-width:70px;">PASS</span>
+        <span class="grade-badge" style="background:#FFF5F5;color:#FF3B30;min-width:70px;">FAIL</span>
+        <span class="grade-badge" style="background:#E9E9EA;color:#696969;min-width:90px;">신뢰불가</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. 상/중/하 배지 -->
+<div class="section" id="sec-levelBadges">
+  <div class="page-title">상/중/하 배지</div>
+  <div class="page-desc">교차진단, 프리즘 BP, 역량검사 전 제품 공통 3단계 레벨 배지</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">전체 레벨</div></div>
+    <div class="story-canvas">
+      <div class="badge-row">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-badge level-상">상</span><span style="font-size:11px;color:#7D7D80;">#0075FF</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-badge level-중">중</span><span style="font-size:11px;color:#7D7D80;">60% 투명</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-badge level-하">하</span><span style="font-size:11px;color:#7D7D80;">20% 투명</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-badge level-없음">-</span><span style="font-size:11px;color:#7D7D80;">없음</span></div>
+      </div>
+    </div>
+    <div class="story-spec">너비: 40px · 높이: 18px · 모서리: 2px · Bold 12px</div>
+  </div>
+</div>
+
+<!-- 6. 상태 알약 (Pills) - NEW -->
+<div class="section" id="sec-pills">
+  <div class="page-title">상태 알약 (Pills)</div>
+  <div class="page-desc">결과지 전반의 "해당/없음/주의/안전" 등 상태 표시에 사용. 운영 코드에서 pill, pill-red/blue/default 클래스로 정의.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">상태별 알약</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-red">해당</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-red</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-red">주의</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-red</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-blue">없음</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-blue</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-blue">안전</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-blue</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-default">0회</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-default</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="pill pill-default">1문항</span>
+          <span style="font-size:11px;color:#7D7D80;">pill-default</span>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      높이: 22px · 모서리: 11px · Bold 12px · 패딩: 0 10px<br>
+      pill-red: bg #FFF5F5 / color #FF3B30 / border #FFCCCC<br>
+      pill-blue: bg #EBF4FF / color #0075FF / border #B3D4FF<br>
+      pill-default: bg #E9E9EA / color #7D7D80 / border #D0D0D0
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">신뢰불가/주의/안전 헤더 배지</div><div class="story-desc">종합평가 패널 상단 신뢰도 상태 표시</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="trust-head-badge trust-caution">신뢰불가</span>
+          <span style="font-size:11px;color:#7D7D80;">trust-caution</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="trust-head-badge trust-pass">통과</span>
+          <span style="font-size:11px;color:#7D7D80;">trust-pass</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="trust-head-badge trust-safe">확인 필요</span>
+          <span style="font-size:11px;color:#7D7D80;">trust-safe</span>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      신뢰불가: bg #FF3B30 / 통과: bg #20AA40 / 확인필요: bg #E9E9EA
+    </div>
+  </div>
+</div>
+
+<!-- 7. 역량 카드 -->
+<div class="section" id="sec-cards">
+  <div class="page-title">역량 카드</div>
+  <div class="page-desc">역량명 + 점수 + 등급을 하나의 카드로 묶어 표시. 등급에 따라 배경·테두리 색상 변화.</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">등급별 역량 카드</div></div>
+    <div class="story-canvas">
+      <div class="card-grid">
+        <div class="competency-card" style="background:#F3E8FF;border-color:#9330FF;">
+          <div class="card-name" style="color:#9330FF;">직무 경험</div>
+          <div class="card-score" style="color:#9330FF;">91.5</div>
+          <div class="card-grade-row"><span class="grade-badge grade-S">S</span></div>
+        </div>
+        <div class="competency-card" style="background:#E7FFEC;border-color:#20AA40;">
+          <div class="card-name" style="color:#20AA40;">직무 지식</div>
+          <div class="card-score" style="color:#20AA40;">78.3</div>
+          <div class="card-grade-row"><span class="grade-badge grade-A">A</span></div>
+        </div>
+        <div class="competency-card" style="background:#FFF0DE;border-color:#F09000;">
+          <div class="card-name" style="color:#F09000;">조직 적합</div>
+          <div class="card-score" style="color:#F09000;">64.1</div>
+          <div class="card-grade-row"><span class="grade-badge grade-B">B</span></div>
+        </div>
+        <div class="competency-card" style="background:#FFE9F3;border-color:#FF006B;">
+          <div class="card-name" style="color:#FF006B;">지원 동기</div>
+          <div class="card-score" style="color:#FF006B;">52.1</div>
+          <div class="card-grade-row"><span class="grade-badge grade-C">C</span></div>
+        </div>
+        <div class="competency-card" style="background:#E9E9EA;border-color:#696969;">
+          <div class="card-name" style="color:#696969;">표현력</div>
+          <div class="card-score" style="color:#696969;">38.0</div>
+          <div class="card-grade-row"><span class="grade-badge grade-D">D</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">너비: 160px · 모서리: 8px · 테두리: 1px solid 등급 색상 · 패딩: 14px 16px</div>
+  </div>
+</div>
+
+<!-- 8. 테이블 -->
+<div class="section" id="sec-table">
+  <div class="page-title">테이블</div>
+  <div class="page-desc">헤더 - 바디 - 푸터 3단 구조. 모든 행 높이 32px.</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">기본 테이블 (문항 점수 예시)</div></div>
+    <div class="story-canvas">
+      <table class="ds-table">
+        <thead><tr><th>문항 번호</th><th>배점</th><th>획득 점수</th></tr></thead>
+        <tbody>
+          <tr><td>05</td><td>66.6</td><td>0</td></tr>
+          <tr><td>06</td><td>33.3</td><td>0</td></tr>
+          <tr><td>07</td><td>45</td><td>43</td></tr>
+        </tbody>
+        <tfoot><tr><td>합계</td><td>144.9</td><td>43</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="story-spec">
+      행 높이: 32px · 헤더 배경: rgba(0,117,255,0.06) · 푸터 배경: rgba(0,117,255,0.15)<br>
+      상단/하단 테두리: 1px solid #041D30 · 행 구분: 1px solid #E3E3E3
+    </div>
+  </div>
+</div>
+
+<!-- 9. 가로 막대 차트 -->
+<div class="section" id="sec-barChart">
+  <div class="page-title">가로 막대 차트</div>
+  <div class="page-desc">역량별 점수 시각화. 막대 높이 18px.</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">역량별 점수</div></div>
+    <div class="story-canvas">
+      <div class="bar-chart-row"><span class="bar-label">직무 경험</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:#0075FF;"></div></div><span class="bar-value">92</span><span class="level-badge level-상" style="margin-left:8px;">상</span></div>
+      <div class="bar-chart-row"><span class="bar-label">직무 지식</span><div class="bar-track"><div class="bar-fill" style="width:64%;background:rgba(0,117,255,0.6);"></div></div><span class="bar-value">64</span><span class="level-badge level-중" style="margin-left:8px;">중</span></div>
+      <div class="bar-chart-row"><span class="bar-label">지원 동기</span><div class="bar-track"><div class="bar-fill" style="width:38%;background:rgba(0,117,255,0.2);"></div></div><span class="bar-value">38</span><span class="level-badge level-하" style="margin-left:8px;">하</span></div>
+    </div>
+    <div class="story-spec">막대 높이: 18px · 모서리: 2px · 트랙 배경: #E9E9EA</div>
+  </div>
+</div>
+
+<!-- 10. 레이더 차트 -->
+<div class="section" id="sec-radarChart">
+  <div class="page-title">레이더 차트</div>
+  <div class="page-desc">6개 역량 점수 다각형 시각화. 운영에서는 Chart.js 라이브러리 사용.</div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">6각형 레이더 차트</div></div>
+    <div class="story-canvas" style="display:flex;justify-content:center;">
+      <svg width="300" height="300" viewBox="0 0 300 300">
+        <g transform="translate(150,150)">
+          <polygon points="0,-100 86.6,-50 86.6,50 0,100 -86.6,50 -86.6,-50" fill="none" stroke="#E3E3E3" stroke-width="1"/>
+          <polygon points="0,-75 64.9,-37.5 64.9,37.5 0,75 -64.9,37.5 -64.9,-37.5" fill="none" stroke="#E3E3E3" stroke-width="1"/>
+          <polygon points="0,-50 43.3,-25 43.3,25 0,50 -43.3,25 -43.3,-25" fill="none" stroke="#E3E3E3" stroke-width="1"/>
+          <line x1="0" y1="0" x2="0" y2="-100" stroke="#E3E3E3"/><line x1="0" y1="0" x2="86.6" y2="-50" stroke="#E3E3E3"/><line x1="0" y1="0" x2="86.6" y2="50" stroke="#E3E3E3"/>
+          <line x1="0" y1="0" x2="0" y2="100" stroke="#E3E3E3"/><line x1="0" y1="0" x2="-86.6" y2="50" stroke="#E3E3E3"/><line x1="0" y1="0" x2="-86.6" y2="-50" stroke="#E3E3E3"/>
+          <!-- 평균 (회색) -->
+          <polygon points="0,-76 65.9,-38 65.9,38 0,76 -65.9,38 -65.9,-38" fill="rgba(142,157,171,0.22)" stroke="#96A4B1" stroke-width="2"/>
+          <!-- 지원자 (파랑) -->
+          <polygon points="0,-76 67,-39 52,31 0,61 -43,32 -60,-46" fill="rgba(0,117,255,0.28)" stroke="#2EA6FF" stroke-width="2"/>
+          <text x="0" y="-115" text-anchor="middle" font-size="11" fill="#041D30" font-family="Noto Sans KR">면접태도</text>
+          <text x="105" y="-52" text-anchor="start" font-size="11" fill="#041D30" font-family="Noto Sans KR">대화유창성</text>
+          <text x="105" y="56" text-anchor="start" font-size="11" fill="#041D30" font-family="Noto Sans KR">직무적합도</text>
+          <text x="0" y="120" text-anchor="middle" font-size="11" fill="#041D30" font-family="Noto Sans KR">조직적합도</text>
+          <text x="-105" y="56" text-anchor="end" font-size="11" fill="#041D30" font-family="Noto Sans KR">지원동기</text>
+          <text x="-105" y="-52" text-anchor="end" font-size="11" fill="#041D30" font-family="Noto Sans KR">성장잠재력</text>
+        </g>
+      </svg>
+    </div>
+    <div class="story-spec">
+      그리드: #E3E3E3 · 평균선: #96A4B1 · 지원자: rgba(0,117,255,0.28) / #2EA6FF<br>
+      운영 구현: Chart.js radar type · canvas id="metric4RadarChart" · 225×225px
+    </div>
+  </div>
+</div>
+
+<!-- 11. 문서 헤더 -->
+<div class="section" id="sec-docHeader">
+  <div class="page-title">문서 헤더 (Document Header)</div>
+  <div class="page-desc">결과지 모든 페이지 최상단에 고정되는 헤더 바. 좌측에 채용공고 이름, 우측에 지원자 이름과 지원번호를 표시.</div>
+
+  <div class="story-block">
+    <div class="story-header">
+      <div class="story-name">기본형</div>
+      <div class="story-desc">Figma node-id: 97:60423 · 헤더 header</div>
+    </div>
+    <div class="story-canvas" style="padding: 0; background: #F6F9FB;">
+      <div style="width: 990px; max-width: 100%;">
+        <div class="page-doc-header">
+          <span class="doc-header-title">무하유 영업직군 신입사원 채용</span>
+          <div class="doc-header-info">
+            <span class="doc-header-name">홍길동</span>
+            <span class="doc-header-divider"></span>
+            <span class="doc-header-num">1234567890</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      너비: 990px · 높이: 27px · 패딩: 8px 24px<br>
+      하단 테두리: 1px solid #939395<br>
+      좌측(채용공고 이름): SemiBold 12px · #041D30 · letter-spacing -0.24px<br>
+      우측(지원자 이름): SemiBold 12px · #041D30 · 구분선(1px × 11px · #939395) · 지원번호: Light 12px · #041D30
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">HTML 패턴</div></div>
+    <div class="story-canvas">
+      <pre style="font-size:12px;color:#041D30;line-height:1.8;background:#F8F9FA;padding:14px;border-radius:6px;overflow-x:auto;">&lt;div class="page-doc-header"&gt;
+  &lt;span class="doc-header-title"&gt;채용공고 이름&lt;/span&gt;
+  &lt;div class="doc-header-info"&gt;
+    &lt;span class="doc-header-name"&gt;지원자 이름&lt;/span&gt;
+    &lt;span class="doc-header-divider"&gt;&lt;/span&gt;
+    &lt;span class="doc-header-num"&gt;지원번호&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+    </div>
+  </div>
+</div>
+
+<!-- 12. 지원자 카드 -->
+<div class="section" id="sec-candidateCard">
+  <div class="page-title">지원자 카드</div>
+  <div class="page-desc">모든 결과지 첫 페이지 상단 공통 요소. 채용공고명 + 지원자 사진 + 직무 + 이름 + 번호.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">공통 구조 (몬스터 기준)</div></div>
+    <div class="story-canvas">
+      <div class="candidate-card-preview" style="background:#BBBABF;border-radius:8px;">
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div style="font-size:24px;font-weight:700;color:#041D30;">무하유 영업직군 신입사원 채용</div>
+          <div style="display:flex;align-items:center;gap:32px;">
+            <div style="width:120px;height:120px;border-radius:60px;background:#E9EBEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="font-size:44px;">👤</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="font-size:18px;font-weight:700;color:#041D30;">영업직</div>
+              <div style="font-size:32px;font-weight:700;color:#041D30;">홍길동</div>
+              <div style="font-size:16px;color:#041D30;">1234567890</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      배경: #BBBABF · 모서리: 8px · 패딩: 32px<br>
+      채용공고명: Bold 24px · 사진: 120×120px 원형, 배경 #E9EBEB<br>
+      직무명: Bold 18px · 이름: Bold 32px · 지원자번호: Regular 16px
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">운영 코드 구조</div><div class="story-desc">실제 HTML 클래스 매핑</div></div>
+    <div class="story-canvas">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="background:#F8F9FA;"><th style="padding:8px 12px;text-align:left;border-bottom:2px solid #E3E3E3;">HTML 클래스</th><th style="padding:8px 12px;text-align:left;border-bottom:2px solid #E3E3E3;">역할</th><th style="padding:8px 12px;text-align:left;border-bottom:2px solid #E3E3E3;">내용</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #F0F0F0;"><td style="padding:8px 12px;font-family:monospace;">.ev-top-sec</td><td style="padding:8px 12px;">전체 헤더 컨테이너</td><td style="padding:8px 12px;">배경색은 제품별 CSS에서 정의</td></tr>
+          <tr style="border-bottom:1px solid #F0F0F0;"><td style="padding:8px 12px;font-family:monospace;">.ev-top-header h1</td><td style="padding:8px 12px;">채용공고명</td><td style="padding:8px 12px;">Bold 24px</td></tr>
+          <tr style="border-bottom:1px solid #F0F0F0;"><td style="padding:8px 12px;font-family:monospace;">.profile-photo img</td><td style="padding:8px 12px;">지원자 사진</td><td style="padding:8px 12px;">원형 크롭, 120×120px</td></tr>
+          <tr style="border-bottom:1px solid #F0F0F0;"><td style="padding:8px 12px;font-family:monospace;">.profile-job</td><td style="padding:8px 12px;">직무명</td><td style="padding:8px 12px;">Bold 18px</td></tr>
+          <tr style="border-bottom:1px solid #F0F0F0;"><td style="padding:8px 12px;font-family:monospace;">.profile-name</td><td style="padding:8px 12px;">지원자 이름</td><td style="padding:8px 12px;">Bold 32px</td></tr>
+          <tr><td style="padding:8px 12px;font-family:monospace;">.profile-id</td><td style="padding:8px 12px;">지원자 번호</td><td style="padding:8px 12px;">Regular 16px</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 12. 종합평가 패널 - NEW -->
+<div class="section" id="sec-evalPanel">
+  <div class="page-title">종합평가 패널</div>
+  <div class="page-desc">결과지 첫 페이지 우측에 위치. 종합 점수/등수 + 신뢰도 상태(신뢰불가/주의)를 함께 표시. 운영 코드의 aside.ev-sec.sec-score 영역.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">종합평가 패널 - 신뢰불가 예시</div></div>
+    <div class="story-canvas">
+      <div style="background:#F6F8F9;padding:20px;border-radius:8px;max-width:500px;">
+        <h3 style="font-size:14px;font-weight:700;color:#041D30;margin-bottom:12px;">종합 평가</h3>
+        <div style="display:flex;gap:12px;">
+          <!-- total-card -->
+          <div style="flex:1;background:#fff;border:1px solid #E3E3E3;border-radius:8px;padding:16px;">
+            <div style="font-size:12px;color:#7D7D80;margin-bottom:8px;">점수</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:36px;font-weight:700;font-family:'Noto Sans',sans-serif;color:#041D30;">51.99</span>
+              <span class="grade-badge grade-D">D</span>
+            </div>
+            <div style="font-size:13px;color:#041D30;">
+              <span style="color:#7D7D80;font-size:12px;">등수 (백분위)</span><br>
+              <strong style="font-size:15px;">1등</strong>
+              <span style="font-size:12px;color:#7D7D80;">/ 1명 중 (상위 100%)</span>
+            </div>
+          </div>
+          <!-- trust-box -->
+          <div style="min-width:160px;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;">
+            <div style="background:#FF3B30;padding:8px 14px;font-size:14px;font-weight:700;color:#fff;">신뢰불가</div>
+            <div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+                <strong>불성실 답변</strong>
+                <span class="pill pill-red">해당</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+                <strong>부정행위 의심</strong>
+                <span class="pill pill-red">주의</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      운영 코드: aside.ev-sec.sec-score / .total-card / .trust-box<br>
+      신뢰불가 색상: #FF3B30 (위험) · 통과: #20AA40 · 점수 숫자: Noto Sans Bold 36px
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">신뢰불가 상태 3종</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="min-width:160px;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;">
+          <div style="background:#FF3B30;padding:8px 14px;font-size:14px;font-weight:700;color:#fff;">신뢰불가</div>
+          <div style="padding:10px 14px;font-size:12px;color:#7D7D80;">불성실 또는 부정행위 해당</div>
+        </div>
+        <div style="min-width:160px;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;">
+          <div style="background:#FF7A00;padding:8px 14px;font-size:14px;font-weight:700;color:#fff;">주의</div>
+          <div style="padding:10px 14px;font-size:12px;color:#7D7D80;">일부 항목 주의 감지</div>
+        </div>
+        <div style="min-width:160px;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;">
+          <div style="background:#20AA40;padding:8px 14px;font-size:14px;font-weight:700;color:#fff;">정상</div>
+          <div style="padding:10px 14px;font-size:12px;color:#7D7D80;">모든 항목 이상 없음</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. 응시개요 카드 - NEW -->
+<div class="section" id="sec-overviewCard">
+  <div class="page-title">응시개요 카드</div>
+  <div class="page-desc">응시 환경, 시간, 문항 수 등 기본 정보를 격자로 표시. 운영 코드의 .overview-card / .overview-grid.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">응시개요 그리드 (4열)</div></div>
+    <div class="story-canvas">
+      <div style="background:#fff;border:1px solid #E3E3E3;border-radius:8px;padding:16px;">
+        <h3 style="font-size:14px;font-weight:700;color:#041D30;margin-bottom:12px;">응시개요</h3>
+        <div class="overview-grid-comp">
+          <div class="overview-cell"><span>완료 일시</span><strong>2026-05-22 12:30:13</strong></div>
+          <div class="overview-cell"><span>응시 환경</span><strong>PC / 크롬</strong></div>
+          <div class="overview-cell"><span>응답 문항</span><strong>7문항</strong></div>
+          <div class="overview-cell"><span>응답 시간</span><strong>2분 22초</strong></div>
+          <div class="overview-cell"><span>최대 답변 시간</span><strong>37초</strong></div>
+          <div class="overview-cell"><span>최소 답변 시간</span><strong>11초</strong></div>
+          <div class="overview-cell"><span>재답변 문항수</span><strong>1문항</strong></div>
+          <div class="overview-cell"><span>응시 중 이탈 횟수</span><strong>1회</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      4열 grid · 셀 패딩: 10px 14px · label: 11px #7D7D80 · value: 13px Bold #041D30<br>
+      구분선: 1px solid #E3E3E3 (가로/세로)
+    </div>
+  </div>
+</div>
+
+<!-- 14. 메트릭 카드 스트립 - NEW -->
+<div class="section" id="sec-metricStrip">
+  <div class="page-title">메트릭 카드 스트립</div>
+  <div class="page-desc">역량별 점수를 한 줄에 나란히 표시하는 스트립 컴포넌트. 등급별 배경색 적용. 운영 코드: .score-strip / .metric-card.back-B/C/D.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">메트릭 카드 스트립 (역량검사 면접 예시)</div></div>
+    <div class="story-canvas">
+      <div class="score-strip-comp">
+        <div class="metric-card-comp back-B">
+          <div class="metric-title-comp">면접태도</div>
+          <div class="metric-score-comp">76.31 <strong class="metric-grade-B">B</strong></div>
+          <div class="metric-weight-comp">10% 반영</div>
+        </div>
+        <div class="metric-card-comp back-B">
+          <div class="metric-title-comp">대화유창성</div>
+          <div class="metric-score-comp">77.64 <strong class="metric-grade-B">B</strong></div>
+          <div class="metric-weight-comp">10% 반영</div>
+        </div>
+        <div class="metric-card-comp back-C">
+          <div class="metric-title-comp">직무적합도</div>
+          <div class="metric-score-comp">61.00 <strong class="metric-grade-C">C</strong></div>
+          <div class="metric-weight-comp">40% 반영</div>
+        </div>
+        <div class="metric-card-comp back-C">
+          <div class="metric-title-comp">조직적합도</div>
+          <div class="metric-score-comp">61.00 <strong class="metric-grade-C">C</strong></div>
+          <div class="metric-weight-comp">20% 반영</div>
+        </div>
+        <div class="metric-card-comp back-D">
+          <div class="metric-title-comp">지원동기</div>
+          <div class="metric-score-comp">59.00 <strong class="metric-grade-D">D</strong></div>
+          <div class="metric-weight-comp">10% 반영</div>
+        </div>
+        <div class="metric-card-comp back-D">
+          <div class="metric-title-comp">성장잠재력</div>
+          <div class="metric-score-comp">59.00 <strong class="metric-grade-D">D</strong></div>
+          <div class="metric-weight-comp">10% 반영</div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      모서리: 8px · 패딩: 12px 14px · 제목: 12px #7D7D80<br>
+      점수: 18px Bold Noto Sans · 반영비율: 11px #7D7D80<br>
+      back-B: #FFF0DE · back-C: #FFE9F3 · back-D: #E9E9EA
+    </div>
+  </div>
+</div>
+
+<!-- 15. Factor 점수 표시 - NEW -->
+<div class="section" id="sec-factorScore">
+  <div class="page-title">Factor 점수 표시</div>
+  <div class="page-desc">역량별 하위 요인(factor)을 없음/하/중/상으로 표시. 운영 코드: .factor-line / .factor-grade.none/.low/.mid/.high.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">Factor 상태 표시기</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="factor-grade-comp fg-none">없음</span><span style="font-size:11px;color:#7D7D80;">none</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="factor-grade-comp fg-low">하</span><span style="font-size:11px;color:#7D7D80;">low</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="factor-grade-comp fg-mid">중</span><span style="font-size:11px;color:#7D7D80;">mid</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="factor-grade-comp fg-high">상</span><span style="font-size:11px;color:#7D7D80;">high</span>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid #F0F0F0;margin:16px 0;">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="width:200px;">
+          <div class="factor-group-comp">
+            <h4>직무적합도</h4>
+            <div class="factor-line-comp"><span>직무경험</span><span class="factor-grade-comp fg-none">없음</span></div>
+            <div class="factor-line-comp"><span>직무지식</span><span class="factor-grade-comp fg-low">하</span></div>
+            <div class="factor-line-comp"><span>직무동기</span><span class="factor-grade-comp fg-low">하</span></div>
+            <div class="factor-line-comp"><span>주도성</span><span class="factor-grade-comp fg-low">하</span></div>
+            <div class="factor-line-comp"><span>성취지향</span><span class="factor-grade-comp fg-none">없음</span></div>
+          </div>
+        </div>
+        <div style="width:200px;">
+          <div class="factor-group-comp">
+            <h4>조직적합도</h4>
+            <div class="factor-line-comp"><span>리더십 역량</span><span class="factor-grade-comp fg-none">없음</span></div>
+            <div class="factor-line-comp"><span>갈등관리</span><span class="factor-grade-comp fg-low">하</span></div>
+            <div class="factor-line-comp"><span>팀워크 역량</span><span class="factor-grade-comp fg-mid">중</span></div>
+            <div class="factor-line-comp"><span>의사소통</span><span class="factor-grade-comp fg-high">상</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      크기: 36×20px · 모서리: 2px · Bold 11px<br>
+      없음: bg #E9E9EA / color #7D7D80 · 하: rgba(0,117,255,0.2) / #041D30<br>
+      중: rgba(0,117,255,0.6) / #fff · 상: #0075FF / #fff
+    </div>
+  </div>
+</div>
+
+<!-- 16. 메트릭 분석 상세 - NEW -->
+<div class="section" id="sec-metricDetail">
+  <div class="page-title">메트릭 분석 상세</div>
+  <div class="page-desc">각 메트릭(역량)의 점수, 해석 문장, 하위 factor 수준을 묶어서 표시. 운영 코드: .metric-item / .guide-score / .guide-body / .guide-factor-list.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">메트릭 분석 항목 (2개 예시)</div></div>
+    <div class="story-canvas">
+      <div class="metric-item-comp">
+        <div class="metric-item-head">
+          <h3>직무적합도</h3>
+          <span class="guide-score-pill back-C">61.00 <strong>C</strong></span>
+        </div>
+        <div class="guide-body-comp">
+          <h4 style="font-size:13px;font-weight:700;color:#041D30;margin-bottom:8px;">지원한 직무에 얼마나 적합한가?</h4>
+          <p>직무 경험과 지식이 실제 영업 상황의 수행 방식으로 연결되는 흐름은 충분히 확인되지 않았습니다.</p>
+          <div class="guide-factor-list-comp">
+            <div class="guide-factor-row-comp">
+              <span class="guide-factor-name">직무경험</span>
+              <div class="factor-bars-comp">
+                <i class="active-none">없음</i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div class="guide-factor-row-comp">
+              <span class="guide-factor-name">직무지식</span>
+              <div class="factor-bars-comp">
+                <i></i><i class="active-low">하</i><i></i><i></i>
+              </div>
+            </div>
+            <div class="guide-factor-row-comp">
+              <span class="guide-factor-name">주도성</span>
+              <div class="factor-bars-comp">
+                <i></i><i class="active-low">하</i><i></i><i></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="metric-item-comp">
+        <div class="metric-item-head">
+          <h3>성장잠재력</h3>
+          <span class="guide-score-pill back-D">59.00 <strong>D</strong></span>
+        </div>
+        <div class="guide-body-comp">
+          <h4 style="font-size:13px;font-weight:700;color:#041D30;margin-bottom:8px;">현재보다 더 발전적인 모습을 기대할 수 있는가?</h4>
+          <p>통제된 환경에서는 정해진 방식에 따라 움직이는 경향이 확인되었고, 자기주도적으로 탐색하는 흐름은 제한적이었습니다.</p>
+          <div class="guide-factor-list-comp">
+            <div class="guide-factor-row-comp">
+              <span class="guide-factor-name">회복탄력성</span>
+              <div class="factor-bars-comp">
+                <i class="active-none">없음</i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div class="guide-factor-row-comp">
+              <span class="guide-factor-name">도전/열정</span>
+              <div class="factor-bars-comp">
+                <i></i><i class="active-low">하</i><i></i><i></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      .metric-item: border 1px #E9E9EA · 모서리 8px · 패딩 16px<br>
+      guide-score-pill: 등급별 배경/텍스트색 적용 (back-B/C/D)<br>
+      factor-bars: 4칸 배열, 해당 레벨 칸만 강조 (없음/하/중/상)
+    </div>
+  </div>
+</div>
+
+<!-- 17. 근거문장 - NEW -->
+<div class="section" id="sec-evidence">
+  <div class="page-title">근거문장</div>
+  <div class="page-desc">AI가 각 Factor 평가의 근거로 사용한 답변 문장을 번호와 함께 표시. 운영 코드: .evidence-group / .evidence-factor / .evidence-sentence / .sentence-no.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">근거문장 그룹 예시</div></div>
+    <div class="story-canvas">
+      <div class="evidence-group-comp">
+        <div class="evidence-group-title-comp eg-title-C">
+          <strong>직무적합도</strong>
+          <span class="grade-badge grade-C" style="font-size:12px;height:22px;padding:0 8px;">C</span>
+        </div>
+        <div class="evidence-factor-comp">
+          <h4>직무경험 <span class="factor-grade-comp fg-none" style="margin-left:4px;">없음</span></h4>
+          <p class="empty-sentence-comp">근거 문장이 없습니다.</p>
+        </div>
+        <div class="evidence-factor-comp">
+          <h4>주도성 <span class="factor-grade-comp fg-low" style="margin-left:4px;">하</span></h4>
+          <div class="evidence-sentence-comp">
+            <span class="sentence-no-comp">2</span>
+            <p>본인이 생각하는 방식이 맞다고 많이 여겼던 상사가 있었던 적이 있었는데요.</p>
+          </div>
+          <div class="evidence-sentence-comp">
+            <span class="sentence-no-comp">3</span>
+            <p>음, 그 방식 말고 다른 방식을 제안했을 때 보고도 맞는 답이 베스트 써져 있었어요.</p>
+          </div>
+        </div>
+      </div>
+      <div class="evidence-group-comp">
+        <div class="evidence-group-title-comp eg-title-D">
+          <strong>성장잠재력</strong>
+          <span class="grade-badge grade-D" style="font-size:12px;height:22px;padding:0 8px;">D</span>
+        </div>
+        <div class="evidence-factor-comp">
+          <h4>도전/열정 <span class="factor-grade-comp fg-low" style="margin-left:4px;">하</span></h4>
+          <div class="evidence-sentence-comp">
+            <span class="sentence-no-comp">1</span>
+            <p>통제된 환경 안에서 많은 접근성 이미지를 테스트해보고 생각하고 진행해 보도록 하겠습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      그룹 제목: 등급별 배경색 · 모서리 6px 6px 0 0 · Bold 14px<br>
+      factor 섹션: border 1px #E9E9EA · 패딩 12px 14px<br>
+      sentence-no: 원형 20px, bg #0075FF, white 10px Bold<br>
+      빈 항목: "근거 문장이 없습니다." Regular 12px #A9A8AA
+    </div>
+  </div>
+</div>
+
+<!-- 18. 문항 상세 카드 - NEW -->
+<div class="section" id="sec-questionCard">
+  <div class="page-title">문항 상세 카드</div>
+  <div class="page-desc">각 면접 문항의 답변 내용, 요약, 불성실/부정행위 상태를 표시. 운영 코드: .question-detail-card / .question-summary / .question-answer.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">질문 유형 태그</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="qtype-badge qtype-basic">기본</span>
+          <span style="font-size:11px;color:#7D7D80;">qtype-basic</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <span class="qtype-badge qtype-tail">꼬리</span>
+          <span style="font-size:11px;color:#7D7D80;">qtype-tail</span>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">기본: bg #EBF4FF / color #0075FF · 꼬리: bg #F0F0F0 / color #696969 · 높이: 18px · 모서리: 3px</div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">문항 상세 카드 (꼬리질문 포함)</div></div>
+    <div class="story-canvas">
+      <div class="question-card-comp">
+        <!-- 문항 헤더 -->
+        <div class="question-head-comp">
+          <div class="q-num">문항 02</div>
+          <div class="q-text">업무에 대한 통제가 심한 환경에서 일해야 한다면, 어떻게 적응하고 동기 부여를 유지할 것인지 말해주세요.</div>
+          <div class="q-type-tag">[역량검사 기반 질문]</div>
+        </div>
+        <!-- 요약 그리드 -->
+        <div class="question-summary-comp">
+          <div class="q-summary-col-comp">
+            <h5>기본 개요</h5>
+            <dl><dt>답변 시간</dt><dd>1분 7초</dd></dl>
+            <dl><dt>답변어절수</dt><dd>82어절</dd></dl>
+          </div>
+          <div class="q-summary-col-comp">
+            <h5>불성실 답변</h5>
+            <dl><dt>답변내용 부족</dt><dd><span class="pill pill-blue">없음</span></dd></dl>
+          </div>
+          <div class="q-summary-col-comp">
+            <h5>부정행위 의심</h5>
+            <dl><dt>컨닝 의심</dt><dd><span class="pill pill-red">주의</span></dd></dl>
+            <dl><dt>대리시험 의심</dt><dd><span class="pill pill-blue">안전</span></dd></dl>
+          </div>
+          <div class="q-summary-col-comp">
+            <h5>재답변 여부</h5>
+            <dl><dt>재답변 사용</dt><dd><span class="pill pill-default">0회</span></dd></dl>
+          </div>
+          <div class="q-summary-col-comp">
+            <h5>응시 중 이탈</h5>
+            <dl><dt>이탈</dt><dd><span class="pill pill-default">0회</span></dd></dl>
+          </div>
+        </div>
+        <!-- 답변 본문 -->
+        <div class="question-body-comp">
+          <div style="margin-bottom:10px;">
+            <span class="qtype-badge qtype-basic">기본</span>
+            <span class="q-label-comp">2-01</span>
+            <span class="q-question-comp">업무에 대한 통제가 심한 환경에서 일해야 한다면, 어떻게 적응하고 동기 부여를 유지할 것인지 말해주세요.</span>
+          </div>
+          <div class="answer-body-comp">
+            <sup style="font-size:9px;color:#0075FF;">1</sup>
+            <b>음, 음에 대한 통제 파신환 환경에서는 음에 대한 내용들이 잘 생각하기 어려워서 좀 답답할 수 있을 것 같지만, 그 룰에 맞게 진행하는 것도 중요하기 때문에, 통제된 환경 안에서 많은 접근성 이미지를 테스트해보고 생각하고 진행해 보도록 하겠습니다.</b>
+          </div>
+          <div style="margin-bottom:10px;margin-top:12px;">
+            <span class="qtype-badge qtype-tail">꼬리</span>
+            <span class="q-label-comp">2-02</span>
+            <span class="q-question-comp">그런 환경에 적응할 수 있다고 하셨는데, 실제로 통제가 강한 방식이 답답했던 상황을 구체적으로 말씀해 주세요.</span>
+          </div>
+          <div class="answer-body-comp">
+            <sup style="font-size:9px;color:#0075FF;">2</sup>
+            <b>본인이 생각하는 방식이 맞다고 많이 여겼던 상사가 있었던 적이 있었는데요.</b>
+            <sup style="font-size:9px;color:#0075FF;">3</sup>
+            <b>음, 그 방식 말고 다른 방식을 제안했을 때 보고도 맞는 답이 베스트 써져 있었어요.</b>
+          </div>
+          <div class="answer-summary-comp">
+            <strong>답변 요약</strong>
+            저는 통제가 심한 환경에서도 정해진 기준에 맞춰 다양한 접근을 테스트하며 적응하겠고, 상사의 기준에 맞춰 제안을 조정하며 노력했습니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      .question-head-comp: 배경 #F8F9FA · 패딩 12px 16px<br>
+      .question-summary-comp: 5열 균등 분할 · 각 셀 패딩 10px 12px<br>
+      근거 번호(sup): Primary Blue · 근거 문장(b): 배경 rgba(0,117,255,0.08)<br>
+      답변 요약: 배경 #F8F9FA · 모서리 6px · 패딩 10px 14px
+    </div>
+  </div>
+</div>
+
+<!-- 19. 푸터 -->
+<div class="section" id="sec-footer">
+  <div class="page-title">푸터 (제품별)</div>
+  <div class="page-desc">모든 결과지 각 페이지 하단 공통. 구조 동일, 좌측 제품 로고 이미지만 다름.</div>
+
+  <!-- 로고 이미지 안내 -->
+  <div class="warn-box">
+    <b>로고 이미지 파일 준비 필요</b><br>
+    아래 푸터의 제품 로고는 <code>assets/</code> 폴더에 이미지 파일을 저장해야 표시됩니다.<br>
+    Figma 파일(BP-4.2) → 해당 노드 선택 → 우측 패널 하단 [Export] → SVG 또는 PNG(2x) 내보내기 → <code>assets/</code> 폴더에 저장<br><br>
+    - <b>Ai monster 로고</b>: Figma node <code>91:60319</code> → 파일명 <code>logo-aimonster.png</code> (원본 크기: 69×10px)<br>
+    - <b>PRISM 로고</b>: Figma node <code>91:60369</code> → 파일명 <code>logo-prism.png</code> (원본 크기: 59×16px)
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">제품별 푸터</div><div class="story-desc">상단 테두리: 1px solid #7D7D80 · 높이: 34px · 로고는 img 태그로 구현</div></div>
+    <div class="story-canvas" style="display:flex;flex-direction:column;gap:12px;">
+
+      <!-- 몬스터 면접평가 -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-bottom:4px;">몬스터 (AI 면접평가)</div>
+        <div style="border:1px solid #E3E3E3;border-radius:4px;overflow:hidden;">
+          <div class="result-footer-comp">
+            <div class="footer-left">
+              <!-- Ai monster 로고: assets/logo-aimonster.png -->
+              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+                   alt="Ai monster">
+              <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
+              <span>면접평가</span>
+            </div>
+            <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+            <div class="footer-page">1/6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 역량검사 -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-top:8px;margin-bottom:4px;">역량검사</div>
+        <div style="border:1px solid #E3E3E3;border-radius:4px;overflow:hidden;">
+          <div class="result-footer-comp">
+            <div class="footer-left">
+              <!-- Ai monster 로고 (역량검사도 동일 로고 사용) -->
+              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+                   alt="Ai monster">
+              <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
+              <span>역량검사</span>
+            </div>
+            <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+            <div class="footer-page">1/6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 교차진단 -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-top:8px;margin-bottom:4px;">교차진단</div>
+        <div style="border:1px solid #E3E3E3;border-radius:4px;overflow:hidden;">
+          <div class="result-footer-comp">
+            <div class="footer-left">
+              <!-- PRISM 로고 -->
+              <img class="footer-logo-img prism" src="assets/logo-prism.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+                   alt="PRISM">
+              <span class="footer-logo-missing" style="display:none;">logo-prism.png</span>
+              <span style="font-size:10px;color:#A9A8AA;">×</span>
+              <!-- Ai monster 로고 -->
+              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+                   alt="Ai monster">
+              <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
+              <span>교차진단</span>
+            </div>
+            <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+            <div class="footer-page">1/3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 프리즘 BP -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-top:8px;margin-bottom:4px;">프리즘 BP</div>
+        <div style="border:1px solid #E3E3E3;border-radius:4px;overflow:hidden;">
+          <div class="result-footer-comp">
+            <div class="footer-left">
+              <!-- PRISM 로고 -->
+              <img class="footer-logo-img prism" src="assets/logo-prism.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+                   alt="PRISM">
+              <span class="footer-logo-missing" style="display:none;">logo-prism.png</span>
+              <span>서류평가</span>
+            </div>
+            <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+            <div class="footer-page">1/5</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="story-spec">
+      상단 테두리: 1px solid #7D7D80 · 높이: 34px · 패딩: 0 24px<br>
+      로고 img: height 10px (Ai monster) / 16px (PRISM) · width auto<br>
+      제품명 텍스트: SemiBold 12px #041D30 · gap 6px · letter-spacing -0.24px<br>
+      저작권: SemiBold 7px #6E777C · 페이지번호: SemiBold 12px #041D30<br>
+      onerror 폴백: 이미지 없을 시 파일명 회색 라벨로 대체 표시
+    </div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">로고 이미지 파일 정의</div></div>
+    <div class="story-canvas">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead><tr style="background:#F8F9FA;border-bottom:2px solid #E3E3E3;">
+          <th style="padding:10px 16px;text-align:left;">제품</th>
+          <th style="padding:10px 16px;text-align:left;">로고 파일</th>
+          <th style="padding:10px 16px;text-align:left;">Figma 노드</th>
+          <th style="padding:10px 16px;text-align:left;">원본 크기</th>
+          <th style="padding:10px 16px;text-align:left;">HTML 표시 크기</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #E3E3E3;">
+            <td style="padding:10px 16px;">몬스터·역량검사</td>
+            <td style="padding:10px 16px;font-family:monospace;color:#0075FF;">assets/logo-aimonster.png</td>
+            <td style="padding:10px 16px;font-family:monospace;font-size:12px;">91:60319</td>
+            <td style="padding:10px 16px;font-size:12px;color:#7D7D80;">69×10px</td>
+            <td style="padding:10px 16px;font-size:12px;color:#7D7D80;">height: 10px, width: auto</td>
+          </tr>
+          <tr style="border-bottom:1px solid #E3E3E3;">
+            <td style="padding:10px 16px;">교차진단·프리즘 BP</td>
+            <td style="padding:10px 16px;font-family:monospace;color:#0075FF;">assets/logo-prism.png</td>
+            <td style="padding:10px 16px;font-family:monospace;font-size:12px;">91:60369</td>
+            <td style="padding:10px 16px;font-size:12px;color:#7D7D80;">59×16px</td>
+            <td style="padding:10px 16px;font-size:12px;color:#7D7D80;">height: 16px, width: auto</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="story-spec">
+      파일 포맷: PNG 2x 권장 (SVG 가능) · 저장 위치: HTML 파일과 같은 폴더의 assets/ 하위<br>
+      Figma 내보내기: 노드 선택 → 우측 패널 [Export] → PNG 2x 또는 SVG → 저장
+    </div>
+  </div>
+</div>
+
+<!-- 20. 결과지 맨뒤 안내사항 -->
+<div class="section" id="sec-lastPageNotice">
+  <div class="page-title">결과지 맨뒤 안내사항</div>
+  <div class="page-desc">모든 결과지 마지막 페이지 하단 공통 삽입. AI 분석 고지 + 개인정보 처리 고지 2항목.</div>
+
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">안내사항 카드</div><div class="story-desc">Figma node 15:55 기준 / 운영 코드: .report-info</div></div>
+    <div class="story-canvas" style="background:#9E9E9E;padding:40px;border-radius:8px;">
+      <div style="background:#fff;border-radius:8px;padding:24px 28px;display:flex;flex-direction:column;gap:16px;max-width:942px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:20px;height:20px;border-radius:50%;border:1.5px solid #7D7D80;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <span style="font-size:11px;color:#7D7D80;font-weight:700;">i</span>
+          </div>
+          <p style="font-size:13px;color:#041D30;line-height:1.7;">
+            본 리포트는 AI 기술을 활용하여 답변 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다.
+            본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다.
+            AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.
+          </p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:20px;height:20px;border-radius:50%;border:1.5px solid #7D7D80;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <span style="font-size:11px;color:#7D7D80;font-weight:700;">i</span>
+          </div>
+          <p style="font-size:13px;color:#041D30;line-height:1.7;">
+            본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며,
+            채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      위치: 마지막 페이지 하단 · 카드 배경: #FFFFFF · 모서리: 8px · 패딩: 24px 28px<br>
+      항목 간격: 16px · 아이콘: 원형 20px 테두리 ⓘ · 텍스트: Regular 13px #041D30 · 행간: 1.7<br>
+      운영 코드: .report-info / .report-info-item / .help-icon + .report-info-text
+    </div>
+  </div>
+</div>
+
+<!-- 21. 제품별 색상 테마 -->
+<div class="section" id="sec-products">
+  <div class="page-title">제품별 색상 테마</div>
+  <div class="page-desc">지원자 카드 영역 배경색이 제품별로 달라집니다. 나머지 컴포넌트는 공통.</div>
+
+  <div class="warn-box" style="margin-bottom:0;">
+    ⚠️ 역량검사 테마 색상은 외부 CSS 파일(print-monster-metric4.css)에 정의되어 있어 현재 미확인 상태입니다.
+    Figma 스크린샷에서 짙은 네이비 계열로 보이나, 개발팀에 정확한 색상 코드 확인이 필요합니다.
+  </div>
+
+  <div class="story-block" style="margin-top:16px;">
+    <div class="story-header"><div class="story-name">제품별 주색상 칩</div></div>
+    <div class="story-canvas">
+      <div class="product-chip">
+        <div class="product-color-dot" style="background:#9330FF;"></div>
+        <div><div class="product-name">몬스터 (AI 면접평가)</div><div class="product-code">#9330FF · 보라</div></div>
+      </div>
+      <div class="product-chip">
+        <div class="product-color-dot" style="background:#08174A;"></div>
+        <div>
+          <div class="product-name">역량검사 4.0</div>
+          <div class="product-code">#08174A · 다크 네이비 (Figma 추정, 개발팀 확인 필요)</div>
+        </div>
+      </div>
+      <div class="product-chip">
+        <div class="product-color-dot" style="background:#0075FF;"></div>
+        <div><div class="product-name">교차진단</div><div class="product-code">#0075FF · 파랑</div></div>
+      </div>
+      <div class="product-chip">
+        <div class="product-color-dot" style="background:#0F71E3;"></div>
+        <div><div class="product-name">프리즘 BP</div><div class="product-code">#0F71E3 · 진한 파랑</div></div>
+      </div>
+    </div>
+    <div class="story-spec">
+      PASS/FAIL 빨강(#FF3B30)은 역량검사 테마색이 아닌 상태 표시색입니다. 혼동 주의.
+    </div>
+  </div>
+</div>
+
+<!-- 22. 페이지 레이아웃 -->
+<div class="section" id="sec-pageLayout">
+  <div class="page-title">페이지 레이아웃</div>
+  <div class="page-desc">결과지 페이지 전체 구조. 헤더 - 지원자 카드(1페이지만) - 콘텐츠 - 푸터.<br>헤더·푸터는 모든 페이지 고정 노출. 지원자 카드는 첫 페이지에만 노출.</div>
+
+  <!-- 구조 범례 -->
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">레이아웃 구조 규칙</div></div>
+    <div class="story-canvas">
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#EBF4FF;border-radius:6px;border:1px solid #B3D4FF;">
+            <span class="layout-label-fixed">모든 페이지</span>
+            <span style="font-size:13px;font-weight:700;color:#041D30;">헤더 (문서 헤더)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#FFF9EE;border-radius:6px;border:1px solid #FFD580;">
+            <span class="layout-label-once">1페이지만</span>
+            <span style="font-size:13px;font-weight:700;color:#041D30;">지원자 카드</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#F8F9FA;border-radius:6px;border:1px solid #E3E3E3;">
+            <span style="font-size:9px;color:#7D7D80;font-weight:700;background:#E9E9EA;padding:1px 5px;border-radius:3px;white-space:nowrap;">가변</span>
+            <span style="font-size:13px;font-weight:700;color:#041D30;">콘텐츠 (본문 영역)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#EBF4FF;border-radius:6px;border:1px solid #B3D4FF;">
+            <span class="layout-label-fixed">모든 페이지</span>
+            <span style="font-size:13px;font-weight:700;color:#041D30;">푸터</span>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#041D30;line-height:1.8;padding-top:4px;">
+          <b>헤더</b> - 문서 제목 + 지원자명 + 문서번호 표시<br>
+          <b>지원자 카드</b> - 이름·직무·응시일 등 신상정보 블록<br>
+          <b>콘텐츠</b> - 평가 내용 (페이지별 다름)<br>
+          <b>푸터</b> - 제품명 + 저작권 + 페이지 번호
+        </div>
+      </div>
+    </div>
+    <div class="story-spec">
+      페이지: 990×1399px · 좌우 여백: 24px · 섹션 간격: 20px<br>
+      헤더/푸터: 모든 페이지 고정 · 지원자 카드: 1페이지만 노출
+    </div>
+  </div>
+
+  <!-- 페이지별 비교 -->
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">1페이지 vs 2페이지+ 비교</div><div class="story-desc">지원자 카드 노출 여부 차이 확인</div></div>
+    <div class="story-canvas" style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- 1페이지 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="layout-page-badge">1페이지</div>
+        <div class="page-layout-preview" style="border-color:#0075FF;">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span>
+            <span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-candidate" style="background:linear-gradient(135deg,#6B1FCC,#9330FF);color:#fff;">
+            <span>지원자 카드</span>
+            <span class="layout-label-once" style="color:#FFD580;background:rgba(255,255,255,0.15);">1P만</span>
+          </div>
+          <div class="layout-body">콘텐츠 영역<br><span style="font-size:10px;">(종합평가·메트릭 등)</span></div>
+          <div class="layout-footer-prev">
+            <span>muhayu 면접평가</span>
+            <span class="layout-label-fixed">고정</span>
+            <span>1/6</span>
+          </div>
+        </div>
+        <span style="font-size:11px;color:#041D30;font-weight:700;">헤더 + 지원자 카드 + 콘텐츠 + 푸터</span>
+      </div>
+
+      <!-- 화살표 -->
+      <div style="display:flex;align-items:center;padding-top:90px;font-size:20px;color:#A9A8AA;">→</div>
+
+      <!-- 2페이지+ -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="layout-page-badge">2페이지+</div>
+        <div class="page-layout-preview" style="border-color:#E3E3E3;">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span>
+            <span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-body" style="height:216px;">콘텐츠 영역<br><span style="font-size:10px;">(근거문장·문항 상세 등)</span><br><br><span style="font-size:10px;color:#F09000;">지원자 카드 없음</span></div>
+          <div class="layout-footer-prev">
+            <span>muhayu 면접평가</span>
+            <span class="layout-label-fixed">고정</span>
+            <span>2/6</span>
+          </div>
+        </div>
+        <span style="font-size:11px;color:#041D30;font-weight:700;">헤더 + 콘텐츠 + 푸터</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 제품별 레이아웃 -->
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">제품별 1페이지 레이아웃</div></div>
+    <div class="story-canvas" style="display:flex;gap:20px;flex-wrap:wrap;">
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="page-layout-preview">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span><span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-candidate" style="background:linear-gradient(135deg,#6B1FCC,#9330FF);color:#fff;">
+            지원자 카드 <span class="layout-label-once" style="color:#FFD580;background:rgba(255,255,255,0.15);">1P만</span>
+          </div>
+          <div class="layout-body">종합평가 패널<br>메트릭 스트립<br>레이더 차트</div>
+          <div class="layout-footer-prev"><span>muhayu 면접평가</span><span class="layout-label-fixed">고정</span><span>1/6</span></div>
+        </div>
+        <span style="font-size:12px;color:#7D7D80;">몬스터</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="page-layout-preview">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span><span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-candidate" style="background:#08174A;color:#fff;">
+            지원자 카드 <span class="layout-label-once" style="color:#FFD580;background:rgba(255,255,255,0.15);">1P만</span>
+          </div>
+          <div class="layout-body">PASS/FAIL 판정<br>메트릭 상세<br>근거문장</div>
+          <div class="layout-footer-prev"><span>Ai monster 역량검사</span><span class="layout-label-fixed">고정</span><span>1/6</span></div>
+        </div>
+        <span style="font-size:12px;color:#7D7D80;">역량검사</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="page-layout-preview">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span><span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-candidate" style="background:linear-gradient(135deg,#004FCC,#0075FF);color:#fff;">
+            지원자 카드 <span class="layout-label-once" style="color:#FFD580;background:rgba(255,255,255,0.15);">1P만</span>
+          </div>
+          <div class="layout-body">상/중/하 배지<br>역량 테이블</div>
+          <div class="layout-footer-prev"><span>PRISM × monster</span><span class="layout-label-fixed">고정</span><span>1/5</span></div>
+        </div>
+        <span style="font-size:12px;color:#7D7D80;">교차진단</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="page-layout-preview">
+          <div class="layout-header" style="background:#041D30;">
+            <span>문서 헤더</span><span class="layout-label-fixed">고정</span>
+          </div>
+          <div class="layout-candidate" style="background:linear-gradient(135deg,#0A47A0,#0F71E3);color:#fff;">
+            지원자 카드 <span class="layout-label-once" style="color:#FFD580;background:rgba(255,255,255,0.15);">1P만</span>
+          </div>
+          <div class="layout-body">레이더 차트<br>점수 테이블<br>근거문장</div>
+          <div class="layout-footer-prev"><span>PRISM 서류평가</span><span class="layout-label-fixed">고정</span><span>1/1</span></div>
+        </div>
+        <span style="font-size:12px;color:#7D7D80;">프리즘 BP</span>
+      </div>
+
+    </div>
+    <div class="story-spec">
+      파란 태그(고정): 헤더·푸터 - 모든 페이지 동일하게 반복 출력<br>
+      주황 태그(1P만): 지원자 카드 - 첫 페이지에만 노출, 이후 페이지 제외<br>
+      콘텐츠 영역: 페이지마다 내용 다름 (평가 섹션별로 분할)
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('active');
+  const clicked = document.querySelector(`[onclick="show('${id}')"]`);
+  if (clicked) clicked.classList.add('active');
+  document.getElementById('main').scrollTop = 0;
+}
+</script>
+</body>
+</html>
