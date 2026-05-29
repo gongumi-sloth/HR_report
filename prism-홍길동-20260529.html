@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM BP - 홍길동 - 20260529</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+/* ── Reset ── */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px 0 48px;}
+@page{size:A4;}
+
+/* ── Nav (목업 전용 UI) ── */
+.nav{display:flex;gap:12px;align-items:center;margin-bottom:16px;background:#fff;padding:10px 24px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.12);width:990px;}
+.nav-btn{background:#0A47A0;color:#fff;border:none;padding:7px 20px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;}
+.nav-btn:disabled{background:#94a3b8;cursor:not-allowed;}
+.page-ind{font-size:13px;color:#64748b;flex:1;text-align:center;font-weight:500;}
+
+/* ── Page ── */
+.page{width:990px;min-height:1399px;background:#fff;display:none;flex-direction:column;box-shadow:0 4px 24px rgba(0,0,0,.18);}
+.page.active{display:flex;}
+
+/* ── Doc Header ── */
+.doc-header{display:flex;justify-content:space-between;align-items:center;padding:0 24px;height:27px;border-bottom:1px solid #939395;flex-shrink:0;}
+.dh-title{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
+.dh-info{display:flex;align-items:center;gap:8px;}
+.dh-name{font-size:12px;font-weight:600;color:#041D30;}
+.dh-div{display:inline-block;width:1px;height:11px;background:#939395;}
+.dh-num{font-size:12px;font-weight:300;color:#041D30;}
+
+/* ══════════════════════════════════════
+   HEADER (지원자 카드)
+   Figma: 121:1030, h=226, full-width #495e76
+══════════════════════════════════════ */
+.app-card{background:#495e76;padding:24px;flex-shrink:0;border-radius:8px 8px 0 0;overflow:hidden;}
+.ac-topbar{display:flex;justify-content:space-between;align-items:center;height:26px;margin-bottom:24px;}
+.ac-announce{font-size:24px;font-weight:700;color:#fff;letter-spacing:0.036px;line-height:1;}
+.ac-product{font-size:12px;font-weight:600;color:#fff;letter-spacing:-0.24px;white-space:nowrap;font-family:'Noto Sans',sans-serif;}
+.ac-body{background:#C6C6C6;display:flex;gap:1px;overflow:hidden;}
+.ac-left{background:#fff;flex:1;height:128px;padding:20px 24px;display:flex;justify-content:space-between;align-items:stretch;}
+.ac-main-info{display:flex;flex-direction:column;justify-content:space-between;height:100%;}
+.ac-job{font-size:18px;font-weight:700;color:#041D30;line-height:2;}
+.ac-name{font-size:32px;font-weight:700;color:#041D30;line-height:1.25;letter-spacing:0.048px;}
+.ac-id{font-size:16px;font-weight:400;color:#041D30;letter-spacing:-0.16px;line-height:1.5;}
+.ac-date-col{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;}
+.ac-date{font-size:12px;font-weight:700;color:#041D30;line-height:1.6;}
+.ac-right{background:#fff;width:420px;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ac-score-block{display:flex;flex-direction:column;}
+.ac-score-label{font-size:18px;font-weight:700;color:#041D30;line-height:2;}
+.ac-score-value{font-size:48px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1.2;letter-spacing:0.048px;}
+.ac-badges{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.badge-outline{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;border:1px solid #0075FF;border-radius:17px;font-size:14px;font-weight:700;color:#0075FF;white-space:nowrap;}
+.badge-filled{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;border:1px solid #0075FF;background:#e0f3ff;border-radius:17px;font-size:14px;font-weight:700;color:#0075FF;white-space:nowrap;}
+
+/* ══════════════════════════════════════
+   인재유형 섹션
+   Figma: 121:1060, y=226, h=328, full-width #e3e3e3
+══════════════════════════════════════ */
+.intai-section{background:#e3e3e3;padding:24px;flex-shrink:0;border-radius:0 0 8px 8px;}
+.intai-card{background:#fff;border-radius:8px;padding:20px 24px;display:flex;flex-direction:column;gap:16px;}
+.intai-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;}
+.intai-comment{font-size:18px;font-weight:700;color:#041D30;line-height:2;flex:1;}
+.intai-bullets{list-style:disc;padding-left:20px;width:368px;flex-shrink:0;}
+.intai-bullets li{font-size:14px;color:#041D30;line-height:1.6;}
+.intai-divider{height:1px;background:#E3E3E3;margin:4px -24px 0;}
+.intai-bar-section{display:flex;flex-direction:column;gap:12px;}
+.intai-bar-title{font-size:16px;font-weight:700;color:#041D30;letter-spacing:0.024px;}
+.intai-bar-top{display:flex;align-items:center;justify-content:space-between;}
+.intai-score-indicator{display:flex;align-items:center;gap:12px;}
+.intai-score-marker{width:4px;height:24px;background:#9ad0f5;border-right:2px solid #0075FF;flex-shrink:0;}
+.intai-score-num{font-size:32px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1.4;}
+.intai-bar-legend{display:flex;gap:16px;align-items:center;}
+.intai-legend-item{display:flex;gap:8px;align-items:center;}
+.intai-legend-bar-red{width:4px;height:14px;background:#FF006B;border-radius:2px;flex-shrink:0;}
+.intai-legend-dot-avg{width:12px;height:12px;background:#7C52F1;border-radius:50%;flex-shrink:0;}
+.intai-legend-dot-top{width:12px;height:12px;background:#041D30;border-radius:50%;flex-shrink:0;}
+.intai-legend-text{font-size:14px;color:#7D7D80;}
+.intai-legend-label{font-weight:700;}
+.intai-bar-track{position:relative;height:32px;width:100%;}
+.intai-track-bg{position:absolute;left:0;right:0;top:9px;height:14px;background:#e9e9ea;border-radius:4px;}
+.intai-track-fill{position:absolute;left:0;top:9px;height:14px;background:#9ad0f5;border-right:2px solid #0075FF;border-radius:4px 0 0 4px;}
+.intai-cut-line{position:absolute;top:0;width:2px;height:32px;background:#FF006B;}
+.intai-avg-dot{position:absolute;top:9px;width:12px;height:12px;background:#7C52F1;border-radius:50%;transform:translateX(-50%);}
+.intai-top10-dot{position:absolute;top:9px;width:12px;height:12px;background:#041D30;border-radius:50%;transform:translateX(-50%);}
+
+/* ══════════════════════════════════════
+   콘텐츠 영역
+   Figma: 121:1097 contents_wrapp, y=554, h=811
+══════════════════════════════════════ */
+.content{flex:1;padding:24px;display:flex;flex-direction:column;gap:32px;}
+
+/* 2-col top: left box + right box */
+.content-cols{display:flex;gap:12px;align-items:flex-start;}
+
+/* ─ Left bordered box (w=600) ─ */
+.left-box{width:600px;flex-shrink:0;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;}
+/* 직무적합도 section */
+.jmu-section{padding:20px 24px 0;flex-shrink:0;}
+.jmu-title-row{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+.jmu-title{font-size:16px;font-weight:700;color:#041D30;}
+.jmu-score-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.jmu-score-marker{width:4px;height:22px;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;flex-shrink:0;}
+.jmu-score-val{font-size:28px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1;}
+.jmu-diff{font-size:12px;font-weight:500;color:#7D7D80;margin-left:auto;}
+.diff-pos-blue{color:#0075FF;font-weight:700;}
+.diff-neg-orange{color:#d75d00;font-weight:700;}
+/* Score bar */
+.sbar-track{position:relative;height:14px;background:#E9E9EA;border-radius:4px;}
+.sbar-fill{height:100%;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;border-radius:4px 0 0 4px;}
+.sbar-avg-dot{position:absolute;top:50%;width:12px;height:12px;background:#7C52F1;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
+.sbar-top10-dot{position:absolute;top:50%;width:12px;height:12px;background:#041D30;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
+.sbar-legend{display:flex;gap:12px;font-size:11px;color:#7D7D80;margin-top:5px;}
+.sleg{display:flex;align-items:center;gap:4px;}
+.sleg-dot{width:8px;height:8px;border-radius:50%;}
+/* Hard skills */
+.hs-wrap{border-top:1px solid #E9E9EA;margin:12px 0 0;padding:12px 24px 16px;}
+.hs-row{margin-bottom:8px;}
+.hs-label{font-size:11px;font-weight:600;margin-bottom:5px;}
+.hs-lbl-confirm{color:#0075FF;}
+.hs-lbl-miss{color:#7D7D80;}
+.hs-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.hs-chip-ok{padding:4px 10px;border-radius:13px;font-size:12px;background:rgba(0,117,255,.1);color:#0075FF;}
+.hs-chip-gray{padding:4px 10px;border-radius:13px;font-size:12px;background:#E9E9EA;color:#7D7D80;}
+.hs-chip-miss{padding:4px 10px;border-radius:13px;font-size:12px;background:rgba(255,122,0,.1);color:#7D7D80;}
+/* 2-col row: 조직 + 지원동기 */
+.two-col-row{display:flex;border-top:1px solid #E3E3E3;min-height:160px;}
+.sub-box{flex:1;padding:16px 24px;}
+.sub-box+.sub-box{border-left:1px solid #E3E3E3;}
+.sub-title{font-size:14px;font-weight:700;color:#041D30;margin-bottom:12px;}
+.sub-score-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.sub-score-marker{width:4px;height:20px;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;flex-shrink:0;}
+.sub-score-val{font-size:22px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1;}
+.sub-diff{font-size:11px;font-weight:500;color:#7D7D80;margin-left:auto;}
+
+/* 직무적합도 하위 분석 — 스토리북 factor-bars-comp 기준 */
+.guide-factor-list{display:flex;flex-direction:column;gap:6px;padding-bottom:4px;}
+.guide-factor-row{display:flex;align-items:center;gap:8px;}
+.guide-factor-name{font-size:12px;color:#7D7D80;width:90px;flex-shrink:0;line-height:1.4;}
+.guide-factor-row.child-row .guide-factor-name{padding-left:12px;}
+.factor-bars-comp{display:flex;gap:3px;}
+.factor-bars-comp i{display:inline-flex;align-items:center;justify-content:center;width:36px;height:20px;border-radius:2px;font-size:10px;font-weight:700;font-style:normal;background:#E9E9EA;color:#A9A8AA;}
+.factor-bars-comp i.active-high{background:#0075FF;color:#fff;}
+.factor-bars-comp i.active-mid{background:rgba(0,117,255,.6);color:#fff;}
+.factor-bars-comp i.active-low{background:rgba(0,117,255,.2);color:#041D30;}
+.factor-bars-comp i.active-none{background:#E9E9EA;color:#7D7D80;}
+
+/* ─ Right bordered box (radar chart) ─ */
+.right-box{flex:1;border:1px solid #E3E3E3;border-radius:8px;display:flex;flex-direction:column;padding:20px 24px;}
+.radar-title{font-size:14px;font-weight:700;color:#041D30;margin-bottom:0;}
+.radar-chart-area{flex:1;display:flex;justify-content:center;align-items:center;}
+.radar-legend{display:flex;gap:20px;font-size:11px;color:#7D7D80;justify-content:center;margin-top:8px;}
+.rleg{display:flex;align-items:center;gap:5px;}
+.rleg-dot{width:10px;height:10px;border-radius:50%;}
+
+/* ── 응답 완성도 카드 (bottom row) ── */
+.resp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.resp-card{border:1px solid #E3E3E3;border-radius:8px;height:203px;display:flex;flex-direction:column;padding:20px 24px 0;overflow:hidden;}
+.resp-card.warn{border-color:#FF7A00;}
+.resp-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.resp-card-name{font-size:14px;font-weight:700;color:#041D30;}
+.resp-card-score{font-size:28px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1.2;margin-bottom:auto;}
+.resp-desc{font-size:12px;color:#041D30;border-top:1px solid #E3E3E3;padding-top:8px;margin-top:auto;line-height:1.5;padding-bottom:16px;}
+.warn-chip{background:rgba(215,93,0,.1);color:#d75d00;border:1px solid #d75d00;font-size:12px;font-weight:700;padding:2px 8px;border-radius:12px;}
+
+/* ── 마지막 페이지 저작권 정보 ── */
+.copyright-block{display:flex;gap:8px;padding:16px 24px 20px;align-items:flex-start;}
+.copyright-icon{font-size:13px;color:#7D7D80;flex-shrink:0;line-height:1.6;}
+.copyright-texts{display:flex;flex-direction:column;gap:4px;}
+.copyright-texts p{font-size:10px;color:#7D7D80;line-height:1.7;}
+
+/* ── Footer ── */
+.page-footer{display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-top:1px solid #7D7D80;height:34px;flex-shrink:0;}
+.footer-left{display:flex;align-items:center;gap:6px;}
+.footer-logo{height:16px;width:auto;}
+.footer-product{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
+.footer-copy{font-size:7px;font-weight:600;color:#6E777C;text-align:center;line-height:1.4;}
+.footer-page{font-size:12px;font-weight:600;color:#041D30;font-family:'Noto Sans',sans-serif;}
+</style>
+</head>
+<body>
+
+<!-- ── 목업 전용 네비게이션 (실제 인쇄·PDF 출력 시 표시되지 않음) ── -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ 이전</button>
+  <span class="page-ind" id="pageInd">1 / 1</span>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)" disabled>다음 ▶</button>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 1 — 종합결과 B
+     Figma: 121:1029, 990×1399px
+════════════════════════════════════════ -->
+<div class="page active" id="p1">
+
+  <!-- ── 페이지 헤더 (모든 페이지 공통) ── -->
+  <div class="doc-header">
+    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <div class="dh-info">
+      <span class="dh-name">홍길동</span>
+      <span class="dh-div"></span>
+      <span class="dh-num">MUHA0001</span>
+    </div>
+  </div>
+
+  <!-- ── 지원자 카드 (header, h=226) ── -->
+  <div class="app-card">
+    <div class="ac-topbar">
+      <span class="ac-announce">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+      <span class="ac-product">프리즘 서류평가</span>
+    </div>
+    <div class="ac-body">
+      <div class="ac-left">
+        <div class="ac-main-info">
+          <div class="ac-job">영업</div>
+          <div>
+            <div class="ac-name">홍길동</div>
+            <div class="ac-id">MUHA0001</div>
+          </div>
+        </div>
+        <div class="ac-date-col">
+          <span class="ac-date">평가일: 2026-07-15</span>
+        </div>
+      </div>
+      <div class="ac-right">
+        <div class="ac-score-block">
+          <div class="ac-score-label">종합 점수</div>
+          <div class="ac-score-value">59.51</div>
+        </div>
+        <div class="ac-badges">
+          <span class="badge-outline">영업직 상위 38%</span>
+          <span class="badge-filled">3배수 이내</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 인재유형 (h=328) ── -->
+  <div class="intai-section">
+    <div class="intai-card">
+      <!-- 코멘트 + 불릿 -->
+      <div class="intai-top">
+        <div class="intai-comment">현장 중심의 공학 경험은 유효하나,<br>조직 역량 근거 부족으로 추가 검증 필요합니다</div>
+        <ul class="intai-bullets">
+          <li>화학공학 전공 및 다양한 현장 경험이 강점</li>
+          <li>협업·갈등관리 관련 서술 전무</li>
+          <li>자기 서사의 구체성 및 직무 연관성 보완 필요</li>
+          <li>주도성·성취지향 근거 문장은 있으나 깊이가 얕음</li>
+        </ul>
+      </div>
+      <div class="intai-divider"></div>
+      <!-- 동일 직무 내 상대 위치 바 차트 -->
+      <div class="intai-bar-section">
+        <div class="intai-bar-title">지원자의 종합 점수 및 동일 직군 내 위치</div>
+        <div class="intai-bar-top">
+          <div class="intai-score-indicator">
+            <div class="intai-score-marker"></div>
+            <span class="intai-score-num">59.51</span>
+          </div>
+          <div class="intai-bar-legend">
+            <div class="intai-legend-item">
+              <div class="intai-legend-bar-red"></div>
+              <span class="intai-legend-text"><span class="intai-legend-label">3배수 컷 </span>61.5</span>
+            </div>
+            <div class="intai-legend-item">
+              <div class="intai-legend-dot-avg"></div>
+              <span class="intai-legend-text"><span class="intai-legend-label">평균 </span>57.2</span>
+            </div>
+            <div class="intai-legend-item">
+              <div class="intai-legend-dot-top"></div>
+              <span class="intai-legend-text"><span class="intai-legend-label">상위 10% </span>74.3</span>
+            </div>
+          </div>
+        </div>
+        <div class="intai-bar-track">
+          <div class="intai-track-bg"></div>
+          <div class="intai-track-fill" style="width:59.51%"></div>
+          <div class="intai-cut-line" style="left:61.5%"></div>
+          <div class="intai-avg-dot" style="left:57.2%"></div>
+          <div class="intai-top10-dot" style="left:74.3%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 콘텐츠 영역 (h=811) ── -->
+  <div class="content">
+
+    <!-- 상단: 좌측 점수 박스 + 우측 레이더 차트 -->
+    <div class="content-cols">
+
+      <!-- ▌좌측 박스 (w=600, border) ▌ -->
+      <div class="left-box">
+
+        <!-- 직무적합도 -->
+        <div class="jmu-section">
+          <div class="jmu-title-row">
+            <span class="jmu-title">직무적합도</span>
+          </div>
+          <div class="jmu-score-row">
+            <div class="jmu-score-marker"></div>
+            <span class="jmu-score-val">67.85</span>
+            <span class="jmu-diff">영업직 평균 대비 <span class="diff-pos-blue">+4.2p</span></span>
+          </div>
+          <div class="sbar-track" style="margin-bottom:3px;">
+            <!-- fill: 376/552 ≈ 68.1% → 67.85% by score -->
+            <div class="sbar-fill" style="width:67.85%"></div>
+            <!-- avg dot: 323/552 = 58.5%, label 57.2 -->
+            <div class="sbar-avg-dot" style="left:58.5%"></div>
+            <!-- top10 dot: 446/552 = 80.8%, label 74.3 -->
+            <div class="sbar-top10-dot" style="left:80.8%"></div>
+          </div>
+          <div class="sbar-legend" style="margin-bottom:12px;">
+            <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 57.2</div>
+            <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 74.3</div>
+          </div>
+
+          <!-- 하위 분석 요소 (스토리북 factor-bars-comp) -->
+          <div class="guide-factor-list">
+            <div class="guide-factor-row">
+              <span class="guide-factor-name">직무경험</span>
+              <div class="factor-bars-comp"><i></i><i></i><i></i><i class="active-high">상</i></div>
+            </div>
+            <div class="guide-factor-row">
+              <span class="guide-factor-name">직무동기</span>
+              <div class="factor-bars-comp"><i></i><i></i><i class="active-mid">중</i><i></i></div>
+            </div>
+            <div class="guide-factor-row">
+              <span class="guide-factor-name">직무지식</span>
+              <div class="factor-bars-comp"><i></i><i></i><i class="active-mid">중</i><i></i></div>
+            </div>
+            <div class="guide-factor-row">
+              <span class="guide-factor-name">직무역량</span>
+              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
+            </div>
+            <div class="guide-factor-row child-row">
+              <span class="guide-factor-name">주도성</span>
+              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
+            </div>
+            <div class="guide-factor-row child-row">
+              <span class="guide-factor-name">성취지향</span>
+              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
+            </div>
+            <div class="guide-factor-row child-row">
+              <span class="guide-factor-name">스트레스 관리 역량</span>
+              <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 하드스킬 확인 / 누락 -->
+        <div class="hs-wrap">
+          <div class="hs-row">
+            <div class="hs-label hs-lbl-confirm">확인된 하드스킬&ensp;</div>
+            <div class="hs-chips">
+              <span class="hs-chip-ok">B2B 영업 경험</span>
+              <span class="hs-chip-ok">기술 제안·설명 능력</span>
+              <span class="hs-chip-gray">고객관계관리(CRM)</span>
+              <span class="hs-chip-gray">수주·계약 협상</span>
+              <span class="hs-chip-gray">영업 실적 관리</span>
+            </div>
+          </div>
+          <div class="hs-row" style="margin-top:10px;">
+            <div class="hs-label hs-lbl-miss">미확인된 하드스킬&ensp;</div>
+            <div class="hs-chips">
+              <span class="hs-chip-miss">고객관계관리(CRM)</span>
+              <span class="hs-chip-miss">수주·계약 협상</span>
+              <span class="hs-chip-miss">영업 실적 관리</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 조직적합도 + 지원동기 2-col -->
+        <div class="two-col-row">
+          <!-- 조직적합도 -->
+          <div class="sub-box">
+            <div class="sub-title">조직적합도</div>
+            <div class="sub-score-row">
+              <div class="sub-score-marker"></div>
+              <span class="sub-score-val">47.65</span>
+              <span class="sub-diff">영업직 평균 대비 <span class="diff-neg-orange">−6.1p</span></span>
+            </div>
+            <div class="sbar-track" style="margin-bottom:3px;">
+              <!-- fill: 108/252 = 42.9%; using score 47.65% -->
+              <div class="sbar-fill" style="width:47.65%"></div>
+              <!-- avg: 126/252 = 50.0%, label 53.8 -->
+              <div class="sbar-avg-dot" style="left:50.0%"></div>
+              <!-- top10: 191/252 = 75.8%, label 71.2 -->
+              <div class="sbar-top10-dot" style="left:75.8%"></div>
+            </div>
+            <div class="sbar-legend">
+              <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 53.8</div>
+              <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 71.2</div>
+            </div>
+          </div>
+          <!-- 지원동기 -->
+          <div class="sub-box">
+            <div class="sub-title">지원동기</div>
+            <div class="sub-score-row">
+              <div class="sub-score-marker"></div>
+              <span class="sub-score-val">63.91</span>
+              <span class="sub-diff">영업직 상위 <span class="diff-pos-blue">+3.5p</span></span>
+            </div>
+            <div class="sbar-track" style="margin-bottom:3px;">
+              <div class="sbar-fill" style="width:63.91%"></div>
+              <div class="sbar-avg-dot" style="left:55.0%"></div>
+              <div class="sbar-top10-dot" style="left:76.0%"></div>
+            </div>
+            <div class="sbar-legend">
+              <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 60.4</div>
+              <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 76.0</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /left-box -->
+
+      <!-- ▌우측 박스 (flex:1, border) — 자기소개서 분석 프로파일 ▌ -->
+      <div class="right-box">
+        <div class="radar-title">자기소개서 분석 프로파일</div>
+        <div class="radar-chart-area">
+          <canvas id="radarChart" width="270" height="320"></canvas>
+        </div>
+        <div class="radar-legend">
+          <div class="rleg"><div class="rleg-dot" style="background:rgba(0,117,255,.8)"></div>지원자</div>
+          <div class="rleg"><div class="rleg-dot" style="background:#96A4B1"></div>평균</div>
+        </div>
+      </div>
+
+    </div><!-- /content-cols -->
+
+    <!-- 하단: 응답 완성도 3개 카드 -->
+    <div class="resp-row">
+
+      <!-- 답변적합도 -->
+      <div class="resp-card">
+        <div class="resp-card-header">
+          <span class="resp-card-name">답변적합도</span>
+        </div>
+        <div class="resp-card-score" style="margin-top:12px;">67.85</div>
+        <div class="resp-desc">질문의 의도를 잘 파악하여 대답함</div>
+      </div>
+
+      <!-- 구체성 -->
+      <div class="resp-card">
+        <div class="resp-card-header">
+          <span class="resp-card-name">구체성</span>
+        </div>
+        <div class="resp-card-score" style="margin-top:12px;">63.91</div>
+        <div class="resp-desc">경험을 단순 나열한 수준임</div>
+      </div>
+
+      <!-- 자기소개 (주의) -->
+      <div class="resp-card warn">
+        <div class="resp-card-header">
+          <span class="resp-card-name">자기소개</span>
+          <span class="warn-chip">주의</span>
+        </div>
+        <div class="resp-card-score" style="margin-top:12px;">33.10</div>
+        <div class="resp-desc">자기 서사 부재</div>
+      </div>
+
+    </div><!-- /resp-row -->
+
+  </div><!-- /content -->
+
+  <!-- ── 마지막 페이지 저작권 정보 [필수] ── -->
+  <div class="copyright-block">
+    <span class="copyright-icon">ℹ</span>
+    <div class="copyright-texts">
+      <p>본 리포트는 AI 기술을 활용하여 자기소개서 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다. 본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다. AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.</p>
+      <p>본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.</p>
+    </div>
+  </div>
+
+  <!-- ── 푸터 ── -->
+  <div class="page-footer">
+    <div class="footer-left">
+      <img class="footer-logo" src="https://gongumi-sloth.github.io/HR_report/assets/logo-prism.png" alt="PRISM"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'">
+      <span style="display:none;font-size:11px;color:#7D7D80;font-weight:600;">PRISM</span>
+      <span class="footer-product">서류평가</span>
+    </div>
+    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <span class="footer-page">1 / 1</span>
+  </div>
+
+</div><!-- /page -->
+
+
+<script>
+/* ── 목업 페이지 전환 (단일 페이지라 실질적으로 동작 없음) ── */
+const pages = document.querySelectorAll('.page');
+let cur = 0;
+function changePage(d) {
+  pages[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(pages.length - 1, cur + d));
+  pages[cur].classList.add('active');
+  document.getElementById('pageInd').textContent = (cur + 1) + ' / ' + pages.length;
+  document.getElementById('prevBtn').disabled = cur === 0;
+  document.getElementById('nextBtn').disabled = cur === pages.length - 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 자기소개서 분석 프로파일 레이더 차트 ── */
+// 직무적합도 67.85 / 조직적합도 47.65 / 지원동기 64.53 / 답변완성도 67.85 / 구체성 63.91 / 자기소개 33.10
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['직무적합도', '조직적합도', '지원동기', '답변완성도', '구체성', '자기소개'],
+    datasets: [
+      {
+        label: '지원자',
+        data: [67.85, 47.65, 64.53, 67.85, 63.91, 33.10],
+        backgroundColor: 'rgba(0,117,255,0.15)',
+        borderColor: '#0075FF',
+        pointBackgroundColor: '#0075FF',
+        pointRadius: 4,
+        borderWidth: 2,
+      },
+      {
+        label: '평균',
+        data: [57.2, 53.8, 60.4, 58.0, 55.0, 40.0],
+        backgroundColor: 'rgba(150,164,177,0.08)',
+        borderColor: '#96A4B1',
+        borderDash: [4, 4],
+        pointBackgroundColor: '#96A4B1',
+        pointRadius: 3,
+        borderWidth: 1.5,
+      }
+    ]
+  },
+  options: {
+    scales: {
+      r: {
+        min: 0,
+        max: 100,
+        ticks: { stepSize: 25, display: false },
+        grid: { color: '#E3E3E3' },
+        angleLines: { color: '#E3E3E3' },
+        pointLabels: {
+          font: { size: 11, family: "'Noto Sans KR', sans-serif" },
+          color: '#041D30',
+          callback: function(label, index) {
+            // score values from Figma
+            const scores = [67.85, 47.65, 64.53, 67.85, 63.91, 33.10];
+            return [label, scores[index].toString()];
+          }
+        }
+      }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+</script>
+</body>
+</html>

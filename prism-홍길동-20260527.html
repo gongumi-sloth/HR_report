@@ -136,6 +136,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 .hs-row{margin-bottom:6px;}
 .hs-label{font-size:11px;font-weight:600;margin-bottom:4px;}
 .hs-lbl-confirm{color:#0075FF;} .hs-lbl-miss{color:#7D7D80;}
+
+/* ── Sub Factors (하위 분석 요소) ── */
+.sf-section{margin-top:10px;padding-top:10px;border-top:1px solid #E9E9EA;}
+.sf-title{font-size:11px;font-weight:600;color:#7D7D80;margin-bottom:8px;}
+.sf-row{display:flex;align-items:center;gap:8px;padding:3px 0;}
+.sf-name{font-size:13px;font-weight:600;color:#041D30;flex:1;}
+.sf-child{padding-left:18px;}
+.sf-child .sf-name{font-size:12px;color:#7D7D80;font-weight:500;}
+.sf-tree{font-size:11px;color:#C6C6C6;line-height:1;margin-right:2px;flex-shrink:0;}
 .hs-chips{display:flex;flex-wrap:wrap;gap:5px;}
 .hs-chip-ok{padding:2px 9px;border-radius:11px;font-size:11px;background:#EBF4FF;color:#0075FF;border:1px solid #B3D4FF;}
 .hs-chip-miss{padding:2px 9px;border-radius:11px;font-size:11px;background:#E9E9EA;color:#7D7D80;border:1px solid #D0D0D0;}
@@ -428,6 +437,42 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
             <span class="hs-chip-miss">수주·계약 협상</span>
             <span class="hs-chip-miss">영업 실적 관리</span>
           </div>
+        </div>
+      </div>
+
+      <!-- 하위 분석 요소 -->
+      <div class="sf-section">
+        <div class="sf-title">하위 분석 요소</div>
+        <div class="sf-row">
+          <span class="sf-name">직무경험</span>
+          <span class="lvl lvl-h">상</span>
+        </div>
+        <div class="sf-row">
+          <span class="sf-name">직무동기</span>
+          <span class="lvl lvl-m">중</span>
+        </div>
+        <div class="sf-row">
+          <span class="sf-name">직무지식</span>
+          <span class="lvl lvl-m">중</span>
+        </div>
+        <div class="sf-row">
+          <span class="sf-name">직무역량</span>
+          <span class="lvl lvl-l">하</span>
+        </div>
+        <div class="sf-row sf-child">
+          <span class="sf-tree">└</span>
+          <span class="sf-name">주도성</span>
+          <span class="lvl lvl-l">하</span>
+        </div>
+        <div class="sf-row sf-child">
+          <span class="sf-tree">└</span>
+          <span class="sf-name">성취지향</span>
+          <span class="lvl lvl-l">하</span>
+        </div>
+        <div class="sf-row sf-child">
+          <span class="sf-tree">└</span>
+          <span class="sf-name">스트레스 관리 역량</span>
+          <span class="lvl lvl-none">-</span>
         </div>
       </div>
     </div>
