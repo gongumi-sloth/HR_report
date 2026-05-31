@@ -10,7 +10,12 @@ HTML 결과지 파일을 만들거나 수정하기 전에 아래 순서를 반�
 - https://gongumi-sloth.github.io/HR_report/ 를 실제로 fetch하여 컴포넌트·색상·폰트 확인
 - fetch 없이 기억이나 추정으로 작업 금지
 
-**STEP 2. 아래 항목 전체 확인 후 코드 작성 시작**
+**STEP 2. 더미 데이터 파일 확인**
+- 프로토타입/목업 작업 시 `bp_evaluation_data.json` 파일의 데이터 구조를 참조할 것
+- 점수(`scores`), 평가 항목(`evaluation`), 근거 문장(`evidence_sentences`), 자소서 문항(`essay_sections`) 등 JSON에 정의된 구조를 기준으로 콘텐츠를 채울 것
+- JSON에 없는 항목(배지 레이블, 비교 수치, 코멘트 문구 등)은 기존 값을 유지하거나 임의로 설정 가능
+
+**STEP 3. 아래 항목 전체 확인 후 코드 작성 시작**
 - [ ] 모든 페이지에 헤더 포함
 - [ ] 모든 페이지에 푸터 포함 (높이 34px, 로고+제품명+저작권+페이지번호)
 - [ ] 1페이지 헤더 아래 지원자 카드 포함 (border-radius: 8px)
