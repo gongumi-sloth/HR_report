@@ -1459,6 +1459,46 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
   <div class="page-title">페이지 레이아웃</div>
   <div class="page-desc">결과지 페이지 전체 구조. 헤더 - 지원자 카드(1페이지만) - 콘텐츠 - 푸터.<br>헤더·푸터는 모든 페이지 고정 노출. 지원자 카드는 첫 페이지에만 노출.</div>
 
+  <!-- 절대원칙 -->
+  <div style="background:#FFF5F5;border:2px solid #FF3B30;border-radius:8px;padding:20px 24px;margin-bottom:28px;">
+    <div style="font-size:15px;font-weight:700;color:#FF3B30;margin-bottom:14px;">⛔ 절대원칙 — 예외 없음</div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="background:#FF3B30;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;">원칙 1</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#041D30;margin-bottom:4px;">한 페이지는 반드시 A4 사이즈로 구현한다</div>
+          <div style="font-size:12px;color:#041D30;line-height:1.7;font-family:monospace;background:#FEF2F2;padding:8px 12px;border-radius:4px;">
+            .page { width: 990px; <b>height: 1399px;</b> <b>overflow: hidden;</b> page-break-after: always; }<br>
+            @page { size: A4; margin: 0; }<br>
+            * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          </div>
+          <div style="font-size:11px;color:#FF3B30;margin-top:4px;">min-height 사용 금지 · overflow:hidden 생략 불가</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="background:#FF3B30;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;">원칙 2</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#041D30;margin-bottom:4px;">모든 페이지에 헤더와 푸터가 들어간다. 노출 내용은 동일하다</div>
+          <div style="font-size:12px;color:#7D7D80;line-height:1.7;">예외 페이지 없음. 헤더 27px · 푸터 34px 고정 / flex-shrink: 0 필수<br>페이지마다 헤더·푸터 HTML을 직접 작성한다</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="background:#FF3B30;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;">원칙 3</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#041D30;margin-bottom:4px;">페이지브레이크를 적용하되, 콘텐츠가 중간에 잘려서는 안 된다</div>
+          <div style="font-size:12px;color:#7D7D80;line-height:1.7;">
+            콘텐츠 가용 높이 = 1399 - 헤더(27) - 푸터(34) = <b style="color:#041D30;">1338px</b><br>
+            카드·테이블·문항 블록은 페이지 안에서 잘리지 않게 배치 · flex-shrink: 0 적용
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- 구조 범례 -->
   <div class="story-block">
     <div class="story-header"><div class="story-name">레이아웃 구조 규칙</div></div>
