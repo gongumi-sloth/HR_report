@@ -65,6 +65,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
 .level-중 { background: rgba(0,117,255,0.6); }
 .level-하 { background: rgba(0,117,255,0.2); color: #041D30; }
 .level-없음 { background: #E9E9EA; color: #7D7D80; }
+/* 버튼형 배지 (Figma BP-4.2 · 높이 24px) */
+.level-btn { display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 4px; min-width: 24px; border-radius: 4px; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.level-btn-상 { background: #66ACFF; }
+.level-btn-중 { background: #E9E9EA; color: #041D30; }
+.level-btn-하 { background: #E9E9EA; color: #7D7D80; }
+.level-btn-없음 { background: #F5F5F5; color: #A9A8AA; }
 
 /* ── 상태 알약 (Pill) ── */
 .pill { display: inline-flex; align-items: center; justify-content: center; height: 22px; padding: 0 10px; border-radius: 11px; font-size: 12px; font-weight: 700; white-space: nowrap; }
@@ -448,6 +454,18 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
       </div>
     </div>
     <div class="story-spec">너비: 40px · 높이: 18px · 모서리: 2px · Bold 12px</div>
+  </div>
+  <div class="story-block">
+    <div class="story-header"><div class="story-name">버튼형 배지 (level-btn)</div><div class="story-desc">Figma BP-4.2 · 높이 24px · 모서리 4px · 좌우 padding 4px</div></div>
+    <div class="story-canvas">
+      <div class="badge-row">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-btn level-btn-상">상</span><span style="font-size:11px;color:#7D7D80;">#66ACFF · White</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-btn level-btn-중">중</span><span style="font-size:11px;color:#7D7D80;">#E9E9EA · #041D30</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-btn level-btn-하">하</span><span style="font-size:11px;color:#7D7D80;">#E9E9EA · #7D7D80</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><span class="level-btn level-btn-없음">-</span><span style="font-size:11px;color:#7D7D80;">#F5F5F5 · #A9A8AA</span></div>
+      </div>
+    </div>
+    <div class="story-spec">높이: 24px · 모서리: 4px · padding: 0 4px · Bold 12px · 없음은 "-" 텍스트</div>
   </div>
 </div>
 
@@ -1238,7 +1256,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
           <div class="result-footer-comp">
             <div class="footer-left">
               <!-- Ai monster 로고: assets/logo-aimonster.png -->
-              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+              <img class="footer-logo-img" src="logo/logo_monster.png"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
                    alt="Ai monster">
               <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
@@ -1257,7 +1275,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
           <div class="result-footer-comp">
             <div class="footer-left">
               <!-- Ai monster 로고 (역량검사도 동일 로고 사용) -->
-              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+              <img class="footer-logo-img" src="logo/logo_monster.png"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
                    alt="Ai monster">
               <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
@@ -1276,13 +1294,13 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
           <div class="result-footer-comp">
             <div class="footer-left">
               <!-- PRISM 로고 -->
-              <img class="footer-logo-img prism" src="assets/logo-prism.png"
+              <img class="footer-logo-img prism" src="logo/logo_prism.png"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
                    alt="PRISM">
               <span class="footer-logo-missing" style="display:none;">logo-prism.png</span>
               <span style="font-size:10px;color:#A9A8AA;">×</span>
               <!-- Ai monster 로고 -->
-              <img class="footer-logo-img" src="assets/logo-aimonster.png"
+              <img class="footer-logo-img" src="logo/logo_monster.png"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
                    alt="Ai monster">
               <span class="footer-logo-missing" style="display:none;">logo-aimonster.png</span>
@@ -1296,12 +1314,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #F6F9FB; color: #041
 
       <!-- 프리즘 BP -->
       <div>
-        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-top:8px;margin-bottom:4px;">프리즘 BP</div>
+        <div style="font-size:11px;font-weight:700;color:#7D7D80;margin-top:8px;margin-bottom:4px;">프리즘</div>
         <div style="border:1px solid #E3E3E3;border-radius:4px;overflow:hidden;">
           <div class="result-footer-comp">
             <div class="footer-left">
               <!-- PRISM 로고 -->
-              <img class="footer-logo-img prism" src="assets/logo-prism.png"
+              <img class="footer-logo-img prism" src="logo/logo_prism.png"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
                    alt="PRISM">
               <span class="footer-logo-missing" style="display:none;">logo-prism.png</span>

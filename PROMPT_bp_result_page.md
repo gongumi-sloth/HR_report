@@ -200,8 +200,9 @@ HTML 코드만 출력.
 3. H2 서브 타이틀: "조직적합도(역량분자) 47.65점"
 4. 역량 항목들 (리더십/협상력/갈등/팀워크/의사소통/대인관계) - 각각 배지 + 설명
 5. H2 섹션: "하드스킬 평가"
-6. 하드스킬 항목들 (B2B영업경험/기술제안설명능력 = 검출 pill, 나머지 = 미검출 pill)
-   - 각 항목: 역량명 + 검출/미검출 pill + 요약 + 자기소개서 내용 불릿
+6. 하드스킬 항목들 (4개 전체 검출 pill)
+   - Salesforce Certified Sales Cloud Consultant / 유통관리사 자격증 / PowerPoint / Excel
+   - 각 항목: 역량명 + 검출 pill + 요약 + 자기소개서 내용 불릿
 
 사용 컴포넌트: .level-badge, .pill-blue/.pill-default, .evidence-sentence-comp
 HTML 코드만 출력.

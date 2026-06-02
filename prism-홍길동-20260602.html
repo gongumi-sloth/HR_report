@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRISM BP - 홍길동 - 20260529</title>
+<title>PRISM BP - 홍길동 - 20260602</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <style>
@@ -31,8 +31,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 .dh-num{font-size:12px;font-weight:300;color:#041D30;}
 
 /* ══════════════════════════════════════
-   HEADER (지원자 카드)
-   Figma: 121:1030, h=226, full-width #495e76
+   지원자 카드 (프리즘 BP 전용)
 ══════════════════════════════════════ */
 .app-card{background:#495e76;padding:24px;flex-shrink:0;border-radius:8px 8px 0 0;overflow:hidden;}
 .ac-topbar{display:flex;justify-content:space-between;align-items:center;height:26px;margin-bottom:24px;}
@@ -56,7 +55,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 
 /* ══════════════════════════════════════
    인재유형 섹션
-   Figma: 121:1060, y=226, h=328, full-width #e3e3e3
 ══════════════════════════════════════ */
 .intai-section{background:#e3e3e3;padding:24px;flex-shrink:0;border-radius:0 0 8px 8px;}
 .intai-card{background:#fff;border-radius:8px;padding:20px 24px;display:flex;flex-direction:column;gap:16px;}
@@ -86,98 +84,95 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 .intai-top10-dot{position:absolute;top:9px;width:12px;height:12px;background:#041D30;border-radius:50%;transform:translateX(-50%);}
 
 /* ══════════════════════════════════════
-   콘텐츠 영역
-   Figma: 121:1097 contents_wrapp, y=554, h=811
+   콘텐츠 영역 - 새 레이아웃
 ══════════════════════════════════════ */
-.content{flex:1;padding:24px;display:flex;flex-direction:column;gap:32px;}
+.content{flex:1;padding:16px 24px 20px;display:flex;flex-direction:column;gap:12px;}
 
-/* 2-col top: left box + right box */
-.content-cols{display:flex;gap:12px;align-items:flex-start;}
+/* 공통 패널 */
+.eval-panel{border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;}
 
-/* ─ Left bordered box (w=600) ─ */
-.left-box{width:600px;flex-shrink:0;border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;}
-/* 직무적합도 section */
-.jmu-section{padding:20px 24px 0;flex-shrink:0;}
-.jmu-title-row{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
-.jmu-title{font-size:16px;font-weight:700;color:#041D30;}
-.jmu-score-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.jmu-score-marker{width:4px;height:22px;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;flex-shrink:0;}
-.jmu-score-val{font-size:28px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1;}
-.jmu-diff{font-size:12px;font-weight:500;color:#7D7D80;margin-left:auto;}
-.diff-pos-blue{color:#0075FF;font-weight:700;}
-.diff-neg-orange{color:#d75d00;font-weight:700;}
-/* Score bar */
-.sbar-track{position:relative;height:14px;background:#E9E9EA;border-radius:4px;}
+/* 패널 헤더 (제목 + 점수 + 바) */
+.eval-panel-head{padding:12px 14px 10px;}
+.eval-panel-title{font-size:14px;font-weight:700;color:#041D30;margin-bottom:8px;}
+.eval-score-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.eval-score-marker{width:4px;height:20px;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;flex-shrink:0;}
+.eval-score-val{font-size:22px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1;}
+.eval-diff{font-size:11px;font-weight:500;color:#7D7D80;margin-left:auto;}
+.diff-pos{color:#0075FF;font-weight:700;}
+.diff-neg{color:#d75d00;font-weight:700;}
+
+/* 스코어 바 */
+.sbar-track{position:relative;height:12px;background:#E9E9EA;border-radius:4px;}
 .sbar-fill{height:100%;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;border-radius:4px 0 0 4px;}
-.sbar-avg-dot{position:absolute;top:50%;width:12px;height:12px;background:#7C52F1;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
-.sbar-top10-dot{position:absolute;top:50%;width:12px;height:12px;background:#041D30;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
-.sbar-legend{display:flex;gap:12px;font-size:11px;color:#7D7D80;margin-top:5px;}
-.sleg{display:flex;align-items:center;gap:4px;}
-.sleg-dot{width:8px;height:8px;border-radius:50%;}
-/* Hard skills */
-.hs-wrap{border-top:1px solid #E9E9EA;margin:12px 0 0;padding:12px 24px 16px;}
-.hs-row{margin-bottom:8px;}
-.hs-label{font-size:11px;font-weight:600;margin-bottom:5px;}
-.hs-lbl-confirm{color:#0075FF;}
-.hs-lbl-miss{color:#7D7D80;}
-.hs-chips{display:flex;flex-wrap:wrap;gap:5px;}
-.hs-chip-ok{padding:4px 10px;border-radius:13px;font-size:12px;background:rgba(0,117,255,.1);color:#0075FF;}
-.hs-chip-gray{padding:4px 10px;border-radius:13px;font-size:12px;background:#E9E9EA;color:#7D7D80;}
-.hs-chip-miss{padding:4px 10px;border-radius:13px;font-size:12px;background:rgba(255,122,0,.1);color:#7D7D80;}
-/* 2-col row: 조직 + 지원동기 */
-.two-col-row{display:flex;border-top:1px solid #E3E3E3;}
-.sub-box{flex:1;padding:12px 16px;}
-.sub-box+.sub-box{border-left:1px solid #E3E3E3;}
-.sub-title{font-size:14px;font-weight:700;color:#041D30;margin-bottom:12px;}
-.sub-score-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.sub-score-marker{width:4px;height:20px;background:rgba(0,117,255,.3);border-right:2px solid #0075FF;flex-shrink:0;}
-.sub-score-val{font-size:22px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1;}
-.sub-diff{font-size:11px;font-weight:500;color:#7D7D80;margin-left:auto;}
+.sbar-avg-dot{position:absolute;top:50%;width:10px;height:10px;background:#7C52F1;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
+.sbar-top10-dot{position:absolute;top:50%;width:10px;height:10px;background:#041D30;border-radius:50%;transform:translate(-50%,-50%);z-index:2;}
+.sbar-legend{display:flex;gap:10px;font-size:10px;color:#7D7D80;margin-top:4px;margin-bottom:2px;}
+.sleg{display:flex;align-items:center;gap:3px;}
+.sleg-dot{width:7px;height:7px;border-radius:50%;}
 
-/* 직무적합도 하위 분석 — 스토리북 factor-bars-comp 기준 */
-.guide-factor-list{display:flex;flex-direction:column;gap:6px;padding-bottom:4px;}
-.guide-factor-row{display:flex;align-items:center;gap:8px;}
-.guide-factor-name{font-size:12px;color:#7D7D80;width:90px;flex-shrink:0;line-height:1.4;}
-.guide-factor-row.child-row .guide-factor-name{padding-left:12px;}
-.factor-bars-comp{display:flex;gap:3px;}
-.factor-bars-comp i{display:inline-flex;align-items:center;justify-content:center;width:36px;height:20px;border-radius:2px;font-size:10px;font-weight:700;font-style:normal;background:#E9E9EA;color:#A9A8AA;}
-.factor-bars-comp i.active-high{background:#0075FF;color:#fff;}
-.factor-bars-comp i.active-mid{background:rgba(0,117,255,.6);color:#fff;}
-.factor-bars-comp i.active-low{background:rgba(0,117,255,.2);color:#041D30;}
-.factor-bars-comp i.active-none{background:#E9E9EA;color:#7D7D80;}
-.sub-box .guide-factor-name{width:72px;}
-.sub-box .guide-factor-list{gap:4px;margin-top:8px;}
+/* 평가 요소 테이블 */
+.factor-table{width:100%;border-collapse:collapse;}
+.factor-table th{font-size:11px;font-weight:600;color:#7D7D80;background:rgba(0,117,255,0.06);padding:6px 14px;text-align:left;border-top:1px solid #041D30;border-bottom:1px solid #E3E3E3;}
+.factor-table th:last-child{text-align:center;width:56px;}
+.factor-table td{padding:6px 14px;border-bottom:1px solid #E3E3E3;height:32px;}
+.factor-table tr:last-child td{border-bottom:1px solid #041D30;}
+.factor-table .fn{font-size:12px;color:#041D30;}
+.factor-table .parent-row td{background:rgba(0,117,255,0.04);font-weight:700;}
+.factor-table .parent-row .fn{font-weight:700;}
+.factor-table .child-row .fn{padding-left:14px;color:#7D7D80;font-size:12px;}
+.factor-table .child-row td{height:28px;padding:4px 14px;}
+.factor-table .lv-cell{text-align:center;}
 
-/* ─ Right bordered box (radar chart) ─ */
-.right-box{flex:1;border:1px solid #E3E3E3;border-radius:8px;display:flex;flex-direction:column;padding:20px 24px;}
-.radar-title{font-size:14px;font-weight:700;color:#041D30;margin-bottom:0;}
-.radar-chart-area{flex:1;display:flex;justify-content:center;align-items:center;}
-.radar-legend{display:flex;gap:20px;font-size:11px;color:#7D7D80;justify-content:center;margin-top:8px;}
-.rleg{display:flex;align-items:center;gap:5px;}
-.rleg-dot{width:10px;height:10px;border-radius:50%;}
+/* 수준 배지 (테이블용) */
+.lv{display:inline-flex;align-items:center;justify-content:center;width:36px;height:18px;border-radius:2px;font-size:11px;font-weight:700;}
+.lv-상{background:#0075FF;color:#fff;}
+.lv-중{background:rgba(0,117,255,0.6);color:#fff;}
+.lv-하{background:rgba(0,117,255,0.2);color:#041D30;}
+.lv-없음{background:#E9E9EA;color:#7D7D80;}
 
-/* ── 응답 완성도 카드 (bottom row) ── */
-.resp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.resp-card{border:1px solid #E3E3E3;border-radius:8px;height:203px;display:flex;flex-direction:column;padding:20px 24px 0;overflow:hidden;}
-.resp-card.warn{border-color:#FF7A00;}
-.resp-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.resp-card-name{font-size:14px;font-weight:700;color:#041D30;}
-.resp-card-score{font-size:28px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1.2;margin-bottom:auto;}
-.resp-desc{font-size:12px;color:#041D30;border-top:1px solid #E3E3E3;padding-top:8px;margin-top:auto;line-height:1.5;padding-bottom:16px;}
-.warn-chip{background:rgba(215,93,0,.1);color:#d75d00;border:1px solid #d75d00;font-size:12px;font-weight:700;padding:2px 8px;border-radius:12px;}
+/* 상단 2-col (직무적합도 + 레이더) */
+.top-cols{display:flex;gap:12px;align-items:stretch;}
+.panel-jikmu{flex:1;}
+.panel-radar{width:274px;flex-shrink:0;}
+
+/* 하드스킬 */
+.hs-wrap{padding:8px 14px 10px;border-top:1px solid #E9E9EA;}
+.hs-label-confirm{font-size:11px;font-weight:700;color:#0075FF;margin-bottom:5px;}
+.hs-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.hs-chip-ok{padding:3px 9px;border-radius:11px;font-size:11px;background:rgba(0,117,255,.1);color:#0075FF;}
+
+/* 레이더 패널 */
+.radar-title{font-size:13px;font-weight:700;color:#041D30;}
+.radar-panel-head{padding:12px 14px 8px;}
+.radar-chart-area{display:flex;justify-content:center;align-items:center;flex:1;}
+.radar-legend{display:flex;gap:14px;font-size:11px;color:#7D7D80;justify-content:center;padding:8px 0 12px;}
+.rleg{display:flex;align-items:center;gap:4px;}
+.rleg-dot{width:9px;height:9px;border-radius:50%;}
+
+/* 중단 2-col (조직적합도 + 지원동기) */
+.mid-cols{display:flex;gap:12px;align-items:stretch;}
+.panel-jojik{flex:1;}
+.panel-donggi{width:274px;flex-shrink:0;}
+
+/* 하단 3-col 컴팩트 카드 */
+.bottom-cols{display:flex;gap:12px;}
+.compact-card{flex:1;border:1px solid #E3E3E3;border-radius:8px;padding:12px 14px;}
+.compact-card-name{font-size:13px;font-weight:700;color:#041D30;margin-bottom:4px;}
+.compact-card-score{font-size:22px;font-weight:700;color:#041D30;font-family:'Noto Sans',sans-serif;line-height:1.2;margin-bottom:4px;}
+.compact-card-desc{font-size:11px;color:#7D7D80;line-height:1.5;border-top:1px solid #E3E3E3;padding-top:6px;}
 
 /* ── Footer ── */
 .page-footer{display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-top:1px solid #7D7D80;height:34px;flex-shrink:0;}
-.footer-left{display:flex;align-items:center;gap:6px;}
-.footer-logo{height:16px;width:auto;}
-.footer-product{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
-.footer-copy{font-size:7px;font-weight:600;color:#6E777C;text-align:center;line-height:1.4;}
-.footer-page{font-size:12px;font-weight:600;color:#041D30;font-family:'Noto Sans',sans-serif;}
+.footer-left{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
+.footer-logo-img{display:block;height:10px;width:auto;object-fit:contain;}
+.footer-logo-img.prism{height:16px;}
+.footer-copy{font-size:7px;color:#6E777C;line-height:1.4;flex:1;padding:0 20px;}
+.footer-page{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
 </style>
 </head>
 <body>
 
-<!-- ── 목업 전용 네비게이션 (실제 인쇄·PDF 출력 시 표시되지 않음) ── -->
+<!-- ── 목업 전용 네비게이션 ── -->
 <div class="nav">
   <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ 이전</button>
   <span class="page-ind" id="pageInd">1 / 6</span>
@@ -186,22 +181,19 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 
 
 <!-- ════════════════════════════════════════
-     PAGE 1 — 종합결과 B
-     Figma: 121:1029, 990×1399px
+     PAGE 1 — 종합결과
 ════════════════════════════════════════ -->
 <div class="page active" id="p1">
 
-  <!-- ── 페이지 헤더 (모든 페이지 공통) ── -->
+  <!-- ── 페이지 헤더 ── -->
   <div class="doc-header">
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
-  <!-- ── 지원자 카드 (header, h=226) ── -->
+  <!-- ── 지원자 카드 ── -->
   <div class="app-card">
     <div class="ac-topbar">
       <span class="ac-announce">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
@@ -233,10 +225,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
     </div>
   </div>
 
-  <!-- ── 인재유형 (h=328) ── -->
+  <!-- ── 인재유형 ── -->
   <div class="intai-section">
     <div class="intai-card">
-      <!-- 코멘트 + 불릿 -->
       <div class="intai-top">
         <div class="intai-comment">현장 중심의 공학 경험은 유효하나,<br>조직 역량 근거 부족으로 추가 검증 필요합니다</div>
         <ul class="intai-bullets">
@@ -247,7 +238,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
         </ul>
       </div>
       <div class="intai-divider"></div>
-      <!-- 동일 직무 내 상대 위치 바 차트 -->
       <div class="intai-bar-section">
         <div class="intai-bar-title">지원자의 종합 점수 및 동일 직군 내 위치</div>
         <div class="intai-bar-top">
@@ -281,176 +271,91 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
     </div>
   </div>
 
-  <!-- ── 콘텐츠 영역 (h=811) ── -->
+  <!-- ── 콘텐츠 영역 ── -->
   <div class="content">
 
-    <!-- 상단: 좌측 점수 박스 + 우측 레이더 차트 -->
-    <div class="content-cols">
+    <!-- 상단: 직무적합도 + 자기소개서 분석 프로파일 -->
+    <div class="top-cols">
 
-      <!-- ▌좌측 박스 (w=600, border) ▌ -->
-      <div class="left-box">
-
-        <!-- 직무적합도 -->
-        <div class="jmu-section">
-          <div class="jmu-title-row">
-            <span class="jmu-title">직무적합도</span>
+      <!-- 직무적합도 패널 -->
+      <div class="eval-panel panel-jikmu">
+        <div class="eval-panel-head">
+          <div class="eval-panel-title">직무적합도</div>
+          <div class="eval-score-row">
+            <div class="eval-score-marker"></div>
+            <span class="eval-score-val">65.92</span>
+            <span class="eval-diff">영업직 평균 대비 <span class="diff-pos">+4.2p</span></span>
           </div>
-          <div class="jmu-score-row">
-            <div class="jmu-score-marker"></div>
-            <span class="jmu-score-val">65.92</span>
-            <span class="jmu-diff">영업직 평균 대비 <span class="diff-pos-blue">+4.2p</span></span>
-          </div>
-          <div class="sbar-track" style="margin-bottom:3px;">
-            <!-- fill: 376/552 ≈ 68.1% → 67.85% by score -->
+          <div class="sbar-track">
             <div class="sbar-fill" style="width:65.92%"></div>
-            <!-- avg dot: 323/552 = 58.5%, label 57.2 -->
             <div class="sbar-avg-dot" style="left:58.5%"></div>
-            <!-- top10 dot: 446/552 = 80.8%, label 74.3 -->
             <div class="sbar-top10-dot" style="left:80.8%"></div>
           </div>
-          <div class="sbar-legend" style="margin-bottom:12px;">
+          <div class="sbar-legend">
             <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 57.2</div>
             <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 74.3</div>
           </div>
-
-          <!-- 하위 분석 요소 (스토리북 factor-bars-comp) -->
-          <div class="guide-factor-list">
-            <div class="guide-factor-row">
-              <span class="guide-factor-name">직무경험</span>
-              <div class="factor-bars-comp"><i></i><i></i><i class="active-mid">중</i><i></i></div>
-            </div>
-            <div class="guide-factor-row">
-              <span class="guide-factor-name">직무동기</span>
-              <div class="factor-bars-comp"><i></i><i></i><i></i><i class="active-high">상</i></div>
-            </div>
-            <div class="guide-factor-row">
-              <span class="guide-factor-name">직무지식</span>
-              <div class="factor-bars-comp"><i></i><i></i><i class="active-mid">중</i><i></i></div>
-            </div>
-            <div class="guide-factor-row">
-              <span class="guide-factor-name">직무역량</span>
-              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
-            </div>
-            <div class="guide-factor-row child-row">
-              <span class="guide-factor-name">주도성</span>
-              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
-            </div>
-            <div class="guide-factor-row child-row">
-              <span class="guide-factor-name">성취지향</span>
-              <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
-            </div>
-            <div class="guide-factor-row child-row">
-              <span class="guide-factor-name">대인관계역량</span>
-              <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
-            </div>
-          </div>
         </div>
 
-        <!-- 하드스킬 확인 / 누락 -->
+        <!-- 직무적합도 하위 평가 요소 테이블 -->
+        <table class="factor-table">
+          <thead>
+            <tr>
+              <th>평가 요소</th>
+              <th>수준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fn">직무경험</td>
+              <td class="lv-cell"><span class="lv lv-중">중</span></td>
+            </tr>
+            <tr>
+              <td class="fn">직무동기</td>
+              <td class="lv-cell"><span class="lv lv-상">상</span></td>
+            </tr>
+            <tr>
+              <td class="fn">직무지식</td>
+              <td class="lv-cell"><span class="lv lv-중">중</span></td>
+            </tr>
+            <tr class="parent-row">
+              <td class="fn">직무역량</td>
+              <td class="lv-cell"><span class="lv lv-하">하</span></td>
+            </tr>
+            <tr class="child-row">
+              <td class="fn">주도성</td>
+              <td class="lv-cell"><span class="lv lv-하">하</span></td>
+            </tr>
+            <tr class="child-row">
+              <td class="fn">성취지향</td>
+              <td class="lv-cell"><span class="lv lv-하">하</span></td>
+            </tr>
+            <tr class="child-row">
+              <td class="fn">대인관계역량</td>
+              <td class="lv-cell"><span class="lv lv-없음">없음</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- 하드스킬 -->
         <div class="hs-wrap">
-          <div class="hs-row">
-            <div class="hs-label hs-lbl-confirm">확인된 하드스킬&ensp;</div>
-            <div class="hs-chips">
-              <span class="hs-chip-ok">B2B 영업 경험</span>
-              <span class="hs-chip-ok">기술 제안·설명 능력</span>
-              <span class="hs-chip-gray">고객관계관리(CRM)</span>
-              <span class="hs-chip-gray">수주·계약 협상</span>
-              <span class="hs-chip-gray">영업 실적 관리</span>
-            </div>
-          </div>
-          <div class="hs-row" style="margin-top:10px;">
-            <div class="hs-label hs-lbl-miss">미확인된 하드스킬&ensp;</div>
-            <div class="hs-chips">
-              <span class="hs-chip-miss">고객관계관리(CRM)</span>
-              <span class="hs-chip-miss">수주·계약 협상</span>
-              <span class="hs-chip-miss">영업 실적 관리</span>
-            </div>
+          <div class="hs-label-confirm">확인된 하드스킬</div>
+          <div class="hs-chips">
+            <span class="hs-chip-ok">Salesforce Certified Sales Cloud Consultant</span>
+            <span class="hs-chip-ok">유통관리사 자격증</span>
+            <span class="hs-chip-ok">PowerPoint</span>
+            <span class="hs-chip-ok">Excel</span>
           </div>
         </div>
+      </div>
 
-        <!-- 조직적합도 + 지원동기 2-col -->
-        <div class="two-col-row">
-          <!-- 조직적합도 -->
-          <div class="sub-box">
-            <div class="sub-title">조직적합도</div>
-            <div class="sub-score-row">
-              <div class="sub-score-marker"></div>
-              <span class="sub-score-val">15.00</span>
-              <span class="sub-diff">영업직 평균 대비 <span class="diff-neg-orange">−6.1p</span></span>
-            </div>
-            <div class="sbar-track" style="margin-bottom:3px;">
-              <div class="sbar-fill" style="width:15.00%"></div>
-              <div class="sbar-avg-dot" style="left:50.0%"></div>
-              <div class="sbar-top10-dot" style="left:75.8%"></div>
-            </div>
-            <div class="sbar-legend" style="margin-bottom:0;">
-              <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 53.8</div>
-              <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 71.2</div>
-            </div>
-            <div class="guide-factor-list">
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">리더십역량</span>
-                <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">팀워크</span>
-                <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">갈등관리역량</span>
-                <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">팀워크포스역량</span>
-                <div class="factor-bars-comp"><i></i><i class="active-low">하</i><i></i><i></i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">의사소통역량</span>
-                <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">대인관계역량</span>
-                <div class="factor-bars-comp"><i class="active-none">없음</i><i></i><i></i><i></i></div>
-              </div>
-            </div>
-          </div>
-          <!-- 지원동기 -->
-          <div class="sub-box">
-            <div class="sub-title">지원동기</div>
-            <div class="sub-score-row">
-              <div class="sub-score-marker"></div>
-              <span class="sub-score-val">62.77</span>
-              <span class="sub-diff">영업직 상위 <span class="diff-pos-blue">+3.5p</span></span>
-            </div>
-            <div class="sbar-track" style="margin-bottom:3px;">
-              <div class="sbar-fill" style="width:62.77%"></div>
-              <div class="sbar-avg-dot" style="left:55.0%"></div>
-              <div class="sbar-top10-dot" style="left:76.0%"></div>
-            </div>
-            <div class="sbar-legend" style="margin-bottom:0;">
-              <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 60.4</div>
-              <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 76.0</div>
-            </div>
-            <div class="guide-factor-list">
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">직무동기</span>
-                <div class="factor-bars-comp"><i></i><i></i><i></i><i class="active-high">상</i></div>
-              </div>
-              <div class="guide-factor-row">
-                <span class="guide-factor-name">회사동기</span>
-                <div class="factor-bars-comp"><i></i><i></i><i class="active-mid">중</i><i></i></div>
-              </div>
-            </div>
-          </div>
+      <!-- 자기소개서 분석 프로파일 (레이더 차트) -->
+      <div class="eval-panel panel-radar" style="display:flex;flex-direction:column;">
+        <div class="radar-panel-head">
+          <div class="radar-title">자기소개서 분석 프로파일</div>
         </div>
-
-      </div><!-- /left-box -->
-
-      <!-- ▌우측 박스 (flex:1, border) — 자기소개서 분석 프로파일 ▌ -->
-      <div class="right-box">
-        <div class="radar-title">자기소개서 분석 프로파일</div>
-        <div class="radar-chart-area">
-          <canvas id="radarChart" width="270" height="320"></canvas>
+        <div class="radar-chart-area" style="flex:1;min-height:220px;">
+          <canvas id="radarChart" width="240" height="240"></canvas>
         </div>
         <div class="radar-legend">
           <div class="rleg"><div class="rleg-dot" style="background:rgba(0,117,255,.8)"></div>지원자</div>
@@ -458,121 +363,143 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
         </div>
       </div>
 
-    </div><!-- /content-cols -->
+    </div><!-- /top-cols -->
 
-    <!-- 하단: 응답 완성도 3개 카드 -->
-    <div class="resp-row">
+    <!-- 중단: 조직적합도 + 지원동기 -->
+    <div class="mid-cols">
 
-      <!-- 답변적합도 -->
-      <div class="resp-card">
-        <div class="resp-card-header">
-          <span class="resp-card-name">답변적합도</span>
+      <!-- 조직적합도 패널 -->
+      <div class="eval-panel panel-jojik">
+        <div class="eval-panel-head">
+          <div class="eval-panel-title">조직적합도</div>
+          <div class="eval-score-row">
+            <div class="eval-score-marker"></div>
+            <span class="eval-score-val">15.00</span>
+            <span class="eval-diff">영업직 평균 대비 <span class="diff-neg">-6.1p</span></span>
+          </div>
+          <div class="sbar-track">
+            <div class="sbar-fill" style="width:15.00%"></div>
+            <div class="sbar-avg-dot" style="left:50.0%"></div>
+            <div class="sbar-top10-dot" style="left:75.8%"></div>
+          </div>
+          <div class="sbar-legend">
+            <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 53.8</div>
+            <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 71.2</div>
+          </div>
         </div>
-        <div class="resp-card-score" style="margin-top:12px;">68.36</div>
-        <div class="resp-desc">질문의 의도를 잘 파악하여 대답함</div>
+        <table class="factor-table">
+          <thead>
+            <tr>
+              <th>평가 요소</th>
+              <th>수준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fn">리더십역량</td>
+              <td class="lv-cell"><span class="lv lv-하">하</span></td>
+            </tr>
+            <tr>
+              <td class="fn">팀워크</td>
+              <td class="lv-cell"><span class="lv lv-없음">없음</span></td>
+            </tr>
+            <tr>
+              <td class="fn">갈등관리역량</td>
+              <td class="lv-cell"><span class="lv lv-없음">없음</span></td>
+            </tr>
+            <tr>
+              <td class="fn">팀워크포스역량</td>
+              <td class="lv-cell"><span class="lv lv-하">하</span></td>
+            </tr>
+            <tr>
+              <td class="fn">의사소통역량</td>
+              <td class="lv-cell"><span class="lv lv-없음">없음</span></td>
+            </tr>
+            <tr>
+              <td class="fn">대인관계역량</td>
+              <td class="lv-cell"><span class="lv lv-없음">없음</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <!-- 구체성 -->
-      <div class="resp-card">
-        <div class="resp-card-header">
-          <span class="resp-card-name">구체성</span>
+      <!-- 지원동기 패널 -->
+      <div class="eval-panel panel-donggi">
+        <div class="eval-panel-head">
+          <div class="eval-panel-title">지원동기</div>
+          <div class="eval-score-row">
+            <div class="eval-score-marker"></div>
+            <span class="eval-score-val">62.77</span>
+            <span class="eval-diff">영업직 평균 대비 <span class="diff-pos">+3.5p</span></span>
+          </div>
+          <div class="sbar-track">
+            <div class="sbar-fill" style="width:62.77%"></div>
+            <div class="sbar-avg-dot" style="left:55.0%"></div>
+            <div class="sbar-top10-dot" style="left:76.0%"></div>
+          </div>
+          <div class="sbar-legend">
+            <div class="sleg"><div class="sleg-dot" style="background:#7C52F1"></div>평균 60.4</div>
+            <div class="sleg"><div class="sleg-dot" style="background:#041D30"></div>상위 10% 76.0</div>
+          </div>
         </div>
-        <div class="resp-card-score" style="margin-top:12px;">65.92</div>
-        <div class="resp-desc">경험을 단순 나열한 수준임</div>
+        <table class="factor-table">
+          <thead>
+            <tr>
+              <th>평가 요소</th>
+              <th>수준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fn">직무동기</td>
+              <td class="lv-cell"><span class="lv lv-상">상</span></td>
+            </tr>
+            <tr>
+              <td class="fn">회사동기</td>
+              <td class="lv-cell"><span class="lv lv-중">중</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <!-- 자기소개 -->
-      <div class="resp-card">
-        <div class="resp-card-header">
-          <span class="resp-card-name">자기소개</span>
-        </div>
-        <div class="resp-card-score" style="margin-top:12px;">36.82</div>
-        <div class="resp-desc">자기 서사 부재</div>
+    </div><!-- /mid-cols -->
+
+    <!-- 하단: 답변적합도 / 구체성 / 자기소개 (컴팩트) -->
+    <div class="bottom-cols">
+
+      <div class="compact-card">
+        <div class="compact-card-name">답변적합도</div>
+        <div class="compact-card-score">68.36</div>
+        <div class="compact-card-desc">질문의 의도를 잘 파악하여 대답함</div>
       </div>
 
-    </div><!-- /resp-row -->
+      <div class="compact-card">
+        <div class="compact-card-name">구체성</div>
+        <div class="compact-card-score">65.92</div>
+        <div class="compact-card-desc">경험을 단순 나열한 수준임</div>
+      </div>
+
+      <div class="compact-card">
+        <div class="compact-card-name">자기소개</div>
+        <div class="compact-card-score">36.82</div>
+        <div class="compact-card-desc">자기 서사 부재</div>
+      </div>
+
+    </div><!-- /bottom-cols -->
 
   </div><!-- /content -->
 
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">1 / 6</span>
   </div>
 
-</div><!-- /page -->
-
-
-<script>
-/* ── 목업 페이지 전환 (단일 페이지라 실질적으로 동작 없음) ── */
-const pages = document.querySelectorAll('.page');
-let cur = 0;
-function changePage(d) {
-  pages[cur].classList.remove('active');
-  cur = Math.max(0, Math.min(pages.length - 1, cur + d));
-  pages[cur].classList.add('active');
-  document.getElementById('pageInd').textContent = (cur + 1) + ' / ' + pages.length;
-  document.getElementById('prevBtn').disabled = cur === 0;
-  document.getElementById('nextBtn').disabled = cur === pages.length - 1;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── 자기소개서 분석 프로파일 레이더 차트 ── */
-const radarCtx = document.getElementById('radarChart').getContext('2d');
-new Chart(radarCtx, {
-  type: 'radar',
-  data: {
-    labels: ['직무적합도', '조직적합도', '지원동기', '답변적합도', '구체성', '자기소개'],
-    datasets: [
-      {
-        label: '지원자',
-        data: [65.92, 15.00, 62.77, 68.36, 65.92, 36.82],
-        backgroundColor: 'rgba(0,117,255,0.15)',
-        borderColor: '#0075FF',
-        pointBackgroundColor: '#0075FF',
-        pointRadius: 4,
-        borderWidth: 2,
-      },
-      {
-        label: '평균',
-        data: [57.2, 53.8, 60.4, 58.0, 55.0, 40.0],
-        backgroundColor: 'rgba(150,164,177,0.08)',
-        borderColor: '#96A4B1',
-        borderDash: [4, 4],
-        pointBackgroundColor: '#96A4B1',
-        pointRadius: 3,
-        borderWidth: 1.5,
-      }
-    ]
-  },
-  options: {
-    scales: {
-      r: {
-        min: 0,
-        max: 100,
-        ticks: { stepSize: 25, display: false },
-        grid: { color: '#E3E3E3' },
-        angleLines: { color: '#E3E3E3' },
-        pointLabels: {
-          font: { size: 11, family: "'Noto Sans KR', sans-serif" },
-          color: '#041D30',
-          callback: function(label, index) {
-            const scores = [65.92, 15.00, 62.77, 68.36, 65.92, 36.82];
-            return [label, scores[index].toString()];
-          }
-        }
-      }
-    },
-    plugins: { legend: { display: false } }
-  }
-});
-</script>
-
-
+</div><!-- /page 1 -->
 
 
 <style>
@@ -619,10 +546,19 @@ new Chart(radarCtx, {
 .ri-item{display:flex;align-items:flex-start;gap:10px;}
 .ri-icon{width:20px;height:20px;border-radius:50%;border:1.5px solid #7D7D80;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#7D7D80;flex-shrink:0;margin-top:1px;}
 .ri-text{font-size:13px;color:#041D30;line-height:1.7;}
+/* 버튼형 배지 */
+.level-btn{display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 4px;min-width:24px;border-radius:4px;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.level-btn-상{background:#66ACFF;}
+.level-btn-중{background:rgba(0,117,255,0.6);color:#fff;}
+.level-btn-하{background:rgba(0,117,255,0.2);color:#041D30;}
+.level-btn-없음{background:#E9E9EA;color:#7D7D80;}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:22px;padding:0 10px;border-radius:11px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.pill-blue{background:#EBF4FF;color:#0075FF;border:1px solid #B3D4FF;}
+.pill-default{background:#E9E9EA;color:#7D7D80;border:1px solid #D0D0D0;}
 </style>
 
 <!-- ════════════════════════════════════════
-     PAGE 5 — 검증 포인트
+     PAGE 2 — 검증 포인트
 ════════════════════════════════════════ -->
 <div class="report-page" id="p2">
 
@@ -631,30 +567,24 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
   <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 섹션 타이틀 -->
     <div class="sec-title-bar">
       <span class="sec-title-bar-text">검증 포인트</span>
     </div>
 
-    <!-- 2컬럼 카드 -->
     <div class="vp-grid">
 
-      <!-- 강점 카드 (파란 테두리) -->
       <div class="vp-card vp-card-blue">
         <div class="vp-card-head">
           <span class="vp-card-title">◉ 강점</span>
           <span class="vp-badge vp-badge-blue">심화 검증</span>
         </div>
 
-        <!-- 직무동기 (상) -->
         <div class="vp-item">
           <div class="vp-item-row">
             <div class="vp-item-left">
@@ -662,7 +592,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">지원동기</span>
                 <span class="vp-skill-name">직무동기</span>
               </div>
-              <span class="level-badge level-상">상</span>
+              <span class="level-btn level-btn-상">상</span>
             </div>
             <span class="pill pill-blue">상위 32%</span>
           </div>
@@ -673,7 +603,6 @@ new Chart(radarCtx, {
           </div>
         </div>
 
-        <!-- 직무경험 (중) -->
         <div class="vp-item">
           <div class="vp-item-row">
             <div class="vp-item-left">
@@ -681,7 +610,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">직무적합도</span>
                 <span class="vp-skill-name">직무경험</span>
               </div>
-              <span class="level-badge level-중">중</span>
+              <span class="level-btn level-btn-중">중</span>
             </div>
             <span class="pill pill-blue">상위 45%</span>
           </div>
@@ -692,24 +621,23 @@ new Chart(radarCtx, {
           </div>
         </div>
 
-        <!-- 하드스킬 확인 -->
         <div class="vp-hs">
           <div class="vp-hs-label vp-hs-pass">확인된 하드스킬</div>
           <div class="vp-hs-chips">
-            <span class="vp-hs-chip">B2B 영업 경험</span>
-            <span class="vp-hs-chip">기술 제안·설명 능력</span>
+            <span class="vp-hs-chip">Salesforce Certified Sales Cloud Consultant</span>
+            <span class="vp-hs-chip">유통관리사 자격증</span>
+            <span class="vp-hs-chip">PowerPoint</span>
+            <span class="vp-hs-chip">Excel</span>
           </div>
         </div>
       </div>
 
-      <!-- 검토 카드 (주황 테두리) -->
       <div class="vp-card vp-card-orange">
         <div class="vp-card-head">
           <span class="vp-card-title">▲ 검토</span>
           <span class="vp-badge vp-badge-orange">추가 검증</span>
         </div>
 
-        <!-- 갈등관리역량 (없음) -->
         <div class="vp-item">
           <div class="vp-item-row">
             <div class="vp-item-left">
@@ -717,7 +645,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">조직 적합도</span>
                 <span class="vp-skill-name">갈등관리역량</span>
               </div>
-              <span class="level-badge level-없음">없음</span>
+              <span class="level-btn level-btn-없음">없음</span>
             </div>
             <span class="pill pill-red">근거 없음</span>
           </div>
@@ -728,7 +656,6 @@ new Chart(radarCtx, {
           </div>
         </div>
 
-        <!-- 본인소개 (하) -->
         <div class="vp-item">
           <div class="vp-item-row">
             <div class="vp-item-left">
@@ -736,7 +663,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">응답 완성도</span>
                 <span class="vp-skill-name">본인소개</span>
               </div>
-              <span class="level-badge level-하">하</span>
+              <span class="level-btn level-btn-하">하</span>
             </div>
             <span class="pill pill-red">36.82점</span>
           </div>
@@ -747,20 +674,10 @@ new Chart(radarCtx, {
           </div>
         </div>
 
-        <!-- 하드스킬 누락 -->
-        <div class="vp-hs">
-          <div class="vp-hs-label vp-hs-miss">미확인된 하드스킬</div>
-          <div class="vp-hs-chips">
-            <span class="vp-hs-chip vp-hs-chip-red">고객관계관리(CRM)</span>
-            <span class="vp-hs-chip vp-hs-chip-red">수주·계약 협상</span>
-            <span class="vp-hs-chip vp-hs-chip-red">영업 실적 관리</span>
-          </div>
-        </div>
       </div>
 
     </div><!-- /vp-grid -->
 
-    <!-- 문항별 GPK 탐지 테이블 -->
     <div class="gpk-table">
       <div class="gpk-row">
         <span class="gpk-qnum">문항 1</span>
@@ -784,13 +701,12 @@ new Chart(radarCtx, {
 
   </div><!-- /content -->
 
-  <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">2 / 6</span>
   </div>
 
@@ -801,8 +717,6 @@ new Chart(radarCtx, {
 /* ── 자기소개서 분석 ── */
 .sec-title-bar{display:flex;align-items:center;margin:20px 24px 14px;padding-left:12px;border-left:4px solid #0075FF;}
 .sec-title-bar-text{font-size:18px;font-weight:700;color:#041D30;}
-.level-상{background:#0075FF;}
-.level-중{background:rgba(0,117,255,0.6);}
 .qcard{border:1px solid #E3E3E3;margin:0 24px 14px;border-radius:6px;overflow:hidden;}
 .qcard-head{background:#F8F9FA;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #E3E3E3;}
 .qcard-num{font-size:12px;font-weight:700;color:#041D30;background:#E3E3E3;padding:2px 8px;border-radius:3px;white-space:nowrap;}
@@ -820,39 +734,33 @@ new Chart(radarCtx, {
 </style>
 
 <!-- ════════════════════════════════════════
-     PAGE 4 — 자기소개서 분석
+     PAGE 3 — 자기소개서 분석
 ════════════════════════════════════════ -->
 <div class="report-page" id="p3">
 
-  <!-- ── 문서 헤더 ── -->
   <div class="doc-header">
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
-  <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 섹션 타이틀 -->
     <div class="sec-title-bar">
       <span class="sec-title-bar-text">자기소개서 분석</span>
     </div>
 
-    <!-- 문항 1 -->
     <div class="qcard">
       <div class="qcard-head">
         <span class="qcard-num">문항 1</span>
         <span class="qcard-qtitle">지원동기를 서술해 주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-badge level-상">상</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-badge level-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-btn level-btn-상">상</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
       </div>
       <div class="qcard-body">
         <strong>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</strong>
@@ -875,16 +783,15 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 문항 2 -->
     <div class="qcard">
       <div class="qcard-head">
         <span class="qcard-num">문항 2</span>
         <span class="qcard-qtitle">성격의 장단점에 대해 서술해 주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(성취지향)</span><span class="level-badge level-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(성취지향)</span><span class="level-btn level-btn-하">하</span></div>
       </div>
       <div class="qcard-body">
         저는 어릴 때부터 다양한 분야에 관심을 두고 즐겨왔습니다. 흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.
@@ -903,17 +810,16 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 문항 3 -->
     <div class="qcard">
       <div class="qcard-head">
         <span class="qcard-num">문항 3</span>
         <span class="qcard-qtitle">자기소개를 해주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">리더십역량</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">팀워크역량</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">회사동기</span><span class="level-badge level-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">리더십역량</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">팀워크역량</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">회사동기</span><span class="level-btn level-btn-중">중</span></div>
       </div>
       <div class="qcard-body">
         저의 꿈은 산업안전공단에서 엔지니어로서 일하며 세계 최고 수준의 안전하고 효율적인 공장으로 발전시키고, 나아가서 공정 운영의 전문가로서 모든 부분을 총괄하여 공장을 설계해 보는 것입니다.
@@ -933,15 +839,14 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-  </div><!-- /content -->
+  </div>
 
-  <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">3 / 6</span>
   </div>
 
@@ -949,35 +854,27 @@ new Chart(radarCtx, {
 
 <!-- ════════════════════════════════════════
      PAGE 4 — BP 평가 상세 1
-     역량 및 적합도 평가 (직무적합도)
 ════════════════════════════════════════ -->
 <div class="report-page" id="p4">
 
-  <!-- ── 문서 헤더 ── -->
   <div class="doc-header">
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
-  <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 섹션 타이틀 -->
     <div class="sec-title-bar">
       <span class="sec-title-bar-text">역량 및 적합도 평가</span>
     </div>
 
-    <!-- 직무적합도 섹션 헤더 -->
     <div class="detail-h2">직무적합도&nbsp;<span class="h2-score">65.92</span>점</div>
 
-    <!-- 직무경험 (중) -->
     <div class="eval-row">
       <span class="eval-chip">직무경험</span>
-      <span class="level-badge level-중">중</span>
+      <span class="level-btn level-btn-중">중</span>
       <div class="eval-main">
         <div class="eval-summary">단기 인턴십을 통한 다양한 현장 생산공정 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.</div>
         <div class="eval-src-label">자기소개서 내용</div>
@@ -985,89 +882,62 @@ new Chart(radarCtx, {
           <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
           <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
           <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 직무동기 (상) -->
     <div class="eval-row">
       <span class="eval-chip">직무동기</span>
-      <span class="level-badge level-상">상</span>
+      <span class="level-btn level-btn-상">상</span>
       <div class="eval-main">
         <div class="eval-summary">자소서 전반에 걸쳐 직무에 대한 높은 관심과 적극적 동기가 일관되게 드러남. 직무 선택 이유가 명확하게 서술됨.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
           <li>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</li>
           <li>학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 코레이 프로젝트에 능동적으로 참여했습니다.</li>
-          <li>생산 공정 엔지니어를 꿈꾸면서 현장 감각을 쌓는 것이 중요하다고 생각했습니다.</li>
-          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
           <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 직무지식 (중) -->
     <div class="eval-row">
       <span class="eval-chip">직무지식</span>
-      <span class="level-badge level-중">중</span>
+      <span class="level-btn level-btn-중">중</span>
       <div class="eval-main">
         <div class="eval-summary">전기·소방 등 관련 분야 독학 및 자격증 준비 노력. 현장 경험을 통한 실무 지식 확장 의지 확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
           <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-          <li>작년에 코레이 생산 관리 직무에서 인턴을 수행하며 화학공학뿐만 아니라 전기, 소방 등 다양한 관련 분야에 지식이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</li>
           <li>그래서 생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
-          <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
-          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 직무역량(역량분자) — 서브타이틀만 (상세 다음 페이지 계속) -->
     <div class="eval-row">
       <span class="eval-chip">직무역량</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main"></div>
     </div>
 
-  </div><!-- /content -->
+  </div>
 
-  <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">4 / 6</span>
   </div>
 
-</div><!-- /page 4 --><!-- ══════════════════════════════════════
-     PAGE 2 전용 CSS
-════════════════════════════════════════ -->
+</div><!-- /page 4 -->
+
 <style>
-/* ── 추가 페이지 래퍼 ── */
 .report-page{width:990px;min-height:1399px;background:#fff;display:none;flex-direction:column;box-shadow:0 4px 24px rgba(0,0,0,.18);margin-top:24px;}
 .report-page.active{display:flex;}
-
-/* ── 상/중/하 배지 (index.html 기준) ── */
 .level-badge{display:inline-flex;align-items:center;justify-content:center;width:40px;height:18px;border-radius:2px;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
-.level-상{background:#0075FF;}
-.level-중{background:rgba(0,117,255,0.6);}
-.level-하{background:rgba(0,117,255,0.2);color:#041D30;}
-.level-없음{background:#E9E9EA;color:#7D7D80;}
-
-/* ── Pill (index.html 기준) ── */
-.pill{display:inline-flex;align-items:center;justify-content:center;height:22px;padding:0 10px;border-radius:11px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;}
-.pill-blue{background:#EBF4FF;color:#0075FF;border:1px solid #B3D4FF;}
-.pill-default{background:#E9E9EA;color:#7D7D80;border:1px solid #D0D0D0;}
-
-/* ── 섹션 H2 헤더 ── */
 .detail-h2{background:#041D30;color:#fff;padding:9px 24px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:4px;}
 .detail-h2 .h2-score{font-family:'Noto Sans',sans-serif;}
-
-/* ── 평가 항목 행 (역량명 chip + 등급 + 내용) ── */
 .eval-row{display:flex;align-items:flex-start;gap:10px;padding:12px 24px;border-bottom:1px solid #E3E3E3;}
 .eval-chip{display:inline-flex;align-items:center;justify-content:center;padding:0 10px;height:22px;border-radius:11px;border:1px solid #BBBABF;font-size:12px;color:#041D30;white-space:nowrap;flex-shrink:0;margin-top:1px;}
 .eval-main{flex:1;min-width:0;}
@@ -1076,97 +946,76 @@ new Chart(radarCtx, {
 .eval-src-label{font-size:12px;color:#7D7D80;font-weight:600;margin-top:8px;margin-bottom:5px;}
 .eval-bullets{list-style:disc;padding-left:16px;display:flex;flex-direction:column;gap:3px;}
 .eval-bullets li{font-size:13px;color:#041D30;line-height:1.65;}
-
-/* ── 하드스킬 항목 행 ── */
 .hardskill-row{display:flex;align-items:flex-start;gap:12px;padding:12px 24px;border-bottom:1px solid #E3E3E3;}
 .hardskill-name{font-size:16px;font-weight:700;color:#041D30;white-space:nowrap;flex-shrink:0;min-width:148px;margin-top:1px;}
 .hardskill-main{flex:1;min-width:0;}
 .hardskill-summary{font-size:14px;font-weight:700;color:#041D30;line-height:1.55;margin-bottom:8px;}
 </style>
 
-
 <!-- ════════════════════════════════════════
-     PAGE 2 — BP 평가 상세 2
-     직무역량(계속) → 조직적합도 → 하드스킬 평가
+     PAGE 5 — BP 평가 상세 2
 ════════════════════════════════════════ -->
 <div class="report-page" id="p5">
 
-  <!-- ── 문서 헤더 ── -->
   <div class="doc-header">
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
-  <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 성취지향 (직무역량 하위, 전 페이지에서 이어짐) -->
     <div class="eval-row">
       <span class="eval-chip">성취지향</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">'만족할 수준까지 공부' 표현은 있으나, 구체적 성취 수치·결과 제시 없어 등급 상향 불가.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
           <li>졸업 준비로 받은 뒤에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
-          <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 대학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
           <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼의 전문가가 되어야겠다고 생각하고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 대인관계역량 (직무적합도 마지막 항목) -->
     <div class="eval-row">
       <span class="eval-chip">대인관계역량</span>
-      <span class="level-badge level-없음">-</span>
+      <span class="level-btn level-btn-없음">-</span>
       <div class="eval-main">
         <span class="eval-empty">관련 근거 문장 없음.</span>
       </div>
     </div>
 
-    <!-- 조직적합도 섹션 헤더 -->
     <div class="detail-h2">조직적합도&nbsp;<span class="h2-score">15.00</span>점</div>
 
-    <!-- 리더십역량 -->
     <div class="eval-row">
       <span class="eval-chip">리더십역량</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">인턴·프로젝트 경험 기술 있으나 리더십 발휘 관점의 서술 미확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
           <li>학부 프로젝트와 전산재료 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다시 경험했습니다.</li>
-          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 최대한 늘었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 팀워크 -->
     <div class="eval-row">
       <span class="eval-chip">팀워크</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 갈등관리역량 -->
     <div class="eval-row">
       <span class="eval-chip">갈등관리역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 팀워크포스역량 -->
     <div class="eval-row">
       <span class="eval-chip">팀워크포스역량</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">인턴 과정 기술 있으나 팀 협업 관점의 서술 없음.</div>
         <div class="eval-src-label">자기소개서 내용</div>
@@ -1176,89 +1025,76 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 의사소통역량 -->
     <div class="eval-row">
       <span class="eval-chip">의사소통역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 대인관계역량 (조직적합도) -->
     <div class="eval-row">
       <span class="eval-chip">대인관계역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 하드스킬 평가 섹션 헤더 -->
     <div class="detail-h2">하드스킬 평가</div>
 
-    <!-- B2B 영업 경험 (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">B2B 영업 경험</div>
+      <div class="hardskill-name">Salesforce Certified Sales Cloud Consultant</div>
       <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <div class="hardskill-summary">인턴·파견직 등 다양한 현장 근무 이력에서 대내외 업무 경험 확인.</div>
+        <div class="hardskill-summary">Salesforce 공인 자격 보유로 CRM 기반 영업 파이프라인 관리 역량 확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+          <li>세일즈 업무의 효율화를 위해 Salesforce Certified Sales Cloud Consultant 자격을 취득하고, CRM 시스템을 활용한 고객 파이프라인 관리 경험을 쌓았습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 기술 제안·설명 능력 (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">기술 제안·설명 능력</div>
+      <div class="hardskill-name">유통관리사 자격증</div>
       <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <div class="hardskill-summary">프로젝트 참여를 통한 기술 지식 습득 및 실무 적용 경험 확인.</div>
+        <div class="hardskill-summary">유통관리사 자격 보유로 유통 채널 전반에 대한 전문 지식 확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 최대한 늘었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+          <li>유통관리사 자격을 보유하고 있으며, 유통 채널 전반에 대한 이해를 바탕으로 현장 영업 전략을 수립할 수 있습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 고객관계관리(CRM) (미검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">고객관계관리(CRM)</div>
-      <span class="pill pill-default">미검출</span>
+      <div class="hardskill-name">PowerPoint</div>
+      <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
+        <div class="hardskill-summary">제안서·발표 자료 작성 및 고객사 임원 프레젠테이션 수행 경험 확인.</div>
+        <div class="eval-src-label">자기소개서 내용</div>
+        <ul class="eval-bullets">
+          <li>제안서 및 발표 자료 작성 시 PowerPoint를 활용하여 고객사 임원진 대상 프레젠테이션을 직접 진행한 경험이 있습니다.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- 수주·계약 협상 (미검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">수주·계약 협상</div>
-      <span class="pill pill-default">미검출</span>
+      <div class="hardskill-name">Excel</div>
+      <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
+        <div class="hardskill-summary">Excel 피벗 테이블 활용 영업 실적 데이터 분석 및 리포트 작성 경험 확인.</div>
+        <div class="eval-src-label">자기소개서 내용</div>
+        <ul class="eval-bullets">
+          <li>Excel을 활용한 영업 실적 데이터 분석 및 피벗 테이블 작성으로 월별 실적 리포트를 작성해왔습니다.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- 영업 실적 관리 (미검출) -->
-    <div class="hardskill-row">
-      <div class="hardskill-name">영업 실적 관리</div>
-      <span class="pill pill-default">미검출</span>
-      <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
-    </div>
+  </div>
 
-  </div><!-- /content -->
-
-  <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">5 / 6</span>
   </div>
 
@@ -1266,57 +1102,46 @@ new Chart(radarCtx, {
 
 
 <style>
-/* ── 응답 완성도 행 ── */
-.resp-row{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid #E3E3E3;}
+.resp-row-line{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid #E3E3E3;}
 .resp-name{font-size:16px;font-weight:700;color:#041D30;white-space:nowrap;min-width:84px;}
 .resp-score{font-size:16px;font-weight:700;color:#041D30;white-space:nowrap;min-width:76px;}
 .resp-desc{font-size:14px;color:#041D30;line-height:1.6;flex:1;}
 </style>
 
 <!-- ════════════════════════════════════════
-     PAGE 3 — BP 평가 상세 3
-     응답 완성도
+     PAGE 6 — 응답 완성도 + 마지막 안내
 ════════════════════════════════════════ -->
 <div class="report-page" id="p6">
 
-  <!-- ── 문서 헤더 ── -->
   <div class="doc-header">
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
-  <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 응답 완성도 섹션 헤더 -->
     <div class="detail-h2">응답 완성도</div>
 
-    <!-- 답변적합도 -->
-    <div class="resp-row">
+    <div class="resp-row-line">
       <span class="resp-name">답변적합도</span>
       <span class="resp-score">68.36점</span>
       <span class="resp-desc">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</span>
     </div>
 
-    <!-- 구체성 -->
-    <div class="resp-row">
+    <div class="resp-row-line">
       <span class="resp-name">구체성</span>
       <span class="resp-score">65.92점</span>
       <span class="resp-desc">구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함</span>
     </div>
 
-    <!-- 본인소개 -->
-    <div class="resp-row">
+    <div class="resp-row-line">
       <span class="resp-name">본인소개</span>
       <span class="resp-score">36.82점</span>
       <span class="resp-desc">본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함</span>
     </div>
 
-    <!-- 마지막 페이지 안내사항 (CLAUDE.md 필수) -->
     <div class="report-info-card" style="margin-top:auto;margin-bottom:20px;">
       <div class="ri-item">
         <span class="ri-icon">i</span>
@@ -1328,15 +1153,14 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-  </div><!-- /content -->
+  </div>
 
-  <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="assets/logo-prism.png" onerror="this.style.display='none'" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">6 / 6</span>
   </div>
 
@@ -1344,7 +1168,57 @@ new Chart(radarCtx, {
 
 
 <script>
-/* ── 페이지 네비게이션 재초기화 (.page + .report-page 통합) ── */
+/* ── 레이더 차트 ── */
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['직무적합도', '조직적합도', '지원동기', '답변적합도', '구체성', '자기소개'],
+    datasets: [
+      {
+        label: '지원자',
+        data: [65.92, 15.00, 62.77, 68.36, 65.92, 36.82],
+        backgroundColor: 'rgba(0,117,255,0.15)',
+        borderColor: '#0075FF',
+        pointBackgroundColor: '#0075FF',
+        pointRadius: 3,
+        borderWidth: 2,
+      },
+      {
+        label: '평균',
+        data: [57.2, 53.8, 60.4, 58.0, 55.0, 40.0],
+        backgroundColor: 'rgba(150,164,177,0.08)',
+        borderColor: '#96A4B1',
+        borderDash: [4, 4],
+        pointBackgroundColor: '#96A4B1',
+        pointRadius: 2,
+        borderWidth: 1.5,
+      }
+    ]
+  },
+  options: {
+    scales: {
+      r: {
+        min: 0,
+        max: 100,
+        ticks: { stepSize: 25, display: false },
+        grid: { color: '#E3E3E3' },
+        angleLines: { color: '#E3E3E3' },
+        pointLabels: {
+          font: { size: 10, family: "'Noto Sans KR', sans-serif" },
+          color: '#041D30',
+          callback: function(label, index) {
+            const scores = [65.92, 15.00, 62.77, 68.36, 65.92, 36.82];
+            return [label, scores[index].toFixed(1)];
+          }
+        }
+      }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+/* ── 페이지 네비게이션 ── */
 (function () {
   var allPages = document.querySelectorAll('.page, .report-page');
   var cur = 0;

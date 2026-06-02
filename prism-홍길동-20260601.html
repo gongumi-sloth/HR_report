@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRISM BP - 홍길동 - 20260529</title>
+<title>PRISM BP - 홍길동 - 20260601</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <style>
@@ -168,11 +168,17 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
 
 /* ── Footer ── */
 .page-footer{display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-top:1px solid #7D7D80;height:34px;flex-shrink:0;}
-.footer-left{display:flex;align-items:center;gap:6px;}
-.footer-logo{height:16px;width:auto;}
-.footer-product{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
-.footer-copy{font-size:7px;font-weight:600;color:#6E777C;text-align:center;line-height:1.4;}
-.footer-page{font-size:12px;font-weight:600;color:#041D30;font-family:'Noto Sans',sans-serif;}
+.footer-left{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
+.footer-logo-img{display:block;height:10px;width:auto;object-fit:contain;}
+.footer-logo-img.prism{height:16px;}
+.footer-copy{font-size:7px;color:#6E777C;line-height:1.4;flex:1;padding:0 20px;}
+.footer-page{font-size:12px;font-weight:600;color:#041D30;letter-spacing:-0.24px;}
+/* 버튼형 배지 (Figma BP-4.2) */
+.level-btn{display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 4px;min-width:24px;border-radius:4px;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.level-btn-상{background:#66ACFF;}
+.level-btn-중{background:#E9E9EA;color:#041D30;}
+.level-btn-하{background:#E9E9EA;color:#7D7D80;}
+.level-btn-없음{background:#F5F5F5;color:#A9A8AA;}
 </style>
 </head>
 <body>
@@ -196,8 +202,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
@@ -351,19 +355,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
           <div class="hs-row">
             <div class="hs-label hs-lbl-confirm">확인된 하드스킬&ensp;</div>
             <div class="hs-chips">
-              <span class="hs-chip-ok">B2B 영업 경험</span>
-              <span class="hs-chip-ok">기술 제안·설명 능력</span>
-              <span class="hs-chip-gray">고객관계관리(CRM)</span>
-              <span class="hs-chip-gray">수주·계약 협상</span>
-              <span class="hs-chip-gray">영업 실적 관리</span>
-            </div>
-          </div>
-          <div class="hs-row" style="margin-top:10px;">
-            <div class="hs-label hs-lbl-miss">미확인된 하드스킬&ensp;</div>
-            <div class="hs-chips">
-              <span class="hs-chip-miss">고객관계관리(CRM)</span>
-              <span class="hs-chip-miss">수주·계약 협상</span>
-              <span class="hs-chip-miss">영업 실적 관리</span>
+              <span class="hs-chip-ok">Salesforce Certified Sales Cloud Consultant</span>
+              <span class="hs-chip-ok">유통관리사 자격증</span>
+              <span class="hs-chip-ok">PowerPoint</span>
+              <span class="hs-chip-ok">Excel</span>
             </div>
           </div>
         </div>
@@ -497,10 +492,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:#d1d5db;display:flex;flex-
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">1 / 6</span>
   </div>
 
@@ -631,8 +626,6 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
@@ -662,7 +655,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">지원동기</span>
                 <span class="vp-skill-name">직무동기</span>
               </div>
-              <span class="level-badge level-상">상</span>
+              <span class="level-btn level-btn-상">상</span>
             </div>
             <span class="pill pill-blue">상위 32%</span>
           </div>
@@ -681,7 +674,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">직무적합도</span>
                 <span class="vp-skill-name">직무경험</span>
               </div>
-              <span class="level-badge level-중">중</span>
+              <span class="level-btn level-btn-중">중</span>
             </div>
             <span class="pill pill-blue">상위 45%</span>
           </div>
@@ -696,8 +689,10 @@ new Chart(radarCtx, {
         <div class="vp-hs">
           <div class="vp-hs-label vp-hs-pass">확인된 하드스킬</div>
           <div class="vp-hs-chips">
-            <span class="vp-hs-chip">B2B 영업 경험</span>
-            <span class="vp-hs-chip">기술 제안·설명 능력</span>
+            <span class="vp-hs-chip">Salesforce Certified Sales Cloud Consultant</span>
+            <span class="vp-hs-chip">유통관리사 자격증</span>
+            <span class="vp-hs-chip">PowerPoint</span>
+            <span class="vp-hs-chip">Excel</span>
           </div>
         </div>
       </div>
@@ -717,7 +712,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">조직 적합도</span>
                 <span class="vp-skill-name">갈등관리역량</span>
               </div>
-              <span class="level-badge level-없음">없음</span>
+              <span class="level-btn level-btn-없음">없음</span>
             </div>
             <span class="pill pill-red">근거 없음</span>
           </div>
@@ -736,7 +731,7 @@ new Chart(radarCtx, {
                 <span class="vp-parent-label">응답 완성도</span>
                 <span class="vp-skill-name">본인소개</span>
               </div>
-              <span class="level-badge level-하">하</span>
+              <span class="level-btn level-btn-하">하</span>
             </div>
             <span class="pill pill-red">36.82점</span>
           </div>
@@ -747,15 +742,6 @@ new Chart(radarCtx, {
           </div>
         </div>
 
-        <!-- 하드스킬 누락 -->
-        <div class="vp-hs">
-          <div class="vp-hs-label vp-hs-miss">미확인된 하드스킬</div>
-          <div class="vp-hs-chips">
-            <span class="vp-hs-chip vp-hs-chip-red">고객관계관리(CRM)</span>
-            <span class="vp-hs-chip vp-hs-chip-red">수주·계약 협상</span>
-            <span class="vp-hs-chip vp-hs-chip-red">영업 실적 관리</span>
-          </div>
-        </div>
       </div>
 
     </div><!-- /vp-grid -->
@@ -787,10 +773,10 @@ new Chart(radarCtx, {
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">2 / 6</span>
   </div>
 
@@ -829,8 +815,6 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
@@ -849,10 +833,10 @@ new Chart(radarCtx, {
         <span class="qcard-qtitle">지원동기를 서술해 주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-badge level-상">상</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-badge level-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-btn level-btn-상">상</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
       </div>
       <div class="qcard-body">
         <strong>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</strong>
@@ -882,9 +866,9 @@ new Chart(radarCtx, {
         <span class="qcard-qtitle">성격의 장단점에 대해 서술해 주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">직무역량(성취지향)</span><span class="level-badge level-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무역량(성취지향)</span><span class="level-btn level-btn-하">하</span></div>
       </div>
       <div class="qcard-body">
         저는 어릴 때부터 다양한 분야에 관심을 두고 즐겨왔습니다. 흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.
@@ -910,10 +894,10 @@ new Chart(radarCtx, {
         <span class="qcard-qtitle">자기소개를 해주세요.</span>
       </div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-badge level-중">중</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">리더십역량</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">팀워크역량</span><span class="level-badge level-하">하</span></div>
-        <div class="qcard-mitem"><span class="qcard-mname">회사동기</span><span class="level-badge level-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">리더십역량</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">팀워크역량</span><span class="level-btn level-btn-하">하</span></div>
+        <div class="qcard-mitem"><span class="qcard-mname">회사동기</span><span class="level-btn level-btn-중">중</span></div>
       </div>
       <div class="qcard-body">
         저의 꿈은 산업안전공단에서 엔지니어로서 일하며 세계 최고 수준의 안전하고 효율적인 공장으로 발전시키고, 나아가서 공정 운영의 전문가로서 모든 부분을 총괄하여 공장을 설계해 보는 것입니다.
@@ -938,10 +922,10 @@ new Chart(radarCtx, {
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">3 / 6</span>
   </div>
 
@@ -958,26 +942,27 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
   <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 섹션 타이틀 -->
+    <!-- BP 평가 상세 타이틀 -->
     <div class="sec-title-bar">
-      <span class="sec-title-bar-text">역량 및 적합도 평가</span>
+      <span class="sec-title-bar-text">BP 평가 상세</span>
     </div>
 
-    <!-- 직무적합도 섹션 헤더 -->
-    <div class="detail-h2">직무적합도&nbsp;<span class="h2-score">65.92</span>점</div>
+    <!-- 역량 및 적합도 평가 그룹 헤더 -->
+    <div class="sec-group-bar">역량 및 적합도 평가</div>
 
-    <!-- 직무경험 (중) -->
+    <!-- 직무적합도 서브헤더 -->
+    <div class="eval-sub-title">직무적합도&nbsp;<span class="eval-sub-score">65.92</span>점</div>
+
+    <!-- 직무경험 (중) — plain name -->
     <div class="eval-row">
-      <span class="eval-chip">직무경험</span>
-      <span class="level-badge level-중">중</span>
+      <span class="eval-name-plain">직무경험</span>
+      <span class="level-btn level-btn-중">중</span>
       <div class="eval-main">
         <div class="eval-summary">단기 인턴십을 통한 다양한 현장 생산공정 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.</div>
         <div class="eval-src-label">자기소개서 내용</div>
@@ -990,10 +975,10 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 직무동기 (상) -->
+    <!-- 직무동기 (상) — plain name -->
     <div class="eval-row">
-      <span class="eval-chip">직무동기</span>
-      <span class="level-badge level-상">상</span>
+      <span class="eval-name-plain">직무동기</span>
+      <span class="level-btn level-btn-상">상</span>
       <div class="eval-main">
         <div class="eval-summary">자소서 전반에 걸쳐 직무에 대한 높은 관심과 적극적 동기가 일관되게 드러남. 직무 선택 이유가 명확하게 서술됨.</div>
         <div class="eval-src-label">자기소개서 내용</div>
@@ -1007,16 +992,15 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 직무지식 (중) -->
+    <!-- 직무지식 (중) — plain name -->
     <div class="eval-row">
-      <span class="eval-chip">직무지식</span>
-      <span class="level-badge level-중">중</span>
+      <span class="eval-name-plain">직무지식</span>
+      <span class="level-btn level-btn-중">중</span>
       <div class="eval-main">
-        <div class="eval-summary">전기·소방 등 관련 분야 독학 및 자격증 준비 노력. 현장 경험을 통한 실무 지식 확장 의지 확인.</div>
+        <div class="eval-summary">화학공학 전공 및 고분자·신소재 공정 연구. 전기·소방 관련 독학 자격시험 준비 및 실무 적용.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
           <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-          <li>작년에 코레이 생산 관리 직무에서 인턴을 수행하며 화학공학뿐만 아니라 전기, 소방 등 다양한 관련 분야에 지식이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</li>
           <li>그래서 생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
           <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
           <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
@@ -1024,11 +1008,25 @@ new Chart(radarCtx, {
       </div>
     </div>
 
-    <!-- 직무역량(역량분자) — 서브타이틀만 (상세 다음 페이지 계속) -->
+    <!-- 직무역량(역량분자) 구분 행 -->
+    <div class="eval-cat-row">
+      <span class="eval-cat-name">직무역량(역량분자)</span>
+      <span class="level-btn level-btn-하">하</span>
+    </div>
+
+    <!-- 주도성 (하) — circle chip -->
     <div class="eval-row">
-      <span class="eval-chip">직무역량</span>
-      <span class="level-badge level-하">하</span>
-      <div class="eval-main"></div>
+      <span class="eval-chip">주도성</span>
+      <span class="level-btn level-btn-하">하</span>
+      <div class="eval-main">
+        <div class="eval-summary">스스로 자격시험·현장 체험 도전 행동 다수. 그러나 결과·성과 중심 서술 부족으로 깊이 부족.</div>
+        <div class="eval-src-label">자기소개서 내용</div>
+        <ul class="eval-bullets">
+          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+          <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했습니다.</li>
+          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
+        </ul>
+      </div>
     </div>
 
   </div><!-- /content -->
@@ -1036,10 +1034,10 @@ new Chart(radarCtx, {
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">4 / 6</span>
   </div>
 
@@ -1082,6 +1080,17 @@ new Chart(radarCtx, {
 .hardskill-name{font-size:16px;font-weight:700;color:#041D30;white-space:nowrap;flex-shrink:0;min-width:148px;margin-top:1px;}
 .hardskill-main{flex:1;min-width:0;}
 .hardskill-summary{font-size:14px;font-weight:700;color:#041D30;line-height:1.55;margin-bottom:8px;}
+
+/* ── 섹션 그룹 헤더 (역량 및 적합도 평가, 응답 완성도) ── */
+.sec-group-bar{background:#EFEFEF;padding:10px 24px;font-size:14px;font-weight:700;color:#041D30;}
+/* ── 직무적합도/조직적합도 서브헤더 (배경 없는 bold) ── */
+.eval-sub-title{padding:10px 24px 6px;font-size:16px;font-weight:700;color:#041D30;}
+.eval-sub-score{font-family:'Noto Sans',sans-serif;}
+/* ── 직무역량(역량분자) 구분 행 ── */
+.eval-cat-row{display:flex;align-items:center;gap:10px;padding:8px 24px;background:#F5F5F5;border-bottom:1px solid #E3E3E3;}
+.eval-cat-name{font-size:14px;font-weight:700;color:#041D30;flex:1;}
+/* ── 레벨1 항목명 plain (직무경험/직무동기/직무지식) ── */
+.eval-name-plain{font-size:14px;font-weight:700;color:#041D30;min-width:80px;flex-shrink:0;margin-top:2px;}
 </style>
 
 
@@ -1096,157 +1105,145 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
   <!-- ── 콘텐츠 ── -->
   <div style="flex:1;display:flex;flex-direction:column;">
 
-    <!-- 성취지향 (직무역량 하위, 전 페이지에서 이어짐) -->
+    <!-- 성취지향 (전 페이지에서 이어짐) — circle chip -->
     <div class="eval-row">
       <span class="eval-chip">성취지향</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">'만족할 수준까지 공부' 표현은 있으나, 구체적 성취 수치·결과 제시 없어 등급 상향 불가.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>졸업 준비로 받은 뒤에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
-          <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 대학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-          <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼의 전문가가 되어야겠다고 생각하고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
+          <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+          <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 대인관계역량 (직무적합도 마지막 항목) -->
+    <!-- 스트레스 관리 역량 (-) — circle chip -->
     <div class="eval-row">
-      <span class="eval-chip">대인관계역량</span>
-      <span class="level-badge level-없음">-</span>
+      <span class="eval-chip">스트레스 관리 역량</span>
+      <span class="level-btn level-btn-없음">-</span>
       <div class="eval-main">
         <span class="eval-empty">관련 근거 문장 없음.</span>
       </div>
     </div>
 
-    <!-- 조직적합도 섹션 헤더 -->
-    <div class="detail-h2">조직적합도&nbsp;<span class="h2-score">15.00</span>점</div>
+    <!-- 조직적합도(역량분자) 섹션 헤더 -->
+    <div class="detail-h2">조직적합도(역량분자)&nbsp;<span class="h2-score">15.00</span>점</div>
 
-    <!-- 리더십역량 -->
+    <!-- 리더십역량 (하) — circle chip -->
     <div class="eval-row">
       <span class="eval-chip">리더십역량</span>
-      <span class="level-badge level-하">하</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">인턴·프로젝트 경험 기술 있으나 리더십 발휘 관점의 서술 미확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>학부 프로젝트와 전산재료 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다시 경험했습니다.</li>
-          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 최대한 늘었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
+          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 팀워크 -->
+    <!-- 협상력 (-) — circle chip -->
     <div class="eval-row">
-      <span class="eval-chip">팀워크</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="eval-chip">협상력</span>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 갈등관리역량 -->
+    <!-- 갈등관리역량 (-) — circle chip -->
     <div class="eval-row">
       <span class="eval-chip">갈등관리역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 팀워크포스역량 -->
+    <!-- 팀워크역량 (하) — circle chip -->
     <div class="eval-row">
-      <span class="eval-chip">팀워크포스역량</span>
-      <span class="level-badge level-하">하</span>
+      <span class="eval-chip">팀워크역량</span>
+      <span class="level-btn level-btn-하">하</span>
       <div class="eval-main">
         <div class="eval-summary">인턴 과정 기술 있으나 팀 협업 관점의 서술 없음.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>학부 프로젝트와 전산재료 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다시 경험했습니다.</li>
+          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 의사소통역량 -->
+    <!-- 의사소통역량 (-) — circle chip -->
     <div class="eval-row">
       <span class="eval-chip">의사소통역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
-    <!-- 대인관계역량 (조직적합도) -->
+    <!-- 대인관계역량 (-) — circle chip -->
     <div class="eval-row">
       <span class="eval-chip">대인관계역량</span>
-      <span class="level-badge level-없음">-</span>
-      <div class="eval-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
+      <span class="level-btn level-btn-없음">-</span>
+      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
     </div>
 
     <!-- 하드스킬 평가 섹션 헤더 -->
     <div class="detail-h2">하드스킬 평가</div>
 
-    <!-- B2B 영업 경험 (검출) -->
+    <!-- Salesforce Certified Sales Cloud Consultant (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">B2B 영업 경험</div>
+      <div class="hardskill-name">Salesforce Certified Sales Cloud Consultant</div>
       <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <div class="hardskill-summary">인턴·파견직 등 다양한 현장 근무 이력에서 대내외 업무 경험 확인.</div>
+        <div class="hardskill-summary">Salesforce 공인 자격 보유로 CRM 기반 영업 파이프라인 관리 역량 확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+          <li>세일즈 업무의 효율화를 위해 Salesforce Certified Sales Cloud Consultant 자격을 취득하고, CRM 시스템을 활용한 고객 파이프라인 관리 경험을 쌓았습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 기술 제안·설명 능력 (검출) -->
+    <!-- 유통관리사 자격증 (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">기술 제안·설명 능력</div>
+      <div class="hardskill-name">유통관리사 자격증</div>
       <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <div class="hardskill-summary">프로젝트 참여를 통한 기술 지식 습득 및 실무 적용 경험 확인.</div>
+        <div class="hardskill-summary">유통관리사 자격 보유로 유통 채널 전반에 대한 전문 지식 확인.</div>
         <div class="eval-src-label">자기소개서 내용</div>
         <ul class="eval-bullets">
-          <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 최대한 늘었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+          <li>유통관리사 자격을 보유하고 있으며, 유통 채널 전반에 대한 이해를 바탕으로 현장 영업 전략을 수립할 수 있습니다.</li>
         </ul>
       </div>
     </div>
 
-    <!-- 고객관계관리(CRM) (미검출) -->
+    <!-- PowerPoint (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">고객관계관리(CRM)</div>
-      <span class="pill pill-default">미검출</span>
+      <div class="hardskill-name">PowerPoint</div>
+      <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
+        <div class="hardskill-summary">제안서·발표 자료 작성 및 고객사 임원 프레젠테이션 수행 경험 확인.</div>
+        <div class="eval-src-label">자기소개서 내용</div>
+        <ul class="eval-bullets">
+          <li>제안서 및 발표 자료 작성 시 PowerPoint를 활용하여 고객사 임원진 대상 프레젠테이션을 직접 진행한 경험이 있습니다.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- 수주·계약 협상 (미검출) -->
+    <!-- Excel (검출) -->
     <div class="hardskill-row">
-      <div class="hardskill-name">수주·계약 협상</div>
-      <span class="pill pill-default">미검출</span>
+      <div class="hardskill-name">Excel</div>
+      <span class="pill pill-blue">검출</span>
       <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
-      </div>
-    </div>
-
-    <!-- 영업 실적 관리 (미검출) -->
-    <div class="hardskill-row">
-      <div class="hardskill-name">영업 실적 관리</div>
-      <span class="pill pill-default">미검출</span>
-      <div class="hardskill-main">
-        <span class="eval-empty">관련 근거 문장 없음.</span>
+        <div class="hardskill-summary">Excel 피벗 테이블 활용 영업 실적 데이터 분석 및 리포트 작성 경험 확인.</div>
+        <div class="eval-src-label">자기소개서 내용</div>
+        <ul class="eval-bullets">
+          <li>Excel을 활용한 영업 실적 데이터 분석 및 피벗 테이블 작성으로 월별 실적 리포트를 작성해왔습니다.</li>
+        </ul>
       </div>
     </div>
 
@@ -1255,10 +1252,10 @@ new Chart(radarCtx, {
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">5 / 6</span>
   </div>
 
@@ -1284,8 +1281,6 @@ new Chart(radarCtx, {
     <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
-      <span class="dh-div"></span>
-      <span class="dh-num">MUHA0001</span>
     </div>
   </div>
 
@@ -1293,7 +1288,7 @@ new Chart(radarCtx, {
   <div style="flex:1;display:flex;flex-direction:column;">
 
     <!-- 응답 완성도 섹션 헤더 -->
-    <div class="detail-h2">응답 완성도</div>
+    <div class="sec-group-bar">응답 완성도</div>
 
     <!-- 답변적합도 -->
     <div class="resp-row">
@@ -1333,10 +1328,10 @@ new Chart(radarCtx, {
   <!-- ── 푸터 ── -->
   <div class="page-footer">
     <div class="footer-left">
-      <img class="footer-logo" src="logo/logo_prism.png" alt="PRISM">
-      <span class="footer-product">서류평가</span>
+      <img class="footer-logo-img prism" src="logo/logo_prism.png" alt="PRISM">
+      <span>서류평가</span>
     </div>
-    <span class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
     <span class="footer-page">6 / 6</span>
   </div>
 
