@@ -247,7 +247,7 @@ HTML 결과지 파일을 만들거나 수정하기 전에 아래 순서를 반�
 - fetch 없이 기억이나 추정으로 작업 금지
 
 **STEP 2. 더미 데이터 파일 확인**
-- 프로토타입/목업 작업 시 `bp_evaluation_data.json` 파일의 데이터 구조를 참조할 것
+- 프로토타입/목업 작업 시 `data/bp_evaluation_data.json` 파일의 데이터 구조를 참조할 것
 - 점수(`scores`), 평가 항목(`evaluation`), 근거 문장(`evidence_sentences`), 자소서 문항(`essay_sections`) 등 JSON에 정의된 구조를 기준으로 콘텐츠를 채울 것
 - JSON에 없는 항목(배지 레이블, 비교 수치, 코멘트 문구 등)은 기존 값을 유지하거나 임의로 설정 가능
 
@@ -465,9 +465,9 @@ HTML 결과지 파일을 만들거나 수정하기 전에 아래 순서를 반�
 ### 로고 파일 및 표시 크기
 | 제품 | 로고 파일 | 표시 높이 |
 |------|-----------|-----------|
-| 몬스터·역량검사 | logo/logo_aimonster.png | height: 10px |
-| 교차진단·프리즘 BP | logo/logo_prism.png | height: 16px |
-| 교차진단 | logo/logo_prism.png + logo/logo_aimonster.png (둘 다) | - |
+| 몬스터·역량검사 | ../logo/logo_aimonster.png | height: 10px |
+| 교차진단·프리즘 BP | ../logo/logo_prism.png | height: 16px |
+| 교차진단 | ../logo/logo_prism.png + ../logo/logo_aimonster.png (둘 다) | - |
 
 ### 저작권 문구 (푸터 중앙)
 > Copyright © 2026 muhayu Inc. All rights reserved.
@@ -502,7 +502,9 @@ HTML 결과지 파일을 만들거나 수정하기 전에 아래 순서를 반�
 ---
 
 ## 파일 규칙
+- 저장 위치: `output/` 폴더
 - 파일명: [제품명]-[지원자명]-[날짜].html
-  - 예: monster-홍길동-20260525.html
+  - 예: output/monster-홍길동-20260525.html
 - 한 파일 = 한 지원자의 결과지
 - 결과지는 단일 HTML 파일로 제작 (외부 CSS/JS 파일 분리 금지)
+- 로고·아이콘 에셋은 루트의 `logo/`, `icons/` 폴더를 상대 경로(`../logo/`, `../icons/`)로 참조

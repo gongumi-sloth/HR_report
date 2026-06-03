@@ -76,7 +76,7 @@
       "series": [
         {
           "label": "지원자",
-          "data": [65.92, 15.00, 62.77, 68.36, 65.92, 36.82]
+          "data": [63.98, 47.65, 62.77, 67.85, 63.91, 33.10]
         },
         {
           "label": "평균",
@@ -87,22 +87,22 @@
     "score_panels": [
       {
         "name": "직무적합도",
-        "score": 65.92,
+        "score": 63.98,
         "vs_average": "+4.2p",
         "benchmarks": {
           "average": 57.2,
           "top_10_percent": 74.3
         },
         "factors": [
-          { "name": "직무경험",    "level": "중", "is_parent": false },
-          { "name": "직무동기",    "level": "상", "is_parent": false },
-          { "name": "직무지식",    "level": "중", "is_parent": false },
+          { "name": "직무경험", "level": "중", "is_parent": false },
+          { "name": "직무지식", "level": "중", "is_parent": false },
+          { "name": "직무동기", "level": "상", "is_parent": false },
           {
-            "name": "직무역량",   "level": "하", "is_parent": true,
+            "name": "직무역량", "level": "하", "is_parent": true,
             "sub_factors": [
-              { "name": "주도성",       "level": "하" },
+              { "name": "주도성",       "level": "상" },
               { "name": "성취지향",     "level": "하" },
-              { "name": "대인관계역량", "level": "없음" }
+              { "name": "스트레스 관리","level": "없음" }
             ]
           }
         ],
@@ -115,19 +115,19 @@
       },
       {
         "name": "조직적합도",
-        "score": 15.00,
+        "score": 47.65,
         "vs_average": "-6.1p",
         "benchmarks": {
           "average": 53.8,
           "top_10_percent": 71.2
         },
         "factors": [
-          { "name": "리더십역량",    "level": "하" },
-          { "name": "팀워크",        "level": "없음" },
-          { "name": "갈등관리역량",  "level": "없음" },
-          { "name": "팀워크포스역량","level": "하" },
-          { "name": "의사소통역량",  "level": "없음" },
-          { "name": "대인관계역량",  "level": "없음" }
+          { "name": "리더십역량",   "level": "없음" },
+          { "name": "협상력",       "level": "없음" },
+          { "name": "갈등관리역량", "level": "없음" },
+          { "name": "팀워크역량",   "level": "하" },
+          { "name": "의사소통역량", "level": "없음" },
+          { "name": "대인관계역량", "level": "없음" }
         ]
       },
       {
@@ -139,15 +139,15 @@
           "top_10_percent": 76.0
         },
         "factors": [
-          { "name": "직무동기", "level": "상" },
-          { "name": "회사동기", "level": "중" }
+          { "name": "회사동기", "level": "중" },
+          { "name": "직무동기", "level": "상" }
         ]
       }
     ],
     "response_completeness_compact": [
-      { "name": "답변적합도", "score": 68.36, "description": "질문의 의도를 잘 파악하여 대답함" },
-      { "name": "구체성",     "score": 65.92, "description": "경험을 단순 나열한 수준임" },
-      { "name": "자기소개",   "score": 36.82, "description": "자기 서사 부재" }
+      { "name": "답변적합도", "score": 67.85, "description": "질문의 의도를 잘 파악하여 대답함" },
+      { "name": "구체성",     "score": 63.91, "description": "경험을 단순 나열한 수준임" },
+      { "name": "자기소개",   "score": 33.10, "description": "자기 서사 부재" }
     ]
   },
 
@@ -192,10 +192,10 @@
         },
         {
           "category": "응답 완성도",
-          "competency": "본인소개",
+          "competency": "자기소개",
           "level": "하",
-          "score": 36.82,
-          "description": "본인소개 문항 36.82점 (하위 영역). 본인 주어 중심 서술 부재·직무 연관성 낮음.",
+          "score": 33.10,
+          "description": "자기소개 문항 33.10점 (하위 영역). 본인 주어 중심 서술 부재·직무 연관성 낮음.",
           "interview_question": "자소서에 기재된 특정 경험을 현장에서 재현·설명하도록 유도하여 본인 역할 및 실제 경험 여부를 검증해보세요."
         }
       ]
@@ -204,7 +204,7 @@
 
   "7_gpk_detection": {
     "items": [
-      { "question_number": "문항 1", "question_title": "지원 동기",    "detection_rate": "52%", "sentence_count": "6개 문장" },
+      { "question_number": "문항 1", "question_title": "지원 동기",   "detection_rate": "52%", "sentence_count": "6개 문장" },
       { "question_number": "문항 2", "question_title": "성격 장단점", "detection_rate": "11%", "sentence_count": "3개 문장" },
       { "question_number": "문항 3", "question_title": "자기소개",    "detection_rate": "17%", "sentence_count": "3개 문장" }
     ]
@@ -216,10 +216,10 @@
         "number": "문항 1",
         "title": "지원동기를 서술해 주세요.",
         "competency_metrics": [
-          { "name": "직무동기",       "level": "상" },
-          { "name": "직무경험",       "level": "중" },
-          { "name": "직무지식",       "level": "중" },
-          { "name": "직무역량(주도성)", "level": "하" }
+          { "name": "직무동기",         "level": "상" },
+          { "name": "직무경험",         "level": "중" },
+          { "name": "직무지식",         "level": "중" },
+          { "name": "직무역량(주도성)", "level": "상" }
         ],
         "body": [
           { "highlighted": true,  "text": "저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다." },
@@ -238,7 +238,7 @@
         "title": "성격의 장단점에 대해 서술해 주세요.",
         "competency_metrics": [
           { "name": "직무지식",           "level": "중" },
-          { "name": "직무역량(주도성)",   "level": "하" },
+          { "name": "직무역량(주도성)",   "level": "상" },
           { "name": "직무역량(성취지향)", "level": "하" }
         ],
         "body": [
@@ -256,7 +256,6 @@
         "title": "자기소개를 해주세요.",
         "competency_metrics": [
           { "name": "직무경험",   "level": "중" },
-          { "name": "리더십역량", "level": "하" },
           { "name": "팀워크역량", "level": "하" },
           { "name": "회사동기",   "level": "중" }
         ],
@@ -267,7 +266,7 @@
           { "highlighted": false, "text": "또한, 공장의 설계부터 총괄까지 지휘하는 엔지니어 선배님들의 모습을 보고 크게 감명받았습니다." },
           { "highlighted": true,  "text": "LG 화학에서 생산 기술 직무로 일하게 된다면 다양한 프로젝트에 적극 참여하면서 전공 지식을 현업에 적용하는 노하우를 익히고 국내 최고의 효율성과 생산 기술을 추구하는 엔지니어가 되겠습니다." }
         ],
-        "confirmed_competencies": ["직무경험", "리더십역량", "팀워크역량", "회사동기"],
+        "confirmed_competencies": ["직무경험", "팀워크역량", "회사동기"],
         "gpk_detection_rate": "17%"
       }
     ]
@@ -275,29 +274,19 @@
 
   "9_bp_detail_evaluation": {
     "section_title": "BP 평가 상세",
-    "_note": "단일 표. 그룹 헤더 행(group_header)과 데이터 행(rows)으로 구성. 페이지 분할은 행 단위 렌더링 결과이며 콘텐츠 구조와 무관.",
-    "table_header": "역량 및 적합도 평가",
+    "_note": "단일 표. group_header.category가 표의 depth1, group_header.title이 depth2에 해당. 행(row) 순서 고정이며 페이지 분할은 렌더링 엔진이 행 단위로 결정.",
     "groups": [
       {
-        "group_header": { "title": "직무적합도", "score": 63.91 },
+        "group_header": { "category": "역량 및 적합도 평가", "title": "직무적합도", "score": 63.98 },
         "rows": [
           {
-            "name": "직무경험", "level": "상",
+            "name": "직무경험", "level": "중",
             "comment": "단기 아르바이트·인턴·파견직 등 다양한 형태의 생산현장 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.",
             "evidence": [
               "그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.",
               "졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.",
               "6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.",
               "학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다."
-            ]
-          },
-          {
-            "name": "직무동기", "level": "중",
-            "comment": "지속적 현장 체험 도전 행동으로 직무 의지 확인됨. 단, 지원 직무(영업)와 서술 직무(생산기술) 간 연결 부재.",
-            "evidence": [
-              "그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.",
-              "졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.",
-              "프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다."
             ]
           },
           {
@@ -310,11 +299,20 @@
             ]
           },
           {
-            "name": "직무역량(역량분자)", "level": "하", "is_parent_row": true,
+            "name": "직무동기", "level": "상",
+            "comment": "지속적 현장 체험 도전 행동으로 직무 의지 확인됨. 단, 지원 직무(영업)와 서술 직무(생산기술) 간 연결 부재.",
+            "evidence": [
+              "그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.",
+              "졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.",
+              "프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다."
+            ]
+          },
+          {
+            "name": "직무역량", "level": "하", "is_parent_row": true,
             "sub_rows": [
               {
-                "name": "주도성", "level": "하",
-                "comment": "스스로 자격시험·현장 체험 도전 행동 다수. 그러나 결과·성과 중심 서술 부족으로 깊이 부족.",
+                "name": "주도성", "level": "상",
+                "comment": "스스로 자격시험·현장 체험 도전 행동 다수. 결과·성과 중심 서술 확인.",
                 "evidence": [
                   "그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다."
                 ]
@@ -329,19 +327,15 @@
                 ]
               },
               {
-                "name": "스트레스 관리 역량", "level": "-",
+                "name": "스트레스 관리", "level": "-",
                 "comment": "관련 근거 문장 없음.", "evidence": []
               }
             ]
-          },
-          {
-            "name": "대인관계역량", "level": "-",
-            "comment": "관련 근거 문장 없음.", "evidence": []
           }
         ]
       },
       {
-        "group_header": { "title": "조직적합도(역량분자)", "score": 47.65 },
+        "group_header": { "category": "역량 및 적합도 평가", "title": "조직적합도", "score": 47.65 },
         "rows": [
           { "name": "리더십역량",   "level": "-",  "comment": "관련 근거 문장 없음.", "evidence": [] },
           { "name": "협상력",       "level": "-",  "comment": "관련 근거 문장 없음.", "evidence": [] },
@@ -352,7 +346,14 @@
         ]
       },
       {
-        "group_header": { "title": "하드스킬 평가" },
+        "group_header": { "category": "역량 및 적합도 평가", "title": "지원동기" },
+        "rows": [
+          { "name": "회사동기", "level": "중", "comment": "근거 요약 및 근거 문장", "evidence": [] },
+          { "name": "직무동기", "level": "상", "comment": "근거 요약 및 근거 문장", "evidence": [] }
+        ]
+      },
+      {
+        "group_header": { "category": "하드스킬 평가", "title": "하드스킬 평가" },
         "rows": [
           {
             "name": "B2B 영업 경험", "status": "검출",
@@ -362,23 +363,23 @@
             ]
           },
           {
-            "name": "기술 제안·설명 능력", "status": "검출",
+            "name": "기술 제안 비딩 경험", "status": "검출",
             "comment": "프로젝트 참여를 통한 기술 지식 습득 및 실무 적용 경험 확인.",
             "evidence": [
               "프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다."
             ]
           },
           { "name": "고객관계관리(CRM)", "status": "미검출", "comment": "관련 근거 문장 없음.", "evidence": [] },
-          { "name": "수주·계약 협상",   "status": "미검출", "comment": "관련 근거 문장 없음.", "evidence": [] },
-          { "name": "영업 실적 관리",   "status": "미검출", "comment": "관련 근거 문장 없음.", "evidence": [] }
+          { "name": "계약 협상",         "status": "미검출", "comment": "관련 근거 문장 없음.", "evidence": [] },
+          { "name": "영업 실적 관리",    "status": "미검출", "comment": "관련 근거 문장 없음.", "evidence": [] }
         ]
       },
       {
-        "group_header": { "title": "응답 완성도" },
+        "group_header": { "category": "응답 완성도", "title": "응답 완성도" },
         "rows": [
           { "name": "답변적합도", "score": 67.85, "comment": "문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함" },
           { "name": "구체성",     "score": 63.91, "comment": "구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함" },
-          { "name": "본인소개",   "score": 33.10, "comment": "본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함" }
+          { "name": "자기소개",   "score": 33.10, "comment": "본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함" }
         ]
       }
     ]
