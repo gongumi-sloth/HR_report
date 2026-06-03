@@ -20,6 +20,10 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .nav-btn { background: #0A47A0; color: #fff; border: none; padding: 6px 18px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500; }
 .nav-btn:disabled { background: #94a3b8; cursor: not-allowed; }
 .page-ind { font-size: 13px; color: #64748b; flex: 1; text-align: center; font-weight: 500; }
+.zoom-ctrl { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.zoom-btn { background: #f1f5f9; color: #041D30; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 500; }
+.zoom-btn.active { background: #0A47A0; color: #fff; border-color: #0A47A0; }
+.zoom-label { font-size: 12px; color: #64748b; }
 
 /* ============================================================
    A4 페이지 구조 - 핵심 규칙
@@ -114,12 +118,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .intai-bullets li { font-size: 12px; color: #041D30; line-height: 1.55; }
 .intai-divider { height: 1px; background: #E3E3E3; }
 .intai-bar-section { display: flex; flex-direction: column; gap: 4px; }
-.intai-bar-section-title { font-size: 13px; font-weight: 700; color: #041D30; }
+.intai-bar-section-title { font-size: 12px; font-weight: 700; color: #041D30; }
 .intai-bar-row { display: flex; align-items: center; gap: 14px; }
 .intai-score-left { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .intai-score-accent { width: 4px; height: 28px; background: #0075FF; border-radius: 2px; flex-shrink: 0; }
-.intai-bar-title { font-size: 13px; font-weight: 700; color: #041D30; white-space: nowrap; }
-.intai-score-num { font-size: 22px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; white-space: nowrap; }
+.intai-bar-title { font-size: 12px; font-weight: 700; color: #041D30; white-space: nowrap; }
+.intai-score-num { font-size: 18px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; white-space: nowrap; }
 .intai-bar-wrap { flex: 1; }
 .intai-bar-track { position: relative; height: 18px; }
 .intai-track-bg { position: absolute; inset: 2px 0; height: 14px; background: #e9e9ea; border-radius: 4px; }
@@ -127,7 +131,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .intai-cut-line { position: absolute; top: 0; width: 2px; height: 18px; background: #FF006B; }
 .intai-avg-dot { position: absolute; top: 3px; width: 12px; height: 12px; background: #7C52F1; border-radius: 50%; transform: translateX(-50%); }
 .intai-top10-dot { position: absolute; top: 3px; width: 12px; height: 12px; background: #041D30; border-radius: 50%; transform: translateX(-50%); }
-.intai-legend { display: flex; gap: 12px; font-size: 11px; color: #7D7D80; }
+.intai-legend { display: flex; gap: 12px; font-size: 12px; color: #7D7D80; }
 .intai-leg-item { display: flex; align-items: center; gap: 4px; }
 .intai-leg-red { width: 3px; height: 12px; background: #FF006B; border-radius: 1px; }
 .intai-leg-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -139,7 +143,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 
 /* 섹션 타이틀 */
 .sec-title { display: flex; align-items: center; padding-left: 10px; border-left: 4px solid #0075FF; flex-shrink: 0; }
-.sec-title-text { font-size: 16px; font-weight: 700; color: #041D30; }
+.sec-title-text { font-size: 24px; font-weight: 700; color: #041D30; }
 
 /* 칼럼 레이아웃 */
 .two-cols { display: flex; gap: 10px; align-items: stretch; flex-shrink: 0; }
@@ -150,24 +154,24 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 /* 공통 패널 */
 .eval-panel { border: 1px solid #E3E3E3; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
 .panel-head { padding: 10px 14px 8px; }
-.panel-title { font-size: 13px; font-weight: 700; color: #041D30; margin-bottom: 6px; }
+.panel-title { font-size: 12px; font-weight: 700; color: #041D30; margin-bottom: 6px; }
 .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
 .score-marker { width: 4px; height: 18px; background: rgba(0,117,255,.3); border-right: 2px solid #0075FF; flex-shrink: 0; }
-.score-val { font-size: 20px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; }
-.score-diff { font-size: 11px; color: #7D7D80; margin-left: auto; }
+.score-val { font-size: 18px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; }
+.score-diff { font-size: 12px; color: #7D7D80; margin-left: auto; }
 .diff-pos { color: #0075FF; font-weight: 700; }
 .diff-neg { color: #d75d00; font-weight: 700; }
 .sbar { position: relative; height: 10px; background: #E9E9EA; border-radius: 4px; margin-bottom: 3px; }
 .sbar-fill { height: 100%; background: rgba(0,117,255,.3); border-right: 2px solid #0075FF; border-radius: 4px 0 0 4px; }
 .sbar-avg { position: absolute; top: 50%; width: 9px; height: 9px; background: #7C52F1; border-radius: 50%; transform: translate(-50%,-50%); }
 .sbar-top10 { position: absolute; top: 50%; width: 9px; height: 9px; background: #041D30; border-radius: 50%; transform: translate(-50%,-50%); }
-.sbar-legend { display: flex; gap: 8px; font-size: 10px; color: #7D7D80; }
+.sbar-legend { display: flex; gap: 8px; font-size: 12px; color: #7D7D80; }
 .sleg { display: flex; align-items: center; gap: 3px; }
 .sleg-dot { width: 7px; height: 7px; border-radius: 50%; }
 
 /* 팩터 테이블 */
 .factor-table { width: 100%; border-collapse: collapse; }
-.factor-table th { font-size: 11px; font-weight: 600; color: #7D7D80; background: rgba(0,117,255,0.06); padding: 5px 12px; text-align: left; border-top: 1px solid #041D30; border-bottom: 1px solid #E3E3E3; }
+.factor-table th { font-size: 12px; font-weight: 600; color: #7D7D80; background: rgba(0,117,255,0.06); padding: 5px 12px; text-align: left; border-top: 1px solid #041D30; border-bottom: 1px solid #E3E3E3; }
 .factor-table th:last-child { text-align: center; width: 50px; }
 .factor-table td { padding: 0 12px; border-bottom: 1px solid #E3E3E3; height: 30px; font-size: 12px; color: #041D30; }
 .factor-table tr:last-child td { border-bottom: 1px solid #041D30; }
@@ -175,7 +179,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .factor-table .child-row td { height: 26px; padding: 0 12px; }
 .factor-table .child-row td:first-child { padding-left: 22px; color: #7D7D80; }
 .lv-cell { text-align: center; }
-.lv { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 17px; border-radius: 2px; font-size: 11px; font-weight: 700; }
+.lv { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 17px; border-radius: 2px; font-size: 12px; font-weight: 700; }
 .lv-상 { background: #0075FF; color: #fff; }
 .lv-중 { background: rgba(0,117,255,0.6); color: #fff; }
 .lv-하 { background: rgba(0,117,255,0.2); color: #041D30; }
@@ -183,23 +187,23 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 
 /* 하드스킬 칩 */
 .hs-wrap { padding: 7px 12px; border-top: 1px solid #E9E9EA; }
-.hs-label { font-size: 11px; font-weight: 700; color: #0075FF; margin-bottom: 4px; }
+.hs-label { font-size: 12px; font-weight: 700; color: #0075FF; margin-bottom: 4px; }
 .hs-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.hs-chip { padding: 2px 8px; border-radius: 10px; font-size: 11px; background: rgba(0,117,255,.1); color: #0075FF; }
+.hs-chip { padding: 2px 8px; border-radius: 10px; font-size: 12px; background: rgba(0,117,255,.1); color: #0075FF; }
 
 /* 레이더 패널 */
 .radar-head { padding: 10px 14px 6px; }
-.radar-title { font-size: 13px; font-weight: 700; color: #041D30; }
+.radar-title { font-size: 12px; font-weight: 700; color: #041D30; }
 .radar-area { display: flex; justify-content: center; align-items: center; }
-.radar-legend { display: flex; gap: 12px; font-size: 10px; color: #7D7D80; justify-content: center; padding: 4px 0 8px; }
+.radar-legend { display: flex; gap: 12px; font-size: 12px; color: #7D7D80; justify-content: center; padding: 4px 0 8px; }
 .rleg { display: flex; align-items: center; gap: 3px; }
 .rleg-dot { width: 8px; height: 8px; border-radius: 50%; }
 
 /* 컴팩트 카드 */
 .compact-card { flex: 1; border: 1px solid #E3E3E3; border-radius: 8px; padding: 12px 14px; }
 .compact-name { font-size: 12px; font-weight: 700; color: #041D30; margin-bottom: 3px; }
-.compact-score { font-size: 20px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; margin-bottom: 3px; }
-.compact-desc { font-size: 11px; color: #7D7D80; border-top: 1px solid #E3E3E3; padding-top: 5px; }
+.compact-score { font-size: 18px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; margin-bottom: 3px; }
+.compact-desc { font-size: 12px; color: #7D7D80; border-top: 1px solid #E3E3E3; padding-top: 5px; }
 
 /* ============================================================
    검증포인트
@@ -209,36 +213,36 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .vp-card-blue { border: 2px solid #0075FF; }
 .vp-card-orange { border: 2px solid #FF7A00; }
 .vp-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.vp-head-title { font-size: 14px; font-weight: 700; color: #041D30; }
-.vp-badge { height: 18px; padding: 0 7px; border-radius: 3px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; }
+.vp-head-title { font-size: 14px; font-weight: 700; color: #041D30; display: flex; align-items: center; gap: 5px; }
+.vp-badge { height: 18px; padding: 0 7px; border-radius: 3px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; }
 .vp-badge-blue { background: #EBF4FF; color: #0075FF; }
 .vp-badge-orange { background: #FFF5EC; color: #FF7A00; }
 .vp-item { border-top: 1px solid #E3E3E3; padding: 8px 0 4px; }
 .vp-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .vp-item-left { display: flex; align-items: flex-end; gap: 5px; }
 .vp-skill-stack { display: flex; flex-direction: column; }
-.vp-parent-label { font-size: 10px; font-weight: 600; color: #7D7D80; }
+.vp-parent-label { font-size: 12px; font-weight: 600; color: #7D7D80; }
 .vp-skill-name { font-size: 14px; font-weight: 700; color: #041D30; }
 .vp-desc { font-size: 12px; color: #041D30; line-height: 1.55; margin-bottom: 5px; }
 .iv-link { display: flex; align-items: flex-start; gap: 6px; padding: 5px 8px; border-radius: 4px; }
 .iv-link-blue { background: rgba(0,117,255,0.05); }
 .iv-link-orange { background: rgba(255,122,0,0.05); }
-.iv-label { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+.iv-label { font-size: 12px; font-weight: 700; padding: 1px 5px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
 .iv-label-blue { background: #EBF4FF; color: #0075FF; }
 .iv-label-orange { background: #FFF5EC; color: #FF7A00; }
-.iv-text { font-size: 11px; color: #041D30; line-height: 1.5; }
+.iv-text { font-size: 12px; color: #041D30; line-height: 1.5; }
 .vp-hs { border-top: 1px solid #E3E3E3; margin-top: 8px; padding-top: 6px; }
 .vp-hs-label { font-size: 12px; font-weight: 700; color: #20AA40; margin-bottom: 4px; }
 .vp-hs-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.vp-hs-chip { height: 18px; padding: 0 7px; border-radius: 9px; font-size: 10px; font-weight: 600; background: #EBF4FF; color: #0075FF; display: inline-flex; align-items: center; }
+.vp-hs-chip { height: 18px; padding: 0 7px; border-radius: 9px; font-size: 12px; font-weight: 600; background: #EBF4FF; color: #0075FF; display: inline-flex; align-items: center; }
 
 /* GPK 테이블 */
 .gpk-section { flex-shrink: 0; }
 .gpk-table { border-top: 1px solid #041D30; }
 .gpk-row { display: flex; align-items: center; padding: 7px 0; border-bottom: 1px solid #E3E3E3; gap: 12px; }
-.gpk-qnum { font-size: 13px; font-weight: 700; color: #041D30; min-width: 50px; }
-.gpk-qtitle { font-size: 13px; color: #041D30; flex: 1; }
-.gpk-pct { font-size: 13px; font-weight: 700; color: #0075FF; min-width: 90px; text-align: right; }
+.gpk-qnum { font-size: 12px; font-weight: 700; color: #041D30; min-width: 50px; }
+.gpk-qtitle { font-size: 12px; color: #041D30; flex: 1; }
+.gpk-pct { font-size: 14px; font-weight: 700; color: #0075FF; min-width: 90px; text-align: right; }
 .gpk-cnt { font-size: 12px; color: #7D7D80; min-width: 55px; text-align: right; }
 
 /* ============================================================
@@ -247,17 +251,19 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .qcard { border: 1px solid #E3E3E3; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
 .qcard + .qcard { margin-top: 10px; }
 .qcard-head { background: #F8F9FA; padding: 8px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #E3E3E3; }
-.qcard-num { font-size: 11px; font-weight: 700; color: #041D30; background: #E3E3E3; padding: 2px 7px; border-radius: 3px; }
-.qcard-qtitle { font-size: 13px; font-weight: 600; color: #041D30; }
+.qcard-num { font-size: 12px; font-weight: 700; color: #041D30; background: #E3E3E3; padding: 2px 7px; border-radius: 3px; }
+.qcard-qtitle { font-size: 14px; font-weight: 700; color: #041D30; }
 .qcard-metric { display: flex; align-items: center; gap: 10px; padding: 5px 14px; border-bottom: 1px solid #E3E3E3; flex-wrap: wrap; }
+.qcard-metric-label { font-size: 12px; font-weight: 600; color: #7D7D80; }
+.qcard-metric-values { font-size: 12px; font-weight: 700; color: #041D30; }
 .qcard-mitem { display: flex; align-items: center; gap: 4px; }
-.qcard-mname { font-size: 11px; font-weight: 600; color: #7D7D80; }
-.qcard-body { padding: 8px 14px; font-size: 12px; color: #041D30; line-height: 1.75; }
+.qcard-mname { font-size: 12px; font-weight: 600; color: #041D30; }
+.qcard-body { padding: 8px 14px; font-size: 14px; color: #041D30; line-height: 1.6; }
 .qcard-body strong { font-weight: 700; }
 .qcard-foot { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px 5px 14px; background: #F8F9FA; border-top: 1px solid #E3E3E3; }
 .qcard-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.qcard-tag { height: 17px; padding: 0 7px; border-radius: 3px; font-size: 10px; font-weight: 600; background: #EBF4FF; color: #0075FF; display: inline-flex; align-items: center; }
-.qcard-gpk { font-size: 11px; color: #7D7D80; }
+.qcard-tag { height: 17px; padding: 0 7px; border-radius: 3px; font-size: 12px; font-weight: 600; background: #EBF4FF; color: #0075FF; display: inline-flex; align-items: center; }
+.qcard-gpk { font-size: 12px; color: #7D7D80; }
 .qcard-gpk b { color: #0075FF; font-weight: 700; }
 
 /* ============================================================
@@ -266,11 +272,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .detail-h2 { background: #041D30; color: #fff; padding: 8px 24px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .h2-score { font-family: 'Noto Sans', sans-serif; }
 .eval-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 24px; border-bottom: 1px solid #E3E3E3; flex-shrink: 0; }
-.eval-chip { display: inline-flex; align-items: center; padding: 0 10px; height: 20px; border-radius: 10px; border: 1px solid #BBBABF; font-size: 11px; color: #041D30; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+.eval-chip { display: inline-flex; align-items: center; padding: 0 10px; height: 20px; border-radius: 10px; border: 1px solid #BBBABF; font-size: 12px; color: #041D30; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
 .eval-main { flex: 1; min-width: 0; }
-.eval-summary { font-size: 13px; font-weight: 700; color: #041D30; line-height: 1.5; margin-bottom: 5px; }
+.eval-summary { font-size: 14px; font-weight: 700; color: #041D30; line-height: 1.5; margin-bottom: 5px; }
 .eval-empty { font-size: 12px; color: #A9A8AA; }
-.eval-src-label { font-size: 11px; color: #7D7D80; font-weight: 600; margin-bottom: 3px; }
+.eval-src-label { font-size: 12px; color: #7D7D80; font-weight: 600; margin-bottom: 3px; }
 .eval-bullets { list-style: disc; padding-left: 14px; display: flex; flex-direction: column; gap: 2px; }
 .eval-bullets li { font-size: 12px; color: #041D30; line-height: 1.55; }
 
@@ -278,7 +284,50 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .hs-eval-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 24px; border-bottom: 1px solid #E3E3E3; flex-shrink: 0; }
 .hs-eval-name { font-size: 14px; font-weight: 700; color: #041D30; flex-shrink: 0; min-width: 140px; }
 .hs-eval-main { flex: 1; }
-.hs-eval-summary { font-size: 13px; font-weight: 700; color: #041D30; margin-bottom: 5px; }
+.hs-eval-summary { font-size: 14px; font-weight: 700; color: #041D30; margin-bottom: 5px; }
+
+/* ============================================================
+   BP 평가 상세 (Figma accurate — pages 4‑6)
+   ============================================================ */
+.bpd-wrap { flex: 1; padding: 24px; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+.bpd-title-wrap { height: 48px; overflow: hidden; flex-shrink: 0; }
+.bpd-title { border-left: 4px solid #0075FF; padding: 3px 0 3px 12px; display: inline-flex; align-items: center; }
+.bpd-title-text { font-size: 24px; font-weight: 700; color: #041D30; line-height: 1.4; }
+.bpd-bar { background: #495e76; min-height: 40px; padding: 10px 12px; display: flex; align-items: center; flex-shrink: 0; }
+.bpd-bar-text { font-size: 18px; font-weight: 700; color: #fff; line-height: 1.4; }
+.bpd-cat { background: #e3e3e3; border-bottom: 1px solid #7d7d80; min-height: 40px; padding: 10px 12px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.bpd-cat-name { font-size: 14px; font-weight: 700; color: #041D30; line-height: 1.6; }
+.bpd-cat-score { font-size: 14px; font-weight: 400; color: #041D30; line-height: 1.6; }
+.bpd-items { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
+.bpd-div { height: 1px; background: #e3e3e3; flex-shrink: 0; }
+.bpd-item { display: flex; gap: 12px; align-items: flex-start; flex-shrink: 0; }
+.bpd-left { width: 210px; flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 8px 12px; align-self: stretch; }
+.bpd-iname { font-size: 14px; font-weight: 700; color: #041D30; width: 140px; line-height: 1.6; }
+.bpd-gr { width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; overflow: hidden; }
+.bpd-gr-상 { background: rgba(0,117,255,0.6); color: #fff; }
+.bpd-gr-중 { background: #e9e9ea; color: #041D30; }
+.bpd-gr-하 { background: #f4f4f4; color: #a9a8aa; }
+.bpd-gr-none { background: #e9e9ea; color: #7d7d80; }
+.bpd-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.bpd-comment { font-size: 14px; font-weight: 700; color: #041D30; line-height: 1.6; padding: 6px 0 8px 8px; }
+.bpd-comment-none { font-size: 14px; font-weight: 400; color: #7d7d80; line-height: 1.6; padding: 8px; }
+.bpd-src { font-size: 14px; font-weight: 700; color: #939395; padding: 4px 8px; flex-shrink: 0; }
+.bpd-src-alt { color: #a9a8aa; }
+.bpd-bullets { display: flex; flex-direction: column; gap: 12px; padding: 8px 0; }
+.bpd-bullets li { font-size: 14px; color: #041D30; line-height: 1.6; list-style: disc; margin-left: 21px; padding: 2px 0; }
+.bpd-parent-left { width: 210px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; }
+.bpd-parent-name { font-size: 14px; font-weight: 700; color: #041D30; width: 147px; line-height: 1.6; }
+.bpd-tag { border: 1px solid #a9a8aa; border-radius: 12px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; font-size: 14px; font-weight: 700; color: #041D30; white-space: nowrap; flex-shrink: 0; }
+.bpd-hs-left { width: 226px; flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 8px 12px 2px; align-self: stretch; }
+.bpd-hs-name { font-size: 14px; font-weight: 700; color: #041D30; width: 140px; line-height: 1.6; }
+.bpd-검출 { background: rgba(0,117,255,0.6); border-radius: 12px; height: 24px; width: 55px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.bpd-미검출 { border: 1px solid #d75d00; border-radius: 12px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #d75d00; flex-shrink: 0; }
+.bpd-resp-left { width: 226px; flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 8px 12px 2px; }
+.bpd-resp-name { font-size: 14px; font-weight: 700; color: #041D30; width: 140px; line-height: 1.6; }
+.bpd-resp-score { font-size: 14px; font-weight: 400; color: #041D30; line-height: 1.6; }
+/* (legacy — kept for pages 1‑3) */
+.eval-row-parent { background: rgba(0,0,0,0.02); }
+.eval-chip-cat { font-size: 12px; color: #7D7D80; font-weight: 600; }
 
 /* ============================================================
    응답완성도
@@ -319,6 +368,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
   <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ 이전</button>
   <span class="page-ind" id="pageInd">1 / 6</span>
   <button class="nav-btn" id="nextBtn" onclick="changePage(1)">다음 ▶</button>
+  <div class="zoom-ctrl">
+    <span class="zoom-label">보기</span>
+    <button class="zoom-btn" onclick="setZoom('fit')">맞춤</button>
+    <button class="zoom-btn" onclick="setZoom(0.75)">75%</button>
+    <button class="zoom-btn active" onclick="setZoom(1)">100%</button>
+  </div>
 </div>
 
 
@@ -558,7 +613,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
       <!-- 강점 카드 -->
       <div class="vp-card vp-card-blue">
         <div class="vp-head">
-          <span class="vp-head-title">◉ 강점</span>
+          <span class="vp-head-title"><img src="icons/icon_grow.svg" width="16" height="16"> 강점</span>
           <span class="vp-badge vp-badge-blue">심화 검증</span>
         </div>
         <div class="vp-item">
@@ -596,7 +651,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
       <!-- 검토 카드 -->
       <div class="vp-card vp-card-orange">
         <div class="vp-head">
-          <span class="vp-head-title">▲ 검토</span>
+          <span class="vp-head-title"><img src="icons/icon_warning.svg" width="16" height="16"> 검토</span>
           <span class="vp-badge vp-badge-orange">추가 검증</span>
         </div>
         <div class="vp-item">
@@ -625,7 +680,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     </div>
 
     <div class="gpk-section">
-      <div class="sec-title" style="margin-bottom:8px;"><span class="sec-title-text">GPK 탐지 현황</span></div>
+      <div class="sec-title" style="margin-bottom:8px;"><span class="sec-title-text" style="font-size:18px;">GPK 탐지 현황</span></div>
       <div class="gpk-table">
         <div class="gpk-row"><span class="gpk-qnum">문항 1</span><span class="gpk-qtitle">지원 동기</span><span class="gpk-pct">GPK 탐지 <b>52%</b></span><span class="gpk-cnt">6개 문장</span></div>
         <div class="gpk-row"><span class="gpk-qnum">문항 2</span><span class="gpk-qtitle">성격 장단점</span><span class="gpk-pct">GPK 탐지 <b>11%</b></span><span class="gpk-cnt">3개 문장</span></div>
@@ -668,7 +723,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     <div class="qcard">
       <div class="qcard-head"><span class="qcard-num">문항 1</span><span class="qcard-qtitle">지원동기를 서술해 주세요.</span></div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-btn level-btn-상">상</span></div>
+<div class="qcard-mitem"><span class="qcard-mname">직무동기</span><span class="level-btn level-btn-상">상</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
@@ -683,7 +738,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         <strong>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</strong>
       </div>
       <div class="qcard-foot">
-        <div class="qcard-tags"><span class="qcard-tag">직무동기</span><span class="qcard-tag">직무경험</span><span class="qcard-tag">직무지식</span><span class="qcard-tag">직무역량(주도성)</span></div>
+        <span class="qcard-metric-label">자기소개서에서 확인한 지원자 역량 : <span class="qcard-metric-values">직무동기, 직무경험, 직무지식, 주도성</span></span>
         <span class="qcard-gpk">GPK 탐지 <b>52%</b></span>
       </div>
     </div>
@@ -691,7 +746,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     <div class="qcard">
       <div class="qcard-head"><span class="qcard-num">문항 2</span><span class="qcard-qtitle">성격의 장단점에 대해 서술해 주세요.</span></div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
+<div class="qcard-mitem"><span class="qcard-mname">직무지식</span><span class="level-btn level-btn-중">중</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">직무역량(주도성)</span><span class="level-btn level-btn-하">하</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">직무역량(성취지향)</span><span class="level-btn level-btn-하">하</span></div>
       </div>
@@ -703,7 +758,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         <strong>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 있습니다.</strong>
       </div>
       <div class="qcard-foot">
-        <div class="qcard-tags"><span class="qcard-tag">직무지식</span><span class="qcard-tag">직무역량(주도성)</span><span class="qcard-tag">직무역량(성취지향)</span></div>
+        <span class="qcard-metric-label">자기소개서에서 확인한 지원자 역량 : <span class="qcard-metric-values">직무지식, 주도성, 성취지향</span></span>
         <span class="qcard-gpk">GPK 탐지 <b>11%</b></span>
       </div>
     </div>
@@ -711,7 +766,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     <div class="qcard">
       <div class="qcard-head"><span class="qcard-num">문항 3</span><span class="qcard-qtitle">자기소개를 해주세요.</span></div>
       <div class="qcard-metric">
-        <div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
+<div class="qcard-mitem"><span class="qcard-mname">직무경험</span><span class="level-btn level-btn-중">중</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">리더십역량</span><span class="level-btn level-btn-하">하</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">팀워크역량</span><span class="level-btn level-btn-하">하</span></div>
         <div class="qcard-mitem"><span class="qcard-mname">회사동기</span><span class="level-btn level-btn-중">중</span></div>
@@ -724,7 +779,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         <strong>LG 화학에서 생산 기술 직무로 일하게 된다면 다양한 프로젝트에 적극 참여하면서 전공 지식을 현업에 적용하는 노하우를 익히고 국내 최고의 효율성과 생산 기술을 추구하는 엔지니어가 되겠습니다.</strong>
       </div>
       <div class="qcard-foot">
-        <div class="qcard-tags"><span class="qcard-tag">직무경험</span><span class="qcard-tag">리더십역량</span><span class="qcard-tag">팀워크역량</span><span class="qcard-tag">회사동기</span></div>
+        <span class="qcard-metric-label">자기소개서에서 확인한 지원자 역량 : <span class="qcard-metric-values">직무경험, 리더십역량, 팀워크역량, 회사동기</span></span>
         <span class="qcard-gpk">GPK 탐지 <b>17%</b></span>
       </div>
     </div>
@@ -744,7 +799,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 
 
 <!-- ============================================================
-     PAGE 4 - 역량 평가 상세 (직무적합도)
+     PAGE 4 — BP 평가 상세 (직무적합도)
      ============================================================ -->
 <div class="page" id="p4">
 
@@ -757,92 +812,80 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     </div>
   </div>
 
-  <div class="content" style="padding-left:0;padding-right:0;">
-
-    <div style="padding:0 24px 6px;">
-      <div class="sec-title"><span class="sec-title-text">역량 및 적합도 평가</span></div>
+  <div class="bpd-wrap">
+    <div class="bpd-title-wrap">
+      <div class="bpd-title"><span class="bpd-title-text">BP 평가 상세</span></div>
     </div>
-
-    <div class="detail-h2">직무적합도&nbsp;<span class="h2-score">65.92</span>점</div>
-
-    <div class="eval-row">
-      <span class="eval-chip">직무경험</span>
-      <span class="level-btn level-btn-중" style="margin-top:1px;">중</span>
-      <div class="eval-main">
-        <div class="eval-summary">단기 인턴십을 통한 다양한 현장 생산공정 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
-          <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했습니다.</li>
-          <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-        </ul>
+    <div class="bpd-bar"><span class="bpd-bar-text">역량 및 적합도 평가</span></div>
+    <div class="bpd-cat">
+      <span class="bpd-cat-name">직무적합도</span>
+      <span class="bpd-cat-score">63.91점</span>
+    </div>
+    <div class="bpd-items">
+      <!-- 직무경험 (상) -->
+      <div class="bpd-item">
+        <div class="bpd-left"><span class="bpd-iname">직무경험</span><div class="bpd-gr bpd-gr-상">상</div></div>
+        <div class="bpd-right">
+          <div class="bpd-comment">단기 아르바이트·인턴·파견직 등 다양한 형태의 생산현장 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.</div>
+          <div class="bpd-src">자기소개서 내용</div>
+          <ul class="bpd-bullets">
+            <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+            <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+            <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
+            <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bpd-div"></div>
+      <!-- 직무동기 (중) -->
+      <div class="bpd-item">
+        <div class="bpd-left"><span class="bpd-iname">직무동기</span><div class="bpd-gr bpd-gr-중">중</div></div>
+        <div class="bpd-right">
+          <div class="bpd-comment">지속적 현장 체험 도전 행동으로 직무 의지 확인됨. 단, 지원 직무(영업)와 서술 직무(생산기술) 간 연결 부재.</div>
+          <div class="bpd-src">자기소개서 내용</div>
+          <ul class="bpd-bullets">
+            <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+            <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+            <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bpd-div"></div>
+      <!-- 직무지식 (중) -->
+      <div class="bpd-item">
+        <div class="bpd-left"><span class="bpd-iname">직무지식</span><div class="bpd-gr bpd-gr-중">중</div></div>
+        <div class="bpd-right">
+          <div class="bpd-comment">화학공학 전공 및 고분자·신소재 공정 연구. 전기·소방 관련 독학 자격시험 준비 및 실무 적용.</div>
+          <div class="bpd-src">자기소개서 내용</div>
+          <ul class="bpd-bullets">
+            <li>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</li>
+            <li>학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 코레이 프로젝트에 능동적으로 참여했습니다.</li>
+            <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bpd-div"></div>
+      <!-- 직무역량(역량분자) — parent + 주도성 -->
+      <div class="bpd-items">
+        <div class="bpd-item">
+          <div class="bpd-parent-left"><span class="bpd-parent-name">직무역량(역량분자)</span><div class="bpd-gr bpd-gr-하">하</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">주도성</span><div class="bpd-gr bpd-gr-하">하</div></div>
+          <div class="bpd-right">
+            <div class="bpd-comment">스스로 자격시험·현장 체험 도전 행동 다수. 그러나 결과·성과 중심 서술 부족으로 깊이 부족.</div>
+            <div class="bpd-src">자기소개서 내용</div>
+            <ul class="bpd-bullets">
+              <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bpd-div"></div>
       </div>
     </div>
+  </div><!-- /bpd-wrap p4 -->
 
-    <div class="eval-row">
-      <span class="eval-chip">직무동기</span>
-      <span class="level-btn level-btn-상" style="margin-top:1px;">상</span>
-      <div class="eval-main">
-        <div class="eval-summary">자소서 전반에 걸쳐 직무에 대한 높은 관심과 적극적 동기가 일관되게 드러남. 직무 선택 이유가 명확하게 서술됨.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</li>
-          <li>학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 코레이 프로젝트에 능동적으로 참여했습니다.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="eval-row">
-      <span class="eval-chip">직무지식</span>
-      <span class="level-btn level-btn-중" style="margin-top:1px;">중</span>
-      <div class="eval-main">
-        <div class="eval-summary">전기·소방 등 관련 분야 독학 및 자격증 준비 노력. 현장 경험을 통한 실무 지식 확장 의지 확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-          <li>생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="eval-row">
-      <span class="eval-chip">직무역량</span>
-      <span class="level-btn level-btn-하" style="margin-top:1px;">하</span>
-      <div class="eval-main"><span class="eval-empty">직무역량 하위 항목 참조</span></div>
-    </div>
-
-    <div class="eval-row">
-      <span class="eval-chip">성취지향</span>
-      <span class="level-btn level-btn-하" style="margin-top:1px;">하</span>
-      <div class="eval-main">
-        <div class="eval-summary">'만족할 수준까지 공부' 표현은 있으나, 구체적 성취 수치·결과 제시 없어 등급 상향 불가.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했습니다.</li>
-          <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했습니다.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="eval-row">
-      <span class="eval-chip">대인관계역량</span>
-      <span class="level-btn level-btn-없음" style="margin-top:1px;">없음</span>
-      <div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div>
-    </div>
-
-    <div class="eval-row">
-      <span class="eval-chip">주도성</span>
-      <span class="level-btn level-btn-하" style="margin-top:1px;">하</span>
-      <div class="eval-main">
-        <div class="eval-summary">기회가 생길 때 적극적으로 도전하는 태도는 확인되나, 스스로 문제를 정의하고 해결하는 주도적 행동 근거가 부족.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
 
   <div class="page-footer">
     <div class="footer-left">
@@ -858,6 +901,9 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 
 <!-- ============================================================
      PAGE 5 - 역량 평가 상세 (조직적합도 + 하드스킬)
+     콘텐츠 높이 계산:
+     detail-h3(33) + 6행(~360) + detail-h2(36) + 4행(~440) = ~869px
+     총합 27(헤더) + 869(콘텐츠) + 34(푸터) = ~930px ✓
      ============================================================ -->
 <div class="page" id="p5">
 
@@ -870,77 +916,108 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     </div>
   </div>
 
-  <div class="content" style="padding-left:0;padding-right:0;padding-top:0;">
-
-    <div class="detail-h2">조직적합도&nbsp;<span class="h2-score">15.00</span>점</div>
-
-    <div class="eval-row">
-      <span class="eval-chip">리더십역량</span>
-      <span class="level-btn level-btn-하" style="margin-top:1px;">하</span>
-      <div class="eval-main">
-        <div class="eval-summary">인턴·프로젝트 경험 기술 있으나 리더십 발휘 관점의 서술 미확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
-        </ul>
+  <div class="bpd-wrap">
+    <!-- 성취지향 sub-item (직무역량 계속) -->
+    <div class="bpd-items">
+      <div class="bpd-item">
+        <div class="bpd-left"><span class="bpd-tag">성취지향</span><div class="bpd-gr bpd-gr-하">하</div></div>
+        <div class="bpd-right">
+          <div class="bpd-comment">'만족할 수준까지 공부' 표현은 있으나, 구체적 성취 수치·결과 제시 없어 등급 상향 불가.</div>
+          <div class="bpd-src">자기소개서 내용</div>
+          <ul class="bpd-bullets">
+            <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+            <li>흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.</li>
+            <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="eval-row"><span class="eval-chip">팀워크</span><span class="level-btn level-btn-없음" style="margin-top:1px;">없음</span><div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div></div>
-    <div class="eval-row"><span class="eval-chip">갈등관리역량</span><span class="level-btn level-btn-없음" style="margin-top:1px;">없음</span><div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div></div>
-    <div class="eval-row">
-      <span class="eval-chip">팀워크포스역량</span>
-      <span class="level-btn level-btn-하" style="margin-top:1px;">하</span>
-      <div class="eval-main">
-        <div class="eval-summary">인턴 과정 기술 있으나 팀 협업 관점의 서술 없음.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets">
-          <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="eval-row"><span class="eval-chip">의사소통역량</span><span class="level-btn level-btn-없음" style="margin-top:1px;">없음</span><div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div></div>
-    <div class="eval-row"><span class="eval-chip">대인관계역량</span><span class="level-btn level-btn-없음" style="margin-top:1px;">없음</span><div class="eval-main"><span class="eval-empty">관련 근거 문장 없음.</span></div></div>
-
-    <div class="detail-h2">하드스킬 평가</div>
-
-    <div class="hs-eval-row">
-      <span class="hs-eval-name">Salesforce Certified<br>Sales Cloud Consultant</span>
-      <span class="pill pill-blue" style="margin-top:1px;flex-shrink:0;">검출</span>
-      <div class="hs-eval-main">
-        <div class="hs-eval-summary">Salesforce 공인 자격 보유로 CRM 기반 영업 파이프라인 관리 역량 확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets"><li>세일즈 업무의 효율화를 위해 Salesforce Certified Sales Cloud Consultant 자격을 취득하고, CRM 시스템을 활용한 고객 파이프라인 관리 경험을 쌓았습니다.</li></ul>
-      </div>
-    </div>
-    <div class="hs-eval-row">
-      <span class="hs-eval-name">유통관리사 자격증</span>
-      <span class="pill pill-blue" style="margin-top:1px;flex-shrink:0;">검출</span>
-      <div class="hs-eval-main">
-        <div class="hs-eval-summary">유통관리사 자격 보유로 유통 채널 전반에 대한 전문 지식 확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets"><li>유통관리사 자격을 보유하고 있으며, 유통 채널 전반에 대한 이해를 바탕으로 현장 영업 전략을 수립할 수 있습니다.</li></ul>
-      </div>
-    </div>
-    <div class="hs-eval-row">
-      <span class="hs-eval-name">PowerPoint</span>
-      <span class="pill pill-blue" style="margin-top:1px;flex-shrink:0;">검출</span>
-      <div class="hs-eval-main">
-        <div class="hs-eval-summary">제안서·발표 자료 작성 및 고객사 임원 프레젠테이션 수행 경험 확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets"><li>제안서 및 발표 자료 작성 시 PowerPoint를 활용하여 고객사 임원진 대상 프레젠테이션을 직접 진행한 경험이 있습니다.</li></ul>
-      </div>
-    </div>
-    <div class="hs-eval-row">
-      <span class="hs-eval-name">Excel</span>
-      <span class="pill pill-blue" style="margin-top:1px;flex-shrink:0;">검출</span>
-      <div class="hs-eval-main">
-        <div class="hs-eval-summary">Excel 피벗 테이블 활용 영업 실적 데이터 분석 및 리포트 작성 경험 확인.</div>
-        <div class="eval-src-label">자기소개서 내용</div>
-        <ul class="eval-bullets"><li>Excel을 활용한 영업 실적 데이터 분석 및 피벗 테이블 작성으로 월별 실적 리포트를 작성해왔습니다.</li></ul>
+      <div class="bpd-div"></div>
+      <!-- 스트레스 관리 역량 (-) -->
+      <div class="bpd-item">
+        <div class="bpd-left"><span class="bpd-tag">스트레스 관리 역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
+        <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
       </div>
     </div>
 
-  </div>
+    <!-- 조직적합도 -->
+    <div style="margin-top:12px;flex-shrink:0;">
+      <div class="bpd-cat">
+        <span class="bpd-cat-name">조직적합도<span style="font-weight:400;">(역량분자)</span></span>
+        <span class="bpd-cat-score">47.65점</span>
+      </div>
+      <div class="bpd-items" style="margin-top:12px;">
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">리더십역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">협상력</span><div class="bpd-gr bpd-gr-none">-</div></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">갈등관리역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">팀워크역량</span><div class="bpd-gr bpd-gr-하">하</div></div>
+          <div class="bpd-right"><div class="bpd-comment">인턴 과정 기술 있으나 팀 협업 관점의 서술 없음</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">의사소통역량</span><div class="bpd-gr bpd-gr-하">하</div></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-left"><span class="bpd-tag">대인관계역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하드스킬 평가 -->
+    <div style="margin-top:8px;flex-shrink:0;">
+      <div class="bpd-bar"><span class="bpd-bar-text">하드스킬 평가</span></div>
+      <div class="bpd-items" style="margin-top:12px;">
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">B2B 영업 경험</span><span class="bpd-검출">검출</span></div>
+          <div class="bpd-right">
+            <div class="bpd-comment">인턴·파견직 등 다양한 현장 근무 이력에서 대내외 업무 경험 확인.</div>
+            <div class="bpd-src bpd-src-alt">자기소개서 내용</div>
+            <ul class="bpd-bullets"><li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li></ul>
+          </div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">기술 제안·설명 능력</span><span class="bpd-검출">검출</span></div>
+          <div class="bpd-right">
+            <div class="bpd-comment">프로젝트 참여를 통한 기술 지식 습득 및 실무 적용 경험 확인.</div>
+            <div class="bpd-src bpd-src-alt">자기소개서 내용</div>
+            <ul class="bpd-bullets"><li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li></ul>
+          </div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">고객관계관리(CRM)</span><span class="bpd-미검출">미검출</span></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">수주·계약 협상</span><span class="bpd-미검출">미검출</span></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">영업 실적 관리</span><span class="bpd-미검출">미검출</span></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+      </div>
+    </div>
+  </div><!-- /bpd-wrap p5 -->
 
   <div class="page-footer">
     <div class="footer-left">
@@ -954,9 +1031,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 </div><!-- /p5 -->
 
 
-<!-- ============================================================
-     PAGE 6 - 응답완성도 + 안내사항
-     ============================================================ -->
+<!-- PAGE 6 — 응답 완성도 -->
 <div class="page" id="p6">
 
   <div class="doc-header">
@@ -968,42 +1043,26 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
     </div>
   </div>
 
-  <div class="content" style="padding-left:0;padding-right:0;">
-
-    <div class="detail-h2">응답 완성도</div>
-
-    <div class="resp-row">
-      <span class="resp-name">답변적합도</span>
-      <span class="resp-score">68.36점</span>
-      <span class="resp-desc">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</span>
-    </div>
-    <div class="resp-row">
-      <span class="resp-name">구체성</span>
-      <span class="resp-score">65.92점</span>
-      <span class="resp-desc">구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함</span>
-    </div>
-    <div class="resp-row">
-      <span class="resp-name">본인소개</span>
-      <span class="resp-score">36.82점</span>
-      <span class="resp-desc">본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함</span>
-    </div>
-
-    <div class="spacer"></div>
-
-    <div class="report-info">
-      <div class="ri-item">
-        <span class="ri-icon">i</span>
-        <span class="ri-text">본 리포트는 AI 기술을 활용하여 자기소개서 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다. 본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다. AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.</span>
+  <div class="bpd-wrap">
+    <div class="bpd-bar"><span class="bpd-bar-text">응답 완성도</span></div>
+    <div class="bpd-items" style="margin-top:8px;">
+      <div class="bpd-item">
+        <div class="bpd-resp-left"><span class="bpd-resp-name">답변적합도</span><span class="bpd-resp-score">67.85점</span></div>
+        <div class="bpd-right"><div class="bpd-comment">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</div></div>
       </div>
-      <div class="ri-item">
-        <span class="ri-icon">i</span>
-        <span class="ri-text">본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.</span>
+      <div class="bpd-div"></div>
+      <div class="bpd-item">
+        <div class="bpd-resp-left"><span class="bpd-resp-name">구체성</span><span class="bpd-resp-score">63.91점</span></div>
+        <div class="bpd-right"><div class="bpd-comment">구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함</div></div>
       </div>
+      <div class="bpd-div"></div>
+      <div class="bpd-item">
+        <div class="bpd-resp-left"><span class="bpd-resp-name">본인소개</span><span class="bpd-resp-score">33.10점</span></div>
+        <div class="bpd-right"><div class="bpd-comment">본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함</div></div>
+      </div>
+      <div class="bpd-div"></div>
     </div>
-
-    <div style="height:20px;flex-shrink:0;"></div>
-
-  </div>
+  </div><!-- /bpd-wrap p6 -->
 
   <div class="page-footer">
     <div class="footer-left">
@@ -1079,6 +1138,26 @@ new Chart(document.getElementById('radarChart').getContext('2d'), {
   };
   document.getElementById('nextBtn').disabled = total <= 1;
 })();
+
+/* 줌 컨트롤 */
+window.setZoom = function (level) {
+  var scale = level === 'fit'
+    ? Math.min(1, (window.innerWidth - 48) / 990)
+    : level;
+  document.querySelectorAll('.page').forEach(function (p) {
+    p.style.transformOrigin = 'top center';
+    p.style.transform = 'scale(' + scale + ')';
+    p.style.marginBottom = (1399 * scale - 1399) + 'px';
+  });
+  document.querySelector('.nav').style.width = Math.round(990 * scale) + 'px';
+  document.querySelectorAll('.zoom-btn').forEach(function (b) {
+    b.classList.remove('active');
+    if (b.textContent === (level === 'fit' ? '맞춤' : Math.round(scale * 100) + '%')) b.classList.add('active');
+  });
+};
+
+/* 초기 로드 시 자동 맞춤 */
+window.addEventListener('load', function () { setZoom('fit'); });
 </script>
 </body>
 </html>
