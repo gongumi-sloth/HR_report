@@ -101,7 +101,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .ac-date { font-size: 12px; font-weight: 700; color: #041D30; }
 .ac-right { background: #fff; width: 420px; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .ac-score-label { font-size: 18px; font-weight: 700; color: #041D30; margin-bottom: 4px; }
-.ac-score-value { font-size: 48px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; line-height: 1.1; }
+.ac-score-value { font-size: 32px; font-weight: 700; color: #041D30; font-family: 'Noto Sans', sans-serif; line-height: 1.2; }
 .ac-badges { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
 .badge-outline { display: inline-flex; align-items: center; padding: 4px 12px; border: 1px solid #0075FF; border-radius: 17px; font-size: 14px; font-weight: 700; color: #0075FF; }
 .badge-filled { display: inline-flex; align-items: center; padding: 4px 12px; border: 1px solid #0075FF; background: #e0f3ff; border-radius: 17px; font-size: 14px; font-weight: 700; color: #0075FF; }
@@ -175,7 +175,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .factor-table td { padding: 0 12px; border-bottom: 1px solid #E3E3E3; height: 30px; font-size: 12px; color: #041D30; }
 .factor-table tr:last-child td { border-bottom: none; }
 .factor-table .parent-row td { font-weight: 600; }
-.factor-table .child-row td { height: 26px; padding: 0 12px; }
+.factor-table .child-row td { height: 30px; padding: 0 12px; }
 .factor-table .child-row td:first-child { padding-left: 22px; color: #7D7D80; }
 .lv-cell { text-align: center; }
 .lv { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 17px; border-radius: 2px; font-size: 12px; font-weight: 700; }
@@ -184,11 +184,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .lv-하 { background: rgba(0,117,255,0.2); color: #041D30; }
 .lv-없음 { background: #E9E9EA; color: #7D7D80; }
 
-/* 하드스킬 칩 */
-.hs-wrap { padding: 7px 12px; border-top: 1px solid #E9E9EA; }
-.hs-label { font-size: 12px; font-weight: 700; color: #0075FF; margin-bottom: 4px; }
-.hs-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.hs-chip { padding: 2px 8px; border-radius: 10px; font-size: 12px; background: rgba(0,117,255,.1); color: #0075FF; }
+/* 하드스킬 텍스트 */
+.hs-wrap { padding: 7px 12px; border-top: 1px solid #E9E9EA; display: flex; flex-direction: column; gap: 3px; }
+.hs-line { font-size: 12px; color: #041D30; line-height: 1.5; }
+.hs-line-label { font-weight: 700; color: #0075FF; }
+.hs-line-label-unconfirmed { font-weight: 700; color: #FF7A00; }
+.hs-line-value { color: #041D30; }
 
 /* 레이더 패널 */
 .radar-head { padding: 10px 14px 6px; }
@@ -280,7 +281,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 .qcard-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .qcard-tag { height: 17px; padding: 0 7px; border-radius: 3px; font-size: 12px; font-weight: 600; background: #EBF4FF; color: #0075FF; display: inline-flex; align-items: center; }
 .qcard-gpk { font-size: 12px; color: #7D7D80; }
-.qcard-gpk b { color: #0075FF; font-weight: 700; }
+.qcard-gpk b { color: #FF7A00; font-weight: 400; }
 /* 하이라이팅 옵션 */
 .hl-metric { background: rgba(0,117,255,0.12); border-radius: 4px; padding: 0 3px; }
 .hl-gpk-1 { color: #FF7A00; }
@@ -363,7 +364,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
    ============================================================ */
 .report-info { margin: 0 24px; background: #fff; border: 1px solid #E3E3E3; border-radius: 8px; padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
 .ri-item { display: flex; align-items: flex-start; gap: 10px; }
-.ri-icon { width: 20px; height: 20px; min-width: 20px; border-radius: 50%; border: 1.5px solid #7D7D80; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #7D7D80; margin-top: 1px; }
+.ri-icon { font-size: 13px; color: #7D7D80; flex-shrink: 0; margin-top: 1px; }
 .ri-text { font-size: 12px; color: #041D30; line-height: 1.7; }
 
 /* ============================================================
@@ -407,7 +408,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 <div class="page active" id="p1">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -418,7 +419,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
   <!-- 지원자 카드 -->
   <div class="app-card">
     <div class="ac-topbar">
-      <span class="ac-announce">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+      <span class="ac-announce">ABC 기업 영업 직군 공채</span>
       <span class="ac-product">프리즘 서류평가</span>
     </div>
     <div class="ac-body">
@@ -511,20 +512,15 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
           <table class="factor-table">
             <tbody>
               <tr class="parent-row"><td>직무역량</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
-              <tr class="child-row"><td>주도성</td><td class="lv-cell"><span class="lv lv-상">상</span></td></tr>
+              <tr class="child-row"><td>주도성</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
               <tr class="child-row"><td>성취지향</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
               <tr class="child-row"><td>스트레스관리</td><td class="lv-cell"><span class="lv lv-없음">-</span></td></tr>
             </tbody>
           </table>
         </div>
         <div class="hs-wrap">
-          <div class="hs-label">확인된 하드스킬</div>
-          <div class="hs-chips">
-            <span class="hs-chip">Salesforce Certified Sales Cloud Consultant</span>
-            <span class="hs-chip">유통관리사 자격증</span>
-            <span class="hs-chip">PowerPoint</span>
-            <span class="hs-chip">Excel</span>
-          </div>
+          <div class="hs-line"><span class="hs-line-label">확인된 하드스킬 : </span><span class="hs-line-value">Salesforce Certified Sales Cloud Consultant, PowerPoint, Excel</span></div>
+          <div class="hs-line"><span class="hs-line-label-unconfirmed">확인되지 않은 하드스킬 : </span><span class="hs-line-value">유통관리사 자격증</span></div>
         </div>
       </div>
 
@@ -544,11 +540,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         </div>
         <table class="factor-table factor-table-top">
           <tbody>
-            <tr><td>리더십역량</td><td class="lv-cell"><span class="lv lv-없음">없음</span></td></tr>
+            <tr><td>리더십역량</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
             <tr><td>협상력</td><td class="lv-cell"><span class="lv lv-없음">없음</span></td></tr>
             <tr><td>갈등관리역량</td><td class="lv-cell"><span class="lv lv-없음">없음</span></td></tr>
             <tr><td>팀워크역량</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
-            <tr><td>의사소통역량</td><td class="lv-cell"><span class="lv lv-하">하</span></td></tr>
+            <tr><td>의사소통역량</td><td class="lv-cell"><span class="lv lv-없음">없음</span></td></tr>
             <tr><td>대인관계역량</td><td class="lv-cell"><span class="lv lv-없음">없음</span></td></tr>
           </tbody>
         </table>
@@ -650,7 +646,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 <div class="page" id="p2">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -697,7 +693,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
           <div class="vp-hs-label">확인된 하드스킬</div>
           <div class="vp-hs-chips">
             <span class="vp-hs-chip">Salesforce Certified Sales Cloud Consultant</span>
-            <span class="vp-hs-chip">유통관리사 자격증</span>
             <span class="vp-hs-chip">PowerPoint</span>
             <span class="vp-hs-chip">Excel</span>
           </div>
@@ -731,10 +726,16 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
           <p class="vp-desc">본인소개 문항 36.82점 (하위 영역). 본인 주어 중심 서술 부재·직무 연관성 낮음.</p>
           <div class="iv-link iv-link-orange"><span class="iv-label iv-label-orange">면접연계</span><span class="iv-text">자소서에 기재된 특정 경험을 현장에서 재현·설명하도록 유도하여 본인 역할 및 실제 경험 여부를 검증해보세요.</span></div>
         </div>
+        <div class="vp-hs" style="border-top:1px solid #FFD6B0; margin-top:8px; padding-top:8px;">
+          <div class="vp-hs-label" style="color:#FF7A00;">확인되지 않은 하드스킬</div>
+          <div class="vp-hs-chips">
+            <span class="vp-hs-chip" style="background:#FFF5EC;color:#FF7A00;">유통관리사 자격증</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="gpk-section">
+    <div class="gpk-section" style="margin-top:30px;">
       <div class="sec-title"><span class="sec-title-text">GPK 탐지</span></div>
       <div class="gpk-table">
         <div class="gpk-row"><span class="gpk-qnum">문항 1</span><span class="gpk-qtitle">지원 동기</span><span class="gpk-pct">GPK 탐지 <b>52%</b></span><span class="gpk-cnt">6개 문장</span></div>
@@ -763,7 +764,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 <div class="page" id="p3">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -865,7 +866,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 <div class="page" id="p4">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -883,9 +884,9 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
       <span class="bpd-cat-score">63.91점</span>
     </div>
     <div class="bpd-items">
-      <!-- 직무경험 (상) -->
+      <!-- 직무경험 (중) -->
       <div class="bpd-item">
-        <div class="bpd-left"><span class="bpd-iname">직무경험</span><div class="bpd-gr bpd-gr-상">상</div></div>
+        <div class="bpd-left"><span class="bpd-iname">직무경험</span><div class="bpd-gr bpd-gr-중">중</div></div>
         <div class="bpd-right">
           <div class="bpd-comment">단기 아르바이트·인턴·파견직 등 다양한 형태의 생산현장 경험 보유. 스마트팩토리·자동화 프로젝트 다수 참여.</div>
           <div class="bpd-src">자기소개서 내용 :</div>
@@ -898,16 +899,18 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         </div>
       </div>
       <div class="bpd-div"></div>
-      <!-- 직무동기 (중) -->
+      <!-- 직무동기 (상) -->
       <div class="bpd-item">
-        <div class="bpd-left"><span class="bpd-iname">직무동기</span><div class="bpd-gr bpd-gr-중">중</div></div>
+        <div class="bpd-left"><span class="bpd-iname">직무동기</span><div class="bpd-gr bpd-gr-상">상</div></div>
         <div class="bpd-right">
-          <div class="bpd-comment">지속적 현장 체험 도전 행동으로 직무 의지 확인됨. 단, 지원 직무(영업)와 서술 직무(생산기술) 간 연결 부재.</div>
+          <div class="bpd-comment">자소서 전반에 걸쳐 직무 관심과 선택 이유가 명확하게 서술됨. 화학공학 전공을 활용한 생산기술 직무 지향이 일관성 있게 나타남.</div>
           <div class="bpd-src">자기소개서 내용 :</div>
           <ul class="bpd-bullets">
+            <li>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</li>
+            <li>학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 코레이 프로젝트에 능동적으로 참여했습니다.</li>
+            <li>생산 공정 엔지니어를 꿈꾸면서 현장 감각을 쌓는 것이 중요하다고 생각했습니다.</li>
             <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
-            <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
-            <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+            <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
           </ul>
         </div>
       </div>
@@ -919,9 +922,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
           <div class="bpd-comment">화학공학 전공 및 고분자·신소재 공정 연구. 전기·소방 관련 독학 자격시험 준비 및 실무 적용.</div>
           <div class="bpd-src">자기소개서 내용 :</div>
           <ul class="bpd-bullets">
-            <li>저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.</li>
-            <li>학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 코레이 프로젝트에 능동적으로 참여했습니다.</li>
+            <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
+            <li>작년에 코레이 생산 관리 직무에서 인턴을 수행하며 화학공학뿐만 아니라 전기, 소방 등 다양한 관련 분야에 지식이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</li>
+            <li>그래서 생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
             <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
+            <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
           </ul>
         </div>
       </div>
@@ -939,6 +944,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
             <div class="bpd-src">자기소개서 내용 :</div>
             <ul class="bpd-bullets">
               <li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li>
+              <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+              <li>그래서 생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
             </ul>
           </div>
         </div>
@@ -969,7 +976,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 <div class="page" id="p5">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -987,7 +994,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
           <div class="bpd-src">자기소개서 내용 :</div>
           <ul class="bpd-bullets">
             <li>졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
-            <li>흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.</li>
+            <li>6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
             <li>이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</li>
           </ul>
         </div>
@@ -1008,8 +1015,15 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
       </div>
       <div class="bpd-items" style="margin-top:12px;">
         <div class="bpd-item">
-          <div class="bpd-left"><span class="bpd-tag">리더십역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
-          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+          <div class="bpd-left"><span class="bpd-tag">리더십역량</span><div class="bpd-gr bpd-gr-하">하</div></div>
+          <div class="bpd-right">
+            <div class="bpd-comment">프로젝트 참여 이력에서 팀 내 역할 수행 확인됨. 단, 리더십 주도 경험으로 볼 수 있는 구체적 서술 부족.</div>
+            <div class="bpd-src">자기소개서 내용 :</div>
+            <ul class="bpd-bullets">
+              <li>학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 스마트 팩토리나 자동화 구축 프로젝트를 다수 경험했습니다.</li>
+              <li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li>
+            </ul>
+          </div>
         </div>
         <div class="bpd-div"></div>
         <div class="bpd-item">
@@ -1028,7 +1042,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
         </div>
         <div class="bpd-div"></div>
         <div class="bpd-item">
-          <div class="bpd-left"><span class="bpd-tag">의사소통역량</span><div class="bpd-gr bpd-gr-하">하</div></div>
+          <div class="bpd-left"><span class="bpd-tag">의사소통역량</span><div class="bpd-gr bpd-gr-none">-</div></div>
           <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
         </div>
         <div class="bpd-div"></div>
@@ -1039,45 +1053,37 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
       </div>
     </div>
 
-    <!-- 하드스킬 평가 -->
+    <!-- 하드스킬 평가 (Salesforce / 유통관리사 / PowerPoint — Excel은 다음 페이지로 이월) -->
+    <!-- 높이 계산: bpd-bar(40) + 3항목(~280) = 320px / p5 누적 ~1060px < 1338px ✓ -->
     <div style="margin-top:8px;flex-shrink:0;">
       <div class="bpd-bar"><span class="bpd-bar-text">하드스킬 평가</span></div>
       <div class="bpd-items" style="margin-top:12px;">
         <div class="bpd-item">
-          <div class="bpd-hs-left"><span class="bpd-hs-name">B2B 영업 경험</span><span class="bpd-검출">검출</span></div>
+          <div class="bpd-hs-left"><span class="bpd-hs-name">Salesforce Certified Sales Cloud Consultant</span><span class="bpd-검출">검출</span></div>
           <div class="bpd-right">
-            <div class="bpd-comment">인턴·파견직 등 다양한 현장 근무 이력에서 대내외 업무 경험 확인.</div>
+            <div class="bpd-comment">Salesforce 공인 자격 보유로 CRM 기반 영업 파이프라인 관리 역량 확인.</div>
             <div class="bpd-src bpd-src-alt">자기소개서 내용 :</div>
-            <ul class="bpd-bullets"><li>그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</li></ul>
+            <ul class="bpd-bullets"><li>세일즈 업무의 효율화를 위해 Salesforce Certified Sales Cloud Consultant 자격을 취득하고, CRM 시스템을 활용한 고객 파이프라인 관리 경험을 쌓았습니다.</li></ul>
           </div>
         </div>
         <div class="bpd-div"></div>
         <div class="bpd-item">
-          <div class="bpd-hs-left"><span class="bpd-hs-name">기술 제안·설명 능력</span><span class="bpd-검출">검출</span></div>
+          <div class="bpd-hs-left"><span class="bpd-hs-name">유통관리사 자격증</span><span class="bpd-미검출">미검출</span></div>
+          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">PowerPoint</span><span class="bpd-검출">검출</span></div>
           <div class="bpd-right">
-            <div class="bpd-comment">프로젝트 참여를 통한 기술 지식 습득 및 실무 적용 경험 확인.</div>
+            <div class="bpd-comment">제안서·발표 자료 작성 및 고객사 임원 프레젠테이션 수행 경험 확인.</div>
             <div class="bpd-src bpd-src-alt">자기소개서 내용 :</div>
-            <ul class="bpd-bullets"><li>프로젝트에 참여하면서 도면의 하드 카피 작업이나 전기, 기계 융합 지식을 습득하게 되었고, 이 분야에서 전문가가 되고 싶다는 목표가 생겼습니다.</li></ul>
+            <ul class="bpd-bullets"><li>제안서 및 발표 자료 작성 시 PowerPoint를 활용하여 고객사 임원진 대상 프레젠테이션을 직접 진행한 경험이 있습니다.</li></ul>
           </div>
-        </div>
-        <div class="bpd-div"></div>
-        <div class="bpd-item">
-          <div class="bpd-hs-left"><span class="bpd-hs-name">고객관계관리(CRM)</span><span class="bpd-미검출">미검출</span></div>
-          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
-        </div>
-        <div class="bpd-div"></div>
-        <div class="bpd-item">
-          <div class="bpd-hs-left"><span class="bpd-hs-name">수주·계약 협상</span><span class="bpd-미검출">미검출</span></div>
-          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
-        </div>
-        <div class="bpd-div"></div>
-        <div class="bpd-item">
-          <div class="bpd-hs-left"><span class="bpd-hs-name">영업 실적 관리</span><span class="bpd-미검출">미검출</span></div>
-          <div class="bpd-right"><div class="bpd-comment-none">관련 근거 문장 없음.</div></div>
         </div>
         <div class="bpd-div"></div>
       </div>
     </div>
+
   </div><!-- /bpd-wrap p5 -->
 
   <div class="page-footer">
@@ -1092,11 +1098,16 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
 </div><!-- /p5 -->
 
 
-<!-- PAGE 6 — 응답 완성도 -->
+<!-- ============================================================
+     PAGE 6 — 하드스킬 이월(Excel) + 응답 완성도
+     높이 계산:
+     Excel(~100) + div(1) + 응답완성도bar(40) + 3항목(~180) + 안내사항(~130) = ~451px
+     총합 27(헤더) + 24(패딩) + 451 + 24(패딩) + 34(푸터) = ~560px ✓
+     ============================================================ -->
 <div class="page" id="p6">
 
   <div class="doc-header">
-    <span class="dh-title">BP 4.2 결과지 콘텐츠 개편 결과지 프로토타입</span>
+    <span class="dh-title">ABC 기업 영업 직군 공채</span>
     <div class="dh-info">
       <span class="dh-name">홍길동</span>
       <span class="dh-divider"></span>
@@ -1105,25 +1116,54 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #d1d5db; display: fl
   </div>
 
   <div class="bpd-wrap">
-    <div class="bpd-bar"><span class="bpd-bar-text">응답 완성도</span></div>
-    <div class="bpd-items" style="margin-top:8px;">
-      <div class="bpd-item">
-        <div class="bpd-resp-left"><span class="bpd-resp-name">답변적합도</span><span class="bpd-resp-score">67.85점</span></div>
-        <div class="bpd-right"><div class="bpd-comment">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</div></div>
+    <!-- 하드스킬 이월: Excel -->
+    <div style="flex-shrink:0;">
+      <div class="bpd-items">
+        <div class="bpd-item">
+          <div class="bpd-hs-left"><span class="bpd-hs-name">Excel</span><span class="bpd-검출">검출</span></div>
+          <div class="bpd-right">
+            <div class="bpd-comment">Excel 피벗 테이블 활용 영업 실적 데이터 분석 및 리포트 작성 경험 확인.</div>
+            <div class="bpd-src bpd-src-alt">자기소개서 내용 :</div>
+            <ul class="bpd-bullets"><li>Excel을 활용한 영업 실적 데이터 분석 및 피벗 테이블 작성으로 월별 실적 리포트를 작성해왔습니다.</li></ul>
+          </div>
+        </div>
+        <div class="bpd-div"></div>
       </div>
-      <div class="bpd-div"></div>
-      <div class="bpd-item">
-        <div class="bpd-resp-left"><span class="bpd-resp-name">구체성</span><span class="bpd-resp-score">63.91점</span></div>
-        <div class="bpd-right"><div class="bpd-comment">구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함</div></div>
+    </div>
+
+    <!-- 응답 완성도 -->
+    <div style="margin-top:8px;flex-shrink:0;">
+      <div class="bpd-bar"><span class="bpd-bar-text">응답 완성도</span></div>
+      <div class="bpd-items" style="margin-top:8px;">
+        <div class="bpd-item">
+          <div class="bpd-resp-left"><span class="bpd-resp-name">답변적합도</span><span class="bpd-resp-score">67.85점</span></div>
+          <div class="bpd-right"><div class="bpd-comment">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-resp-left"><span class="bpd-resp-name">구체성</span><span class="bpd-resp-score">63.91점</span></div>
+          <div class="bpd-right"><div class="bpd-comment">구체적 서술과 추상적 표현이 고르게 섞여 있어 전달력이 다소 부족함</div></div>
+        </div>
+        <div class="bpd-div"></div>
+        <div class="bpd-item">
+          <div class="bpd-resp-left"><span class="bpd-resp-name">본인소개</span><span class="bpd-resp-score">33.10점</span></div>
+          <div class="bpd-right"><div class="bpd-comment">본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함</div></div>
+        </div>
+        <div class="bpd-div"></div>
       </div>
-      <div class="bpd-div"></div>
-      <div class="bpd-item">
-        <div class="bpd-resp-left"><span class="bpd-resp-name">본인소개</span><span class="bpd-resp-score">33.10점</span></div>
-        <div class="bpd-right"><div class="bpd-comment">본인 주어 문장이 거의 없으며, 서술의 주체가 불분명함</div></div>
-      </div>
-      <div class="bpd-div"></div>
     </div>
   </div><!-- /bpd-wrap p6 -->
+
+  <div class="report-info" style="margin-top: auto; margin-bottom: 24px;">
+    <div class="ri-item">
+      <span class="ri-icon">ⓘ</span>
+      <span class="ri-text">본 리포트는 AI 기술을 활용하여 자기소개서 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다. 본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다. AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.</span>
+    </div>
+    <div class="ri-item">
+      <span class="ri-icon">ⓘ</span>
+      <span class="ri-text">본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.</span>
+    </div>
+  </div>
 
   <div class="page-footer">
     <div class="footer-left">
