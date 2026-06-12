@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>BP 4.2 결과지 - P1 파일럿</title>
+<title>프리즘 BP 결과지 - 응시자4</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -81,6 +81,7 @@ p { margin:0; }
 .up { color:#0075ff; } .down { color:#d75d00; }
 
 /* grade chips */
+.grade.g-none { background:#e9e9ea; color:#a9a8aa; }  /* 등급 없음(판단불가) — Figma - 칩 */
 .grade { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
 .g-high { background:rgba(0,117,255,0.6); color:#fff; }
 .g-mid { background:#e9e9ea; color:#041D30; }
@@ -212,6 +213,7 @@ p { margin:0; }
 .p3-metric-name { font-weight:700; font-size:16px; letter-spacing:0.024px; color:#041D30; }
 .p3-body { border-top:1px solid #e3e3e3; border-bottom:1px solid #e3e3e3; padding:12px 24px; font-size:16px; font-weight:400; line-height:1.6; letter-spacing:-0.16px; color:#041D30; }
 .hl { background:rgba(0,117,255,0.1); }
+.gpk { border-bottom:2px solid #f09000; padding-bottom:1px; }  /* AI 작성 의심 문장 — 범례와 동일 시각 언어 */
 .p3-qfooter { display:flex; align-items:center; justify-content:space-between; padding:8px 24px; }
 .p3-skills { display:flex; gap:4px; align-items:center; }
 .p3-skills-label { font-weight:700; font-size:14px; color:#7d7d80; white-space:nowrap; }
@@ -237,6 +239,7 @@ p { margin:0; }
 .dt-badge.high { background:rgba(0,117,255,0.6); color:#fff; }
 .dt-badge.mid { background:#e9e9ea; color:#041d30; }
 .dt-badge.low { background:#f4f4f4; color:#a9a8aa; }
+.dt-badge.none { background:#e9e9ea; color:#a9a8aa; }
 .dt-row-body { flex:1; min-width:0; }
 .dt-comment { font-size:16px; font-weight:500; line-height:1.6; letter-spacing:0.024px; padding:6px 8px 8px; }
 .dt-srclabel { font-weight:700; font-size:14px; color:#939395; line-height:1.6; padding:4px 8px; }
@@ -275,9 +278,9 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">홍길동</span>
+      <span class="doc-header-name">응시자4</span>
       <span class="doc-header-divider"></span>
-      <span class="doc-header-num num">1234567890</span>
+      <span class="doc-header-num num">4</span>
     </div>
   </div>
 
@@ -290,21 +293,21 @@ p { margin:0; }
     <div class="bp-card">
       <div class="bp-card-left">
         <div class="bp-prof">
-          <span class="bp-prof-job">영업</span>
+          <span class="bp-prof-job">생산</span>
           <div>
-            <div class="bp-prof-name">홍길동</div>
-            <div class="bp-prof-num num">MUHA0001</div>
+            <div class="bp-prof-name">응시자4</div>
+            <div class="bp-prof-num num">4</div>
           </div>
         </div>
-        <div class="bp-date num">평가일: 2026-07-15</div>
+        <div class="bp-date num">평가일: 2026-06-12</div>
       </div>
       <div class="bp-card-right">
         <div class="bp-score-col">
           <div class="bp-score-label">BP평가 점수</div>
-          <div class="bp-score-num num">59.51</div>
+          <div class="bp-score-num num">68.86</div>
         </div>
         <div class="bp-badges">
-          <div class="bp-badge">영업직 상위 38%</div>
+          <div class="bp-badge">생산직 상위 30%</div>
           <div class="bp-badge fill">3배수 이내</div>
         </div>
       </div>
@@ -315,31 +318,31 @@ p { margin:0; }
   <div class="summary">
     <div class="summary-card">
       <div class="summary-txt">
-        <div class="summary-headline">현장 중심의 공학 경험은 유효하나,<br>조직 역량 근거 부족으로 추가 검증 필요합니다</div>
+        <div class="summary-headline">수치 기반의 직무 역량 서술이 매우 우수하나, 회사 선택 동기의 진정성 확인이 필요합니다</div>
         <ul class="summary-bullets">
-          <li>화학공학 전공 및 다양한 현장 경험이 강점</li>
-          <li>협업·갈등관리 관련 서술 전무</li>
-          <li>자기 서사의 구체성 및 직무 연관성 보완 필요</li>
-          <li>주도성·성취지향 근거 문장은 있으나 깊이가 얕음</li>
+          <li>공정 개선 인턴에서 불량률 감소 등 정량 성과 제시</li>
+          <li>수치·키워드 중심 서술로 구체성이 직군 내 최상위</li>
+          <li>회사 지원 이유가 일반적 수준에 그쳐 면접 확인 필요</li>
+          <li>AI 작성 의심 문장 미탐지로 자기 작성 신뢰도 높음</li>
         </ul>
       </div>
       <div class="summary-divider"></div>
       <div>
         <div class="summary-pos-title">지원자의 BP평가 점수 및 동일 직군 내 위치</div>
         <div class="summary-pos">
-          <span class="summary-pos-score num">59.51</span>
+          <span class="summary-pos-score num">68.86</span>
           <div class="summary-pos-bars">
             <div class="cbar">
               <div class="cbar-track"></div>
-              <div class="cbar-fill" style="width:59.51%;background:rgba(0,117,255,0.45);"></div>
-              <div class="cbar-dot dot-avg" style="left:57.2%;"></div>
-              <div class="cbar-dot dot-cut" style="left:61.5%;"></div>
-              <div class="cbar-dot dot-top" style="left:74.3%;"></div>
+              <div class="cbar-fill" style="width:68.86%;background:rgba(0,117,255,0.45);"></div>
+              <div class="cbar-dot dot-avg" style="left:63.06%;"></div>
+              <div class="cbar-dot dot-cut" style="left:63.26%;"></div>
+              <div class="cbar-dot dot-top" style="left:69.74%;"></div>
             </div>
             <div class="cbar-legend">
-              <span class="lg"><span class="sw" style="background:#fff;border:2px solid #ff006b;"></span><span><b>3배수 컷</b> <span class="num">61.5</span></span></span>
-              <span class="lg"><span class="sw" style="background:#7C52F1;"></span><span><b>평균</b> <span class="num">57.2</span></span></span>
-              <span class="lg"><span class="sw" style="background:#041D30;"></span><span><b>상위 10%</b> <span class="num">74.3</span></span></span>
+              <span class="lg"><span class="sw" style="background:#fff;border:2px solid #ff006b;"></span><span><b>3배수 컷</b> <span class="num">63.26</span></span></span>
+              <span class="lg"><span class="sw" style="background:#7C52F1;"></span><span><b>평균</b> <span class="num">63.06</span></span></span>
+              <span class="lg"><span class="sw" style="background:#041D30;"></span><span><b>상위 10%</b> <span class="num">69.74</span></span></span>
             </div>
           </div>
         </div>
@@ -355,32 +358,30 @@ p { margin:0; }
       <div class="card jma">
         <div class="card-title">직무적합도</div>
         <div class="side-head">
-          <span class="metric-score num">65.92</span>
-          <span class="metric-cmp">영업직 평균 대비 <span class="up num">+4.21p</span></span>
+          <span class="metric-score num">78.43</span>
+          <span class="metric-cmp">생산직 평균 대비 <span class="up num">+6.90p</span></span>
         </div>
-        <div class="metric-bar">
-          <div class="cbar mini">
+        <div class="cbar mini">
             <div class="cbar-track"></div>
-            <div class="cbar-fill" style="width:65.92%;background:rgba(0,117,255,0.3);height:14px;"></div>
-            <div class="cbar-dot dot-avg" style="left:57.22%;width:10px;height:10px;"></div>
-            <div class="cbar-dot dot-top" style="left:74.38%;width:10px;height:10px;"></div>
+            <div class="cbar-fill" style="width:78.43%;background:rgba(0,117,255,0.3);height:14px;"></div>
+            <div class="cbar-dot dot-avg" style="left:71.53%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:79.89%;width:10px;height:10px;"></div>
           </div>
           <div class="cbar-legend">
-            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">57.22</span></span></span>
-            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">74.38</span></span></span>
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">71.53</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">79.89</span></span></span>
           </div>
-        </div>
         <div class="grade-cols">
           <div class="gc-left">
-            <div class="grow"><span class="lbl">직무경험</span><span class="grade g-mid">중</span></div>
-            <div class="grow"><span class="lbl">직무동기</span><span class="grade g-high">상</span></div>
-            <div class="grow"><span class="lbl">직무지식</span><span class="grade g-mid">중</span></div>
+            <div class="grow"><span class="lbl">직무경험</span><span class="grade g-high">상</span></div>
+            <div class="grow"><span class="lbl">직무동기</span><span class="grade g-mid">중</span></div>
+            <div class="grow"><span class="lbl">직무지식</span><span class="grade g-high">상</span></div>
           </div>
           <div class="gc-right">
             <div class="gc-right-head"><span class="lbl">직무역량</span><span class="grade g-mid">중</span></div>
             <div class="sub-wrap">
-              <div class="srow"><span class="lbl">주도성</span><span class="grade g-low">하</span></div>
-              <div class="srow"><span class="lbl">성취지향</span><span class="grade g-low">하</span></div>
+              <div class="srow"><span class="lbl">주도성</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">성취지향</span><span class="grade g-high">상</span></div>
               <div class="srow"><span class="lbl">전략적사고</span><span class="grade g-mid">중</span></div>
               <div class="srow"><span class="lbl">실행력</span><span class="grade g-high">상</span></div>
               <div class="srow"><span class="lbl">메타인지역량</span><span class="grade g-mid">중</span></div>
@@ -389,8 +390,8 @@ p { margin:0; }
           </div>
         </div>
         <div class="hardskill">
-          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">Salesforce Certified Sales Cloud Consultant, PowerPoint, Excel</span></div>
-          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">유통관리사 자격증</span></div>
+          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">통계 데이터 분석, 품질 시험(압축강도), Excel</span></div>
+          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">위험물산업기사</span></div>
         </div>
       </div>
 
@@ -399,51 +400,47 @@ p { margin:0; }
         <div class="card card-pad">
           <div class="card-title">조직적합도</div>
           <div class="side-head">
-            <span class="metric-score num">47.65</span>
-            <span class="metric-cmp">영업직 평균 대비 <span class="down num">−6.13p</span></span>
+            <span class="metric-score num">45.60</span>
+            <span class="metric-cmp">생산직 평균 대비 <span class="up num">+15.88p</span></span>
           </div>
-          <div class="metric-bar">
-            <div class="cbar mini">
-              <div class="cbar-track"></div>
-              <div class="cbar-fill" style="width:47.65%;background:rgba(0,117,255,0.3);height:14px;"></div>
-              <div class="cbar-dot dot-avg" style="left:53.82%;width:10px;height:10px;"></div>
-              <div class="cbar-dot dot-top" style="left:71.24%;width:10px;height:10px;"></div>
-            </div>
-            <div class="cbar-legend">
-              <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">53.82</span></span></span>
-              <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">71.24</span></span></span>
-            </div>
+          <div class="cbar mini">
+            <div class="cbar-track"></div>
+            <div class="cbar-fill" style="width:45.60%;background:rgba(0,117,255,0.3);height:14px;"></div>
+            <div class="cbar-dot dot-avg" style="left:29.72%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:55.68%;width:10px;height:10px;"></div>
+          </div>
+          <div class="cbar-legend">
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">29.72</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">55.68</span></span></span>
           </div>
           <div class="grade-wrap">
-            <div class="wrow"><span class="lbl">리더십역량</span><span class="grade g-high">상</span></div>
+            <div class="wrow"><span class="lbl">리더십역량</span><span class="grade g-none">-</span></div>
             <div class="wrow"><span class="lbl">협상력</span><span class="grade g-mid">중</span></div>
-            <div class="wrow"><span class="lbl">갈등관리역량</span><span class="grade g-low">하</span></div>
-            <div class="wrow"><span class="lbl">팀워크역량</span><span class="grade g-high">상</span></div>
+            <div class="wrow"><span class="lbl">갈등관리역량</span><span class="grade g-none">-</span></div>
+            <div class="wrow"><span class="lbl">팀워크역량</span><span class="grade g-mid">중</span></div>
             <div class="wrow"><span class="lbl">의사소통역량</span><span class="grade g-mid">중</span></div>
-            <div class="wrow"><span class="lbl">대인관계역량</span><span class="grade g-mid">중</span></div>
+            <div class="wrow"><span class="lbl">대인관계역량</span><span class="grade g-none">-</span></div>
           </div>
         </div>
         <div class="card card-pad">
           <div class="card-title">지원동기</div>
           <div class="side-head">
-            <span class="metric-score num">62.77</span>
-            <span class="metric-cmp">영업직 상위 <span class="up num">+3.57p</span></span>
+            <span class="metric-score num">50.85</span>
+            <span class="metric-cmp">생산직 평균 대비 <span class="down num">−10.32p</span></span>
           </div>
-          <div class="metric-bar">
-            <div class="cbar mini">
-              <div class="cbar-track"></div>
-              <div class="cbar-fill" style="width:62.77%;background:rgba(0,117,255,0.3);height:14px;"></div>
-              <div class="cbar-dot dot-avg" style="left:53.82%;width:10px;height:10px;"></div>
-              <div class="cbar-dot dot-top" style="left:71.24%;width:10px;height:10px;"></div>
-            </div>
-            <div class="cbar-legend">
-              <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">53.82</span></span></span>
-              <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">71.24</span></span></span>
-            </div>
+          <div class="cbar mini">
+            <div class="cbar-track"></div>
+            <div class="cbar-fill" style="width:50.85%;background:rgba(0,117,255,0.3);height:14px;"></div>
+            <div class="cbar-dot dot-avg" style="left:61.17%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:69.01%;width:10px;height:10px;"></div>
+          </div>
+          <div class="cbar-legend">
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">61.17</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">69.01</span></span></span>
           </div>
           <div class="grade-wrap" style="border-top:1px solid #c6c6c6;">
-            <div class="grow" style="width:100%;"><span class="lbl">회사동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
-            <div class="grow" style="width:100%;border-bottom:none;"><span class="lbl">직무동기</span><span class="grade g-high" style="font-size:14px;">상</span></div>
+            <div class="grow" style="width:100%;"><span class="lbl">회사동기</span><span class="grade g-low" style="font-size:14px;">하</span></div>
+            <div class="grow" style="width:100%;border-bottom:none;"><span class="lbl">직무동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
           </div>
         </div>
       </div>
@@ -457,21 +454,18 @@ p { margin:0; }
       </div>
       <div class="card side-card">
         <div class="side-box first">
-          <div class="side-head"><span class="side-name">답변적합도</span><span class="side-score num">68.36</span></div>
-          <div class="side-cmt">질문의 의도를 잘 파악하여 대답함</div>
+          <div class="side-head"><span class="side-name">답변적합도</span><span class="side-score num">84.26</span></div>
+          <div class="side-cmt">문항 의도에 정확히 부합하는 답변 구성</div>
         </div>
         <div class="side-divider"></div>
         <div class="side-box first">
-          <div class="side-head"><span class="side-name">구체성</span><span class="side-score num">65.92</span></div>
-          <div class="side-cmt">경험을 단순 나열한 수준임</div>
+          <div class="side-head"><span class="side-name">구체성</span><span class="side-score num">92.45</span></div>
+          <div class="side-cmt">수치·키워드가 풍부하고 서술 밀도가 높음</div>
         </div>
         <div class="side-divider"></div>
         <div class="side-box first">
-          <div class="side-head">
-            <span class="side-name">본인소개</span>
-            <span class="frame"><span class="warn-badge">주의</span><span class="side-score num">36.82</span></span>
-          </div>
-          <div class="side-cmt">자기 서사 부재</div>
+          <div class="side-head"><span class="side-name">본인소개</span><span class="side-score num">61.03</span></div>
+          <div class="side-cmt">본인 중심 서술 비율이 높음</div>
         </div>
       </div>
     </div>
@@ -498,9 +492,9 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">홍길동</span>
+      <span class="doc-header-name">응시자4</span>
       <span class="doc-header-divider"></span>
-      <span class="doc-header-num num">1234567890</span>
+      <span class="doc-header-num num">4</span>
     </div>
   </div>
 
@@ -519,24 +513,24 @@ p { margin:0; }
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">직무적합도</span><div class="vp-name-row"><span class="nm">직무경험</span><span class="vp-grade mid">중</span></div></div>
-              <span class="vp-badge up">상위 32%</span>
+              <div class="vp-cat"><span class="cat">직무적합도</span><div class="vp-name-row"><span class="nm">직무지식</span><span class="vp-grade high">상</span></div></div>
+              <span class="vp-badge up">상위 9%</span>
             </div>
-            <div class="vp-sum">화학공학 전공 기반의 공정 운영·생산기술 지식 + 스마트팩토리·자동화 프로젝트 다수 현장 경험 보유.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">스마트 팩토리 프로젝트에서 본인이 직접 기여한 역할과 수치적 성과를 구체적으로 질문해보세요.</span></div>
+            <div class="vp-sum">배합 설계·통계 분석 등 직무 지식을 실무 개선에 적용한 사례가 명확함.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">불량률 분석에서 사용한 통계 기법을 선택한 이유와 한계를 질문해보세요.</span></div>
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">리더십역량</span><span class="vp-grade high">상</span></div></div>
-              <span class="vp-badge up">상위 32%</span>
+              <div class="vp-cat"><span class="cat">직무역량</span><div class="vp-name-row"><span class="nm">성취지향</span><span class="vp-grade high">상</span></div></div>
+              <span class="vp-badge up">상위 13%</span>
             </div>
-            <div class="vp-sum">졸업 준비 중에도 현장 인턴에 주저 없이 지원하는 등 해당 직무에 대한 일관된 관심과 적극성이 드러남.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">왜 생산기술이 아닌 영업직에 지원했는지, 직무 전환의 맥락과 동기를 확인해보세요.</span></div>
+            <div class="vp-sum">불량률 12% 감소라는 정량 목표를 설정하고 달성한 경험 보유.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">목표했던 수치에 도달하지 못했다면 어떻게 했을지, 당시의 차선책을 질문해보세요.</span></div>
           </div>
         </div>
         <div class="vp-bottom good">
           <span class="blbl">확인된 하드스킬</span>
-          <div class="chips">Salesforce Certified Sales Cloud Consultant, PowerPoint, Excel</div>
+          <div class="chips">통계 데이터 분석, 품질 시험(압축강도), Excel</div>
         </div>
       </div>
 
@@ -549,24 +543,24 @@ p { margin:0; }
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">직무역량</span><div class="vp-name-row"><span class="nm">주도성</span><span class="vp-grade low">하</span></div></div>
-              <span class="vp-badge down">하위 25%</span>
+              <div class="vp-cat"><span class="cat">지원동기</span><div class="vp-name-row"><span class="nm">회사동기</span><span class="vp-grade low">하</span></div></div>
+              <span class="vp-badge down">하위 11%</span>
             </div>
-            <div class="vp-sum">갈등관리·협상력·팀워크 근거 문장이 전무. 개인 독학 중심 서술로 조직 협업 경험 확인 불가.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">팀 프로젝트에서 의견 충돌이 있었던 경험과 해결 방식을 구체적으로 질문해보세요.</span></div>
+            <div class="vp-sum">업계 선도 기업이라는 일반론 수준의 서술로 회사 선택의 고유한 이유 확인 필요.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">한일시멘트의 어떤 점이 본인의 경력 계획과 맞닿아 있는지 질문해보세요.</span></div>
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><div class="vp-name-row"><span class="nm">본인소개</span><span class="vp-grade none">-</span></div></div>
-              <span class="vp-badge down">하위 12%</span>
+              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">리더십역량</span><span class="vp-grade none">-</span></div></div>
+              <span class="vp-badge down">하위 7%</span>
             </div>
-            <div class="vp-sum">자기소개 문항 점수 36.82점 (50점 미만). 자기 서사 부재 · 직무 연관성 낮음.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">자소서 특정 경험을 현장에서 재현·설명하도록 유도하여 실제 경험 여부를 검증해보세요.</span></div>
+            <div class="vp-sum">해당 역량을 확인할 수 없음</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">집단을 이끌어본 경험이 있다면 어떤 방식으로 방향을 제시했는지 질문해보세요.</span></div>
           </div>
         </div>
         <div class="vp-bottom warn">
           <span class="blbl">확인되지 않은 하드스킬</span>
-          <div class="chips">유통관리사 자격증</div>
+          <div class="chips">위험물산업기사</div>
         </div>
       </div>
 
@@ -576,24 +570,17 @@ p { margin:0; }
     <div class="sec-title-wrap"><div class="sec-title"><h2>문항별 검사 결과</h2></div></div>
     <div class="qtable">
       <div class="qrow">
-        <div class="qleft"><span class="qno">문항 1</span><span class="qtext">지원 동기가 무엇인가요?</span></div>
+        <div class="qleft"><span class="qno">문항 1</span><span class="qtext">우리 회사에 지원한 동기에 대해 서술하시오.</span></div>
         <div class="qright">
-          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
+          <div class="qmetric"><span>답변적합도</span><span class="v num">84.26</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct num">4%</span></div>
+        </div>
+      </div>
+      <div class="qrow">
+        <div class="qleft"><span class="qno">문항 2</span><span class="qtext">직무와 관련된 본인의 경험과 역량을 서술하시오.</span></div>
+        <div class="qright">
+          <div class="qmetric"><span>답변적합도</span><span class="v num">84.26</span></div>
           <div class="qmetric"><span>AI 작성률</span><span class="pct num">2%</span></div>
-        </div>
-      </div>
-      <div class="qrow">
-        <div class="qleft"><span class="qno">문항 2</span><span class="qtext">성격의 장단점에 대해 서술하세요.</span></div>
-        <div class="qright">
-          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">32%</span></div>
-        </div>
-      </div>
-      <div class="qrow">
-        <div class="qleft"><span class="qno">문항 3</span><span class="qtext">자기소개를 해 주세요</span></div>
-        <div class="qright">
-          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">32%</span></div>
         </div>
       </div>
     </div>
@@ -621,9 +608,9 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">홍길동</span>
+      <span class="doc-header-name">응시자4</span>
       <span class="doc-header-divider"></span>
-      <span class="doc-header-num num">1234567890</span>
+      <span class="doc-header-num num">4</span>
     </div>
   </div>
 
@@ -640,71 +627,46 @@ p { margin:0; }
 
     <div class="p3-cards-wrap">
 
-      <!-- 문항 1 -->
       <div class="p3-qcard">
         <div class="p3-qhead">
           <span>문항 1</span>
-          <span>지원 동기가 무엇인가요?</span>
+          <span>우리 회사에 지원한 동기에 대해 서술하시오.</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">직무동기</span><span class="vp-grade high">상</span></div>
-          <div class="p3-metric-group"><span class="p3-metric-name">회사동기</span><span class="vp-grade mid">중</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">회사동기</span><span class="vp-grade low">하</span></div><div class="p3-metric-group"><span class="p3-metric-name">직무동기</span><span class="vp-grade mid">중</span></div>
         </div>
         <div class="p3-body">
-          <p><span class="hl">한일시멘트의 영업 직무는 시멘트·레미콘 등 건자재 제품의 B2B 영업과 거래처 개발, 그리고 고객 니즈 분석 및 수주 관리를 담당하는 것으로 알고 있습니다.</span> 저는 경영학을 전공하고 마케팅·영업전략을 세부적으로 연구했습니다. 학부 시절부터 <span class="hl">산업재 영업 분야에 관심을 두고 건설 시장 동향 분석, 유통채널 최적화 프로젝트에 능동적으로 참여했습니다.</span> <span class="hl">영업 전문가를 꿈꾸면서 고객과의 신뢰 관계 형성이 핵심이라고 생각했습니다.</span> 졸업한 선배들과 이야기를 나눌 때 이론과 실무 사이의 간극이 크다는 것과 현장에서 고객을 직접 만나며 신뢰를 쌓는 것이 중요하다는 이야기를 들었습니다. 그래서 저는 기회가 생길 때마다 현장 경험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 영업 현장에서 근무했습니다. <span class="hl">고객 경험은 돈을 주고도 살 수 없는 소중한 자산이라는 것을 깨달았고,</span> 무엇보다도 현장에서 고객의 신뢰를 한 번 잃으면 회복하기 어렵다는 점을 체감했습니다. 졸업 준비로 바쁜 때에도 건자재 전문 업체의 영업팀에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 <span class="hl">영업 직무를 경험하겠다는 열정</span>이 있었기 때문입니다. 인턴 과정을 거치면서 CRM, 제안서 작성, 거래처 관리 등 다양한 역량의 필요성을 느꼈고 관련 자격시험을 준비하며 실무에 적용해보기도 했습니다.</p>
+          <p><span class="hl">기초 소재 분야에서 오랜 업력을 가진 한일시멘트라면 제가 배운 것을 가장 깊이 있게 펼칠 수 있다고 판단해 지원했습니다.</span> <span class="hl">신소재공학을 전공하며 시멘트 수화 반응과 콘크리트 물성 과목에서 가장 높은 성적을 받았을 만큼 무기 결합재 분야에 흥미를 느꼈습니다.</span> <span class="hl">작년 하반기에는 레미콘 공장 품질팀에서 3개월간 인턴으로 근무하며 골재 수분율과 압축강도 데이터를 매일 기록하고 분석했습니다.</span> 현장에서 데이터가 품질을 지키는 가장 확실한 언어라는 것을 체감했고, 이 확신이 생산 직무 지원으로 이어졌습니다. 입사 후에는 공정 데이터를 다루는 강점을 살려 품질 안정화에 기여하고 싶습니다.</p>
         </div>
         <div class="p3-qfooter">
           <div class="p3-skills">
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
-            <span class="p3-skill-tag">직무지식,</span>
-            <span class="p3-skill-tag">직무경험,</span>
-            <span class="p3-skill-tag">주도성</span>
+            <span class="p3-skill-tag">직무경험</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">32%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">4%</span></div>
         </div>
       </div>
 
-      <!-- 문항 2 -->
       <div class="p3-qcard">
         <div class="p3-qhead">
           <span>문항 2</span>
-          <span>성격의 장단점에 대해 서술하세요.</span>
+          <span>직무와 관련된 본인의 경험과 역량을 서술하시오.</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">직무역량</span><span class="vp-grade low">하</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무경험</span><span class="vp-grade high">상</span></div><div class="p3-metric-group"><span class="p3-metric-name">직무지식</span><span class="vp-grade high">상</span></div>
         </div>
         <div class="p3-body">
-          <p>저는 어릴 때부터 다양한 분야에 관심을 두고 즐겨왔습니다. 흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다. 영업 인턴을 수행하며 제품 지식뿐만 아니라 <span class="hl">커뮤니케이션, 협상, 고객 심리 등 다양한 역량이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</span> 그래서 영업·마케팅과 관련된 유통, 심리, 재무 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다. 다양한 분야를 공부하는 것이 학업이나 실무에 도움이 되기도 하지만, <span class="hl">모두 높은 수준까지 공부하기는 불가능했습니다.</span> 그래서 어떤 분야의 전문가가 되지 못한 것에 아쉬움을 느끼기도 했습니다. <span class="hl">이러한 점을 보완하기 위해 저는 전공인 경영학만큼은 전문가가 되어야겠다고 생각했고,</span> 지금도 전공 강의뿐만 아니라 산업별 리포트와 연구 보고서 등을 꾸준히 찾아보고 최신 시장 동향을 이해하는 데 노력하고 있습니다.</p>
+          <p><span class="hl">인턴 기간 중 압축강도 시험 불합격이 잦다는 문제를 발견하고, 품질팀장께 데이터 분석을 자청했습니다.</span> <span class="hl">최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</span> <span class="hl">보정 주기를 4시간에서 2시간으로 줄이는 안을 적용한 뒤 한 달간 불량률이 12% 감소했습니다.</span> <span class="hl">이 결과를 표준 작업서 개정안으로 정리해 현장 반장님들께 직접 설명드리고 반영까지 확인했습니다.</span> 수치로 검증하고 현장에 정착시키는 것까지가 개선의 끝이라는 것을 배운 경험이었습니다. 한일시멘트의 생산 현장에서도 데이터에 근거한 개선을 반복하는 엔지니어가 되겠습니다.</p>
         </div>
         <div class="p3-qfooter">
           <div class="p3-skills">
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
             <span class="p3-skill-tag">성취지향,</span>
-            <span class="p3-skill-tag">주도성</span>
+            <span class="p3-skill-tag">실행력,</span>
+            <span class="p3-skill-tag">협상력,</span>
+            <span class="p3-skill-tag">의사소통역량</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">32%</span></div>
-        </div>
-      </div>
-
-      <!-- 문항 3 -->
-      <div class="p3-qcard">
-        <div class="p3-qhead">
-          <span>문항 3</span>
-          <span>자기소개를 해 주세요.</span>
-        </div>
-        <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">본인소개</span><span class="vp-grade low">하</span></div>
-        </div>
-        <div class="p3-body">
-          <p><span class="hl">저의 꿈은 한일시멘트에서 영업 전문가로 일하며 국내 건자재 시장에서 신뢰받는 B2B 파트너가 되고,</span> 나아가서 전략 영업의 전문가로서 모든 부분을 총괄하여 영업 채널을 설계해 보는 것입니다. <span class="hl">학부 프로젝트와 건자재 관련 업체에서 인턴으로 근무하며 거래처 개발 및 수주 프로젝트를 다수 경험했습니다.</span> 프로젝트에 참여하면서 고객 제안서 작성이나 계약 협상 등 다양한 실무 역량을 습득하게 되었고, 이 분야의 전문가가 되고 싶다는 목표가 생겼습니다. 또한 거래처를 직접 발굴하고 <span class="hl">계약을 성사시키는 선배님들의 모습을 보고 크게 감명받았습니다.</span> 한일시멘트에서 영업 직무로 일하게 된다면 다양한 프로젝트에 적극 참여하면서 전공으로 배운 경영 지식을 현업에 적용하는 노하우를 익히고, 건설·자재 산업 전반에 걸친 시장 이해를 구축함으로써 고객이 가장 신뢰하는 영업 전문가가 되겠습니다.</p>
-        </div>
-        <div class="p3-qfooter">
-          <div class="p3-skills">
-            <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
-            <span class="p3-skill-tag">직무경험,</span>
-            <span class="p3-skill-tag">직무지식</span>
-          </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">0%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">2%</span></div>
         </div>
       </div>
 
@@ -732,66 +694,63 @@ p { margin:0; }
   <!-- 섹션 제목 (첫 상세 페이지 1회) -->
   <div class="blk dt-sec-title"><h2>BP 평가 상세</h2></div>
 
-  <!-- ===== 직무적합도 ===== -->
-  <div class="blk dt-cat"><span class="nm">직무적합도</span><span class="score num">65.92점</span></div>
+  <div class="blk dt-cat"><span class="nm">직무적합도</span><span class="score num">78.43점</span></div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무경험</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="nm">직무경험</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">단기 아르바이트·인턴·파견직 등 다양한 형태의 영업 현장 경험 보유. 건자재 유통·거래처 관리 프로젝트 다수 참여.</div>
+      <div class="dt-comment">레미콘 공장 품질팀 인턴 3개월 — 공정 데이터 분석과 개선 실무 경험 보유.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>그래서 저는 기회가 생길 때마다 현장 경험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 영업 현장에서 근무했습니다.</li>
-        <li>졸업 준비로 바쁜 때에도 건자재 전문 업체의 영업팀에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 영업 직무를 경험하겠다는 열정이 있었기 때문입니다.</li>
+        <li>작년 하반기에는 레미콘 공장 품질팀에서 3개월간 인턴으로 근무하며 골재 수분율과 압축강도 데이터를 매일 기록하고 분석했습니다.</li>
+        <li>인턴 기간 중 압축강도 시험 불합격이 잦다는 문제를 발견하고, 품질팀장께 데이터 분석을 자청했습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">지속적 현장 영업 도전 행동으로 직무 의지 확인됨. 단, 회사 특화 동기와 직무 연결의 구체성은 다소 부족.</div>
+      <div class="dt-comment">재료 물성에 대한 전공 관심이 직무 선택으로 이어짐, 장기 목표 서술은 간략.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>학부 시절부터 산업재 영업 분야에 관심을 두고 건설 시장 동향 분석, 유통채널 최적화 프로젝트에 능동적으로 참여했습니다.</li>
-        <li>영업 전문가를 꿈꾸면서 고객과의 신뢰 관계 형성이 핵심이라고 생각했습니다.</li>
+        <li>신소재공학을 전공하며 시멘트 수화 반응과 콘크리트 물성 과목에서 가장 높은 성적을 받았을 만큼 무기 결합재 분야에 흥미를 느꼈습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무지식</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="nm">직무지식</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">경영학 전공 및 마케팅·영업전략 연구. 유통·심리·재무 관련 독학 및 자격시험 준비로 실무 적용.</div>
+      <div class="dt-comment">콘크리트 배합·통계 분석 등 직무 지식을 실무에 적용한 사례 확인.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>저는 경영학을 전공하고 마케팅·영업전략을 세부적으로 연구했습니다.</li>
-        <li>영업·마케팅과 관련된 유통, 심리, 재무 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</li>
+        <li>최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</li>
+        <li>보정 주기를 4시간에서 2시간으로 줄이는 안을 적용한 뒤 한 달간 불량률이 12% 감소했습니다.</li>
       </ul>
     </div>
   </div>
 
-  <!-- 직무역량(중분류) + 5개 하위역량 -->
   <div class="blk dt-subcat"><div class="dt-subcat-head"><span class="nm">직무역량</span><span class="dt-badge mid">중</span></div></div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">주도성</span><span class="dt-badge low">하</span></div>
+    <div class="dt-row-title"><span class="dt-tag">주도성</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">스스로 자격시험·현장 경험에 도전한 행동 다수. 그러나 결과·성과 중심 서술 부족으로 깊이 부족.</div>
+      <div class="dt-comment">개선 분석을 자청한 경험 확인, 범위는 부여된 과제 내에 머무름.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>그래서 저는 기회가 생길 때마다 현장 경험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 영업 현장에서 근무했습니다.</li>
+        <li>인턴 기간 중 압축강도 시험 불합격이 잦다는 문제를 발견하고, 품질팀장께 데이터 분석을 자청했습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">성취지향</span><span class="dt-badge low">하</span></div>
+    <div class="dt-row-title"><span class="dt-tag">성취지향</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">목표 설정 서술은 있으나 정량적 성취 결과 제시가 부족하여 성취지향 근거가 약함.</div>
+      <div class="dt-comment">불량률 12% 감소라는 정량 목표 달성 경험 보유.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.</li>
+        <li>보정 주기를 4시간에서 2시간으로 줄이는 안을 적용한 뒤 한 달간 불량률이 12% 감소했습니다.</li>
       </ul>
     </div>
   </div>
@@ -799,10 +758,10 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">전략적사고</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">시장 동향 분석에 기반한 접근 시도가 일부 확인되나 전략적 판단의 체계성은 제한적.</div>
+      <div class="dt-comment">원인 가설을 세우고 검증하는 접근 확인.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>산업별 리포트와 연구 보고서 등을 꾸준히 찾아보고 최신 시장 동향을 이해하는 데 노력하고 있습니다.</li>
+        <li>최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</li>
       </ul>
     </div>
   </div>
@@ -810,11 +769,10 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">실행력</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">계획을 실제 인턴·프로젝트 참여로 옮긴 행동이 다수 확인되어 실행력은 강점.</div>
+      <div class="dt-comment">분석 결과를 표준 작업서 개정 제안까지 연결한 실행 사례.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>인턴 과정을 거치면서 CRM, 제안서 작성, 거래처 관리 등 다양한 역량의 필요성을 느꼈고 관련 자격시험을 준비하며 실무에 적용해보기도 했습니다.</li>
-        <li>학부 프로젝트와 건자재 관련 업체에서 인턴으로 근무하며 거래처 개발 및 수주 프로젝트를 다수 경험했습니다.</li>
+        <li>이 결과를 표준 작업서 개정안으로 정리해 현장 반장님들께 직접 설명드리고 반영까지 확인했습니다.</li>
       </ul>
     </div>
   </div>
@@ -822,55 +780,52 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">메타인지역량</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">자신의 강·약점 인식은 있으나 개선 행동으로의 연결은 부분적으로만 드러남.</div>
+      <div class="dt-comment">데이터로 자신의 판단을 검증하는 습관 언급.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>모두 높은 수준까지 공부하기는 불가능했기에 어떤 분야의 전문가가 되지 못한 것에 아쉬움을 느끼기도 했습니다.</li>
+        <li>최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</li>
       </ul>
     </div>
   </div>
 
-  <!-- ===== 조직적합도 ===== -->
-  <div class="blk dt-cat"><span class="nm">조직적합도</span><span class="score num">47.65점</span></div>
+  <div class="blk dt-cat"><span class="nm">조직적합도</span><span class="score num">45.60점</span></div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">리더십역량</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="dt-tag">리더십역량</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">프로젝트에서 주도적 역할을 맡은 경험을 서술. 다만 팀 성과로의 연결 근거는 제한적.</div>
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>계약을 성사시키는 선배님들의 모습을 보고 크게 감명받아, 직접 거래처를 발굴하는 역할에 적극적으로 나섰습니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">협상력</span><span class="dt-badge mid">중</span></div>
-    <div class="dt-row-body">
-      <div class="dt-comment">거래처 제안·조율 경험이 언급되나 구체적 협상 사례·결과 서술이 부족.</div>
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>프로젝트에 참여하면서 고객 제안서 작성이나 계약 협상 등 다양한 실무 역량을 습득하게 되었습니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">갈등관리역량</span><span class="dt-badge low">하</span></div>
-    <div class="dt-row-body">
-      <div class="dt-comment">갈등 상황 경험 및 해결 과정 서술이 전무하여 판단 근거 확보 불가. 면접 추가 검증 필요.</div>
+      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">팀워크역량</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="dt-tag">협상력</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">공동 프로젝트 참여 경험이 다수 확인되어 협업 기반 경험은 보유.</div>
+      <div class="dt-comment">작업서 개정을 위해 현장 반장들을 설득한 경험 확인.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>건설 시장 동향 분석, 유통채널 최적화 프로젝트에 팀원으로 능동적으로 참여했습니다.</li>
+        <li>이 결과를 표준 작업서 개정안으로 정리해 현장 반장님들께 직접 설명드리고 반영까지 확인했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">갈등관리역량</span><span class="dt-badge none">-</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">팀워크역량</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">품질팀 협업 수행 확인, 본인 기여 외 협업 방식 서술은 제한적.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>인턴 기간 중 압축강도 시험 불합격이 잦다는 문제를 발견하고, 품질팀장께 데이터 분석을 자청했습니다.</li>
       </ul>
     </div>
   </div>
@@ -878,76 +833,79 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">의사소통역량</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">고객 응대 경험이 언급되나 의사소통 방식·성과의 구체성은 부족.</div>
+      <div class="dt-comment">분석 결과를 비전공 현장 인력에게 설명한 경험.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>현장에서 고객을 직접 만나며 신뢰를 쌓는 것이 중요하다는 이야기를 들었습니다.</li>
+        <li>이 결과를 표준 작업서 개정안으로 정리해 현장 반장님들께 직접 설명드리고 반영까지 확인했습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">대인관계역량</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="dt-tag">대인관계역량</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">다양한 영업 현장 근무로 대인 접점 경험은 보유하나 관계 형성의 깊이 서술은 약함.</div>
+      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
       <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>여러 영업 현장에서 근무하며 고객의 신뢰를 한 번 잃으면 회복하기 어렵다는 점을 체감했습니다.</li>
-      </ul>
+      <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
   </div>
 
-  <!-- ===== 지원동기 ===== -->
-  <div class="blk dt-cat"><span class="nm">지원동기</span><span class="score num">62.77점</span></div>
+  <div class="blk dt-cat"><span class="nm">지원동기</span><span class="score num">50.85점</span></div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">회사동기</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="nm">회사동기</span><span class="dt-badge low">하</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">산업·시장에 대한 관심은 드러나나 한일시멘트에 특화된 지원 동기는 약함.</div>
+      <div class="dt-comment">업계 선도 기업이라는 일반적 서술에 그쳐 회사 고유의 지원 이유 미확인.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>저의 꿈은 한일시멘트에서 영업 전문가로 일하며 국내 건자재 시장에서 신뢰받는 B2B 파트너가 되는 것입니다.</li>
+        <li>기초 소재 분야에서 오랜 업력을 가진 한일시멘트라면 제가 배운 것을 가장 깊이 있게 펼칠 수 있다고 판단해 지원했습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">영업 직무에 대한 일관된 관심과 도전 경험이 확인되어 직무 동기는 뚜렷함.</div>
+      <div class="dt-comment">재료 물성 관심에서 품질·생산 직무로 이어지는 동기 흐름 확인.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>전략 영업의 전문가로서 영업 채널을 설계해 보는 것을 목표로, 거래처 개발 및 수주 프로젝트에 적극 참여했습니다.</li>
+        <li>신소재공학을 전공하며 시멘트 수화 반응과 콘크리트 물성 과목에서 가장 높은 성적을 받았을 만큼 무기 결합재 분야에 흥미를 느꼈습니다.</li>
+        <li>작년 하반기에는 레미콘 공장 품질팀에서 3개월간 인턴으로 근무하며 골재 수분율과 압축강도 데이터를 매일 기록하고 분석했습니다.</li>
       </ul>
     </div>
   </div>
 
-  <!-- ===== 답변/구체성/본인소개 ===== -->
-  <div class="blk dt-cat"><span class="nm">답변적합도</span><span class="score num">68.36점</span></div>
-  <div class="blk dt-commentrow">문항 의도를 대체로 반영하고 있으며, 일부 항목에서 답변 방향이 소폭 벗어남</div>
+  <div class="blk dt-cat"><span class="nm">답변적합도</span><span class="score num">84.26점</span></div>
 
-  <div class="blk dt-cat"><span class="nm">구체성</span><span class="score num">65.92점</span></div>
-  <div class="blk dt-commentrow">구체적 서술이 전반적으로 포함되어 있으며, 일부 표현에서 추상적 요소가 혼재함</div>
+  <div class="blk dt-commentrow">문항에서 요구하는 의도를 정확히 파악하고, 이에 부합하는 내용으로 답변을 구성함</div>
 
-  <div class="blk dt-cat"><span class="nm">본인소개</span><span class="score num">36.82점</span></div>
-  <div class="blk dt-commentrow">일반적 상황이나 외부 요인 중심의 서술이 많아 본인 역할이 잘 드러나지 않음</div>
+  <div class="blk dt-cat"><span class="nm">구체성</span><span class="score num">92.45점</span></div>
 
-  <!-- ===== 하드스킬 (Figma 456:2878) ===== -->
+  <div class="blk dt-commentrow">구체적인 경험, 수치, 키워드가 풍부하게 포함되어 있으며 서술의 밀도가 높음</div>
+
+  <div class="blk dt-cat"><span class="nm">본인소개</span><span class="score num">61.03점</span></div>
+
+  <div class="blk dt-commentrow">본인 중심의 서술 비율이 높으며, 일부 문장에서 외부 상황 서술이 포함됨</div>
+
   <div class="blk dt-hardcat"><span class="nm">하드스킬</span></div>
 
   <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn num">Salesforce Certified Sales Cloud Consultant</span><span class="dt-detect yes">검출</span></div>
+    <div class="dt-hardrow-title"><span class="skn">통계 데이터 분석</span><span class="dt-detect yes">검출</span></div>
     <div class="dt-hardrow-body">
       <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list"><li>세일즈 업무의 효율화를 위해 Salesforce Certified Sales Cloud Consultant 자격을 취득하고, CRM 시스템을 활용한 고객 파이프라인 관리 경험을 쌓았습니다.</li></ul>
+      <ul class="dt-list">
+        <li>최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</li>
+      </ul>
     </div>
   </div>
 
   <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn num">PowerPoint</span><span class="dt-detect yes">검출</span></div>
+    <div class="dt-hardrow-title"><span class="skn">품질 시험(압축강도)</span><span class="dt-detect yes">검출</span></div>
     <div class="dt-hardrow-body">
       <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list"><li>제안서 및 발표 자료 작성 시 PowerPoint를 활용하여 고객사 임원진 대상 프레젠테이션을 직접 진행한 경험이 있습니다.</li></ul>
+      <ul class="dt-list">
+        <li>작년 하반기에는 레미콘 공장 품질팀에서 3개월간 인턴으로 근무하며 골재 수분율과 압축강도 데이터를 매일 기록하고 분석했습니다.</li>
+      </ul>
     </div>
   </div>
 
@@ -955,12 +913,15 @@ p { margin:0; }
     <div class="dt-hardrow-title"><span class="skn num">Excel</span><span class="dt-detect yes">검출</span></div>
     <div class="dt-hardrow-body">
       <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list"><li>Excel을 활용한 영업 실적 데이터 분석 및 피벗 테이블 작성으로 월별 실적 리포트를 작성해왔습니다.</li></ul>
+      <ul class="dt-list">
+        <li>작년 하반기에는 레미콘 공장 품질팀에서 3개월간 인턴으로 근무하며 골재 수분율과 압축강도 데이터를 매일 기록하고 분석했습니다.</li>
+        <li>최근 6개월치 배합 기록 1,200건을 정리해 상관 분석을 돌린 결과, 골재 수분율 보정이 늦어지는 새벽 시간대에 불합격이 집중된다는 가설을 세우고 검증했습니다.</li>
+      </ul>
     </div>
   </div>
 
   <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn">유통관리사 자격증</span><span class="dt-detect no">미검출</span></div>
+    <div class="dt-hardrow-title"><span class="skn">위험물산업기사</span><span class="dt-detect no">미검출</span></div>
     <div class="dt-hardrow-empty">관련 근거 문장 없음.</div>
   </div>
 
@@ -1084,15 +1045,12 @@ const ctx = document.getElementById('radarChart');
 new Chart(ctx, {
   type: 'radar',
   data: {
-    labels: [
-      ['직무적합도','65.92'], ['조직적합도','47.65'], ['지원동기','62.77'],
-      ['답변완성도','68.36'], ['구체성','65.92'], ['자기소개','36.82']
-    ],
+    labels: [['직무적합도','78.43'], ['조직적합도','45.60'], ['지원동기','50.85'], ['답변완성도','84.26'], ['구체성','92.45'], ['자기소개','61.03']],
     datasets: [
-      { label:'직무별 평균', data:[57.22,53.82,53.82,55,52,48],  /* SDS r25 범례 명칭 — 사용자 승인 예외(CH-013) */
+      { label:'직무별 평균', data:[71.53,29.72,61.17,79.41,75.54,79.11],  /* SDS r25 범례 명칭 — 사용자 승인 예외(CH-013) */
         fill:true, backgroundColor:'rgba(150,164,177,0.30)', borderColor:'#96A4B1',
         borderWidth:1, pointRadius:0, order:2 },
-      { label:'지원자', data:[65.92,47.65,62.77,68.36,65.92,36.82],
+      { label:'지원자', data:[78.43,45.60,50.85,84.26,92.45,61.03],
         fill:true, backgroundColor:'rgba(0,117,255,0.28)', borderColor:'#2EA6FF',
         borderWidth:1.5, pointRadius:0, order:1 }
     ]

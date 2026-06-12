@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>프리즘 BP 결과지 - {{NAME}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@page { size: A4; margin: 0; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+body { margin:0; padding:0; font-family:'Noto Sans KR',sans-serif; color:#041D30; background:#7a7a7a; }
+.num { font-family:'Noto Sans','Noto Sans KR',sans-serif; }
+.page { width:990px; height:1399px; overflow:hidden; position:relative; background:#fff; margin:0 auto; display:flex; flex-direction:column; page-break-after:always; }
+.page:last-child { page-break-after:avoid; }
+p { margin:0; }
+
+/* ===== doc header (27px) ===== */
+.doc-header { height:27px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:8px 24px; border-bottom:1px solid #939395; }
+.doc-header-title { font-weight:600; font-size:12px; letter-spacing:-0.24px; color:#041D30; }
+.doc-header-info { display:flex; gap:6px; align-items:center; }
+.doc-header-name { font-weight:600; font-size:12px; letter-spacing:-0.24px; }
+.doc-header-divider { width:1px; height:11px; background:#939395; }
+.doc-header-num { font-weight:300; font-size:12px; letter-spacing:-0.24px; }
+
+/* ===== blue header ===== */
+.bp-header { background:#495e76; padding:24px; border-radius:8px 8px 0 0; flex-shrink:0; display:flex; flex-direction:column; gap:24px; }
+.bp-header-top { display:flex; align-items:center; justify-content:space-between; height:26px; }
+.bp-header-title { font-weight:700; font-size:24px; color:#fff; line-height:1.4; }
+.bp-header-product { font-weight:600; font-size:12px; color:#fff; letter-spacing:-0.24px; white-space:pre; }
+.bp-card { background:#c6c6c6; border-radius:8px; display:flex; gap:1px; }
+.bp-card-left { background:#fff; flex:1; height:128px; padding:20px 24px; border-radius:8px 0 0 8px; display:flex; align-items:center; justify-content:space-between; }
+.bp-prof { display:flex; flex-direction:column; height:100%; justify-content:space-between; color:#041D30; }
+.bp-prof-job { font-weight:700; font-size:18px; line-height:1.1; }
+.bp-prof-name { font-weight:700; font-size:32px; line-height:1.25; }
+.bp-prof-num { font-weight:400; font-size:16px; letter-spacing:-0.16px; line-height:1.5; margin-top:3px; }
+.bp-date { font-weight:700; font-size:12px; color:#041D30; align-self:flex-end; text-align:right; }
+.bp-card-right { background:#fff; width:420px; height:128px; padding:20px 32px; border-radius:0 8px 8px 0; display:flex; align-items:center; justify-content:space-between; }
+.bp-score-col { display:flex; flex-direction:column; justify-content:space-between; height:88px; }
+.bp-score-label { font-weight:700; font-size:18px; line-height:1.33; }
+.bp-score-num { font-weight:700; font-size:48px; line-height:1; }
+.bp-badges { display:flex; flex-direction:column; gap:8px; }
+.bp-badge { border:1px solid #0075ff; border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; color:#0075ff; text-align:center; white-space:nowrap; }
+.bp-badge.fill { background:#e0f3ff; width:132px; }
+
+/* ===== summary ===== */
+.summary { background:#e3e3e3; padding:24px; border-radius:0 0 8px 8px; flex-shrink:0; }
+.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:20px; }
+.summary-txt { display:flex; align-items:flex-start; justify-content:space-between; padding:4px 0; }
+.summary-headline { font-weight:700; font-size:18px; line-height:2; width:460px; flex-shrink:0; }  /* 폭 제한 — 불릿과의 여백 확보(CH-017) */
+.summary-bullets { font-weight:400; font-size:12px; width:368px; margin:0; padding-left:21px; }  /* Figma 456:1253 h76=12px·1.6·4줄 */
+.summary-bullets li { line-height:1.6; }
+.summary-divider { height:1px; background:#e3e3e3; }
+.summary-pos-title { font-weight:700; font-size:16px; letter-spacing:0.024px; }
+.summary-pos { display:flex; align-items:center; gap:24px; margin-top:16px; }
+.summary-pos .cbar-legend { line-height:1; }   /* Figma 라벨 h14 — 행간 압축으로 영역 294px 수납 */
+.summary-pos-score { font-weight:700; font-size:32px; line-height:1.25; }  /* 행높이를 바 영역(42.5px) 이하로 — 서머리 294px 수납 */
+.summary-pos-bars { flex:1; display:flex; flex-direction:column; gap:12px; }
+
+/* generic comparison bar */
+.metric-bar { display:flex; flex-direction:column; gap:10px; }
+.cbar { position:relative; height:16px; }
+.cbar.mini { height:14px; }
+.cbar-track { position:absolute; inset:0; background:#e9e9ea; border-radius:4px; }
+.cbar-fill { position:absolute; left:0; top:0; height:16px; border-radius:4px; }
+.cbar-dot { position:absolute; top:50%; width:12px; height:12px; border-radius:6px; transform:translate(-50%,-50%); }
+.dot-avg { background:#7C52F1; }
+.dot-top { background:#041D30; }
+.dot-cut { background:#fff; border:2px solid #ff006b; }
+.cbar-legend { display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; font-size:14px; color:#7d7d80; }
+.cbar-legend .lg { display:flex; gap:8px; align-items:center; white-space:nowrap; }
+.cbar-legend .sw { width:12px; height:12px; border-radius:6px; }
+.cbar-legend b { color:#7d7d80; }
+
+/* ===== contents ===== */
+.contents { flex:1; display:flex; gap:12px; padding:24px; overflow:hidden; }
+.col-main { flex:1; display:flex; flex-direction:column; gap:12px; }
+.card { border:1px solid #c6c6c6; border-radius:8px; }
+.card-title { font-weight:500; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.metric-score { font-weight:700; font-size:24px; line-height:1.4; }
+.metric-cmp { font-weight:700; font-size:14px; color:#7d7d80; }
+.up { color:#0075ff; } .down { color:#d75d00; }
+
+/* grade chips */
+.grade.g-none { background:#e9e9ea; color:#a9a8aa; }  /* 등급 없음(판단불가) — Figma - 칩 */
+.grade { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+.g-high { background:rgba(0,117,255,0.6); color:#fff; }
+.g-mid { background:#e9e9ea; color:#041D30; }
+.g-low { background:#f4f4f4; color:#7d7d80; }
+.g-none { background:#e9e9ea; color:#a9a8aa; }
+
+/* 직무적합도 grade table */
+.jma { height:444px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }  /* Figma 456:1283 카드 444px 고정 */
+.jma-mini-legend { display:flex; gap:16px; }
+.grade-cols { display:flex; border-top:1px solid #c6c6c6; }
+.gc-left { flex:1; }
+.gc-right { flex:1; border-left:1px solid #c6c6c6; }
+.grow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #c6c6c6; }
+.grow .lbl { font-weight:700; font-size:14px; }
+.gc-right-head { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #c6c6c6; }
+.gc-right-head .lbl { font-weight:700; font-size:14px; }
+.sub-wrap { display:flex; flex-wrap:wrap; padding-left:12px; }
+.srow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #e3e3e3; width:136px; }  /* Figma 137px·2열 — 가용 273px(border 1px 차감)에 2열 수납 위해 136px */
+.srow .lbl { font-size:12px; font-weight:400; }
+.srow .grade { font-size:12px; }
+.grow .grade { font-size:14px; }
+.hardskill { margin-top:auto; border-top:1px solid #c6c6c6; padding-top:18px; display:flex; flex-direction:column; gap:8px; }  /* 카드(444px) 하단 고정 — Figma */
+.hs-row { display:flex; gap:8px; align-items:center; }
+.hs-label { font-weight:700; font-size:14px; white-space:nowrap; }
+.hs-yes { color:#0075ff; } .hs-no { color:#d75d00; }
+.hs-val { font-size:14px; font-weight:400; color:#041D30; }
+
+/* 조직/지원동기 row */
+.row2 { display:flex; gap:12px; flex:1; }
+.row2 .cbar-legend { gap:6px 8px; }            /* 좁은 카드(264px) 범례 1줄 수납 — Figma */
+.row2 .cbar-legend .lg { gap:3px; }
+.card-pad { padding:20px; display:flex; flex-direction:column; gap:12px; flex:1; }
+.grade-wrap { display:flex; flex-wrap:wrap; border-top:1px solid #c6c6c6; }
+.wrow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #e3e3e3; width:128px; }
+.wrow .lbl { font-size:12px; font-weight:400; }
+.wrow .grade { font-size:12px; }
+
+/* right column */
+.col-side { display:flex; flex-direction:column; gap:12px; }
+.chart-card { width:310px; height:444px; flex-shrink:0; padding:20px 24px 32px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; }  /* Figma 444px 고정, 눌림 금지 */
+.chart-card .card-title { width:100%; }
+.chart-box { width:262px; height:300px; position:relative; }
+.side-card { flex:1; display:flex; flex-direction:column; }
+.side-box { padding:20px 24px; display:flex; flex-direction:column; gap:8px; }
+.side-box.first { padding-bottom:24px; }
+.side-head { display:flex; align-items:center; justify-content:space-between; }
+.side-name { font-weight:500; font-size:16px; letter-spacing:0.024px; }
+.side-score { font-weight:700; font-size:24px; line-height:20px; }  /* Figma h20 — 타이틀 행 26px 유지 */
+.side-cmt { font-size:14px; font-weight:400; color:#7d7d80; padding-top:6px; }  /* 박스 104px(Figma 100~104) — 3박스가 314px 카드에 수납 */
+.side-divider { height:1px; background:#e3e3e3; margin:0 24px; }
+.warn-badge { background:rgba(215,93,0,0.1); border:1px solid #d75d00; border-radius:12px; padding:2px 8px; font-weight:700; font-size:14px; color:#d75d00; }
+.side-head .frame { display:flex; align-items:center; justify-content:space-between; flex:1; margin-left:12px; }
+
+/* ===== footer (34px) ===== */
+.footer { height:34px; flex-shrink:0; border-top:1px solid #7d7d80; padding:8px 24px 0; display:flex; align-items:flex-start; justify-content:space-between; }
+.footer-left { display:flex; gap:8px; align-items:flex-start; }
+.footer-left img { height:14px; }
+.footer-product { font-weight:600; font-size:12px; color:#041D30; }
+.footer-copy { flex:1; padding-left:24px; padding-right:12px; }
+.footer-copy p { font-weight:600; font-size:7px; line-height:1.5; color:#6e777c; }
+.footer-page { font-weight:600; font-size:12px; color:#041D30; }
+
+/* ===== P2: 검증 포인트 / 문항별 검사 결과 ===== */
+.contents-p2 { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
+.sec-title-wrap { height:48px; display:flex; align-items:center; flex-shrink:0; }
+.sec-title { position:relative; display:inline-flex; align-items:center; padding-left:16px; }
+.sec-title::before { content:''; position:absolute; left:0; top:2.4px; width:4px; height:22.3px; background:#0075ff; }
+.sec-title h2 { margin:0; font-weight:700; font-size:24px; line-height:1; letter-spacing:0.036px; }
+.vp-wrap { display:flex; gap:24px; width:100%; margin-bottom:50px; align-items:stretch; }
+.vp-card { flex:1; min-width:0; border:1px solid #c6c6c6; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between; overflow:hidden; }
+.vp-top { display:flex; flex-direction:column; gap:24px; }
+.vp-head { height:48px; display:flex; align-items:center; gap:8px; padding:0 20px; }
+.vp-head.good { background:rgba(0,117,255,0.1); }
+.vp-head.warn { background:rgba(255,122,0,0.1); }
+.vp-head img { width:24px; height:24px; flex-shrink:0; }
+.vp-head .htitle { flex:1; display:flex; align-items:center; justify-content:space-between; }
+.vp-head .lbl { font-weight:700; font-size:18px; letter-spacing:0.027px; }
+.vp-head.good .lbl { color:#0075ff; }
+.vp-head.warn .lbl { color:#d75d00; }
+.vp-head .sub { font-size:14px; color:#7d7d80; }
+.vp-item { padding:0 24px 12px; display:flex; flex-direction:column; gap:8px; }
+.vp-item-top { display:flex; align-items:flex-end; justify-content:space-between; }
+.vp-cat { display:flex; flex-direction:column; gap:6px; }
+.vp-cat .cat { font-weight:700; font-size:14px; color:#7d7d80; }
+.vp-name-row { display:flex; align-items:center; gap:12px; height:36px; }
+.vp-name-row .nm { font-weight:700; font-size:18px; }
+.vp-grade { height:24px; min-width:24px; padding:0 4px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; box-sizing:border-box; }
+.vp-grade.high { background:rgba(0,117,255,0.6); color:#fff; }
+.vp-grade.mid { background:#e9e9ea; color:#041d30; }
+.vp-grade.low { background:#f4f4f4; color:#a9a8aa; }
+.vp-grade.none { background:#f4f4f4; color:#a9a8aa; }
+.vp-badge { border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; white-space:nowrap; flex-shrink:0; }
+.vp-badge.up { border:1px solid rgba(0,117,255,0.5); color:#0075ff; }
+.vp-badge.down { border:1px solid #c6c6c6; color:#7d7d80; }
+.vp-sum { font-weight:400; font-size:16px; line-height:1.6; letter-spacing:-0.16px; padding:8px 0; }
+.vp-tip { background:#f4f4f4; border-radius:4px; padding:8px 12px; display:flex; gap:12px; font-weight:700; font-size:14px; line-height:1.6; }
+.vp-tip .tlbl { color:#7d7d80; white-space:nowrap; }
+.vp-tip .ttxt { color:#041d30; flex:1; }
+.vp-bottom { border-top:1px solid #e3e3e3; min-height:85px; padding:12px 20px; display:flex; flex-direction:column; gap:8px; }
+.vp-bottom .blbl { font-weight:700; font-size:16px; }
+.vp-bottom.good .blbl { color:#0075ff; }
+.vp-bottom.warn .blbl { color:#d75d00; }
+.vp-bottom .chips { font-size:14px; color:#041d30; padding:4px 0; }
+.qtable { width:100%; border-top:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; flex-shrink:0; }
+.qrow { height:48px; display:flex; align-items:center; padding:8px 24px; border-bottom:1px solid #e3e3e3; }
+.qrow:last-child { border-bottom:none; }
+.qleft { flex:0 0 440px; display:flex; align-items:center; gap:12px; font-size:16px; }
+.qleft .qno { font-weight:700; }
+.qleft .qtext { font-weight:500; }
+.qright { flex:1; display:flex; align-items:center; }
+.qmetric { flex:1; font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; }
+.qmetric .v { letter-spacing:-0.16px; }
+.qmetric .pct { color:#f09000; }
+
+/* ===== P3: 자기소개서 분석 ===== */
+.p3-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
+.p3-title-top { height:48px; display:flex; align-items:center; justify-content:space-between; overflow:hidden; flex-shrink:0; }
+.p3-title-bar { position:relative; display:inline-flex; align-items:center; padding-left:16px; }
+.p3-title-bar::before { content:''; position:absolute; left:0; top:2.4px; width:4px; height:22.3px; background:#0075ff; }
+.p3-title-bar h2 { margin:0; font-weight:700; font-size:24px; line-height:1; letter-spacing:0.036px; color:#041D30; }
+.p3-legend { display:flex; gap:12px; align-items:center; }
+.p3-legend-hl { background:rgba(0,117,255,0.1); font-size:16px; color:#041D30; padding:2px 6px; white-space:nowrap; }
+.p3-legend-ai { font-size:16px; color:#041D30; border-bottom:2px solid #f09000; white-space:nowrap; padding-bottom:2px; }
+.p3-cards-wrap { display:flex; flex-direction:column; gap:24px; width:100%; }
+.p3-qcard { border:1px solid #c6c6c6; border-radius:8px; overflow:hidden; flex-shrink:0; }
+.p3-qhead { background:#f4f4f4; height:52px; display:flex; align-items:center; gap:12px; padding:8px 24px; font-weight:700; font-size:18px; color:#041D30; white-space:nowrap; }
+.p3-metric { display:flex; align-items:center; gap:12px; padding:10px 24px; }
+.p3-metric-group { display:flex; align-items:center; gap:8px; }
+.p3-metric-name { font-weight:700; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.p3-body { border-top:1px solid #e3e3e3; border-bottom:1px solid #e3e3e3; padding:12px 24px; font-size:16px; font-weight:400; line-height:1.6; letter-spacing:-0.16px; color:#041D30; }
+.hl { background:rgba(0,117,255,0.1); }
+.gpk { border-bottom:2px solid #f09000; padding-bottom:1px; }  /* AI 작성 의심 문장 — 범례와 동일 시각 언어 */
+.p3-qfooter { display:flex; align-items:center; justify-content:space-between; padding:8px 24px; }
+.p3-skills { display:flex; gap:4px; align-items:center; }
+.p3-skills-label { font-weight:700; font-size:14px; color:#7d7d80; white-space:nowrap; }
+.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; }
+.p3-ai-rate { display:flex; gap:4px; align-items:center; font-size:16px; letter-spacing:-0.16px; white-space:nowrap; font-weight:400; }
+.p3-ai-lbl { color:#041D30; }
+.p3-ai-val { color:#f09000; min-width:35px; text-align:right; }
+
+/* ===== P4+ : BP 평가 상세 (자동 페이지네이션) ===== */
+.dt-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
+.dt-sec-title { position:relative; display:inline-flex; align-items:center; padding-left:16px; height:48px; flex-shrink:0; }
+.dt-sec-title::before { content:''; position:absolute; left:0; top:14.4px; width:4px; height:22.3px; background:#0075ff; }
+.dt-sec-title h2 { margin:0; font-weight:700; font-size:24px; line-height:1; letter-spacing:0.036px; color:#041D30; }
+.dt-cat { display:flex; align-items:center; gap:12px; height:40px; padding:0 12px; background:#e3e3e3; border-top:1px solid #7d7d80; border-bottom:1px solid #7d7d80; }
+.dt-cat .nm { font-weight:700; font-size:20px; line-height:1.4; letter-spacing:0.03px; }
+.dt-cat .score { font-weight:400; font-size:18px; }
+.dt-row { display:flex; gap:12px; align-items:flex-start; padding:8px 0 12px; border-bottom:1px solid #e3e3e3; }
+.dt-row-title { width:210px; flex-shrink:0; display:flex; justify-content:space-between; align-items:flex-start; padding:0 12px; }
+.dt-row-title .dt-badge { margin-top:6.8px; }  /* 칩 중심 = 코멘트 첫 줄 중심 (6px 패딩 + 0.8px 줄높이차) */
+.dt-row-title .nm { font-weight:700; font-size:18px; line-height:1.33; }
+.dt-row-title .dt-tag { font-weight:700; font-size:14px; line-height:1.71; }
+.dt-badge { height:24px; min-width:24px; padding:0 4px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; box-sizing:border-box; flex-shrink:0; }
+.dt-badge.high { background:rgba(0,117,255,0.6); color:#fff; }
+.dt-badge.mid { background:#e9e9ea; color:#041d30; }
+.dt-badge.low { background:#f4f4f4; color:#a9a8aa; }
+.dt-badge.none { background:#e9e9ea; color:#a9a8aa; }
+.dt-row-body { flex:1; min-width:0; }
+.dt-comment { font-size:16px; font-weight:500; line-height:1.6; letter-spacing:0.024px; padding:6px 8px 8px; }
+.dt-srclabel { font-weight:700; font-size:14px; color:#939395; line-height:1.6; padding:4px 8px; }
+.dt-list { margin:0; padding:8px 0 8px 29px; display:flex; flex-direction:column; gap:12px; }
+.dt-list li { font-size:14px; line-height:1.6; color:#041D30; }
+.dt-empty { font-size:14px; line-height:1.6; color:#a9a8aa; padding:8px; }
+.dt-subcat { padding:8px 0; border-bottom:1px solid #e3e3e3; }
+.dt-subcat-head { width:210px; padding:0 12px; display:flex; justify-content:space-between; align-items:center; }
+.dt-subcat-head .nm { font-weight:700; font-size:18px; }
+.dt-commentrow { display:flex; align-items:center; min-height:70.5px; padding:10px 12px; border-bottom:1px solid #e3e3e3; font-size:16px; font-weight:500; line-height:1.6; letter-spacing:0.024px; }
+.dt-conttop { border-top:1px solid #e3e3e3; }  /* 연속 페이지 첫 콘텐츠 행 상단 구분선 */
+/* 하드스킬 (검출/미검출) — Figma 456:2878 */
+.dt-hardcat { background:#495e76; padding:10px 12px; display:flex; align-items:center; }
+.dt-hardcat .nm { font-weight:700; font-size:20px; line-height:1.4; letter-spacing:0.03px; color:#fff; }
+.dt-hardrow { display:flex; gap:12px; align-items:flex-start; padding:8px 0 12px; border-bottom:1px solid #e3e3e3; }  /* 상하 패딩 .dt-row와 동일 */
+.dt-hardrow-title { width:226px; flex-shrink:0; display:flex; justify-content:space-between; align-items:flex-start; padding:0 12px; }
+.dt-hardrow-title .skn { font-weight:700; font-size:14px; line-height:1.6; color:#041d30; width:140px; }
+.dt-detect { min-width:55px; height:24px; padding:0 8px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; box-sizing:border-box; flex-shrink:0; }
+.dt-detect.yes { color:#0075ff; }
+.dt-detect.no { color:#d75d00; }
+.dt-hardrow-body { flex:1; min-width:0; }
+.dt-hardrow-empty { flex:1; min-width:0; min-height:40px; display:flex; align-items:center; padding:8px; font-size:14px; color:#7d7d80; }
+/* 안내사항 (AI·개인정보 법령 고지) — Figma 456:3003 footer_info_프리즘. 모든 결과지 공통, 마지막 페이지 하단 고정 */
+.report-info { margin-top:auto; background:#fff; border:1px solid #c6c6c6; border-radius:8px; padding:24px; display:flex; flex-direction:column; gap:12px; page-break-inside:avoid; break-inside:avoid; }
+.report-info-item { display:flex; gap:8px; align-items:flex-start; }
+.help-icon { flex-shrink:0; width:24px; height:24px; margin-top:2px; display:flex; align-items:center; justify-content:center; }
+.help-icon svg { width:20px; height:20px; display:block; }
+.report-info-text { flex:1; min-width:0; font-size:16px; font-weight:400; color:#7d7d80; line-height:1.6; letter-spacing:-0.16px; text-align:justify; word-break:break-word; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- doc header -->
+  <div class="doc-header">
+    <span class="doc-header-title">{{CHANNEL_TITLE}}</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">{{NAME}}</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num num">{{NUM}}</span>
+    </div>
+  </div>
+
+  <!-- blue header -->
+  <div class="bp-header">
+    <div class="bp-header-top">
+      <span class="bp-header-title">{{CHANNEL_TITLE}}</span>
+      <span class="bp-header-product">프리즘 서류평가  |  BP  </span>
+    </div>
+    <div class="bp-card">
+      <div class="bp-card-left">
+        <div class="bp-prof">
+          <span class="bp-prof-job">{{POSITION}}</span>
+          <div>
+            <div class="bp-prof-name">{{NAME}}</div>
+            <div class="bp-prof-num num">{{NUM}}</div>
+          </div>
+        </div>
+        <div class="bp-date num">평가일: {{EVAL_DATE}}</div>
+      </div>
+      <div class="bp-card-right">
+        <div class="bp-score-col">
+          <div class="bp-score-label">BP평가 점수</div>
+          <div class="bp-score-num num">{{TOTAL}}</div>
+        </div>
+        <div class="bp-badges">
+{{BADGES_HTML}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div class="summary">
+    <div class="summary-card">
+      <div class="summary-txt">
+        <div class="summary-headline">{{HEADLINE}}</div>
+        <ul class="summary-bullets">{{BULLETS_HTML}}</ul>
+      </div>
+      <div class="summary-divider"></div>
+      <div>
+        <div class="summary-pos-title">지원자의 BP평가 점수 및 동일 직군 내 위치</div>
+        <div class="summary-pos">
+          <span class="summary-pos-score num">{{TOTAL}}</span>
+          <div class="summary-pos-bars">
+            {{SUMMARY_BAR_HTML}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- contents -->
+  <div class="contents">
+    <div class="col-main">
+
+      <!-- 직무적합도 -->
+      <div class="card jma">
+        <div class="card-title">직무적합도</div>
+        <div class="side-head">
+          <span class="metric-score num">{{JMA_SCORE}}</span>
+          <span class="metric-cmp">{{JMA_CMP}}</span>
+        </div>
+        {{JMA_BAR}}
+        <div class="grade-cols">
+          <div class="gc-left">{{JMA_LEFT_ROWS}}</div>
+          <div class="gc-right">
+            <div class="gc-right-head">{{JMA_SUBHEAD}}</div>
+            <div class="sub-wrap">{{JMA_SUB_ROWS}}</div>
+          </div>
+        </div>
+        <div class="hardskill">
+          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">{{HS_YES_LIST}}</span></div>
+          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">{{HS_NO_LIST}}</span></div>
+        </div>
+      </div>
+
+      <!-- 조직적합도 + 지원동기 -->
+      <div class="row2">
+        <div class="card card-pad">
+          <div class="card-title">조직적합도</div>
+          <div class="side-head">
+            <span class="metric-score num">{{ORG_SCORE}}</span>
+            <span class="metric-cmp">{{ORG_CMP}}</span>
+          </div>
+          {{ORG_BAR}}
+          <div class="grade-wrap">{{ORG_ROWS}}</div>
+        </div>
+        <div class="card card-pad">
+          <div class="card-title">지원동기</div>
+          <div class="side-head">
+            <span class="metric-score num">{{MOT_SCORE}}</span>
+            <span class="metric-cmp">{{MOT_CMP}}</span>
+          </div>
+          {{MOT_BAR}}
+          <div class="grade-wrap" style="border-top:1px solid #c6c6c6;">{{MOT_ROWS}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right column -->
+    <div class="col-side">
+      <div class="card chart-card">
+        <div class="card-title">자기소개서 분석 프로파일</div>
+        <div class="chart-box"><canvas id="radarChart"></canvas></div>
+      </div>
+      <div class="card side-card">{{SIDE_BOXES}}</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <img src="../logo/logo_prism.png" alt="prism">
+      <span class="footer-product">서류평가</span>
+    </div>
+    <div class="footer-copy">
+      <p>Copyright © 2026 muhayu Inc. All rights reserved.</p>
+      <p>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</p>
+    </div>
+    <div class="footer-page num"></div>
+  </div>
+
+</div>
+
+<div class="page">
+
+  <!-- doc header -->
+  <div class="doc-header">
+    <span class="doc-header-title">{{CHANNEL_TITLE}}</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">{{NAME}}</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num num">{{NUM}}</span>
+    </div>
+  </div>
+
+  <div class="contents-p2">
+
+    <!-- 검증 포인트 -->
+    <div class="sec-title-wrap"><div class="sec-title"><h2>검증 포인트</h2></div></div>
+    <div class="vp-wrap">
+
+      <!-- 강점 -->
+      <div class="vp-card">
+        <div class="vp-top">
+          <div class="vp-head good">
+            <img src="../icons/icon_grow.svg" alt="">
+            <div class="htitle"><span class="lbl">강점</span><span class="sub">심화 검증</span></div>
+          </div>
+          {{VP_STRENGTHS}}
+        </div>
+        <div class="vp-bottom good">
+          <span class="blbl">확인된 하드스킬</span>
+          <div class="chips">{{HS_YES_LIST}}</div>
+        </div>
+      </div>
+
+      <!-- 검토 -->
+      <div class="vp-card">
+        <div class="vp-top">
+          <div class="vp-head warn">
+            <img src="../icons/icon_warning.svg" alt="">
+            <div class="htitle"><span class="lbl">검토</span><span class="sub">추가 검증</span></div>
+          </div>
+          {{VP_REVIEWS}}
+        </div>
+        <div class="vp-bottom warn">
+          <span class="blbl">확인되지 않은 하드스킬</span>
+          <div class="chips">{{HS_NO_LIST}}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 문항별 검사 결과 -->
+    <div class="sec-title-wrap"><div class="sec-title"><h2>문항별 검사 결과</h2></div></div>
+    <div class="qtable">{{QROWS}}</div>
+
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <img src="../logo/logo_prism.png" alt="prism">
+      <span class="footer-product">서류평가</span>
+    </div>
+    <div class="footer-copy">
+      <p>Copyright © 2026 muhayu Inc. All rights reserved.</p>
+      <p>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</p>
+    </div>
+    <div class="footer-page num"></div>
+  </div>
+
+</div>
+
+<div class="page">
+
+  <!-- doc header -->
+  <div class="doc-header">
+    <span class="doc-header-title">{{CHANNEL_TITLE}}</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">{{NAME}}</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num num">{{NUM}}</span>
+    </div>
+  </div>
+
+  <div class="p3-wrap">
+
+    <!-- 섹션 제목 + 범례 -->
+    <div class="p3-title-top">
+      <div class="p3-title-bar"><h2>자기소개서 분석</h2></div>
+      <div class="p3-legend">
+        <span class="p3-legend-hl">근거문장</span>
+        <span class="p3-legend-ai">AI 작성 의심 문장</span>
+      </div>
+    </div>
+
+    <div class="p3-cards-wrap">{{P3_QCARDS}}</div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <img src="../logo/logo_prism.png" alt="prism">
+      <span class="footer-product">서류평가</span>
+    </div>
+    <div class="footer-copy">
+      <p>Copyright © 2026 muhayu Inc. All rights reserved.</p>
+      <p>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</p>
+    </div>
+    <div class="footer-page num"></div>
+  </div>
+
+</div>
+
+<!-- ===== P4+ : BP 평가 상세 — 소스 블록(자동 페이지네이션 입력) ===== -->
+<div id="dt-source" style="display:none">
+
+  <!-- 섹션 제목 (첫 상세 페이지 1회) -->
+  <div class="blk dt-sec-title"><h2>BP 평가 상세</h2></div>
+
+{{DT_BLOCKS}}
+
+  <!-- 법령 고지 (AI·개인정보) — Figma 456:3003. 데이터셋과 무관, 모든 결과지 공통 고정 문구 -->
+  <div class="blk report-info">
+    <div class="report-info-item">
+      <span class="help-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 15C9.45 15 9 14.55 9 14V10C9 9.45 9.45 9 10 9C10.55 9 11 9.45 11 10V14C11 14.55 10.55 15 10 15ZM11 7H9V5H11V7Z" fill="#939395"/></svg></span>
+      <div class="report-info-text">본 리포트는 AI 기술을 활용하여 자기소개서 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다. 본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다. AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.</div>
+    </div>
+    <div class="report-info-item">
+      <span class="help-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 15C9.45 15 9 14.55 9 14V10C9 9.45 9.45 9 10 9C10.55 9 11 9.45 11 10V14C11 14.55 10.55 15 10 15ZM11 7H9V5H11V7Z" fill="#939395"/></svg></span>
+      <div class="report-info-text">본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 자동 생성된 상세 페이지가 여기에 삽입됨 -->
+<div id="dt-pages"></div>
+
+<script>
+// ===== P4+ 상세: 블록 흐름 자동 페이지네이션 =====
+// #dt-source의 블록들을 높이 측정 후 A4(.page)로 자동 분할. 헤더/푸터 복제, 헤더 고아 방지.
+(function paginateDetail(){
+  const source = document.getElementById('dt-source');
+  if (!source) return;
+  const blocks = Array.from(source.querySelectorAll(':scope > .blk'));
+  if (!blocks.length) return;
+
+  // 1) 헤더/푸터 템플릿 (1페이지에서 복제)
+  const docHeader = document.querySelector('.page .doc-header');
+  const footer = document.querySelector('.page .footer');
+
+  // 2) 빈 상세 페이지로 콘텐츠 가용 높이 실측
+  function buildShell(){
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.appendChild(docHeader.cloneNode(true));
+    const wrap = document.createElement('div');
+    wrap.className = 'dt-wrap';
+    page.appendChild(wrap);
+    page.appendChild(footer.cloneNode(true));
+    return { page, wrap };
+  }
+  const probe = buildShell();
+  document.body.appendChild(probe.page);
+  const cs = getComputedStyle(probe.wrap);
+  const padTop = parseFloat(cs.paddingTop), padBottom = parseFloat(cs.paddingBottom);
+  const AVAIL = probe.wrap.clientHeight - padTop - padBottom; // 블록이 들어갈 순수 높이
+  document.body.removeChild(probe.page);
+
+  // 3) 각 블록 높이 측정 (실제 콘텐츠 폭에서)
+  const measWrap = buildShell();
+  measWrap.page.style.position = 'absolute';
+  measWrap.page.style.left = '-9999px';
+  measWrap.page.style.top = '0';
+  document.body.appendChild(measWrap.page);
+  const heights = blocks.map(b => {
+    const c = b.cloneNode(true);
+    c.style.display = '';
+    measWrap.wrap.appendChild(c);
+    const h = c.getBoundingClientRect().height;
+    measWrap.wrap.removeChild(c);
+    return h;
+  });
+  document.body.removeChild(measWrap.page);
+
+  // 4) 그리디 패킹 (+ 헤더 고아 방지)
+  const isHeader = b => b.classList.contains('dt-cat') || b.classList.contains('dt-subcat') || b.classList.contains('dt-sec-title') || b.classList.contains('dt-hardcat');
+  const isTitle = b => b.classList.contains('dt-sec-title');
+  const pagesArr = [[]];
+  let used = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    const h = heights[i];
+    // 섹션 제목은 항상 첫 페이지 최상단 → 단순 배치
+    let needed = h;
+    // 헤더(대분류/중분류)는 바로 다음 블록과 함께 들어가야 함(고아 방지)
+    if (isHeader(blocks[i]) && !isTitle(blocks[i]) && i + 1 < blocks.length) {
+      needed += heights[i + 1];
+    }
+    if (used + needed > AVAIL && pagesArr[pagesArr.length - 1].length) {
+      pagesArr.push([]);
+      used = 0;
+    }
+    pagesArr[pagesArr.length - 1].push(i);
+    used += h;
+  }
+
+  // 5) 실제 .page DOM 생성
+  const container = document.getElementById('dt-pages');
+  pagesArr.forEach((idxs, pageIdx) => {
+    const { page, wrap } = buildShell();
+    idxs.forEach((i, blockPos) => {
+      const c = blocks[i].cloneNode(true);
+      c.style.display = '';
+      // 연속 페이지(2번째 상세페이지부터)의 첫 블록이 콘텐츠 행이면 상단 구분선 추가
+      if (pageIdx > 0 && blockPos === 0 &&
+          (c.classList.contains('dt-row') || c.classList.contains('dt-commentrow') || c.classList.contains('dt-hardrow'))) {
+        c.classList.add('dt-conttop');
+      }
+      wrap.appendChild(c);
+    });
+    container.appendChild(page);
+  });
+
+  // 6) 소스 제거
+  source.remove();
+})();
+
+// 페이지 번호 자동 부여: 실제 생성된 .page 개수에 맞춰 n/total 출력
+(function(){
+  const pages = document.querySelectorAll('.page');
+  const total = pages.length;
+  pages.forEach((pg, i) => {
+    const el = pg.querySelector('.footer-page');
+    if (el) el.textContent = (i + 1) + '/' + total;
+  });
+})();
+
+const ctx = document.getElementById('radarChart');
+new Chart(ctx, {
+  type: 'radar',
+  data: {
+    labels: {{RADAR_LABELS}},
+    datasets: [
+      { label:'직무별 평균', data:{{RADAR_AVG}},  /* SDS r25 범례 명칭 — 사용자 승인 예외(CH-013) */
+        fill:true, backgroundColor:'rgba(150,164,177,0.30)', borderColor:'#96A4B1',
+        borderWidth:1, pointRadius:0, order:2 },
+      { label:'지원자', data:{{RADAR_USER}},
+        fill:true, backgroundColor:'rgba(0,117,255,0.28)', borderColor:'#2EA6FF',
+        borderWidth:1.5, pointRadius:0, order:1 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales: { r: {
+      min:0, max:100,
+      ticks:{ stepSize:25, color:'#A9A8AA', font:{size:9}, backdropColor:'transparent', showLabelBackdrop:false },
+      grid:{ color:'#E3E3E3' }, angleLines:{ color:'#E3E3E3' },
+      pointLabels:{ color:'#041D30', font:{ family:"'Noto Sans KR'", size:11, weight:'700' } }
+    }},
+    plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, pointStyle:'circle', boxWidth:8, font:{size:11}, color:'#7d7d80', sort:(a,b)=>a.datasetIndex-b.datasetIndex } } }  /* 범례 평균→지원자 순 — Figma */
+  }
+});
+</script>
+</body>
+</html>

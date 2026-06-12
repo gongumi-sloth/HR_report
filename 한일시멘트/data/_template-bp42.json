@@ -1,0 +1,125 @@
+{
+  "_comment": "프리즘 BP 4.2 한일시멘트 샘플 결과지 표준 데이터셋 템플릿. 작업계획서 §9(데이터 슬롯 맵)·§9-10(사용 가이드) 준거. 1지원자=1파일, UTF-8. 점수는 모두 소수점 둘째자리.",
+  "_dummy_fields": ["(§9-7) raw data에 없어 더미로 생성한 필드의 경로를 여기 기록. 예: benchmarks.avg, summary.headline"],
+
+  "meta": {
+    "_comment": "§9-1 공통 + §9-2 지원자 카드. pass_badge.mode: 'multiple'(n배수)|'score'(점수기준)|null(접수 미선택→배지·컷점 미출력, §9-5-①)",
+    "channel_title": "한일시멘트 대졸 신입/경력사원 공개채용 테스트",
+    "candidate": "응시자1",
+    "candidate_number": "MUHA0001",
+    "position": "영업",
+    "evaluation_date": "2026-06-12",
+    "pass_badge": { "mode": "multiple", "n": 3, "label": "3배수 이내" }
+  },
+
+  "scores": {
+    "_comment": "지원자 본인 점수 6종+총점. 레이더 축 순서: 직무적합도→조직적합도→지원동기→답변적합도→구체성→본인소개",
+    "total": 0.0,
+    "직무적합도": 0.0,
+    "조직적합도": 0.0,
+    "지원동기": 0.0,
+    "답변적합도": 0.0,
+    "구체성": 0.0,
+    "본인소개": 0.0
+  },
+
+  "benchmarks": {
+    "_comment": "§9-2 비교 기준값. 공채형=해당 전형 전체 모집단(§9-0-4). percentile=직군 내 상위 %. cut은 pass_badge.mode='multiple'일 때만 사용",
+    "group": "영업직",
+    "percentile": 0,
+    "avg":   { "total": 0.0, "직무적합도": 0.0, "조직적합도": 0.0, "지원동기": 0.0, "답변적합도": 0.0, "구체성": 0.0, "본인소개": 0.0 },
+    "top10": { "total": 0.0, "직무적합도": 0.0, "조직적합도": 0.0, "지원동기": 0.0, "답변적합도": 0.0, "구체성": 0.0, "본인소개": 0.0 },
+    "cut": { "score": 0.0, "label": "3배수 컷" },
+    "radar_avg": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  },
+
+  "summary": {
+    "_comment": "§9-2 서머리. headline=강점+단점+액션 1문장(≤2줄). bullets 최대 4개·각 1줄(§9-8)",
+    "headline": "",
+    "bullets": ["", "", "", ""]
+  },
+
+  "evaluation": {
+    "_comment": "§9-2 등급칩 + §9-4-1 상세. level: 'factor'(18px)|'sub'(14px) — §8-2-1. grade enum: 상|중|하|없음. summary=근거 요약 코멘트(P4+ .dt-comment). evidence_ids→evidence_sentences 매핑, 빈 배열=기본값 출력(§8-2-2)",
+    "직무적합도": {
+      "항목": [
+        { "name": "직무경험", "level": "factor", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "직무동기", "level": "factor", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "직무지식", "level": "factor", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "직무역량", "level": "subcat-header", "grade": "중", "_comment": "중분류 헤더. 하위 역량분자는 커스텀 가능, P1 2열 랩 ≤5개(§9-8)" },
+        { "name": "주도성", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "성취지향", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "전략적사고", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "실행력", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "메타인지역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] }
+      ]
+    },
+    "조직적합도": {
+      "_comment": "중분류 없이 sub 레벨 나열(§8-2-1). P1 2열 랩 ≤6개",
+      "항목": [
+        { "name": "리더십역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "협상력", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "갈등관리역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "팀워크역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "의사소통역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "대인관계역량", "level": "sub", "grade": "중", "summary": "", "evidence_ids": [] }
+      ]
+    },
+    "지원동기": {
+      "항목": [
+        { "name": "회사동기", "level": "factor", "grade": "중", "summary": "", "evidence_ids": [] },
+        { "name": "직무동기", "level": "factor", "grade": "중", "summary": "", "evidence_ids": [] }
+      ]
+    }
+  },
+
+  "completeness": {
+    "_comment": "§9-2 P1 응답완성도 박스의 짧은 문구(공식 소스 미정 — §6 미결, §4-H). P4+ 상세의 전문 텍스트는 저장하지 않음 — scores에서 룰 테이블로 파생(§9-5-⑦, 참고-SDS-매트릭별근거내용.md)",
+    "답변적합도": { "short_text": "" },
+    "구체성": { "short_text": "" },
+    "본인소개": { "short_text": "" }
+  },
+
+  "verification": {
+    "_comment": "§9-3 P2 검증 포인트. 강점=상위 2개, 검토=하위 2개(선별 우선순위는 SDS, 요약본 §3-5). 근거 없으면 comment='해당 역량을 확인할 수 없음'(§9-5-⑥). 답변적합도·구체성·본인소개가 선별되면 comment·question은 룰 테이블에서 파생 가능",
+    "strengths": [
+      { "factor": "", "grade": "상", "pct": "상위 0%", "comment": "", "interview_question": "" },
+      { "factor": "", "grade": "상", "pct": "상위 0%", "comment": "", "interview_question": "" }
+    ],
+    "reviews": [
+      { "factor": "", "grade": "하", "pct": "하위 0%", "comment": "", "interview_question": "" },
+      { "factor": "", "grade": "하", "pct": "하위 0%", "comment": "", "interview_question": "" }
+    ]
+  },
+
+  "essay": {
+    "_comment": "§9-3 문항별 검사 + §9-4 자기소개서 분석(P3). 문항 수 가변 — 4개 이상이면 P3 분할(§9-4). sentences: 문장 단위, hl=근거문장 하이라이팅(메트릭 구분 없음), gpk=AI작성 의심 밑줄. ai_rate는 P2 테이블·P3 카드 공용",
+    "questions": [
+      {
+        "no": 1,
+        "title": "",
+        "answer_fit": 0.0,
+        "ai_rate": 0,
+        "sentences": [
+          { "id": 1, "text": "", "hl": false, "gpk": false }
+        ],
+        "detected": {
+          "metrics": [ { "name": "직무동기", "grade": "중" } ],
+          "factors": [ "" ]
+        }
+      }
+    ]
+  },
+
+  "hard_skills": {
+    "_comment": "§9-2 P1 칩 목록 + §9-4-1 P4+ 행. status enum: 검출|미검출. 미검출은 summary·evidence 미출력('관련 근거 문장 없음.')",
+    "항목": [
+      { "name": "", "status": "검출", "summary": "", "evidence_ids": [] }
+    ]
+  },
+
+  "evidence_sentences": {
+    "_comment": "근거문장 마스터. key=ID(문자열), value=자소서 원문 문장. evaluation·hard_skills의 evidence_ids와 매핑(§9-9-3 무결성 검증 대상)",
+    "1": ""
+  }
+}
