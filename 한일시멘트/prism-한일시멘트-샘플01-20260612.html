@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>BP 4.2 결과지 - P1 파일럿</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@page { size: A4; margin: 0; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+body { margin:0; padding:0; font-family:'Noto Sans KR',sans-serif; color:#041D30; background:#7a7a7a; }
+.num { font-family:'Noto Sans','Noto Sans KR',sans-serif; }
+.page { width:990px; height:1399px; overflow:hidden; position:relative; background:#fff; margin:0 auto; display:flex; flex-direction:column; page-break-after:always; }
+.page:last-child { page-break-after:avoid; }
+p { margin:0; }
+
+/* ===== doc header (27px) ===== */
+.doc-header { height:27px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:8px 24px; border-bottom:1px solid #939395; }
+.doc-header-title { font-weight:600; font-size:12px; letter-spacing:-0.24px; color:#041D30; }
+.doc-header-info { display:flex; gap:6px; align-items:center; }
+.doc-header-name { font-weight:600; font-size:12px; letter-spacing:-0.24px; }
+.doc-header-divider { width:1px; height:11px; background:#939395; }
+.doc-header-num { font-weight:300; font-size:12px; letter-spacing:-0.24px; }
+
+/* ===== blue header ===== */
+.bp-header { background:#495e76; padding:24px; border-radius:8px 8px 0 0; flex-shrink:0; display:flex; flex-direction:column; gap:24px; }
+.bp-header-top { display:flex; align-items:center; justify-content:space-between; height:26px; }
+.bp-header-title { font-weight:700; font-size:24px; color:#fff; line-height:1.4; }
+.bp-header-product { font-weight:600; font-size:12px; color:#fff; letter-spacing:-0.24px; white-space:pre; }
+.bp-card { background:#c6c6c6; border-radius:8px; display:flex; gap:1px; }
+.bp-card-left { background:#fff; flex:1; height:128px; padding:20px 24px; border-radius:8px 0 0 8px; display:flex; align-items:center; justify-content:space-between; }
+.bp-prof { display:flex; flex-direction:column; height:100%; justify-content:space-between; color:#041D30; }
+.bp-prof-job { font-weight:700; font-size:18px; line-height:1.1; }
+.bp-prof-name { font-weight:700; font-size:32px; line-height:1.25; }
+.bp-prof-num { font-weight:400; font-size:16px; letter-spacing:-0.16px; line-height:1.5; margin-top:3px; }
+.bp-date { font-weight:700; font-size:12px; color:#041D30; align-self:flex-end; text-align:right; }
+.bp-card-right { background:#fff; width:420px; height:128px; padding:20px 32px; border-radius:0 8px 8px 0; display:flex; align-items:center; justify-content:space-between; }
+.bp-score-col { display:flex; flex-direction:column; justify-content:space-between; height:88px; }
+.bp-score-label { font-weight:700; font-size:18px; line-height:1.33; }
+.bp-score-num { font-weight:700; font-size:48px; line-height:1; }
+.bp-badges { display:flex; flex-direction:column; gap:8px; }
+.bp-badge { border:1px solid #0075ff; border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; color:#0075ff; text-align:center; white-space:nowrap; }
+.bp-badge.fill { background:#e0f3ff; width:132px; }
+
+/* ===== summary ===== */
+.summary { background:#e3e3e3; padding:24px; border-radius:0 0 8px 8px; flex-shrink:0; }
+.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:20px; }
+.summary-txt { display:flex; align-items:flex-start; justify-content:space-between; padding:4px 0; }
+.summary-headline { font-weight:700; font-size:18px; line-height:2; }
+.summary-bullets { font-weight:400; font-size:14px; width:368px; margin:0; padding-left:21px; }
+.summary-bullets li { line-height:1.6; }
+.summary-divider { height:1px; background:#e3e3e3; }
+.summary-pos-title { font-weight:700; font-size:16px; letter-spacing:0.024px; }
+.summary-pos { display:flex; align-items:center; gap:24px; margin-top:16px; }
+.summary-pos-score { font-weight:700; font-size:32px; line-height:1.4; }
+.summary-pos-bars { flex:1; display:flex; flex-direction:column; gap:12px; }
+
+/* generic comparison bar */
+.metric-bar { display:flex; flex-direction:column; gap:10px; }
+.cbar { position:relative; height:16px; }
+.cbar.mini { height:14px; }
+.cbar-track { position:absolute; inset:0; background:#e9e9ea; border-radius:4px; }
+.cbar-fill { position:absolute; left:0; top:0; height:16px; border-radius:4px; }
+.cbar-dot { position:absolute; top:50%; width:12px; height:12px; border-radius:6px; transform:translate(-50%,-50%); }
+.dot-avg { background:#7C52F1; }
+.dot-top { background:#041D30; }
+.dot-cut { background:#fff; border:2px solid #ff006b; }
+.cbar-legend { display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; font-size:14px; color:#7d7d80; }
+.cbar-legend .lg { display:flex; gap:8px; align-items:center; white-space:nowrap; }
+.cbar-legend .sw { width:12px; height:12px; border-radius:6px; }
+.cbar-legend b { color:#7d7d80; }
+
+/* ===== contents ===== */
+.contents { flex:1; display:flex; gap:12px; padding:24px; overflow:hidden; }
+.col-main { flex:1; display:flex; flex-direction:column; gap:12px; }
+.card { border:1px solid #c6c6c6; border-radius:8px; }
+.card-title { font-weight:500; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.metric-score { font-weight:700; font-size:24px; line-height:1.4; }
+.metric-cmp { font-weight:700; font-size:14px; color:#7d7d80; }
+.up { color:#0075ff; } .down { color:#d75d00; }
+
+/* grade chips */
+.grade { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+.g-high { background:rgba(0,117,255,0.6); color:#fff; }
+.g-mid { background:#e9e9ea; color:#041D30; }
+.g-low { background:#f4f4f4; color:#7d7d80; }
+.g-none { background:#e9e9ea; color:#a9a8aa; }
+
+/* 직무적합도 grade table */
+.jma { padding:20px 24px; display:flex; flex-direction:column; gap:12px; }
+.jma-mini-legend { display:flex; gap:16px; }
+.grade-cols { display:flex; border-top:1px solid #c6c6c6; }
+.gc-left { flex:1; }
+.gc-right { flex:1; border-left:1px solid #c6c6c6; }
+.grow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #c6c6c6; }
+.grow .lbl { font-weight:700; font-size:14px; }
+.gc-right-head { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #c6c6c6; }
+.gc-right-head .lbl { font-weight:700; font-size:14px; }
+.sub-wrap { display:flex; flex-wrap:wrap; padding-left:12px; }
+.srow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #e3e3e3; width:137px; }
+.srow .lbl { font-size:12px; font-weight:400; }
+.srow .grade { font-size:12px; }
+.grow .grade { font-size:14px; }
+.hardskill { border-top:1px solid #c6c6c6; padding-top:18px; display:flex; flex-direction:column; gap:8px; }
+.hs-row { display:flex; gap:8px; align-items:center; }
+.hs-label { font-weight:700; font-size:14px; white-space:nowrap; }
+.hs-yes { color:#0075ff; } .hs-no { color:#d75d00; }
+.hs-val { font-size:14px; font-weight:400; color:#041D30; }
+
+/* 조직/지원동기 row */
+.row2 { display:flex; gap:12px; flex:1; }
+.card-pad { padding:20px; display:flex; flex-direction:column; gap:12px; flex:1; }
+.grade-wrap { display:flex; flex-wrap:wrap; border-top:1px solid #c6c6c6; }
+.wrow { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; border-bottom:1px solid #e3e3e3; width:128px; }
+.wrow .lbl { font-size:12px; font-weight:400; }
+.wrow .grade { font-size:12px; }
+
+/* right column */
+.col-side { display:flex; flex-direction:column; gap:12px; }
+.chart-card { width:310px; height:444px; padding:20px 24px 32px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; }
+.chart-card .card-title { width:100%; }
+.chart-box { width:262px; height:300px; position:relative; }
+.side-card { flex:1; display:flex; flex-direction:column; }
+.side-box { padding:20px 24px; display:flex; flex-direction:column; gap:8px; }
+.side-box.first { padding-bottom:24px; }
+.side-head { display:flex; align-items:center; justify-content:space-between; }
+.side-name { font-weight:500; font-size:16px; letter-spacing:0.024px; }
+.side-score { font-weight:700; font-size:24px; line-height:1.4; }
+.side-cmt { font-size:14px; font-weight:400; color:#7d7d80; padding-top:12px; }
+.side-divider { height:1px; background:#e3e3e3; margin:0 24px; }
+.warn-badge { background:rgba(215,93,0,0.1); border:1px solid #d75d00; border-radius:12px; padding:2px 8px; font-weight:700; font-size:14px; color:#d75d00; }
+.side-head .frame { display:flex; align-items:center; justify-content:space-between; flex:1; margin-left:12px; }
+
+/* ===== footer (34px) ===== */
+.footer { height:34px; flex-shrink:0; border-top:1px solid #7d7d80; padding:8px 24px 0; display:flex; align-items:flex-start; justify-content:space-between; }
+.footer-left { display:flex; gap:8px; align-items:flex-start; }
+.footer-left img { height:14px; }
+.footer-product { font-weight:600; font-size:12px; color:#041D30; }
+.footer-copy { flex:1; padding-left:24px; padding-right:12px; }
+.footer-copy p { font-weight:600; font-size:7px; line-height:1.5; color:#6e777c; }
+.footer-page { font-weight:600; font-size:12px; color:#041D30; }
+
+/* ===== P2: 검증 포인트 / 문항별 검사 결과 ===== */
+.contents-p2 { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
+.sec-title-wrap { height:48px; display:flex; align-items:flex-start; flex-shrink:0; }
+.sec-title { display:inline-flex; align-items:center; border-left:4px solid #0075ff; padding:3px 0 3px 12px; }
+.sec-title h2 { margin:0; font-weight:700; font-size:24px; line-height:1.4; letter-spacing:0.036px; }
+.vp-wrap { display:flex; gap:24px; width:100%; margin-bottom:50px; align-items:stretch; }
+.vp-card { flex:1; min-width:0; border:1px solid #c6c6c6; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between; overflow:hidden; }
+.vp-top { display:flex; flex-direction:column; gap:24px; }
+.vp-head { height:48px; display:flex; align-items:center; gap:8px; padding:0 20px; }
+.vp-head.good { background:rgba(0,117,255,0.1); }
+.vp-head.warn { background:rgba(255,122,0,0.1); }
+.vp-head img { width:24px; height:24px; flex-shrink:0; }
+.vp-head .htitle { flex:1; display:flex; align-items:center; justify-content:space-between; }
+.vp-head .lbl { font-weight:700; font-size:18px; letter-spacing:0.027px; }
+.vp-head.good .lbl { color:#0075ff; }
+.vp-head.warn .lbl { color:#d75d00; }
+.vp-head .sub { font-size:14px; color:#7d7d80; }
+.vp-item { padding:0 24px 12px; display:flex; flex-direction:column; gap:8px; }
+.vp-item-top { display:flex; align-items:flex-end; justify-content:space-between; }
+.vp-cat { display:flex; flex-direction:column; gap:6px; }
+.vp-cat .cat { font-weight:700; font-size:14px; color:#7d7d80; }
+.vp-name-row { display:flex; align-items:center; gap:12px; height:36px; }
+.vp-name-row .nm { font-weight:700; font-size:18px; }
+.vp-grade { height:24px; min-width:24px; padding:0 4px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; box-sizing:border-box; }
+.vp-grade.high { background:rgba(0,117,255,0.6); color:#fff; }
+.vp-grade.mid { background:#e9e9ea; color:#041d30; }
+.vp-grade.low { background:#f4f4f4; color:#a9a8aa; }
+.vp-grade.none { background:#f4f4f4; color:#a9a8aa; }
+.vp-badge { border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; white-space:nowrap; flex-shrink:0; }
+.vp-badge.up { border:1px solid rgba(0,117,255,0.5); color:#0075ff; }
+.vp-badge.down { border:1px solid #c6c6c6; color:#7d7d80; }
+.vp-sum { font-weight:400; font-size:16px; line-height:1.6; letter-spacing:-0.16px; padding:8px 0; }
+.vp-tip { background:#f4f4f4; border-radius:4px; padding:8px 12px; display:flex; gap:12px; font-weight:700; font-size:14px; line-height:1.6; }
+.vp-tip .tlbl { color:#7d7d80; white-space:nowrap; }
+.vp-tip .ttxt { color:#041d30; flex:1; }
+.vp-bottom { border-top:1px solid #e3e3e3; min-height:85px; padding:12px 20px; display:flex; flex-direction:column; gap:8px; }
+.vp-bottom .blbl { font-weight:700; font-size:16px; }
+.vp-bottom.good .blbl { color:#0075ff; }
+.vp-bottom.warn .blbl { color:#d75d00; }
+.vp-bottom .chips { font-size:14px; color:#041d30; padding:4px 0; }
+.qtable { width:100%; border-top:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; flex-shrink:0; }
+.qrow { height:48px; display:flex; align-items:center; padding:8px 24px; border-bottom:1px solid #e3e3e3; }
+.qrow:last-child { border-bottom:none; }
+.qleft { flex:0 0 440px; display:flex; align-items:center; gap:12px; font-size:16px; }
+.qleft .qno { font-weight:700; }
+.qleft .qtext { font-weight:500; }
+.qright { display:flex; align-items:center; gap:40px; }
+.qmetric { font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; }
+.qmetric.answer { flex:0 0 180px; }
+.qmetric .v { letter-spacing:-0.16px; }
+.qmetric .pct { color:#f09000; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- doc header -->
+  <div class="doc-header">
+    <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">홍길동</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num num">1234567890</span>
+    </div>
+  </div>
+
+  <!-- blue header -->
+  <div class="bp-header">
+    <div class="bp-header-top">
+      <span class="bp-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
+      <span class="bp-header-product">프리즘 서류평가  |  BP  </span>
+    </div>
+    <div class="bp-card">
+      <div class="bp-card-left">
+        <div class="bp-prof">
+          <span class="bp-prof-job">영업</span>
+          <div>
+            <div class="bp-prof-name">홍길동</div>
+            <div class="bp-prof-num num">MUHA0001</div>
+          </div>
+        </div>
+        <div class="bp-date num">평가일: 2026-07-15</div>
+      </div>
+      <div class="bp-card-right">
+        <div class="bp-score-col">
+          <div class="bp-score-label">BP평가 점수</div>
+          <div class="bp-score-num num">59.51</div>
+        </div>
+        <div class="bp-badges">
+          <div class="bp-badge">영업직 상위 38%</div>
+          <div class="bp-badge fill">3배수 이내</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div class="summary">
+    <div class="summary-card">
+      <div class="summary-txt">
+        <div class="summary-headline">현장 중심의 공학 경험은 유효하나,<br>조직 역량 근거 부족으로 추가 검증 필요합니다</div>
+        <ul class="summary-bullets">
+          <li>화학공학 전공 및 다양한 현장 경험이 강점</li>
+          <li>협업·갈등관리 관련 서술 전무</li>
+          <li>자기 서사의 구체성 및 직무 연관성 보완 필요</li>
+          <li>주도성·성취지향 근거 문장은 있으나 깊이가 얕음</li>
+        </ul>
+      </div>
+      <div class="summary-divider"></div>
+      <div>
+        <div class="summary-pos-title">지원자의 종합 점수 및 동일 직군 내 위치</div>
+        <div class="summary-pos">
+          <span class="summary-pos-score num">59.51</span>
+          <div class="summary-pos-bars">
+            <div class="cbar">
+              <div class="cbar-track"></div>
+              <div class="cbar-fill" style="width:59.51%;background:rgba(0,117,255,0.45);"></div>
+              <div class="cbar-dot dot-avg" style="left:57.2%;"></div>
+              <div class="cbar-dot dot-cut" style="left:61.5%;"></div>
+              <div class="cbar-dot dot-top" style="left:74.3%;"></div>
+            </div>
+            <div class="cbar-legend">
+              <span class="lg"><span class="sw" style="background:#fff;border:2px solid #ff006b;"></span><span><b>3배수 컷</b> <span class="num">61.5</span></span></span>
+              <span class="lg"><span class="sw" style="background:#7C52F1;"></span><span><b>평균</b> <span class="num">57.2</span></span></span>
+              <span class="lg"><span class="sw" style="background:#041D30;"></span><span><b>상위 10%</b> <span class="num">74.3</span></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- contents -->
+  <div class="contents">
+    <div class="col-main">
+
+      <!-- 직무적합도 -->
+      <div class="card jma">
+        <div class="card-title">직무적합도</div>
+        <div class="side-head">
+          <span class="metric-score num">65.92</span>
+          <span class="metric-cmp">영업직 평균 대비 <span class="up num">+4.21p</span></span>
+        </div>
+        <div class="metric-bar">
+          <div class="cbar mini">
+            <div class="cbar-track"></div>
+            <div class="cbar-fill" style="width:65.92%;background:rgba(0,117,255,0.3);height:14px;"></div>
+            <div class="cbar-dot dot-avg" style="left:57.22%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:74.38%;width:10px;height:10px;"></div>
+          </div>
+          <div class="cbar-legend">
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">57.22</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">74.38</span></span></span>
+          </div>
+        </div>
+        <div class="grade-cols">
+          <div class="gc-left">
+            <div class="grow"><span class="lbl">직무경험</span><span class="grade g-mid">중</span></div>
+            <div class="grow"><span class="lbl">직무동기</span><span class="grade g-high">상</span></div>
+            <div class="grow"><span class="lbl">직무지식</span><span class="grade g-mid">중</span></div>
+          </div>
+          <div class="gc-right">
+            <div class="gc-right-head"><span class="lbl">직무역량</span><span class="grade g-mid">중</span></div>
+            <div class="sub-wrap">
+              <div class="srow"><span class="lbl">주도성</span><span class="grade g-low">하</span></div>
+              <div class="srow"><span class="lbl">성취지향</span><span class="grade g-low">하</span></div>
+              <div class="srow"><span class="lbl">전략적사고</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">실행력</span><span class="grade g-high">상</span></div>
+              <div class="srow"><span class="lbl">메타인지역량</span><span class="grade g-mid">중</span></div>
+              <div class="srow" style="border-bottom:none;"><span class="lbl">&nbsp;</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="hardskill">
+          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">Salesforce Certified Sales Cloud Consultant, PowerPoint, Excel</span></div>
+          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">유통관리사 자격증</span></div>
+        </div>
+      </div>
+
+      <!-- 조직적합도 + 지원동기 -->
+      <div class="row2">
+        <div class="card card-pad">
+          <div class="card-title">조직적합도</div>
+          <div class="side-head">
+            <span class="metric-score num">47.65</span>
+            <span class="metric-cmp">영업직 평균 대비 <span class="down num">−6.13p</span></span>
+          </div>
+          <div class="metric-bar">
+            <div class="cbar mini">
+              <div class="cbar-track"></div>
+              <div class="cbar-fill" style="width:47.65%;background:rgba(0,117,255,0.3);height:14px;"></div>
+              <div class="cbar-dot dot-avg" style="left:53.82%;width:10px;height:10px;"></div>
+              <div class="cbar-dot dot-top" style="left:71.24%;width:10px;height:10px;"></div>
+            </div>
+            <div class="cbar-legend">
+              <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">53.82</span></span></span>
+              <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">71.24</span></span></span>
+            </div>
+          </div>
+          <div class="grade-wrap">
+            <div class="wrow"><span class="lbl">리더십역량</span><span class="grade g-high">상</span></div>
+            <div class="wrow"><span class="lbl">협상력</span><span class="grade g-mid">중</span></div>
+            <div class="wrow"><span class="lbl">갈등관리역량</span><span class="grade g-low">하</span></div>
+            <div class="wrow"><span class="lbl">팀워크역량</span><span class="grade g-high">상</span></div>
+            <div class="wrow"><span class="lbl">의사소통역량</span><span class="grade g-mid">중</span></div>
+            <div class="wrow"><span class="lbl">대인관계역량</span><span class="grade g-mid">중</span></div>
+          </div>
+        </div>
+        <div class="card card-pad">
+          <div class="card-title">지원동기</div>
+          <div class="side-head">
+            <span class="metric-score num">62.77</span>
+            <span class="metric-cmp">영업직 상위 <span class="up num">+3.57p</span></span>
+          </div>
+          <div class="metric-bar">
+            <div class="cbar mini">
+              <div class="cbar-track"></div>
+              <div class="cbar-fill" style="width:62.77%;background:rgba(0,117,255,0.3);height:14px;"></div>
+              <div class="cbar-dot dot-avg" style="left:53.82%;width:10px;height:10px;"></div>
+              <div class="cbar-dot dot-top" style="left:71.24%;width:10px;height:10px;"></div>
+            </div>
+            <div class="cbar-legend">
+              <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">53.82</span></span></span>
+              <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">71.24</span></span></span>
+            </div>
+          </div>
+          <div class="grade-wrap" style="border-top:1px solid #c6c6c6;">
+            <div class="grow" style="width:100%;"><span class="lbl">회사동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
+            <div class="grow" style="width:100%;border-bottom:none;"><span class="lbl">직무동기</span><span class="grade g-high" style="font-size:14px;">상</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right column -->
+    <div class="col-side">
+      <div class="card chart-card">
+        <div class="card-title">자기소개서 분석 프로파일</div>
+        <div class="chart-box"><canvas id="radarChart"></canvas></div>
+      </div>
+      <div class="card side-card">
+        <div class="side-box first">
+          <div class="side-head"><span class="side-name">답변적합도</span><span class="side-score num">68.36</span></div>
+          <div class="side-cmt">질문의 의도를 잘 파악하여 대답함</div>
+        </div>
+        <div class="side-divider"></div>
+        <div class="side-box first">
+          <div class="side-head"><span class="side-name">구체성</span><span class="side-score num">65.92</span></div>
+          <div class="side-cmt" style="text-align:right;">경험을 단순 나열한 수준임</div>
+        </div>
+        <div class="side-divider"></div>
+        <div class="side-box first">
+          <div class="side-head">
+            <span class="side-name">본인소개</span>
+            <span class="frame"><span class="warn-badge">주의</span><span class="side-score num">36.82</span></span>
+          </div>
+          <div class="side-cmt" style="text-align:right;">자기 서사 부재</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <img src="../logo/logo_prism.png" alt="prism">
+      <span class="footer-product">서류평가</span>
+    </div>
+    <div class="footer-copy">
+      <p>Copyright © 2026 muhayu Inc. All rights reserved.</p>
+      <p>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</p>
+    </div>
+    <div class="footer-page num"></div>
+  </div>
+
+</div>
+
+<div class="page">
+
+  <!-- doc header -->
+  <div class="doc-header">
+    <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">홍길동</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num num">1234567890</span>
+    </div>
+  </div>
+
+  <div class="contents-p2">
+
+    <!-- 검증 포인트 -->
+    <div class="sec-title-wrap"><div class="sec-title"><h2>검증 포인트</h2></div></div>
+    <div class="vp-wrap">
+
+      <!-- 강점 -->
+      <div class="vp-card">
+        <div class="vp-top">
+          <div class="vp-head good">
+            <img src="../icons/icon_grow.svg" alt="">
+            <div class="htitle"><span class="lbl">강점</span><span class="sub">심화 검증</span></div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-item-top">
+              <div class="vp-cat"><span class="cat">직무적합도</span><div class="vp-name-row"><span class="nm">직무경험</span><span class="vp-grade mid">중</span></div></div>
+              <span class="vp-badge up">상위 32%</span>
+            </div>
+            <div class="vp-sum">화학공학 전공 기반의 공정 운영·생산기술 지식 + 스마트팩토리·자동화 프로젝트 다수 현장 경험 보유.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">스마트 팩토리 프로젝트에서 본인이 직접 기여한 역할과 수치적 성과를 구체적으로 질문해보세요.</span></div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-item-top">
+              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">리더십역량</span><span class="vp-grade high">상</span></div></div>
+              <span class="vp-badge up">상위 32%</span>
+            </div>
+            <div class="vp-sum">졸업 준비 중에도 현장 인턴에 주저 없이 지원하는 등 해당 직무에 대한 일관된 관심과 적극성이 드러남.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">왜 생산기술이 아닌 영업직에 지원했는지, 직무 전환의 맥락과 동기를 확인해보세요.</span></div>
+          </div>
+        </div>
+        <div class="vp-bottom good">
+          <span class="blbl">확인된 하드스킬</span>
+          <div class="chips">Salesforce Certified Sales Cloud Consultant, PowerPoint, Excel</div>
+        </div>
+      </div>
+
+      <!-- 검토 -->
+      <div class="vp-card">
+        <div class="vp-top">
+          <div class="vp-head warn">
+            <img src="../icons/icon_warning.svg" alt="">
+            <div class="htitle"><span class="lbl">검토</span><span class="sub">추가 검증</span></div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-item-top">
+              <div class="vp-cat"><span class="cat">직무역량</span><div class="vp-name-row"><span class="nm">주도성</span><span class="vp-grade low">하</span></div></div>
+              <span class="vp-badge down">하위 25%</span>
+            </div>
+            <div class="vp-sum">갈등관리·협상력·팀워크 근거 문장이 전무. 개인 독학 중심 서술로 조직 협업 경험 확인 불가.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">팀 프로젝트에서 의견 충돌이 있었던 경험과 해결 방식을 구체적으로 질문해보세요.</span></div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-item-top">
+              <div class="vp-cat"><div class="vp-name-row"><span class="nm">본인소개</span><span class="vp-grade none">-</span></div></div>
+              <span class="vp-badge down">하위 12%</span>
+            </div>
+            <div class="vp-sum">자기소개 문항 점수 36.82점 (50점 미만). 자기 서사 부재 · 직무 연관성 낮음.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">자소서 특정 경험을 현장에서 재현·설명하도록 유도하여 실제 경험 여부를 검증해보세요.</span></div>
+          </div>
+        </div>
+        <div class="vp-bottom warn">
+          <span class="blbl">확인되지 않은 하드스킬</span>
+          <div class="chips">유통관리사 자격증</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 문항별 검사 결과 -->
+    <div class="sec-title-wrap"><div class="sec-title"><h2>문항별 검사 결과</h2></div></div>
+    <div class="qtable">
+      <div class="qrow">
+        <div class="qleft"><span class="qno">문항 1</span><span class="qtext">지원 동기가 무엇인가요?</span></div>
+        <div class="qright">
+          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct num">2%</span></div>
+        </div>
+      </div>
+      <div class="qrow">
+        <div class="qleft"><span class="qno">문항 2</span><span class="qtext">성격의 장단점에 대해 서술하세요.</span></div>
+        <div class="qright">
+          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct num">32%</span></div>
+        </div>
+      </div>
+      <div class="qrow">
+        <div class="qleft"><span class="qno">문항 3</span><span class="qtext">자기소개를 해 주세요</span></div>
+        <div class="qright">
+          <div class="qmetric"><span>답변적합도</span><span class="v num">68.36</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct num">32%</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <img src="../logo/logo_prism.png" alt="prism">
+      <span class="footer-product">서류평가</span>
+    </div>
+    <div class="footer-copy">
+      <p>Copyright © 2026 muhayu Inc. All rights reserved.</p>
+      <p>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</p>
+    </div>
+    <div class="footer-page num"></div>
+  </div>
+
+</div>
+
+<script>
+// 페이지 번호 자동 부여: 실제 생성된 .page 개수에 맞춰 n/total 출력
+(function(){
+  const pages = document.querySelectorAll('.page');
+  const total = pages.length;
+  pages.forEach((pg, i) => {
+    const el = pg.querySelector('.footer-page');
+    if (el) el.textContent = (i + 1) + '/' + total;
+  });
+})();
+
+const ctx = document.getElementById('radarChart');
+new Chart(ctx, {
+  type: 'radar',
+  data: {
+    labels: [
+      ['직무적합도','65.92'], ['조직적합도','47.65'], ['지원동기','62.77'],
+      ['답변완성도','68.36'], ['구체성','65.92'], ['자기소개','36.82']
+    ],
+    datasets: [
+      { label:'평균', data:[57.22,53.82,53.82,55,52,48],
+        fill:true, backgroundColor:'rgba(150,164,177,0.30)', borderColor:'#96A4B1',
+        borderWidth:1, pointRadius:0, order:2 },
+      { label:'지원자', data:[65.92,47.65,62.77,68.36,65.92,36.82],
+        fill:true, backgroundColor:'rgba(0,117,255,0.28)', borderColor:'#2EA6FF',
+        borderWidth:1.5, pointRadius:0, order:1 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales: { r: {
+      min:0, max:100,
+      ticks:{ stepSize:25, color:'#A9A8AA', font:{size:9}, backdropColor:'transparent', showLabelBackdrop:false },
+      grid:{ color:'#E3E3E3' }, angleLines:{ color:'#E3E3E3' },
+      pointLabels:{ color:'#041D30', font:{ family:"'Noto Sans KR'", size:11, weight:'700' } }
+    }},
+    plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, pointStyle:'circle', boxWidth:8, font:{size:11}, color:'#7d7d80' } } }
+  }
+});
+</script>
+</body>
+</html>

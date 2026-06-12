@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "hr-report",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "3900", "."],
-      "port": 3900
+      "name": "static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/static-server.js"],
+      "port": 4599
     }
   ]
 }

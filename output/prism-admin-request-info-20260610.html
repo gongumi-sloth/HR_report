@@ -668,14 +668,29 @@
   .sub-section {
     background: #FAFCFF;
     border-top: 1px solid #EBF4FF;
-    padding: 16px 24px 16px 164px;
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 24px;
   }
 
-  .sub-section-title {
+  .sub-section-label {
+    width: 140px;
+    min-width: 140px;
     font-size: 13px;
     font-weight: 700;
     color: #0075FF;
-    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .sub-section-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .sub-row {
@@ -820,6 +835,145 @@
     height: 1px;
     background: #F0F0F0;
     margin: 0 24px;
+  }
+
+  /* 부적격 기준 (라디오 3종) */
+  .bp-criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .criteria-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 30px;
+  }
+
+  .criteria-opt .radio-item {
+    width: 92px;
+    flex-shrink: 0;
+  }
+
+  .criteria-opt .input-score:disabled {
+    background: #F5F6F8;
+    color: #BBBABF;
+    border-color: #E3E3E3;
+    cursor: not-allowed;
+  }
+
+  .criteria-opt .score-unit.muted {
+    color: #BBBABF;
+  }
+
+  .criteria-div {
+    width: 1px;
+    height: 14px;
+    background: #D0D0D0;
+    margin: 0 6px;
+  }
+
+  /* JD/채용공고 파일 업로드 */
+  .file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-file {
+    padding: 7px 14px;
+    background: #fff;
+    border: 1px solid #BBBABF;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    flex-shrink: 0;
+  }
+
+  .btn-file:hover {
+    background: #f5f6f8;
+  }
+
+  .file-name {
+    font-size: 12px;
+    color: #BBBABF;
+  }
+
+  .file-name.has-file {
+    color: #041D30;
+    font-weight: 500;
+  }
+
+  .file-remove {
+    font-size: 12px;
+    color: #FF3B30;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* 숫자 입력란 스피너(증감 버튼) 제거 */
+  .input-score::-webkit-inner-spin-button,
+  .input-score::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .input-score {
+    -moz-appearance: textfield;
+  }
+
+  /* 항목명 'i' 툴팁 */
+  .info-icon {
+    position: relative;
+  }
+
+  .info-icon::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: -6px;
+    top: calc(100% + 9px);
+    width: max-content;
+    max-width: 250px;
+    background: #041D30;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.2px;
+    text-align: left;
+    padding: 9px 11px;
+    border-radius: 6px;
+    white-space: pre-line;
+    box-shadow: 0 3px 10px rgba(4, 29, 48, 0.22);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s;
+    z-index: 300;
+    pointer-events: none;
+  }
+
+  .info-icon::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: calc(100% + 4px);
+    border: 5px solid transparent;
+    border-bottom-color: #041D30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s;
+    z-index: 300;
+    pointer-events: none;
+  }
+
+  .info-icon[data-tip]:hover::after,
+  .info-icon[data-tip]:hover::before {
+    opacity: 1;
+    visibility: visible;
   }
 </style>
 </head>
@@ -1031,7 +1185,7 @@
         <div class="form-row">
           <div class="form-label">
             채용직무<span class="required">*</span>
-            <span class="info-icon">i</span>
+            <span class="info-icon" data-tip="이번 검사요청서로 평가할 채용 직무명을 입력합니다. 여러 직무를 함께 채용하는 경우 쉼표(,)로 구분해 입력하세요. 입력한 직무명은 결과지에 표기됩니다.">i</span>
           </div>
           <div class="form-control">
             <input type="text" class="input-text" placeholder="예) 영업직, 사무운영직, 행정직">
@@ -1096,7 +1250,7 @@
         <div class="form-row" style="align-items: flex-start;">
           <div class="form-label" style="padding-top: 4px;">
             검사항목<span class="required">*</span>
-            <span class="info-icon">i</span>
+            <span class="info-icon" data-tip="자기소개서에 적용할 검사 종류를 선택합니다. 복수 선택이 가능하며, BP평가 등 일부 항목은 선택 시 세부 설정이 추가로 표시됩니다.">i</span>
           </div>
           <div class="form-control">
             <div class="checkbox-group">
@@ -1134,17 +1288,17 @@
 
         <!-- BP평가 sub-section -->
         <div class="sub-section" id="bp-section">
-          <div class="sub-section-title">· BP평가 <span class="info-icon" style="border-color:#0075FF; color:#0075FF;">i</span></div>
+          <div class="sub-section-label">
+            · BP평가
+            <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="자기소개서 텍스트의 구조적 특성과 기준 충족 여부를 분석하는 평가입니다. 버전·제외 문항·부적격 기준을 설정할 수 있습니다.">i</span>
+          </div>
+          <div class="sub-section-content">
 
           <div class="sub-row">
             <div class="sub-row-label">버전 선택<span class="required">*</span></div>
             <div class="radio-group">
-              <label class="radio-item" for="bp-v2">
-                <input type="radio" name="bp-version" id="bp-v2" checked>
-                <span>BP평가 v2</span>
-              </label>
               <label class="radio-item" for="bp-v3">
-                <input type="radio" name="bp-version" id="bp-v3">
+                <input type="radio" name="bp-version" id="bp-v3" checked>
                 <span>BP평가 v3</span>
               </label>
               <label class="radio-item" for="bp-v4">
@@ -1164,14 +1318,64 @@
             </div>
           </div>
 
-          <div class="sub-row">
-            <div class="sub-row-label">부적격 기준</div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <input type="number" class="input-score" placeholder="">
-              <span class="score-unit">점 미만</span>
+          <div class="sub-row" style="align-items:flex-start;">
+            <div class="sub-row-label" style="padding-top:6px;">
+              부적격 기준
+              <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="· 점수 기준: BP평가 점수가 설정값 미만인 경우
+· 배수 기준: 점수 순위가 (모집인원 × 배수)에 들지 못한 경우
+· 사용 안 함: 합·불 판정 미적용
+· 결과지 표기: 기준 충족 시 '권장', 미달 시 '검토 필요'">i</span>
+            </div>
+            <div class="bp-criteria">
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-none">
+                  <input type="radio" name="bp-criteria" id="crit-none" value="none" checked onchange="updateBPCriteria()">
+                  <span>사용 안 함</span>
+                </label>
+              </div>
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-score">
+                  <input type="radio" name="bp-criteria" id="crit-score" value="score" onchange="updateBPCriteria()">
+                  <span>점수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="bp-score" min="0" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <span class="score-unit muted" id="bp-score-unit">점 미만 검토 필요</span>
+              </div>
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-ratio">
+                  <input type="radio" name="bp-criteria" id="crit-ratio" value="ratio" onchange="updateBPCriteria()">
+                  <span>배수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="bp-ratio" min="0" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <span class="score-unit muted" id="bp-ratio-unit">배수 미만 검토 필요</span>
+                <span class="criteria-div"></span>
+                <span class="score-unit muted" id="bp-head-label">모집인원</span>
+                <input type="number" class="input-score" id="bp-headcount" min="1" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <span class="score-unit muted" id="bp-head-unit">명</span>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div class="sub-row" style="align-items:flex-start;">
+            <div class="sub-row-label" style="padding-top:6px;">
+              JD/채용공고
+              <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="하드스킬(직무 전문역량) 평가를 위한 직무기술서(JD) 또는 채용공고 파일입니다. 텍스트가 포함된 파일을 등록하면 직무에 필요한 핵심 역량 키워드 추출에 활용됩니다.">i</span>
+            </div>
+            <div style="flex:1;">
+              <div class="file-upload">
+                <button type="button" class="btn-file" onclick="document.getElementById('jd-file').click()">파일 선택</button>
+                <input type="file" id="jd-file" accept=".pdf,.hwp,.hwpx,.docx,.doc" style="display:none" onchange="showJDFile(this)">
+                <span class="file-name" id="jd-file-name">선택된 파일 없음</span>
+                <span class="file-remove" id="jd-file-remove" style="display:none;" onclick="removeJDFile()">삭제</span>
+              </div>
+              <div class="input-note" style="margin-top:8px;">
+                ※ 하드스킬 평가를 위해 JD 또는 채용공고 파일을 등록해주세요. (PDF, 한글(hwp, hwpx), MS워드(docx, doc) / 1개)
+              </div>
+            </div>
+          </div>
+
+          </div><!-- /sub-section-content -->
+        </div><!-- /bp-section -->
 
         <!-- 확인사항 -->
         <div class="form-row" style="align-items: flex-start; padding-top: 20px; padding-bottom: 20px;">
@@ -1262,6 +1466,45 @@
   // BP평가 섹션 토글
   function toggleBP(checkbox) {
     document.getElementById('bp-section').style.display = checkbox.checked ? '' : 'none';
+  }
+
+  // 부적격 기준 (점수/배수) 입력 활성화
+  function updateBPCriteria() {
+    const mode = document.querySelector('input[name="bp-criteria"]:checked').value;
+    const scoreOn = (mode === 'score');
+    const ratioOn = (mode === 'ratio');
+
+    document.getElementById('bp-score').disabled = !scoreOn;
+    document.getElementById('bp-score-unit').classList.toggle('muted', !scoreOn);
+
+    document.getElementById('bp-ratio').disabled = !ratioOn;
+    document.getElementById('bp-headcount').disabled = !ratioOn;
+    ['bp-ratio-unit', 'bp-head-label', 'bp-head-unit'].forEach(id => {
+      document.getElementById(id).classList.toggle('muted', !ratioOn);
+    });
+  }
+  updateBPCriteria();
+
+  // JD/채용공고 파일 선택·삭제
+  function showJDFile(input) {
+    const nameEl = document.getElementById('jd-file-name');
+    const removeEl = document.getElementById('jd-file-remove');
+    if (input.files && input.files.length > 0) {
+      nameEl.textContent = input.files[0].name;
+      nameEl.classList.add('has-file');
+      removeEl.style.display = '';
+    } else {
+      removeJDFile();
+    }
+  }
+
+  function removeJDFile() {
+    const input = document.getElementById('jd-file');
+    input.value = '';
+    const nameEl = document.getElementById('jd-file-name');
+    nameEl.textContent = '선택된 파일 없음';
+    nameEl.classList.remove('has-file');
+    document.getElementById('jd-file-remove').style.display = 'none';
   }
 </script>
 </body>
