@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const ROOT = '/Users/gwchoi/Documents/GitHub/HR_report';
+const ROOT = path.join(__dirname, '..');
 const PORT = 4599;
 const TYPES = {'.html':'text/html; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.json':'application/json','.css':'text/css','.js':'text/javascript'};
 http.createServer((req,res)=>{

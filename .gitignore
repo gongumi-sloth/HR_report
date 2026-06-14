@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+
+# 썸네일
+._*
+
+# 에디터/임시
+*.swp
+*~
+.idea/
+.vscode/

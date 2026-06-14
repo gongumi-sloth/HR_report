@@ -1,5 +1,72 @@
 # HR_report
-결과지 목업 제작용
+
+무하유 HR SaaS **결과지(리포트) 목업 제작** 저장소입니다.
+자기소개서·역량검사 평가 결과를 A4 인쇄용 HTML로 디자인하고 프로토타이핑합니다.
+
+> **작업 규칙·디자인 스펙은 [CLAUDE.md](CLAUDE.md)에 있습니다.** 이 README는 저장소 소개와 열람 안내용입니다.
+
+---
+
+## 대상 제품
+
+하나의 디자인 시스템으로 아래 제품 결과지를 제작합니다.
+
+| 제품 | 테마 색상 | 현재 작업 상태 |
+|------|-----------|----------------|
+| 프리즘 BP | `#0A47A0 → #0F71E3` | 진행 중 (대부분의 `output/` 결과지) |
+| Ai Monster | `#6B1FCC → #9330FF` | 스펙 정의됨 |
+| 역량검사 | `#08174A` | 스펙 정의됨 |
+| 교차진단 | `#004FCC → #0075FF` | 스펙 정의됨 |
+
+---
+
+## 폴더 구조
+
+```
+HR_report/
+├── CLAUDE.md          # 제작 규칙·디자인 시스템 전체 스펙 (작업 시 필독)
+├── README.md          # 이 문서
+├── index.html         # 로컬 Storybook (컴포넌트 라이브러리 v3)
+├── output/            # 완성 결과지 HTML (제품-지원자-날짜.html)
+├── data/              # 더미 평가 데이터 (bp_evaluation_data.json 등)
+├── logo/              # 제품 로고 (logo_monster.png, logo_prism.png)
+├── icons/             # 아이콘 SVG (icon_grow, icon_warning)
+├── reference/         # 시안·기획 참고 자료 (이미지, 프롬프트, HTML 시안)
+└── 한일시멘트/         # 실제 고객사 작업 (엑셀→HTML 일괄 생성 스크립트 포함)
+```
+
+---
+
+## 디자인 시스템
+
+- **온라인 Storybook**: https://gongumi-sloth.github.io/HR_report/
+- **로컬 Storybook**: [index.html](index.html) — 색상·폰트·컴포넌트 라이브러리
+
+> 색상·폰트·컴포넌트는 반드시 Storybook 정의를 따릅니다. 임의 사용 금지.
+
+### 핵심 스펙 (요약)
+
+- **판형**: A4 = 990×1399px (120dpi 기준), 좌우 여백 24px
+- **고정 영역**: 헤더 27px / 푸터 34px (모든 페이지 공통)
+- **출력**: A4 PDF (`@page { size: A4; margin: 0; }`)
+- 전체 규칙은 [CLAUDE.md](CLAUDE.md) 참조
+
+---
+
+## 결과지 제작 규칙
+
+새 결과지를 만들거나 수정할 때:
+
+1. [CLAUDE.md](CLAUDE.md)의 **절대원칙 3가지**와 **작업 시작 전 체크리스트**를 먼저 확인합니다.
+2. 더미 데이터는 [data/bp_evaluation_data.json](data/bp_evaluation_data.json) 구조를 참조합니다.
+3. 결과지는 **단일 HTML 파일**로 제작하고 `output/`에 저장합니다.
+
+### 파일명 규칙
+
+```
+[제품명]-[지원자명]-[날짜].html
+예) output/prism-홍길동-20260601.html
+```
 
 ---
 
