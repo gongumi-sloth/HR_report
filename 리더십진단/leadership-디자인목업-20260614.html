@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>리더십 진단 리포트 - 이현</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 0; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+body { margin: 0; padding: 0; background: #7a7a7a; font-family: 'Noto Sans KR', sans-serif; color: #041D30; }
+.num { font-family: 'Noto Sans', 'Noto Sans KR', sans-serif; }
+
+/* ===== 페이지 ===== */
+.page { width: 990px; height: 1399px; overflow: hidden; position: relative; page-break-after: always; background: #fff; display: flex; flex-direction: column; margin: 0 auto; }
+.page:last-child { page-break-after: avoid; }
+
+/* ===== 공통 문서 헤더 (27px) ===== */
+.doc-header { height: 27px; flex-shrink: 0; padding: 8px 24px; border-bottom: 1px solid #939395; display: flex; align-items: center; justify-content: space-between; }
+.doc-header-title { font-weight: 600; font-size: 12px; letter-spacing: -0.24px; color: #041D30; }
+.doc-header-info { display: flex; align-items: center; gap: 8px; }
+.doc-header-name { font-weight: 600; font-size: 12px; color: #041D30; }
+.doc-header-divider { width: 1px; height: 11px; background: #939395; }
+.doc-header-num { font-weight: 300; font-size: 12px; color: #041D30; }
+
+/* ===== 공통 푸터 (34px) ===== */
+.footer { height: 34px; flex-shrink: 0; border-top: 1px solid #7d7d80; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+.footer-left { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 12px; letter-spacing: -0.24px; color: #041D30; }
+.footer-left img { height: 10px; width: auto; }
+.footer-copy { font-weight: 600; font-size: 7px; line-height: 1.5; color: #6e777c; flex: 1; padding: 0 20px; }
+.footer-page { font-weight: 600; font-size: 12px; letter-spacing: -0.24px; color: #041D30; }
+
+/* ===== 콘텐츠 영역 ===== */
+.content { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; overflow: hidden; }
+
+/* ===== 섹션 제목 (sec-title) ===== */
+.sec-title { position: relative; display: inline-flex; align-items: baseline; gap: 10px; padding-left: 16px; height: 30px; }
+.sec-title::before { content: ''; position: absolute; left: 0; top: 3px; width: 4px; height: 22px; background: #0075ff; }
+.sec-title .no { font-weight: 700; font-size: 13px; color: #0075ff; font-family: 'Noto Sans', sans-serif; }
+.sec-title h2 { margin: 0; font-weight: 700; font-size: 22px; letter-spacing: 0.03px; color: #041D30; }
+.sec-title .en { font-weight: 600; font-size: 13px; color: #7d7d80; letter-spacing: 0.2px; }
+
+/* ===== 히어로 카드 (역량검사 네이비) ===== */
+.hero { background: linear-gradient(120deg, #08174A 0%, #133161 100%); border-radius: 8px; padding: 28px 32px; color: #fff; flex-shrink: 0; position: relative; overflow: hidden; }
+.hero-top { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 11px; letter-spacing: 1px; color: #9fb3d4; }
+.hero-mid { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px; }
+.hero-sub { font-weight: 400; font-size: 13px; color: #c9d6ea; }
+.hero-title { font-weight: 700; font-size: 32px; letter-spacing: 0.5px; margin-top: 4px; }
+.hero-name { font-weight: 700; font-size: 28px; text-align: right; }
+.hero-meta { font-weight: 400; font-size: 12px; color: #9fb3d4; text-align: right; margin-top: 4px; }
+.hero-divider { height: 1px; background: rgba(255,255,255,0.15); margin: 18px 0; }
+.hero-bottom { display: flex; justify-content: space-between; align-items: center; }
+.hero-index-label { font-weight: 600; font-size: 11px; letter-spacing: 1px; color: #9fb3d4; }
+.hero-index { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; }
+.hero-index .v { font-weight: 700; font-size: 44px; line-height: 1; }
+.hero-index .lv { font-weight: 700; font-size: 18px; color: #4d9fff; }
+.hero-index .desc { font-weight: 400; font-size: 13px; color: #c9d6ea; margin-top: 6px; }
+.hero-verdict { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 14px 22px; text-align: center; }
+.hero-verdict .lbl { font-weight: 400; font-size: 12px; color: #9fb3d4; }
+.hero-verdict .val { font-weight: 700; font-size: 18px; margin-top: 4px; }
+.hero-verdict .val .pass { color: #5fd07a; }
+
+/* ===== 카드 공통 ===== */
+.card { border: 1px solid #c6c6c6; border-radius: 8px; }
+.card-pad { padding: 18px 20px; }
+.block-title { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; color: #041D30; }
+.block-note { font-weight: 400; font-size: 12px; color: #7d7d80; }
+
+/* ===== 인재유형 매트릭스 테이블 ===== */
+table.matrix { width: 100%; border-collapse: collapse; }
+table.matrix th, table.matrix td { border: 1px solid #E3E3E3; padding: 8px 6px; text-align: center; font-size: 12.5px; }
+table.matrix thead th { background: rgba(0,117,255,0.06); font-weight: 700; color: #041D30; line-height: 1.3; }
+table.matrix thead th:first-child, table.matrix tbody th { background: #f4f4f4; font-weight: 700; }
+table.matrix tbody th { width: 88px; line-height: 1.3; }
+table.matrix td { color: #041D30; line-height: 1.3; }
+table.matrix tr.risk th, table.matrix tr.risk td { color: #FF3B30; }
+table.matrix td.hit { background: rgba(240,144,0,0.14); font-weight: 700; position: relative; }
+table.matrix td.hit::after { content: '◀ 현재'; position: absolute; top: 2px; right: 4px; font-size: 8px; font-weight: 700; color: #F09000; }
+table.matrix td.danger { background: #FF3B30; color: #fff; font-weight: 700; }
+
+/* ===== 설명 박스 (좌측 강조선) ===== */
+.callout { border-left: 4px solid #F09000; background: #FFF8F0; border-radius: 0 6px 6px 0; padding: 14px 18px; }
+.callout.blue { border-left-color: #0075ff; background: #F2F8FF; }
+.callout-head { font-weight: 700; font-size: 14px; color: #041D30; }
+.callout-head .tag { font-weight: 400; font-size: 12px; color: #7d7d80; margin-left: 6px; }
+.callout-body { font-weight: 400; font-size: 13px; line-height: 1.65; color: #041D30; margin-top: 8px; }
+
+/* ===== 지수 막대 (cbar 계열) ===== */
+.idxbar { position: relative; height: 14px; margin: 10px 0 6px; }
+.idxbar-track { position: absolute; inset: 0; background: #E9E9EA; border-radius: 4px; }
+.idxbar-fill { position: absolute; left: 0; top: 0; height: 14px; border-radius: 4px; background: #0075ff; }
+.idxbar-scale { display: flex; justify-content: space-between; font-size: 11px; color: #7d7d80; }
+
+/* ===== 상태 알약 (pills) / 배지 ===== */
+.pill { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 12px; border-radius: 12px; font-weight: 700; font-size: 13px; }
+.pill::before { content: '●'; font-size: 9px; }
+.pill-warn { background: #FFF0DE; color: #F09000; }
+.pill-good { background: #E7FFEC; color: #20AA40; }
+.pill-bad { background: #FFE9F3; color: #FF3B30; }
+.tag-pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 12px; border-radius: 6px; font-weight: 700; font-size: 13px; }
+.tag-pill .lv { font-family: 'Noto Sans', sans-serif; font-size: 11px; }
+.tp-high { background: #FFE9F3; color: #FF006B; }
+.tp-mid { background: #FFF0DE; color: #F09000; }
+
+/* ===== 하단 요약 스트립 ===== */
+.strip { display: flex; border: 1px solid #E3E3E3; border-radius: 8px; overflow: hidden; }
+.strip-cell { flex: 1; padding: 14px 12px; text-align: center; border-right: 1px solid #E3E3E3; }
+.strip-cell:last-child { border-right: none; }
+.strip-cell .v { font-weight: 700; font-size: 16px; color: #041D30; }
+.strip-cell .l { font-weight: 400; font-size: 12px; color: #7d7d80; margin-top: 4px; }
+
+/* ===== 등급 배지 (강점/양호/보통/취약) ===== */
+.gb { display: inline-flex; align-items: center; height: 24px; padding: 0 12px; border-radius: 13px; font-weight: 700; font-size: 13px; }
+.gb-strong { background: #E7FFEC; color: #20AA40; }
+.gb-ok { background: #EBF4FF; color: #0075FF; }
+.gb-mid { background: #FFF0DE; color: #F09000; }
+.gb-weak { background: #FFE9F3; color: #FF3B30; }
+
+/* ===== 3축 정의 박스 ===== */
+.axis-box { background: #F2F8FF; border: 1px solid #d6e6fb; border-radius: 8px; padding: 16px 20px; display: flex; gap: 22px; }
+.axis-item { flex: 1; }
+.axis-item .nm { font-weight: 700; font-size: 14px; color: #0075ff; }
+.axis-item .de { font-weight: 400; font-size: 12px; line-height: 1.5; color: #041D30; margin-top: 5px; }
+.axis-item .sub { font-weight: 400; font-size: 11px; color: #7d7d80; margin-top: 6px; line-height: 1.5; }
+
+/* ===== 역량 카드 (3축) ===== */
+.lcard { flex: 1; border: 1px solid #c6c6c6; border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; }
+.lcard-head { display: flex; justify-content: space-between; align-items: center; }
+.lcard-head .t { font-weight: 700; font-size: 16px; }
+.lcard-score { font-weight: 700; font-size: 30px; margin: 6px 0; }
+.lcard-crit { font-size: 11px; color: #7d7d80; }
+.lcard-rank { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+.lcard-rank .r { display: flex; justify-content: space-between; font-size: 12.5px; }
+.lcard-rank .r .v { font-weight: 700; font-family: 'Noto Sans', sans-serif; }
+.lcard-cmt { margin-top: 12px; font-size: 12px; line-height: 1.6; color: #041D30; border-top: 1px solid #E3E3E3; padding-top: 10px; }
+
+/* 미니 막대(레벨 표시점) */
+.minibar { position: relative; height: 6px; background: #E9E9EA; border-radius: 3px; margin: 8px 0 10px; }
+.minibar .fill { position: absolute; left: 0; top: 0; height: 6px; border-radius: 3px; background: #0075ff; }
+.minibar .dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 5px; background: #F09000; transform: translate(-50%, -50%); }
+
+/* ===== 가로 막대 (역량 점수) ===== */
+.hbar-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+.hbar-row .lab { width: 96px; font-size: 13px; }
+.hbar-row .lab.b { font-weight: 700; }
+.hbar { flex: 1; height: 8px; background: #E9E9EA; border-radius: 2px; position: relative; }
+.hbar .f { position: absolute; left: 0; top: 0; height: 8px; border-radius: 2px; background: #0075ff; }
+.hbar-row .sc { width: 30px; text-align: right; font-weight: 700; font-size: 14px; font-family: 'Noto Sans', sans-serif; }
+.hbar-row .tg { width: 34px; font-size: 11px; font-weight: 700; }
+.hbar-row.weak .f { background: #FF3B30; }
+.hbar-row.weak .sc, .hbar-row.weak .tg { color: #FF3B30; }
+.hbar-row.strong .tg { color: #20AA40; }
+
+/* ===== 리스크 항목 ===== */
+.risk-item { padding: 4px 0 14px; }
+.risk-item-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #E3E3E3; padding-bottom: 6px; }
+.risk-item-head .nm { font-weight: 700; font-size: 16px; }
+.risk-item-head .prog { font-weight: 700; font-size: 15px; }
+.risk-item-head .prog .num { font-size: 16px; }
+.risk-item-head .prog .mul { font-size: 12px; color: #7d7d80; font-weight: 400; margin-left: 4px; }
+.rbar { position: relative; height: 8px; background: #E9E9EA; border-radius: 4px; margin: 10px 0; }
+.rbar .f { position: absolute; left: 0; top: 0; height: 8px; border-radius: 4px; }
+.risk-item .desc { font-size: 13px; line-height: 1.6; color: #041D30; }
+.risk-sub { background: #FFF8F0; border-left: 3px solid #D75D00; border-radius: 0 4px 4px 0; padding: 8px 12px; margin-top: 8px; font-size: 12px; line-height: 1.55; }
+.risk-sub .h { font-weight: 700; color: #D75D00; }
+
+/* ===== PROXY 카드 ===== */
+.proxy-card { border: 1px solid #c6c6c6; border-radius: 8px; padding: 14px 16px; }
+.proxy-card .ph { display: flex; justify-content: space-between; align-items: center; }
+.proxy-card .pt { font-weight: 700; font-size: 14px; }
+.proxy-card .pcode { display: inline-block; margin-top: 4px; font-size: 11px; font-weight: 700; color: #9330FF; background: #F3E8FF; padding: 2px 8px; border-radius: 4px; }
+.proxy-card .lvb { font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: 4px; }
+.lvb.h { background: #FFE9F3; color: #FF006B; }
+.lvb.m { background: #FFF0DE; color: #F09000; }
+.proxy-card .src { font-size: 12px; color: #041D30; margin-top: 10px; line-height: 1.5; }
+.proxy-card .src b { color: #041D30; }
+.proxy-card .intp { background: #faf6ff; border-radius: 4px; padding: 8px 10px; margin-top: 8px; font-size: 12px; line-height: 1.55; }
+
+/* ===== 동기 카드 (네이비) ===== */
+.motiv { background: linear-gradient(120deg, #08174A 0%, #133161 100%); border-radius: 8px; padding: 22px 26px; color: #fff; }
+.motiv .lbl { font-weight: 600; font-size: 11px; letter-spacing: 1px; color: #9fb3d4; }
+.motiv .ty { font-weight: 700; font-size: 26px; margin: 4px 0; }
+.motiv .interp { font-size: 13px; color: #4d9fff; font-weight: 700; }
+.motiv .de { font-size: 13px; line-height: 1.6; color: #c9d6ea; margin-top: 8px; }
+
+/* ===== 직업 가치관 grid ===== */
+.values { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.value-cell { border: 1px solid #E3E3E3; border-radius: 6px; padding: 14px; text-align: center; font-size: 14px; color: #7d7d80; }
+.value-cell.on { border: 2px solid #0075ff; background: #F2F8FF; color: #041D30; font-weight: 700; }
+
+/* ===== 데이터 테이블 (상황별) ===== */
+table.data { width: 100%; border-collapse: collapse; }
+table.data th { background: #08174A; color: #fff; font-weight: 700; font-size: 13px; padding: 10px 12px; text-align: left; }
+table.data td { border-bottom: 1px solid #E3E3E3; padding: 10px 12px; font-size: 12.5px; line-height: 1.5; vertical-align: top; }
+table.data td:first-child { font-weight: 700; width: 130px; }
+
+/* ===== 활용 가이드 2단 (vp 계열) ===== */
+.guide-col { flex: 1; border: 1px solid #c6c6c6; border-radius: 8px; overflow: hidden; }
+.guide-col .gh { height: 44px; display: flex; align-items: center; padding: 0 18px; font-weight: 700; font-size: 16px; }
+.guide-col.fit .gh { background: rgba(0,117,255,0.1); color: #0075ff; }
+.guide-col.unfit .gh { background: rgba(255,59,48,0.1); color: #FF3B30; }
+.guide-col ul { margin: 0; padding: 12px 18px 16px 32px; display: flex; flex-direction: column; gap: 8px; }
+.guide-col li { font-size: 13px; line-height: 1.5; }
+
+/* ===== 관찰 포인트 ===== */
+.obs-item { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #E3E3E3; }
+.obs-item .n { font-weight: 700; font-size: 18px; color: #c6c6c6; font-family: 'Noto Sans', sans-serif; flex-shrink: 0; width: 24px; }
+.obs-item .ob { flex: 1; }
+.obs-item .ot { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.obs-item .ot .badge { font-weight: 700; font-size: 11px; color: #9330FF; background: #F3E8FF; padding: 2px 8px; border-radius: 4px; }
+.obs-item .od { font-size: 12.5px; line-height: 1.55; color: #7d7d80; margin-top: 5px; }
+
+/* ===== 마지막 안내 (report-info) ===== */
+.report-info { background: #f4f4f4; border: 1px solid #E3E3E3; border-radius: 8px; padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; }
+.report-info .ri { display: flex; gap: 10px; align-items: flex-start; }
+.report-info .ic { flex-shrink: 0; width: 18px; height: 18px; border: 1px solid #A9A8AA; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #7d7d80; margin-top: 1px; }
+.report-info .tx { font-size: 12px; line-height: 1.6; color: #7d7d80; text-align: justify; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">이현</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num">기획2유닛 · 응답 235문항</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- 히어로 -->
+    <div class="hero">
+      <div class="hero-top"><span>LEADERSHIP ASSESSMENT REPORT · CONFIDENTIAL</span><span class="num">2025-09-09</span></div>
+      <div class="hero-mid">
+        <div>
+          <div class="hero-sub">역량검사 4.0 기반 경영진 보고용</div>
+          <div class="hero-title">리더십 진단 리포트</div>
+        </div>
+        <div>
+          <div class="hero-name">이현</div>
+          <div class="hero-meta num">기획2유닛 · 응답 235문항 · 11분 23초</div>
+        </div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-bottom">
+        <div>
+          <div class="hero-index-label">LEADERSHIP INDEX</div>
+          <div class="hero-index"><span class="v num">74</span><span class="lv">L2</span></div>
+          <div class="desc">조건부 적합 — 보완 영역 관리 시 효과적 리더 가능</div>
+        </div>
+        <div class="hero-verdict">
+          <div class="lbl">업무역량 종합 판정</div>
+          <div class="val"><span class="pass">PASS</span> · B / <span class="num">72</span>점</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 01 -->
+    <div class="sec-title"><span class="no">01</span><h2>리더십 종합 판정</h2><span class="en">Executive Summary</span></div>
+
+    <!-- 인재유형 매트릭스 -->
+    <div class="card card-pad" style="padding:16px 18px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;">
+        <span class="block-title">인재유형 매트릭스</span>
+        <span class="block-note">우세 기준: 역량군 평균 70점 이상 / 부적응 우선순위: 갈등유발 &gt; 불성실 &gt; 조기퇴사</span>
+      </div>
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th></th>
+            <th>모든 역량<br>높음</th>
+            <th>인지<br>역량군 우세</th>
+            <th>태도<br>역량군 우세</th>
+            <th>협업<br>역량군 우세</th>
+            <th>모든 역량<br>낮음</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>정상군</th><td>차세대 리더군</td><td>성과 중심 실무자</td><td>안정적 로열티형</td><td>시너지 메이커</td><td>현상 유지군</td></tr>
+          <tr><th>조기퇴사</th><td>전략적 이직 대기</td><td>커리어 우선주의</td><td>성과 중심 스프린터</td><td>관계 지향 유목민</td><td>조직 적응 실패군</td></tr>
+          <tr><th>불성실<br>근무</th><td>성과 변동 리스크</td><td class="hit">선택적 몰입자</td><td>수동 대기형</td><td>사회적 태만군</td><td>직무 태만 위험군</td></tr>
+          <tr><th>갈등<br>유발</th><td>주도적 영향력 행사형</td><td>독단적 고성과자</td><td>경직된 원칙주의자</td><td>조직 여론 형성군</td><td>대인 부적응군</td></tr>
+          <tr class="risk"><th>위험군</th><td>조직 적응 마찰형</td><td>잠재적 위험 인재</td><td>변화 저항 세력</td><td>표면적 협조형</td><td class="danger">집중 케어 대상</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 선택적 몰입자 설명 -->
+    <div class="callout">
+      <div class="callout-head">선택적 몰입자<span class="tag">불성실 근무 가능성 × 인지 역량군 우세</span></div>
+      <div class="callout-body">영리하지만 본인의 관심사나 유리한 과업에만 집중하고 나머지는 방치하는 경향이 있습니다. 업무 분장 시 책임 소재를 명확히 하고, 전체 과업에 대한 공정한 평가 지표를 제시하여 편식형 몰입을 방지해야 합니다.</div>
+    </div>
+
+    <!-- 리더십 지수 + 리스크 2단 -->
+    <div style="display:flex; gap:20px; align-items:stretch;">
+      <div class="card card-pad" style="flex:1;">
+        <div class="block-title" style="color:#7d7d80;">LEADERSHIP INDEX</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-top:8px;"><span class="num" style="font-weight:700; font-size:40px; line-height:1;">74</span><span style="font-weight:700; font-size:16px; color:#0075ff;">L2</span></div>
+        <div style="font-size:13px; color:#7d7d80; margin-top:6px;">조건부 적합 — 보완 영역 관리 시 효과적 리더 가능</div>
+        <div class="idxbar"><div class="idxbar-track"></div><div class="idxbar-fill" style="width:74%;"></div></div>
+        <div class="idxbar-scale"><span class="num">0</span><span>L4</span><span>L3</span><span>L2</span><span>L1</span><span class="num">100</span></div>
+      </div>
+      <div class="card card-pad" style="flex:1;">
+        <div class="block-title" style="color:#7d7d80;">LEADER RISK LEVEL</div>
+        <div style="display:flex; flex-direction:column; gap:9px; margin-top:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px;">갈등 유발 가능성</span><span class="pill pill-warn">주의</span></div>
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px;">불성실 근무 가능성</span><span class="pill pill-warn">주의</span></div>
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px;">조기 퇴사 가능성</span><span class="pill pill-good">양호</span></div>
+        </div>
+        <div style="border-top:1px solid #E3E3E3; margin:12px 0 10px;"></div>
+        <div class="block-note" style="margin-bottom:8px;">탐색적 지표 (PROXY)</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="tag-pill tp-high">심리적 안전감 저해 <span class="lv">HIGH</span></span>
+          <span class="tag-pill tp-mid">위임 저항 <span class="lv">MID</span></span>
+          <span class="tag-pill tp-mid">육성 지향 <span class="lv">MID</span></span>
+          <span class="tag-pill tp-mid">리더 감정 안정성 <span class="lv">MID</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">1 / 6</div>
+  </div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info">
+      <span class="doc-header-name">이현</span>
+      <span class="doc-header-divider"></span>
+      <span class="doc-header-num">기획2유닛 · 응답 235문항</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- 경영진 판단 요약 -->
+    <div class="sec-title" style="margin-bottom:4px;"><span class="no">01</span><h2>경영진 판단 요약</h2></div>
+    <div class="callout blue">
+      <div class="callout-body" style="margin-top:0;">전문성(80점)·전략적 사고(78점)·협상력(81점)이 방향제시력을 견인하며, 인지 역량과 협업 역량 모두 적격 기준을 충족합니다. 다만 책임감(59점)·실행력(62점)이 기준치를 하회하고, 탐색적 지표에서 심리적 안전감 저해(PSI HIGH)와 위임 저항(DRI MID)이 동시에 감지됩니다. 과도한 스트레스 상황에서 팀원과의 갈등 가능성이 상승하므로, 배치 초기 상위 관리자의 체계적 모니터링과 위임 구조 설계를 권고합니다.</div>
+    </div>
+
+    <!-- 요약 스트립 -->
+    <div class="strip">
+      <div class="strip-cell"><div class="v">전략/기획</div><div class="l">지원 직무</div></div>
+      <div class="strip-cell"><div class="v">스페셜리스트</div><div class="l">조직 적합도</div></div>
+      <div class="strip-cell"><div class="v">전문가 드리블형</div><div class="l">리더십 동기 유형</div></div>
+      <div class="strip-cell"><div class="v"><span class="num">72</span>점 · B</div><div class="l">업무역량 종합</div></div>
+    </div>
+
+    <!-- 섹션 02 -->
+    <div class="sec-title"><span class="no">02</span><h2>리더십 역량 프로파일</h2><span class="en">Competency Profile</span></div>
+
+    <div class="axis-box">
+      <div class="axis-item"><div class="nm">과업 리더십</div><div class="de">목표를 구조화하고 실행 계획을 세워 성과를 견인하는 역량</div><div class="sub">전략적 사고 · 문제해결력 · 논리분석력 · 실행력 · 성취지향 · 주도성 · 책임감</div></div>
+      <div class="axis-item"><div class="nm">관계 리더십</div><div class="de">구성원과의 신뢰·소통·협업으로 팀 시너지를 만드는 역량</div><div class="sub">의사소통 · 갈등관리 · 협상력 · 팀워크 · 대인관계 · 긍정성</div></div>
+      <div class="axis-item"><div class="nm">셀프 리더십</div><div class="de">자기 인식·감정 조절·자기 계발로 지속 성장하는 역량</div><div class="sub">메타인지 · 스트레스관리 · 성실성 · 원칙준수 · 발전가능성</div></div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:stretch;">
+      <div class="lcard">
+        <div class="lcard-head"><span class="t">과업리더십</span><span class="gb gb-mid">보통</span></div>
+        <div class="lcard-score num">73.9</div>
+        <div class="minibar"><div class="fill" style="width:73.9%;"></div><div class="dot" style="left:73.9%;"></div></div>
+        <div class="lcard-crit">높음 ≥75.2 · 보통 64.8~75.2 · 낮음 &lt;64.8</div>
+        <div class="lcard-rank">
+          <div class="r"><span>① 논리분석력</span><span class="v">91</span></div>
+          <div class="r"><span>② 협상력</span><span class="v">81</span></div>
+          <div class="r"><span>③ 문제해결력</span><span class="v">81</span></div>
+          <div class="r"><span>④ 전략적 사고</span><span class="v">78</span></div>
+          <div class="r"><span>⑤ 주도성</span><span class="v">75</span></div>
+          <div class="r"><span>⑥ 성취지향</span><span class="v">71</span></div>
+          <div class="r"><span>⑦ 실행력</span><span class="v" style="color:#FF3B30;">62</span></div>
+          <div class="r"><span>⑧ 책임감</span><span class="v" style="color:#FF3B30;">59</span></div>
+        </div>
+        <div class="lcard-cmt">과업을 구조화하는 역량은 안정적이나, 책임감·실행력이 낮아 마감 직전 문제를 드러내는 패턴이 나타날 수 있습니다.</div>
+      </div>
+      <div class="lcard">
+        <div class="lcard-head"><span class="t">관계리더십</span><span class="gb gb-mid">보통</span></div>
+        <div class="lcard-score num">74.8</div>
+        <div class="minibar"><div class="fill" style="width:74.8%;"></div><div class="dot" style="left:74.8%;"></div></div>
+        <div class="lcard-crit">높음 ≥75.2 · 보통 64.8~75.2 · 낮음 &lt;64.8</div>
+        <div class="lcard-rank">
+          <div class="r"><span>① 협상력</span><span class="v">81</span></div>
+          <div class="r"><span>② 의사소통</span><span class="v">77</span></div>
+          <div class="r"><span>③ 대인관계</span><span class="v">76</span></div>
+          <div class="r"><span>④ 갈등관리</span><span class="v">75</span></div>
+          <div class="r"><span>⑤ 긍정성</span><span class="v">71</span></div>
+          <div class="r"><span>⑥ 팀워크</span><span class="v" style="color:#FF3B30;">65</span></div>
+        </div>
+        <div class="lcard-cmt">협상력·의사소통이 강점이나 팀워크(65)가 3축 중 가장 낮은 영역입니다. 집단 협업 상황에서 마찰 가능성이 존재합니다.</div>
+      </div>
+      <div class="lcard">
+        <div class="lcard-head"><span class="t">셀프리더십</span><span class="gb gb-mid">보통</span></div>
+        <div class="lcard-score num">75.1</div>
+        <div class="minibar"><div class="fill" style="width:75.1%;"></div><div class="dot" style="left:75.1%;"></div></div>
+        <div class="lcard-crit">높음 ≥75.2 · 보통 64.8~75.2 · 낮음 &lt;64.8</div>
+        <div class="lcard-rank">
+          <div class="r"><span>① 스트레스관리</span><span class="v">80</span></div>
+          <div class="r"><span>② 메타인지</span><span class="v">80</span></div>
+          <div class="r"><span>③ 발전가능성</span><span class="v">78</span></div>
+          <div class="r"><span>④ 원칙준수</span><span class="v">74</span></div>
+          <div class="r"><span>⑤ 성실성</span><span class="v" style="color:#FF3B30;">62</span></div>
+        </div>
+        <div class="lcard-cmt">자기 주도적 수행력은 양호하나, 성실성(62)이 지속성을 위협하는 요인으로 환경이 단조로울 때 수행 에너지가 저하될 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">2 / 6</div>
+  </div>
+</div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info"><span class="doc-header-name">이현</span><span class="doc-header-divider"></span><span class="doc-header-num">기획2유닛 · 응답 235문항</span></div>
+  </div>
+  <div class="content">
+    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+      <span class="block-title" style="font-size:15px;">역량 점수 상세</span>
+      <span class="block-note">강점 80↑ · 양호 70~79 · 취약 69↓ &nbsp;|&nbsp; 등급 기준선 75.2(높음) · 64.8(낮음)</span>
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:13px; color:#0075ff; background:rgba(0,117,255,0.06); padding:7px 12px; border-radius:4px; margin-bottom:6px;">인지 역량 · 협업 역량</div>
+        <div class="hbar-row strong"><span class="lab b">전문성</span><div class="hbar"><div class="f" style="width:80%;"></div></div><span class="sc">80</span><span class="tg">강점</span></div>
+        <div class="hbar-row strong"><span class="lab b">협상력</span><div class="hbar"><div class="f" style="width:81%;"></div></div><span class="sc">81</span><span class="tg">강점</span></div>
+        <div class="hbar-row strong"><span class="lab b">스트레스 관리</span><div class="hbar"><div class="f" style="width:80%;"></div></div><span class="sc">80</span><span class="tg">강점</span></div>
+        <div class="hbar-row"><span class="lab">전략적 사고</span><div class="hbar"><div class="f" style="width:78%;"></div></div><span class="sc">78</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">의사소통</span><div class="hbar"><div class="f" style="width:77%;"></div></div><span class="sc">77</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">대인관계</span><div class="hbar"><div class="f" style="width:76%;"></div></div><span class="sc">76</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">갈등관리</span><div class="hbar"><div class="f" style="width:75%;"></div></div><span class="sc">75</span><span class="tg"></span></div>
+        <div class="hbar-row weak"><span class="lab">팀워크</span><div class="hbar"><div class="f" style="width:65%;"></div></div><span class="sc">65</span><span class="tg">취약</span></div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:13px; color:#0075ff; background:rgba(0,117,255,0.06); padding:7px 12px; border-radius:4px; margin-bottom:6px;">태도 역량</div>
+        <div class="hbar-row"><span class="lab b">주도성</span><div class="hbar"><div class="f" style="width:75%;"></div></div><span class="sc">75</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">원칙준수</span><div class="hbar"><div class="f" style="width:74%;"></div></div><span class="sc">74</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">리더십 역량</span><div class="hbar"><div class="f" style="width:72%;"></div></div><span class="sc">72</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">성취지향</span><div class="hbar"><div class="f" style="width:71%;"></div></div><span class="sc">71</span><span class="tg"></span></div>
+        <div class="hbar-row"><span class="lab">긍정성</span><div class="hbar"><div class="f" style="width:71%;"></div></div><span class="sc">71</span><span class="tg"></span></div>
+        <div class="hbar-row weak"><span class="lab">실행력</span><div class="hbar"><div class="f" style="width:62%;"></div></div><span class="sc">62</span><span class="tg">약점</span></div>
+        <div class="hbar-row weak"><span class="lab">성실성</span><div class="hbar"><div class="f" style="width:62%;"></div></div><span class="sc">62</span><span class="tg">약점</span></div>
+        <div class="hbar-row weak"><span class="lab">책임감</span><div class="hbar"><div class="f" style="width:59%;"></div></div><span class="sc">59</span><span class="tg">약점</span></div>
+      </div>
+    </div>
+
+    <!-- 섹션 03 -->
+    <div class="sec-title" style="margin-top:6px;"><span class="no">03</span><h2>리더 리스크 분석</h2><span class="en">Risk Analysis</span></div>
+    <div style="display:flex; gap:18px; align-items:stretch;">
+      <div class="card" style="width:150px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:18px;">
+        <div class="block-note">종합 리스크</div>
+        <div style="font-weight:700; font-size:30px; color:#F09000; margin:4px 0;">주의</div>
+        <div class="block-note">2개 항목 감지</div>
+      </div>
+      <div class="callout" style="flex:1;">
+        <div class="callout-head">경영진 해석 노트</div>
+        <div class="callout-body">갈등 유발과 불성실 근무가 동시에 감지되어 팀 문화에 복합적 영향을 줄 수 있습니다. 특히 스트레스 고부하 국면(성과 평가, 마감 압박)에서 팀원과의 갈등 행동이 표면화될 가능성이 있으며, 리더의 지연 행동은 팀 전체 병목으로 전이됩니다. 배치 초기 상위 관리자의 정기 점검 루틴 설계를 권고합니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">3 / 6</div>
+  </div>
+</div>
+
+<!-- ============ PAGE 4 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info"><span class="doc-header-name">이현</span><span class="doc-header-divider"></span><span class="doc-header-num">기획2유닛 · 응답 235문항</span></div>
+  </div>
+  <div class="content">
+    <div class="risk-item">
+      <div class="risk-item-head"><span class="nm">갈등 유발 가능성</span><span class="prog"><span class="num">63</span> → <span class="num" style="color:#FF3B30;">82</span> 점<span class="mul">(× 1.3)</span></span></div>
+      <div class="rbar"><div class="f" style="width:82%; background:#FF3B30;"></div></div>
+      <div class="desc">타인의 의견을 수용하지 못한 채 본인의 과거 경험에 바탕하여 강압적 태도를 보이므로 갈등을 일으킬 가능성이 높습니다. 꼰대 지수(84)가 특히 높아 팀원의 발언·제안 빈도에 영향을 줄 수 있습니다.</div>
+      <div class="risk-sub"><span class="h">리더 포지션 리스크 &nbsp;</span>일반 직원의 갈등 행동이 소수에게 영향을 준다면, 리더의 동일 행동은 팀 전체의 심리적 안전감과 상향 소통을 구조적으로 억제합니다. 성과 평가 시즌·조직 압박 국면에서 집중 모니터링이 필요합니다.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-item-head"><span class="nm">불성실 근무 가능성</span><span class="prog"><span class="num">70</span> → <span class="num" style="color:#F09000;">84</span> 점<span class="mul">(× 1.2)</span></span></div>
+      <div class="rbar"><div class="f" style="width:84%; background:#F09000;"></div></div>
+      <div class="desc">함흥차사(86) 지수가 위험 수준에 근접합니다. 일을 미루는 태도로 마감 기한을 넘기거나 중요한 일을 막판에 서두르다 완성도를 떨어뜨릴 가능성이 높습니다.</div>
+      <div class="risk-sub"><span class="h">리더 포지션 리스크 &nbsp;</span>리더의 지연 행동은 팀 전체의 병목 현상으로 전이됩니다. 리더의 불성실 패턴이 팀 규범으로 정착될 위험이 있어 마감 2주 전 진행 상황 보고 루틴을 설계할 것을 권고합니다.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-item-head"><span class="nm">조기 퇴사 가능성</span><span class="prog"><span class="num">43</span> → <span class="num" style="color:#20AA40;">47</span> 점<span class="mul">(× 1.1)</span></span></div>
+      <div class="rbar"><div class="f" style="width:47%; background:#20AA40;"></div></div>
+      <div class="desc">조기 퇴사 가능성이 감지되지 않습니다. 번아웃(38)·리셋 신드롬(32) 모두 양호 범위로, 안정적인 장기 근무가 기대됩니다.</div>
+    </div>
+
+    <div class="callout blue" style="margin-top:6px;">
+      <div class="callout-head">탐색적 지표 (PROXY INDEX)란?</div>
+      <div class="callout-body">역량검사 문항을 새로운 조합으로 재분석하여 산출한 <b>리더십 전용 보조 지표</b>입니다. 기존 23개 역량 점수로는 측정하기 어려운 리더 특유의 행동 경향을 탐색합니다. <b>확정적 판단 근거가 아닌</b>, 경영진의 관찰 방향을 설정하는 참고 자료로 활용됩니다.</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; margin-top:12px;">
+        <div style="font-size:12px; line-height:1.5;"><b style="color:#9330FF;">PSI</b> 심리적 안전감 저해 — 함께할 때 팀원이 자유롭게 의견을 말하기 어려워지는 정도. 높을수록 발언·아이디어 공유가 억제될 수 있습니다.</div>
+        <div style="font-size:12px; line-height:1.5;"><b style="color:#9330FF;">DRI</b> 위임 저항 — 업무를 직접 처리하려는 경향. 높을수록 마이크로매니지먼트 가능성이 높고 팀원 성장 기회가 줄어듭니다.</div>
+        <div style="font-size:12px; line-height:1.5;"><b style="color:#9330FF;">CDI</b> 육성 지향 — 팀원의 성장을 돕고 코칭하려는 행동 경향. 높을수록 역량 개발에 적극 개입하는 리더십이 기대됩니다.</div>
+        <div style="font-size:12px; line-height:1.5;"><b style="color:#9330FF;">LEI</b> 리더 감정 안정성 — 평가·인정 결여 등 압박 상황에서 감정을 안정적으로 유지하는 정도. 낮을수록 팀원에게 부정적 영향을 줄 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">4 / 6</div>
+  </div>
+</div>
+
+<!-- ============ PAGE 5 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info"><span class="doc-header-name">이현</span><span class="doc-header-divider"></span><span class="doc-header-num">기획2유닛 · 응답 235문항</span></div>
+  </div>
+  <div class="content">
+    <div class="block-title" style="font-size:15px;">탐색적 지표 상세</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+      <div class="proxy-card">
+        <div class="ph"><div><div class="pt">심리적 안전감 저해 지수</div><span class="pcode">PSI · Psychological Safety Index</span></div><span class="lvb h">HIGH</span></div>
+        <div class="src"><b>산출 근거 문항:</b> "나와 다른 의견은 도전으로 느껴진다" · "즉각 반박한다" · "못마땅한 점이 많다"</div>
+        <div class="intp">이 리더 앞에서 팀원들이 반론이나 새로운 아이디어를 꺼내기 어려워할 가능성이 높습니다. 배치 초기 익명 팀원 피드백 채널 운영을 권고합니다.</div>
+      </div>
+      <div class="proxy-card">
+        <div class="ph"><div><div class="pt">위임 저항 지수</div><span class="pcode">DRI · Delegation Resistance Index</span></div><span class="lvb m">MID</span></div>
+        <div class="src"><b>산출 근거:</b> 전문성 자기확신(80점) + 직접 정책 수립 경향 + 디테일 지향 패턴 조합</div>
+        <div class="intp">팀원에게 업무를 넘기기보다 직접 처리하려는 경향이 중간 수준입니다. 온보딩 초기에 위임 범위를 명시적으로 설계하고 별도 훈련을 제공하십시오.</div>
+      </div>
+      <div class="proxy-card">
+        <div class="ph"><div><div class="pt">육성 지향 지수</div><span class="pcode">CDI · Coaching &amp; Development Index</span></div><span class="lvb m">MID</span></div>
+        <div class="src"><b>산출 근거 문항:</b> "팀원 동기부여를 위해 협력한다" · "건설적 피드백을 준다" · "의사결정 과정에 팀원을 참여시킨다"</div>
+        <div class="intp">팀원을 코칭·육성하려는 잠재적 행동 경향이 존재합니다. 다만 낮은 책임감·실행력(실행구동력 69점)과 충돌 시 결과 압박형으로 전환될 수 있습니다.</div>
+      </div>
+      <div class="proxy-card">
+        <div class="ph"><div><div class="pt">리더 감정 안정성 지수</div><span class="pcode">LEI · Leader Emotional Index</span></div><span class="lvb m">MID</span></div>
+        <div class="src"><b>산출 근거:</b> 스트레스 관리(80점) ↔ "기대보다 낮은 평가를 받으면 화가 치밀어 오른다" · "인정받지 못하면 속이 뒤집어진다"</div>
+        <div class="intp">일상 업무에서는 감정 안정성이 양호하나, 성과 평가·인정 결여 상황에서는 취약점이 발현될 수 있습니다. 첫 평가 사이클 전후 팀 분위기를 별도 모니터링하십시오.</div>
+      </div>
+    </div>
+
+    <!-- 섹션 04 -->
+    <div class="sec-title" style="margin-top:6px;"><span class="no">04</span><h2>리더십 동기 프로파일</h2><span class="en">Motivation Profile</span></div>
+    <div class="motiv">
+      <div class="lbl">LEADERSHIP MOTIVATION TYPE</div>
+      <div class="ty">솔루션 마스터</div>
+      <div class="interp">리더십 해석: 전문가 드리블형</div>
+      <div class="de">탁월한 전문 지식과 기술을 활용해 남들이 해내지 못하는 성과를 만들어내는 유형입니다. 숙련욕구와 성과중심성이 4개 상황 전반에서 일관되게 우세하여 예측 가능한 동기 패턴을 보입니다. 리더 포지션에서는 팀원 육성보다 직접 수행을 선호하는 경향이 있어 위임 구조 설계가 필요합니다.</div>
+    </div>
+    <div>
+      <div class="block-note" style="margin-bottom:8px;">직업 가치관 (4개 상황 종합)</div>
+      <div class="values">
+        <div class="value-cell">자율추구형</div>
+        <div class="value-cell">보상추구형</div>
+        <div class="value-cell">안정지향형</div>
+        <div class="value-cell on">성과중심형</div>
+        <div class="value-cell on">숙련욕구형</div>
+        <div class="value-cell">관계기반형</div>
+        <div class="value-cell">성장지향형</div>
+        <div class="value-cell">인정욕구형</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">5 / 6</div>
+  </div>
+</div>
+
+<!-- ============ PAGE 6 ============ -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-header-title">역량검사 4.0 · 경영진 보고용</span>
+    <div class="doc-header-info"><span class="doc-header-name">이현</span><span class="doc-header-divider"></span><span class="doc-header-num">기획2유닛 · 응답 235문항</span></div>
+  </div>
+  <div class="content">
+    <div class="block-note" style="margin-bottom:-6px;">상황별 행동 패턴 예측</div>
+    <table class="data">
+      <thead><tr><th>상황</th><th>예측 행동 패턴</th><th>경영진 활용 포인트</th></tr></thead>
+      <tbody>
+        <tr><td>성과 압박 국면</td><td>직접 개입 증가, 완성도 집착으로 마감 지연 가능, 심리적 안전감 저해 가능성 상승</td><td>마감 1~2주 전 단위 체크인 구조 설계</td></tr>
+        <tr><td>상사와 의견 충돌</td><td>전문성 근거로 이성적 설득 시도. 실패 시 내면 불만 누적 → 리더 감정 안정성 취약 구간 진입</td><td>이유 포함 의사결정 공유, 전문가 의견 채널 확보</td></tr>
+        <tr><td>팀원 미달성</td><td>팀원 위임보다 직접 수행으로 해결 시도(위임 저항 경향 반영), 팀원 육성 기회 손실</td><td>위임 훈련 + 팀원 육성 지표 병행 설정</td></tr>
+        <tr><td>조직 개편·불확실</td><td>역할 불명 시 신중 모드 전환, 본인 강점 영역으로 집중</td><td>역할·기대 수준 조기 명시, 안전한 소통 환경 조성</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 섹션 05 -->
+    <div class="sec-title"><span class="no">05</span><h2>경영진 활용 가이드</h2><span class="en">Utilization Guide</span></div>
+    <div style="display:flex; gap:18px; align-items:stretch;">
+      <div class="guide-col fit">
+        <div class="gh">↑ 적합 포지션 · 상황</div>
+        <ul>
+          <li>전문가 집단 리딩 — 전문성 기반 설득이 유효한 조직</li>
+          <li>전략 기획·분석 중심 팀 리더</li>
+          <li>역할·책임이 명확히 구분된 안정적 구조</li>
+          <li>지식 공유·연구 장려 문화 — 스페셜리스트형 동기와 정합</li>
+        </ul>
+      </div>
+      <div class="guide-col unfit">
+        <div class="gh">↓ 부적합 · 리스크 상황</div>
+        <ul>
+          <li>빠른 실행·다기능 처리가 요구되는 환경</li>
+          <li>팀원 육성·코칭이 핵심 리더 역할인 포지션</li>
+          <li>표면적 성과·KPI 다양성 강조 조직</li>
+          <li>역할 모호성 높은 신규 조직·통합 프로젝트</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block-note">경영진 관찰 포인트 (배치 초기 3개월)</div>
+    <div>
+      <div class="obs-item"><span class="n">01</span><div class="ob"><div class="ot">팀원 발언 빈도 및 상향 소통 패턴 <span class="badge">심리적 안전감 저해</span></div><div class="od">팀 회의에서 팀원의 이의 제기·아이디어 공유 빈도를 관찰합니다. 침묵이 지속되면 심리적 안전감 저해가 현실화되고 있다는 신호입니다.</div></div></div>
+      <div class="obs-item"><span class="n">02</span><div class="ob"><div class="ot">마감 관리 및 위임 행동 실제 발현 <span class="badge">위임 저항</span></div><div class="od">팀원에게 핵심 업무를 얼마나 위임하는지, 함흥차사 지수(86)를 고려해 마감 2주 전 진행 상황 점검 루틴을 초기부터 설계합니다.</div></div></div>
+      <div class="obs-item" style="border-bottom:none;"><span class="n">03</span><div class="ob"><div class="ot">평가 국면에서의 감정 행동 변화 <span class="badge">리더 감정 안정성</span></div><div class="od">첫 성과 평가 시즌 전후 팀 분위기를 별도 모니터링합니다. 인정 결여 상황에서 감정 표출이 팀원에게 전이될 수 있습니다.</div></div></div>
+    </div>
+
+    <div class="report-info">
+      <div class="ri"><span class="ic">ⓘ</span><span class="tx">본 리포트는 응시자의 자기보고식 응답을 기반으로 산출됩니다. 자기보고 검사의 특성상 실제 행동과 차이가 있을 수 있으므로, 최종 인사 결정 시 면접·다면평가·실제 업무 수행 관찰 등 다각적 평가와 반드시 병행하여 활용하시기 바랍니다. 탐색적 지표(심리적 안전감 저해·위임 지향·육성 지향·리더 감정 안정성)는 확정적 판단 근거가 아닌 관찰 방향 설정을 위한 참고 자료입니다.</span></div>
+      <div class="ri"><span class="ic">ⓘ</span><span class="tx">본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다. 결과 해석 및 활용 관련 문의는 HR 담당자 또는 ㈜무하유에 문의하시기 바랍니다.</span></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-left"><img src="../logo/logo_monster.png" alt="역량검사"><span>리더십 진단</span></div>
+    <div class="footer-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div>
+    <div class="footer-page num">6 / 6</div>
+  </div>
+</div>
+
+</body>
+</html>
