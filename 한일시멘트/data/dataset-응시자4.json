@@ -10,7 +10,7 @@
     "completeness.*.short_text",
     "verification.* (강점/검토 선별·pct·코멘트·질문)",
     "essay.questions[].title·sentences·detected (원문·마킹 전체)",
-    "essay.questions[].answer_fit (메트릭 답변적합도 값 준용)·ai_rate (raw는 탐지여부만, 미탐지→저율 부여)",
+    "essay.questions[].answer_fit (문항별 분산 샘플값)·ai_rate (raw는 탐지여부만, 2-decimal 샘플값)",
     "hard_skills.항목",
     "evidence_sentences"
   ],
@@ -288,8 +288,8 @@
       {
         "no": 1,
         "title": "우리 회사에 지원한 동기에 대해 서술하시오.",
-        "answer_fit": 84.26,
-        "ai_rate": 4,
+        "answer_fit": 87.39,
+        "ai_rate": 3.74,
         "sentences": [
           {
             "id": 1,
@@ -341,8 +341,8 @@
       {
         "no": 2,
         "title": "직무와 관련된 본인의 경험과 역량을 서술하시오.",
-        "answer_fit": 84.26,
-        "ai_rate": 2,
+        "answer_fit": 81.52,
+        "ai_rate": 2.11,
         "sentences": [
           {
             "id": 8,

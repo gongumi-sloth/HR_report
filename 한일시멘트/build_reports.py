@@ -212,7 +212,7 @@ def build(d):
         <div class="qleft"><span class="qno">문항 {q['no']}</span><span class="qtext">{q['title']}</span></div>
         <div class="qright">
           <div class="qmetric"><span>답변적합도</span><span class="v num">{f2(q['answer_fit'])}</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">{q['ai_rate']}%</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct num">{f2(q['ai_rate'])}%</span></div>
         </div>
       </div>''')
     T['QROWS'] = '\n' + '\n'.join(qrows) + '\n    '
@@ -224,8 +224,8 @@ def build(d):
                          for mm in q['detected']['metrics'])
         parts = []
         for s in q['sentences']:
+            # 근거문장(hl)만 강조. AI 작성 의심(gpk) 하이라이팅은 제거 — 문항별 AI 작성률만 표기 (사용자 요청 2026-06-15)
             if s['hl']: parts.append(f'<span class="hl">{s["text"]}</span>')
-            elif s['gpk']: parts.append(f'<span class="gpk">{s["text"]}</span>')
             else: parts.append(s['text'])
         body = ' '.join(parts)
         factors = q['detected']['factors']
@@ -247,7 +247,7 @@ def build(d):
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
             {tags}
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">{q['ai_rate']}%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">{f2(q['ai_rate'])}%</span></div>
         </div>
       </div>''')
     T['P3_QCARDS'] = '\n\n' + '\n\n'.join(qcards) + '\n\n    '
