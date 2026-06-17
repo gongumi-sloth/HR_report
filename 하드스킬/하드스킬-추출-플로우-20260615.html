@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하드스킬 추출 — 흐름 · 결정 · 개발 계약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans:wght@400;700&family=Noto+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0; padding: 40px 24px 64px;
+    background: #F4F4F4; color: #041D30;
+    font-family: 'Noto Sans KR', 'Noto Sans', sans-serif; line-height: 1.6;
+  }
+  .num { font-family: 'Noto Sans', sans-serif; }
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.4px; }
+  .lead { font-size: 14px; color: #7D7D80; margin: 0 0 6px; }
+  .meta { font-size: 12px; color: #A9A8AA; margin: 0; }
+
+  .sec { position: relative; padding-left: 13px; margin: 38px 0 16px; font-size: 18px; font-weight: 700; }
+  .sec::before { content:""; position:absolute; left:0; top:3px; width:4px; height:19px; background:#0075FF; border-radius:2px; }
+  .sec small { font-size:12px; font-weight:400; color:#A9A8AA; margin-left:8px; }
+
+  /* ── 흐름 ── */
+  .group { background:#fff; border:1px solid #E3E3E3; border-radius:10px; padding:16px 18px; margin-bottom:14px; }
+  .group.result { border-color:#0075FF; }
+  .group-head { display:flex; align-items:baseline; gap:8px; margin-bottom:12px; }
+  .group-head .gt { font-size:14px; font-weight:700; }
+  .group-head .gc { font-size:12px; font-weight:700; padding:2px 9px; border-radius:11px; }
+  .gc.once { background:rgba(73,94,118,0.12); color:#33485E; }
+  .gc.each { background:rgba(0,117,255,0.12); color:#0058BF; }
+
+  .step { display:flex; align-items:flex-start; gap:14px; padding:8px 0; }
+  .step .no { flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#0075FF; color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .step .title { font-size:15px; font-weight:700; }
+  .step .who { font-size:11px; font-weight:700; color:#7D7D80; margin-left:8px; }
+  .step .desc { font-size:13px; color:#555; }
+  .step .desc b { color:#0075FF; }
+  .step .desc b.miss { color:#D75D00; }
+  .arrow { color:#C6C6C6; font-size:15px; padding-left:7px; line-height:1; }
+
+  /* ── 확정된 결정 ── */
+  .dec { background:#fff; border:1px solid #E3E3E3; border-radius:10px; border-left:4px solid #20AA40; padding:12px 16px; margin-bottom:10px; }
+  .dec .dt { font-size:14px; font-weight:700; }
+  .dec .dt .chk { color:#20AA40; margin-right:7px; }
+  .dec .da { font-size:13px; color:#444; margin-top:3px; }
+  .dec .da .hl { color:#0058BF; font-weight:700; }
+
+  /* ── 데이터 계약 표 ── */
+  table.io { width:100%; border-collapse:collapse; font-size:12.5px; border-top:2px solid #041D30; border-bottom:2px solid #041D30; background:#fff; }
+  table.io th { background:rgba(0,117,255,0.06); font-weight:700; text-align:left; padding:9px 11px; border-bottom:1px solid #041D30; }
+  table.io td { padding:9px 11px; border-bottom:1px solid #E3E3E3; vertical-align:top; line-height:1.55; }
+  table.io tr:last-child td { border-bottom:none; }
+  table.io .stp { font-weight:700; white-space:nowrap; }
+  code { font-family:'Noto Sans Mono', monospace; font-size:11.5px; background:#F1F3F5; padding:1px 5px; border-radius:3px; color:#0058BF; }
+
+  /* ── 프롬프트 계약 ── */
+  .pc { background:#fff; border:1px solid #E3E3E3; border-radius:10px; padding:14px 16px 16px; margin-bottom:12px; }
+  .pc-h { font-size:14px; font-weight:700; margin-bottom:2px; }
+  .pc-h .pn { display:inline-block; font-size:11px; font-weight:700; color:#fff; background:#495E76; padding:2px 8px; border-radius:6px; margin-right:8px; }
+  .pc-d { font-size:12px; color:#7D7D80; margin-bottom:10px; }
+  .io-row { display:grid; grid-template-columns:54px 1fr; gap:10px; align-items:start; margin-top:8px; }
+  .io-row .lab { font-size:11px; font-weight:700; padding:4px 0; color:#33485E; }
+  .io-row .lab.out { color:#0058BF; }
+  pre { margin:0; background:#0E1B2A; color:#E6EDF3; border-radius:6px; padding:10px 12px; font-family:'Noto Sans Mono',monospace; font-size:11.5px; line-height:1.55; overflow-x:auto; white-space:pre; }
+  pre .k { color:#7FB4F5; } pre .s { color:#9DE0AD; } pre .c { color:#6E8196; }
+  .pc-note { font-size:11.5px; color:#7D7D80; margin-top:10px; padding-left:2px; }
+
+  /* ── 확인 필요 ── */
+  .todo { background:#fff; border:1px solid #FFD9B0; border-left:4px solid #FF7A00; border-radius:10px; padding:14px 18px; }
+  .todo li { font-size:13px; margin-bottom:7px; }
+  .todo li:last-child { margin-bottom:0; }
+  .todo b { color:#D75D00; }
+
+  .verdict { background:rgba(0,117,255,0.06); border:1px solid #B3D4FF; border-radius:10px; padding:14px 18px; font-size:13.5px; line-height:1.7; }
+  .verdict b { color:#0058BF; }
+
+  /* ── 참고 문서 ── */
+  .ref-grp { background:#fff; border:1px solid #E3E3E3; border-radius:10px; padding:4px 18px 12px; margin-bottom:12px; }
+  .ref-grp h4 { font-size:13px; font-weight:700; color:#33485E; margin:14px 0 6px; }
+  .ref-item { display:flex; gap:10px; align-items:baseline; padding:7px 0; border-top:1px solid #F1F3F5; font-size:13px; }
+  .ref-item.first { border-top:none; }
+  .ref-item .rk { flex-shrink:0; width:42px; text-align:center; font-size:10.5px; font-weight:700; padding:2px 0; border-radius:9px; }
+  .rk.must { background:rgba(0,117,255,0.12); color:#0058BF; }
+  .rk.sub { background:#EDEDED; color:#7D7D80; }
+  .rk.ext { background:rgba(255,122,0,0.12); color:#D75D00; }
+  .ref-item .rb { flex:1; color:#555; line-height:1.55; }
+  .ref-item .rb a { color:#0058BF; font-weight:700; text-decoration:none; }
+  .ref-item .rb a:hover { text-decoration:underline; }
+  .ref-item .rb .warn { color:#D75D00; font-weight:700; }
+
+  .note { margin-top:28px; font-size:12px; color:#7D7D80; line-height:1.7; border-top:1px solid #E3E3E3; padding-top:14px; }
+
+  @media print { @page { size:A4; margin:13mm; } body { background:#fff; padding:0; } pre { background:#0E1B2A; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>하드스킬 추출 — 흐름 · 결정 · 개발 계약</h1>
+  <p class="lead">‘직무지식’에 하드스킬을 추가해, 자소서에서 <b>확인된 / 확인되지 않은 하드스킬</b>로 구분해 보여줍니다.</p>
+  <p class="meta">프리즘 BP · 2026-06-15 · 개발 / 연구개발 미팅용</p>
+
+  <!-- ════ 1. 흐름 ════ -->
+  <div class="sec">전체 흐름 <small>결정사항 반영</small></div>
+
+  <div class="group">
+    <div class="group-head"><span class="gt">① 채용공고 준비</span><span class="gc once">공고당 1회 · 재사용 가능</span></div>
+    <div class="step"><div class="no num">1</div><div><div class="title">접수<span class="who">고객사</span></div><div class="desc">JD(직무기술서) 파일을 <b>필수</b>로 업로드한다.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="step"><div class="no num">2</div><div><div class="title">하드스킬 추출<span class="who">AI → 운영 검수</span></div><div class="desc">AI가 JD에서 하드스킬 키워드·근거를 뽑고, <b>운영이 검수·수정</b>한다.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="step"><div class="no num">3</div><div><div class="title">키워드 확장<span class="who">AI → 운영 검수 → 아카이빙</span></div><div class="desc">AI가 동의어·유사 표현으로 넓히고 운영이 검수. <b>고객사·채용별로 저장해 재사용</b>한다.</div></div></div>
+  </div>
+
+  <div class="group result">
+    <div class="group-head"><span class="gt">② 지원자 평가</span><span class="gc each">지원자당 N회</span></div>
+    <div class="step"><div class="no num">4</div><div><div class="title">검출 판단<span class="who">시스템 + AI</span></div><div class="desc">키워드로 자소서 후보 문장을 찾고, <b>AI가 실제 보유 여부를 판단</b>한다(동음이의어 대응). 항목별 <b>검출</b>/<b class="miss">미검출</b> 확정.</div></div></div>
+    <div class="arrow">↓</div>
+    <div class="step"><div class="no num">5</div><div><div class="title">결과 표시<span class="who">결과지</span></div><div class="desc"><b>확인된 하드스킬</b> / <b class="miss">확인되지 않은 하드스킬</b>을 근거 문장과 함께 보여준다.</div></div></div>
+  </div>
+
+  <!-- ════ 2. 확정 결정 ════ -->
+  <div class="sec">확정된 결정</div>
+  <div class="dec"><div class="dt"><span class="chk">✓</span>결정 1 · 검수</div><div class="da">추출·확장 결과는 <span class="hl">운영(어드민)이 검수</span>한다 (당분간).</div></div>
+  <div class="dec"><div class="dt"><span class="chk">✓</span>결정 2 · 확장/재사용</div><div class="da">공고마다 생성하되(고객사·채용별로 다름), <span class="hl">아카이빙해 재사용</span>. 고객사가 이전 공고 JD 적용을 요청하면 운영이 불러와 적용할 수 있어야 한다.</div></div>
+  <div class="dec"><div class="dt"><span class="chk">✓</span>결정 3·4 · 검출 방식</div><div class="da"><span class="hl">AI로 검출 여부 판단</span>(동음이의어 등 대응). <span class="hl">벡터DB는 이번 범위 외</span>. 신뢰도는 내부 판정용(결과지 노출 여부는 추후).</div></div>
+  <div class="dec"><div class="dt"><span class="chk">✓</span>결정 5 · 접수</div><div class="da">JD 업로드는 <span class="hl">필수</span>, <span class="hl">파일 형태</span>로 받는다.</div></div>
+
+  <!-- ════ 3. 데이터 계약 ════ -->
+  <div class="sec">단계별 데이터 계약 <small>각 단계 입력 → 출력</small></div>
+  <table class="io">
+    <thead><tr><th style="width:13%">단계</th><th style="width:30%">입력</th><th style="width:57%">출력</th></tr></thead>
+    <tbody>
+      <tr><td class="stp">1 접수</td><td>JD 파일</td><td><code>jd_text</code> (추출된 본문) + 메타 <code>{고객사ID, 채용공고ID}</code></td></tr>
+      <tr><td class="stp">2 추출<br><small style="color:#7D7D80">프롬프트①</small></td><td><code>jd_text</code></td><td><code>[{ name, jd_evidence }]</code> → 운영 검수 후 확정</td></tr>
+      <tr><td class="stp">3 확장<br><small style="color:#7D7D80">프롬프트②</small></td><td>확정된 <code>name</code> 목록</td><td><code>[{ name, keywords[] }]</code> → 검수 후 <b>프로파일로 저장(재사용)</b></td></tr>
+      <tr><td class="stp">4 검출<br><small style="color:#7D7D80">프롬프트③</small></td><td>키워드 후보 검색 결과<br><code>{ skill, candidate_sentences[] }</code></td><td><code>{ name, status:검출|미검출, evidence_ids[], summary, confidence }</code></td></tr>
+      <tr><td class="stp">5 결과</td><td>4의 출력 배열</td><td><code>hard_skills.항목[]</code> → 결과지 렌더 (기존 구조 그대로)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ════ 4. 프롬프트 계약 ════ -->
+  <div class="sec">프롬프트 계약 <small>3개 — 입력/출력 JSON</small></div>
+
+  <div class="pc">
+    <div class="pc-h"><span class="pn">프롬프트 ①</span>하드스킬 추출</div>
+    <div class="pc-d">JD 본문에서 하드스킬과 JD 내 근거 문구를 추출. <b>공고당 1회.</b></div>
+    <div class="io-row"><div class="lab">입력</div><pre>{ <span class="k">"jd_text"</span>: <span class="s">"&lt;채용공고/JD 전문&gt;"</span> }</pre></div>
+    <div class="io-row"><div class="lab out">출력</div><pre>{
+  <span class="k">"hard_skills"</span>: [
+    { <span class="k">"name"</span>: <span class="s">"Excel"</span>, <span class="k">"jd_evidence"</span>: <span class="s">"영업 실적 데이터 분석 및 리포트 작성"</span> },
+    { <span class="k">"name"</span>: <span class="s">"Salesforce Sales Cloud Consultant"</span>, <span class="k">"jd_evidence"</span>: <span class="s">"CRM 기반 고객 관리"</span> }
+  ]
+}</pre></div>
+  </div>
+
+  <div class="pc">
+    <div class="pc-h"><span class="pn">프롬프트 ②</span>키워드 확장</div>
+    <div class="pc-d">검수된 하드스킬을 자소서 검색용 동의어·표기변형으로 확장. <b>공고당 1회 + 아카이빙.</b></div>
+    <div class="io-row"><div class="lab">입력</div><pre>{
+  <span class="k">"job_context"</span>: <span class="s">"영업관리"</span>,
+  <span class="k">"skills"</span>: [<span class="s">"Excel"</span>, <span class="s">"Salesforce Sales Cloud Consultant"</span>]
+}</pre></div>
+    <div class="io-row"><div class="lab out">출력</div><pre>{
+  <span class="k">"expanded"</span>: [
+    { <span class="k">"name"</span>: <span class="s">"Excel"</span>,
+      <span class="k">"keywords"</span>: [<span class="s">"Excel"</span>,<span class="s">"엑셀"</span>,<span class="s">"스프레드시트"</span>,<span class="s">"피벗테이블"</span>,<span class="s">"VLOOKUP"</span>] },
+    { <span class="k">"name"</span>: <span class="s">"Salesforce Sales Cloud Consultant"</span>,
+      <span class="k">"keywords"</span>: [<span class="s">"Salesforce"</span>,<span class="s">"세일즈포스"</span>,<span class="s">"SFDC"</span>,<span class="s">"CRM"</span>] }
+  ]
+}</pre></div>
+  </div>
+
+  <div class="pc">
+    <div class="pc-h"><span class="pn">프롬프트 ③</span>검출 판단 <span style="font-size:11px;color:#D75D00;font-weight:700">핵심</span></div>
+    <div class="pc-d">키워드로 찾은 <b>후보 문장</b>이 실제로 그 하드스킬 보유 근거인지 AI가 판단(동음이의어 대응). <b>지원자 × 스킬마다.</b></div>
+    <div class="io-row"><div class="lab">입력</div><pre>{
+  <span class="k">"skill"</span>: { <span class="k">"name"</span>: <span class="s">"Excel"</span>, <span class="k">"keywords"</span>: [<span class="s">"Excel"</span>,<span class="s">"엑셀"</span>,<span class="s">"피벗테이블"</span>] },
+  <span class="k">"candidate_sentences"</span>: [
+    { <span class="k">"id"</span>: 16, <span class="k">"text"</span>: <span class="s">"Excel을 활용한 영업 실적 분석·피벗 테이블 작성으로…"</span> }
+  ]
+}</pre></div>
+    <div class="io-row"><div class="lab out">출력</div><pre>{
+  <span class="k">"name"</span>: <span class="s">"Excel"</span>,
+  <span class="k">"status"</span>: <span class="s">"검출"</span>,            <span class="c">// 검출 | 미검출</span>
+  <span class="k">"evidence_ids"</span>: [16],
+  <span class="k">"summary"</span>: <span class="s">"Excel 피벗 테이블 활용 실적 분석·리포트 경험 확인."</span>,
+  <span class="k">"confidence"</span>: 0.92          <span class="c">// 내부 판정용</span>
+}</pre></div>
+    <div class="pc-note">※ 후보 문장이 <b>없으면 AI 호출 없이</b> <code>status:"미검출"</code> (비용 절감).</div>
+  </div>
+
+  <!-- ════ 5. 확인 필요 ════ -->
+  <div class="sec">미팅에서 확정할 연동 항목 <small>백엔드 구조라 별도 결정 필요</small></div>
+  <ul class="todo">
+    <li><b>접수 파일</b> — JD 파일 저장 위치·파서(문서→텍스트) 연동 방식</li>
+    <li><b>LLM 호출</b> — 사용 모델, 토큰·비용 한도, 호출 게이트웨이</li>
+    <li><b>자소서 데이터 소스</b> — 어디서 문장 단위로 가져오나 (기존 <code>essay_sections</code> / <code>evidence_sentences</code> 구조에 매핑)</li>
+    <li><b>프로파일 저장소</b> — 확장 결과의 아카이빙·버전·재사용 조회 (고객사·채용 키)</li>
+    <li><b>검출 트리거 시점</b> — 지원자 접수 시 자동 실행 vs 배치 처리</li>
+    <li><b>후보 검색 수준</b> — 키워드 단순 일치 / 형태소·표기 정규화 어디까지</li>
+  </ul>
+
+  <!-- ════ 결론 ════ -->
+  <div class="sec">지금 이걸로 개발 시작 가능한가</div>
+  <div class="verdict">
+    <b>프롬프트 ①②③과 단계별 데이터 계약은 정의됐으므로, 프롬프트 설계와 처리 로직은 바로 착수 가능</b>합니다.<br>
+    다만 위 <b>‘연동 항목’ 6가지</b>(저장소·데이터 소스·트리거 등)는 귀사 백엔드 구조에 달려 있어, 이번 미팅에서 확정해야 전체 개발이 막힘없이 진행됩니다. — 이 6가지가 미팅의 실제 안건입니다.
+  </div>
+
+  <!-- ════ 함께 볼 문서 ════ -->
+  <div class="sec">함께 볼 문서 <small>이 문서와 한 묶음으로</small></div>
+
+  <div class="ref-grp">
+    <h4>A. 저장소 안 — 개발자에게 바로 첨부</h4>
+    <div class="ref-item first"><span class="rk must">필수</span><div class="rb"><a href="../한일시멘트/참고-SDS-BP콘텐츠상세-r25.md">참고-SDS-BP콘텐츠상세-r25.md</a> — 제품 사양서(SDS). 결과지가 무엇을 보여줘야 하는지 기준. <span class="warn">⚠ 사내 기밀·외부 공유 금지</span> (저자 無何洞事務所/최고운 — 미팅의 연구개발자일 가능성)</div></div>
+    <div class="ref-item"><span class="rk must">필수</span><div class="rb"><a href="../data/bp_evaluation_data.json">data/bp_evaluation_data.json</a> — 출력 스키마 실물. 계약(<code>hard_skills.항목[]</code>, <code>evidence_sentences</code>, <code>essay_sections</code>)이 실제로 어떻게 생겼는지</div></div>
+    <div class="ref-item"><span class="rk must">필수</span><div class="rb"><a href="../한일시멘트/template-bp42.html">한일시멘트/template-bp42.html</a> — 5단계 출력이 렌더되는 실물. <code>.hardskill</code>(P1 확인/미확인), <code>.dt-hardcat·.dt-detect</code>(P4+ 검출/미검출 + 근거)</div></div>
+    <div class="ref-item"><span class="rk sub">보조</span><div class="rb"><a href="../한일시멘트/작업계획서.md">한일시멘트/작업계획서.md</a> — 기준문서 + Figma BP 4.2 확정 디자인 링크 + 결정 로그</div></div>
+    <div class="ref-item"><span class="rk sub">보조</span><div class="rb"><a href="../CLAUDE.md">CLAUDE.md</a> + <a href="https://gongumi-sloth.github.io/HR_report/">스토리북</a> — 디자인 시스템·컴포넌트 스펙. 어드민 검수 화면 등 신규 UI 제작 시</div></div>
+    <div class="ref-item"><span class="rk sub">대비</span><div class="rb"><a href="../한일시멘트/참고-SDS-매트릭별근거내용.md">참고-SDS-매트릭별근거내용.md</a> — 기존 메트릭은 점수구간 룰베이스 lookup(AI 없음). 하드스킬(AI 검출)과의 차이 대비용</div></div>
+  </div>
+
+  <div class="ref-grp">
+    <h4>B. 사내 별도 — 팀에서 확보 (위 ‘미팅에서 확정할 연동 항목’과 1:1 대응)</h4>
+    <div class="ref-item first"><span class="rk ext">사내</span><div class="rb"><b>접수 화면 현행 명세</b> — JD 업로드(필수·파일) 항목을 어디에 붙일지 (결정 5)</div></div>
+    <div class="ref-item"><span class="rk ext">사내</span><div class="rb"><b>자소서 데이터 소스 / 기존 평가 파이프라인 명세</b> — 4단계 후보검색이 <code>essay_sections</code>를 어디서 받아오는지, 검출 트리거 위치</div></div>
+    <div class="ref-item"><span class="rk ext">사내</span><div class="rb"><b>프로젝트 초기 논의록</b> — 벡터DB 미사용(결정 3·4) 근거</div></div>
+    <div class="ref-item"><span class="rk ext">사내</span><div class="rb"><b>LLM 호출 운영 가이드</b> — 모델·비용 한도·프롬프트 운영 정책</div></div>
+  </div>
+
+  <p class="note">결과 표시(5단계) 데이터는 현행 더미데이터 <code>hard_skills.항목[]</code> ({ name, status, summary, evidence_ids[] }) 구조를 그대로 사용하므로 출력 형식은 새로 만들 필요가 없습니다.</p>
+
+</div>
+</body>
+</html>

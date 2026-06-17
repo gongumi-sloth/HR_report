@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>프리즘 BP 결과지 - 응시자5</title>
+<title>프리즘 BP 결과지 - 지원자5</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -41,17 +41,18 @@ p { margin:0; }
 .bp-badges { display:flex; flex-direction:column; gap:8px; }
 .bp-badge { border:1px solid #0075ff; border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; color:#0075ff; text-align:center; white-space:nowrap; }
 .bp-badge.fill { background:#e0f3ff; width:132px; }
+.bp-badge.fill.over { background:rgba(215,93,0,0.1); border-color:#d75d00; color:#d75d00; }  /* 3배수 초과 — 미확인 하드스킬색(#d75d00) */
 
 /* ===== summary ===== */
 .summary { background:#e3e3e3; padding:24px; border-radius:0 0 8px 8px; flex-shrink:0; }
-.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:20px; }
+.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }
 .summary-txt { display:flex; align-items:flex-start; justify-content:space-between; padding:4px 0; }
-.summary-headline { font-weight:700; font-size:18px; line-height:2; width:460px; flex-shrink:0; }  /* 폭 제한 — 불릿과의 여백 확보(CH-017) */
-.summary-bullets { font-weight:400; font-size:12px; width:368px; margin:0; padding-left:21px; }  /* Figma 456:1253 h76=12px·1.6·4줄 */
-.summary-bullets li { line-height:1.6; }
+.summary-headline { font-weight:700; font-size:18px; line-height:1.3; width:470px; flex-shrink:0; }  /* 행간 2→1.3·폭 460→300px (2026-06-16 PAC 2열 수용) */
+.summary-bullets { font-weight:400; font-size:12px; width:395px; margin:0; padding-left:18px; }  /* PAC 불릿 1열·12px (응시자별 4~5개 요약) */
+.summary-bullets li { line-height:1.4; margin-bottom:1px; }
 .summary-divider { height:1px; background:#e3e3e3; }
 .summary-pos-title { font-weight:700; font-size:16px; letter-spacing:0.024px; }
-.summary-pos { display:flex; align-items:center; gap:24px; margin-top:16px; }
+.summary-pos { display:flex; align-items:center; gap:24px; margin-top:8px; }
 .summary-pos .cbar-legend { line-height:1; }   /* Figma 라벨 h14 — 행간 압축으로 영역 294px 수납 */
 .summary-pos-score { font-weight:700; font-size:32px; line-height:1.25; }  /* 행높이를 바 영역(42.5px) 이하로 — 서머리 294px 수납 */
 .summary-pos-bars { flex:1; display:flex; flex-direction:column; gap:12px; }
@@ -81,12 +82,12 @@ p { margin:0; }
 .up { color:#0075ff; } .down { color:#d75d00; }
 
 /* grade chips */
-.grade.g-none { background:#e9e9ea; color:#a9a8aa; }  /* 등급 없음(판단불가) — Figma - 칩 */
+.grade.g-none { background:#f4f4f4; color:#7d7d80; }  /* 없음(판단불가)=낮음과 동일색 통일 2026-06-17 */
 .grade { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
 .g-high { background:rgba(0,117,255,0.6); color:#fff; }
 .g-mid { background:#e9e9ea; color:#041D30; }
 .g-low { background:#f4f4f4; color:#7d7d80; }
-.g-none { background:#e9e9ea; color:#a9a8aa; }
+.g-none { background:#f4f4f4; color:#7d7d80; }  /* 없음=낮음 동일색 2026-06-17 */
 
 /* 직무적합도 grade table */
 .jma { height:444px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }  /* Figma 456:1283 카드 444px 고정 */
@@ -186,15 +187,16 @@ p { margin:0; }
 .vp-bottom.warn .blbl { color:#d75d00; }
 .vp-bottom .chips { font-size:14px; color:#041d30; padding:4px 0; }
 .qtable { width:100%; border-top:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; flex-shrink:0; }
-.qrow { height:48px; display:flex; align-items:center; padding:8px 24px; border-bottom:1px solid #e3e3e3; }
+.qrow { min-height:48px; display:flex; align-items:center; gap:16px; padding:10px 24px; border-bottom:1px solid #e3e3e3; }
 .qrow:last-child { border-bottom:none; }
-.qleft { flex:0 0 440px; display:flex; align-items:center; gap:12px; font-size:16px; }
-.qleft .qno { font-weight:700; }
-.qleft .qtext { font-weight:500; }
-.qright { flex:1; display:flex; align-items:center; }
-.qmetric { flex:1; font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; }
+.qleft { flex:1 1 auto; min-width:0; display:flex; align-items:baseline; gap:12px; font-size:16px; }
+.qleft .qno { font-weight:700; flex-shrink:0; white-space:nowrap; }
+.qleft .qtext { font-weight:500; line-height:1.45; }
+.qright { flex:0 0 auto; display:flex; align-items:center; gap:48px; }
+.qmetric { font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; white-space:nowrap; }
 .qmetric .v { letter-spacing:-0.16px; }
 .qmetric .pct { color:#f09000; }
+.qmetric .pct.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P3: 자기소개서 분석 ===== */
 .p3-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -206,19 +208,23 @@ p { margin:0; }
 .p3-legend-hl { background:rgba(0,117,255,0.1); font-size:16px; color:#041D30; padding:2px 6px; white-space:nowrap; }
 .p3-cards-wrap { display:flex; flex-direction:column; gap:24px; width:100%; }
 .p3-qcard { border:1px solid #c6c6c6; border-radius:8px; overflow:hidden; flex-shrink:0; }
-.p3-qhead { background:#f4f4f4; height:52px; display:flex; align-items:center; gap:12px; padding:8px 24px; font-weight:700; font-size:18px; color:#041D30; white-space:nowrap; }
+.p3-qhead { background:#f4f4f4; min-height:52px; display:flex; align-items:center; gap:12px; padding:10px 24px; font-weight:700; font-size:18px; line-height:1.4; color:#041D30; }
+.p3-qhead span:first-child { flex-shrink:0; }  /* 문항 N 줄바꿈 방지 */
 .p3-metric { display:flex; align-items:center; gap:12px; padding:10px 24px; }
 .p3-metric-group { display:flex; align-items:center; gap:8px; }
 .p3-metric-name { font-weight:700; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.p3-metric-score { font-weight:400; font-size:16px; letter-spacing:0.024px; color:#041D30; }
 .p3-body { border-top:1px solid #e3e3e3; border-bottom:1px solid #e3e3e3; padding:12px 24px; font-size:16px; font-weight:400; line-height:1.6; letter-spacing:-0.16px; color:#041D30; }
 .hl { background:rgba(0,117,255,0.1); }
-.p3-qfooter { display:flex; align-items:center; justify-content:space-between; padding:8px 24px; }
-.p3-skills { display:flex; gap:4px; align-items:center; }
+.p3-qfooter { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:8px 24px; }
+.p3-skills { display:flex; gap:4px 6px; align-items:center; flex-wrap:wrap; min-width:0; }
 .p3-skills-label { font-weight:700; font-size:14px; color:#7d7d80; white-space:nowrap; }
-.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; }
+.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; white-space:nowrap; }
+.p3-ai-rate { white-space:nowrap; flex-shrink:0; }
 .p3-ai-rate { display:flex; gap:4px; align-items:center; font-size:16px; letter-spacing:-0.16px; white-space:nowrap; font-weight:400; }
 .p3-ai-lbl { color:#041D30; }
 .p3-ai-val { color:#f09000; min-width:35px; text-align:right; }
+.p3-ai-val.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P4+ : BP 평가 상세 (자동 페이지네이션) ===== */
 .dt-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -237,7 +243,7 @@ p { margin:0; }
 .dt-badge.high { background:rgba(0,117,255,0.6); color:#fff; }
 .dt-badge.mid { background:#e9e9ea; color:#041d30; }
 .dt-badge.low { background:#f4f4f4; color:#a9a8aa; }
-.dt-badge.none { background:#e9e9ea; color:#a9a8aa; }
+.dt-badge.none { background:#f4f4f4; color:#a9a8aa; }  /* 없음=낮음 동일색 2026-06-17 */
 .dt-row-body { flex:1; min-width:0; }
 .dt-comment { font-size:16px; font-weight:500; line-height:1.6; letter-spacing:0.024px; padding:6px 8px 8px; }
 .dt-srclabel { font-weight:700; font-size:14px; color:#939395; line-height:1.6; padding:4px 8px; }
@@ -276,7 +282,7 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">응시자5</span>
+      <span class="doc-header-name">지원자5</span>
       <span class="doc-header-divider"></span>
       <span class="doc-header-num num">5</span>
     </div>
@@ -291,13 +297,13 @@ p { margin:0; }
     <div class="bp-card">
       <div class="bp-card-left">
         <div class="bp-prof">
-          <span class="bp-prof-job">생산</span>
+          <span class="bp-prof-job">생산팀(화공)</span>
           <div>
-            <div class="bp-prof-name">응시자5</div>
+            <div class="bp-prof-name">지원자5</div>
             <div class="bp-prof-num num">5</div>
           </div>
         </div>
-        <div class="bp-date num">평가일: 2026-06-12</div>
+        <div class="bp-date num">평가일: 2026-06-16</div>
       </div>
       <div class="bp-card-right">
         <div class="bp-score-col">
@@ -305,7 +311,7 @@ p { margin:0; }
           <div class="bp-score-num num">70.32</div>
         </div>
         <div class="bp-badges">
-          <div class="bp-badge">생산직 상위 10%</div>
+          <div class="bp-badge">생산직 상위 30%</div>
           <div class="bp-badge fill">3배수 이내</div>
         </div>
       </div>
@@ -316,12 +322,13 @@ p { margin:0; }
   <div class="summary">
     <div class="summary-card">
       <div class="summary-txt">
-        <div class="summary-headline">직무 역량과 주도성이 직군 내 최상위 수준이며, 협업 경험의 깊이만 면접에서 보완 확인하면 됩니다</div>
+        <div class="summary-headline">직무 역량과 자기 서술이 모두 우수하나 조직 역량은 부분적입니다</div>
         <ul class="summary-bullets">
-          <li>생산기술 인턴의 설비 개선 제안이 실제 채택된 경험</li>
-          <li>본인 주도 서술이 명확하고 경험 완성도가 높음</li>
-          <li>개인 성과 중심 서술로 협업·갈등 관련 근거는 제한적</li>
-          <li>두 문항 모두에서 AI 작성 의심 문장이 탐지됨</li>
+          <li>12년 개근 등 근면성과 책임감 보유</li>
+          <li>두려움 극복하고 먼저 행동하는 주도성</li>
+          <li>지시 전에 도울 일을 먼저 찾아 수행</li>
+          <li>현장 데이터로 문제를 파악·해결하는 능력</li>
+          <li>공정 메커니즘 이해 기반 데이터 해석 역량</li>
         </ul>
       </div>
       <div class="summary-divider"></div>
@@ -333,14 +340,14 @@ p { margin:0; }
             <div class="cbar">
               <div class="cbar-track"></div>
               <div class="cbar-fill" style="width:70.32%;background:rgba(0,117,255,0.45);"></div>
-              <div class="cbar-dot dot-avg" style="left:63.06%;"></div>
-              <div class="cbar-dot dot-cut" style="left:63.26%;"></div>
-              <div class="cbar-dot dot-top" style="left:69.74%;"></div>
+              <div class="cbar-dot dot-avg" style="left:65.10%;"></div>
+              <div class="cbar-dot dot-cut" style="left:68.07%;"></div>
+              <div class="cbar-dot dot-top" style="left:72.98%;"></div>
             </div>
             <div class="cbar-legend">
-              <span class="lg"><span class="sw" style="background:#fff;border:2px solid #ff006b;"></span><span><b>3배수 컷</b> <span class="num">63.26</span></span></span>
-              <span class="lg"><span class="sw" style="background:#7C52F1;"></span><span><b>평균</b> <span class="num">63.06</span></span></span>
-              <span class="lg"><span class="sw" style="background:#041D30;"></span><span><b>상위 10%</b> <span class="num">69.74</span></span></span>
+              <span class="lg"><span class="sw" style="background:#fff;border:2px solid #ff006b;"></span><span><b>3배수 컷</b> <span class="num">68.07</span></span></span>
+              <span class="lg"><span class="sw" style="background:#7C52F1;"></span><span><b>평균</b> <span class="num">65.10</span></span></span>
+              <span class="lg"><span class="sw" style="background:#041D30;"></span><span><b>상위 10%</b> <span class="num">72.98</span></span></span>
             </div>
           </div>
         </div>
@@ -356,40 +363,42 @@ p { margin:0; }
       <div class="card jma">
         <div class="card-title">직무적합도</div>
         <div class="side-head">
-          <span class="metric-score num">80.87</span>
-          <span class="metric-cmp">생산직 평균 대비 <span class="up num">+9.34p</span></span>
+          <span class="metric-score num">82.87</span>
+          <span class="metric-cmp">생산직 평균 대비 <span class="up num">+13.03p</span></span>
         </div>
         <div class="cbar mini">
             <div class="cbar-track"></div>
-            <div class="cbar-fill" style="width:80.87%;background:rgba(0,117,255,0.3);height:14px;"></div>
-            <div class="cbar-dot dot-avg" style="left:71.53%;width:10px;height:10px;"></div>
-            <div class="cbar-dot dot-top" style="left:79.89%;width:10px;height:10px;"></div>
+            <div class="cbar-fill" style="width:82.87%;background:rgba(0,117,255,0.3);height:14px;"></div>
+            <div class="cbar-dot dot-avg" style="left:69.84%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:81.09%;width:10px;height:10px;"></div>
           </div>
           <div class="cbar-legend">
-            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">71.53</span></span></span>
-            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">79.89</span></span></span>
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">69.84</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">81.09</span></span></span>
           </div>
         <div class="grade-cols">
           <div class="gc-left">
             <div class="grow"><span class="lbl">직무경험</span><span class="grade g-high">상</span></div>
-            <div class="grow"><span class="lbl">직무동기</span><span class="grade g-high">상</span></div>
-            <div class="grow"><span class="lbl">직무지식</span><span class="grade g-mid">중</span></div>
+            <div class="grow"><span class="lbl">직무지식</span><span class="grade g-high">상</span></div>
+            <div class="grow"><span class="lbl">직무동기</span><span class="grade g-mid">중</span></div>
           </div>
           <div class="gc-right">
-            <div class="gc-right-head"><span class="lbl">직무역량</span><span class="grade g-high">상</span></div>
+            <div class="gc-right-head"><span class="lbl">직무역량</span><span class="grade g-low">하</span></div>
             <div class="sub-wrap">
-              <div class="srow"><span class="lbl">주도성</span><span class="grade g-high">상</span></div>
-              <div class="srow"><span class="lbl">성취지향</span><span class="grade g-high">상</span></div>
               <div class="srow"><span class="lbl">전략적사고</span><span class="grade g-mid">중</span></div>
               <div class="srow"><span class="lbl">실행력</span><span class="grade g-high">상</span></div>
-              <div class="srow"><span class="lbl">메타인지역량</span><span class="grade g-mid">중</span></div>
-              <div class="srow" style="border-bottom:none;"><span class="lbl">&nbsp;</span></div>
+              <div class="srow"><span class="lbl">문제해결력</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">발전가능성</span><span class="grade g-low">하</span></div>
+              <div class="srow"><span class="lbl">주도성</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">원칙준수</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">성실성</span><span class="grade g-mid">중</span></div>
+              <div class="srow"><span class="lbl">책임감</span><span class="grade g-low">하</span></div>
             </div>
           </div>
         </div>
         <div class="hardskill">
-          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">설비 운전 데이터 분석, 공정 개선 제안</span></div>
-          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">품질관리기사, 위험물산업기사</span></div>
+          <div class="hs-row"><span class="hs-label hs-yes">확인된 하드스킬</span><span class="hs-val">공정 설계·개선, 공정 안정화·품질관리, 생산·제조 실무 경험</span></div>
+          <div class="hs-row"><span class="hs-label hs-no">확인되지 않은 하드스킬</span><span class="hs-val">시멘트 생산 계획·실적 관리, 화공·고분자·신소재 전공 지식, 동종업계 경력, 직무 관련 자격증</span></div>
         </div>
       </div>
 
@@ -399,17 +408,17 @@ p { margin:0; }
           <div class="card-title">조직적합도</div>
           <div class="side-head">
             <span class="metric-score num">35.02</span>
-            <span class="metric-cmp">생산직 평균 대비 <span class="up num">+5.30p</span></span>
+            <span class="metric-cmp">생산직 평균 대비 <span class="down num">−5.58p</span></span>
           </div>
           <div class="cbar mini">
             <div class="cbar-track"></div>
             <div class="cbar-fill" style="width:35.02%;background:rgba(0,117,255,0.3);height:14px;"></div>
-            <div class="cbar-dot dot-avg" style="left:29.72%;width:10px;height:10px;"></div>
-            <div class="cbar-dot dot-top" style="left:55.68%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-avg" style="left:40.60%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-top" style="left:64.48%;width:10px;height:10px;"></div>
           </div>
           <div class="cbar-legend">
-            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">29.72</span></span></span>
-            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">55.68</span></span></span>
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">40.60</span></span></span>
+            <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">64.48</span></span></span>
           </div>
           <div class="grade-wrap">
             <div class="wrow"><span class="lbl">리더십역량</span><span class="grade g-none">-</span></div>
@@ -424,21 +433,21 @@ p { margin:0; }
           <div class="card-title">지원동기</div>
           <div class="side-head">
             <span class="metric-score num">66.87</span>
-            <span class="metric-cmp">생산직 평균 대비 <span class="up num">+5.70p</span></span>
+            <span class="metric-cmp">생산직 평균 대비 <span class="up num">+4.38p</span></span>
           </div>
           <div class="cbar mini">
             <div class="cbar-track"></div>
             <div class="cbar-fill" style="width:66.87%;background:rgba(0,117,255,0.3);height:14px;"></div>
-            <div class="cbar-dot dot-avg" style="left:61.17%;width:10px;height:10px;"></div>
+            <div class="cbar-dot dot-avg" style="left:62.49%;width:10px;height:10px;"></div>
             <div class="cbar-dot dot-top" style="left:69.01%;width:10px;height:10px;"></div>
           </div>
           <div class="cbar-legend">
-            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">61.17</span></span></span>
+            <span class="lg"><span class="sw" style="background:#7C52F1;width:10px;height:10px;"></span><span><b>평균 점수</b> <span class="num">62.49</span></span></span>
             <span class="lg"><span class="sw" style="background:#041D30;width:10px;height:10px;"></span><span><b>상위 10% 점수</b> <span class="num">69.01</span></span></span>
           </div>
           <div class="grade-wrap" style="border-top:1px solid #c6c6c6;">
-            <div class="grow" style="width:100%;"><span class="lbl">회사동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
-            <div class="grow" style="width:100%;border-bottom:none;"><span class="lbl">직무동기</span><span class="grade g-high" style="font-size:14px;">상</span></div>
+            <div class="grow" style="width:100%;"><span class="lbl">직무동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
+            <div class="grow" style="width:100%;border-bottom:none;"><span class="lbl">회사동기</span><span class="grade g-mid" style="font-size:14px;">중</span></div>
           </div>
         </div>
       </div>
@@ -453,16 +462,16 @@ p { margin:0; }
       <div class="card side-card">
         <div class="side-box first">
           <div class="side-head"><span class="side-name">답변적합도</span><span class="side-score num">84.26</span></div>
-          <div class="side-cmt">문항 의도에 정확히 부합하는 답변 구성</div>
+          <div class="side-cmt">문항 의도에 부합하게 답변함</div>
         </div>
         <div class="side-divider"></div>
         <div class="side-box first">
           <div class="side-head"><span class="side-name">구체성</span><span class="side-score num">83.16</span></div>
-          <div class="side-cmt">수치·키워드가 풍부하고 서술 밀도가 높음</div>
+          <div class="side-cmt">수치·공정 맥락 중심의 구체적 서술</div>
         </div>
         <div class="side-divider"></div>
         <div class="side-box first">
-          <div class="side-head"><span class="side-name">본인소개</span><span class="side-score num">93.35</span></div>
+          <div class="side-head"><span class="side-name">본인소개</span><span class="side-score num">83.35</span></div>
           <div class="side-cmt">본인 주어 중심의 명확한 서술</div>
         </div>
       </div>
@@ -490,7 +499,7 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">응시자5</span>
+      <span class="doc-header-name">지원자5</span>
       <span class="doc-header-divider"></span>
       <span class="doc-header-num num">5</span>
     </div>
@@ -511,24 +520,24 @@ p { margin:0; }
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">직무역량</span><div class="vp-name-row"><span class="nm">주도성</span><span class="vp-grade high">상</span></div></div>
-              <span class="vp-badge up">상위 7%</span>
-            </div>
-            <div class="vp-sum">설비 효율 문제를 스스로 발견하고 개선안 제안부터 채택까지 주도한 경험 보유.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">개선안이 처음 반려됐을 때 포기하지 않은 이유와 다음 행동을 질문해보세요.</span></div>
-          </div>
-          <div class="vp-item">
-            <div class="vp-item-top">
               <div class="vp-cat"><span class="cat">직무적합도</span><div class="vp-name-row"><span class="nm">직무경험</span><span class="vp-grade high">상</span></div></div>
               <span class="vp-badge up">상위 8%</span>
             </div>
-            <div class="vp-sum">생산기술팀 인턴 6개월간 설비 운전과 개선 업무를 직접 수행한 경험이 풍부함.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">인턴 업무 중 가장 판단이 어려웠던 상황과 그때의 의사결정 과정을 질문해보세요.</span></div>
+            <div class="vp-sum">주조 인턴 기간 동안 현장 데이터를 수집하고 분석했으며, 기존의 작업 방식에서 개선안을 도입하여 측정 리드타임을 단축하는 성과를 거두었습니다. 직접 담당한 업무와 성과가 명확하게 드러납니다.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">밀링 방식 전환으로 리드타임을 30% 단축한 과정과 데이터 근거를 질문해보세요.</span></div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-item-top">
+              <div class="vp-cat"><span class="cat">직무적합도</span><div class="vp-name-row"><span class="nm">직무지식</span><span class="vp-grade high">상</span></div></div>
+              <span class="vp-badge up">상위 13%</span>
+            </div>
+            <div class="vp-sum">생산/공정 관리 직무에 필요한 공정 메커니즘과 데이터 해석의 중요성을 현장 경험을 통해 학습하고, 실제로 공정 변수와 측정 방법 개선에 이를 적용했습니다.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">편석 분포와 전도도 편차의 관계를 시멘트 품질 변동 분석에 어떻게 적용할지 질문해보세요.</span></div>
           </div>
         </div>
         <div class="vp-bottom good">
           <span class="blbl">확인된 하드스킬</span>
-          <div class="chips">설비 운전 데이터 분석, 공정 개선 제안</div>
+          <div class="chips">공정 설계·개선, 공정 안정화·품질관리, 생산·제조 실무 경험</div>
         </div>
       </div>
 
@@ -541,24 +550,24 @@ p { margin:0; }
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">팀워크역량</span><span class="vp-grade low">하</span></div></div>
-              <span class="vp-badge down">하위 16%</span>
+              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">리더십역량</span><span class="vp-grade none">-</span></div></div>
+              <span class="vp-badge down">하위 8%</span>
             </div>
-            <div class="vp-sum">팀 단위 업무 언급은 있으나 협업 과정보다 개인 성과 중심으로 서술됨.</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">본인의 성과에 동료들이 기여한 부분은 무엇이었는지 질문해보세요.</span></div>
+            <div class="vp-sum">목표나 방향을 제시하고 구성원을 이끈 경험이 나타나지 않았습니다.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">팀이나 과제를 앞장서 이끈 경험이 있는지 질문해보세요.</span></div>
           </div>
           <div class="vp-item">
             <div class="vp-item-top">
-              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">갈등관리역량</span><span class="vp-grade none">-</span></div></div>
+              <div class="vp-cat"><span class="cat">조직적합도</span><div class="vp-name-row"><span class="nm">협상력</span><span class="vp-grade none">-</span></div></div>
               <span class="vp-badge down">하위 10%</span>
             </div>
-            <div class="vp-sum">해당 역량을 확인할 수 없음</div>
-            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">의견이 부딪힌 상대를 설득하지 못했던 경험과 그때의 대처를 질문해보세요.</span></div>
+            <div class="vp-sum">서로 다른 조건이나 이익을 조율한 경험이나 구체적 협상 사례가 제시되지 않았습니다.</div>
+            <div class="vp-tip"><span class="tlbl">면접연계</span><span class="ttxt">협력사·타 부서와 이해관계가 다른 사안을 협의해 합의한 경험을 질문해보세요.</span></div>
           </div>
         </div>
         <div class="vp-bottom warn">
           <span class="blbl">확인되지 않은 하드스킬</span>
-          <div class="chips">품질관리기사, 위험물산업기사</div>
+          <div class="chips">시멘트 생산 계획·실적 관리, 화공·고분자·신소재 전공 지식, 동종업계 경력, 직무 관련 자격증</div>
         </div>
       </div>
 
@@ -568,17 +577,17 @@ p { margin:0; }
     <div class="sec-title-wrap"><div class="sec-title"><h2>문항별 검사 결과</h2></div></div>
     <div class="qtable">
       <div class="qrow">
-        <div class="qleft"><span class="qno">문항 1</span><span class="qtext">우리 회사에 지원한 동기에 대해 서술하시오.</span></div>
+        <div class="qleft"><span class="qno">문항 1</span><span class="qtext">‘지금의 나’를 주제로 한 책이 있다면, 그 책의 제목은 무엇이며 어떤 내용을 담고 있을까요?</span></div>
         <div class="qright">
-          <div class="qmetric"><span>답변적합도</span><span class="v num">82.07</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">36.27%</span></div>
+          <div class="qmetric"><span>답변적합도</span><span class="v num">84.26</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct">탐지</span></div>
         </div>
       </div>
       <div class="qrow">
-        <div class="qleft"><span class="qno">문항 2</span><span class="qtext">직무와 관련된 본인의 경험과 역량을 서술하시오.</span></div>
+        <div class="qleft"><span class="qno">문항 2</span><span class="qtext">지원한 직무를 위해 필요한 역량은 무엇이라고 생각하며, 이 역량을 갖추기 위한 노력이나 자신만의 특별한 경험을 작성해 주세요.</span></div>
         <div class="qright">
-          <div class="qmetric"><span>답변적합도</span><span class="v num">86.44</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">30.85%</span></div>
+          <div class="qmetric"><span>답변적합도</span><span class="v num">84.26</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct">탐지</span></div>
         </div>
       </div>
     </div>
@@ -606,7 +615,7 @@ p { margin:0; }
   <div class="doc-header">
     <span class="doc-header-title">한일시멘트 대졸 신입/경력사원 공개채용 테스트</span>
     <div class="doc-header-info">
-      <span class="doc-header-name">응시자5</span>
+      <span class="doc-header-name">지원자5</span>
       <span class="doc-header-divider"></span>
       <span class="doc-header-num num">5</span>
     </div>
@@ -627,44 +636,54 @@ p { margin:0; }
       <div class="p3-qcard">
         <div class="p3-qhead">
           <span>문항 1</span>
-          <span>우리 회사에 지원한 동기에 대해 서술하시오.</span>
+          <span>‘지금의 나’를 주제로 한 책이 있다면, 그 책의 제목은 무엇이며 어떤 내용을 담고 있을까요?</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">회사동기</span><span class="vp-grade mid">중</span></div><div class="p3-metric-group"><span class="p3-metric-name">직무동기</span><span class="vp-grade high">상</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무적합도</span><span class="p3-metric-score num">82.87</span></div>
         </div>
         <div class="p3-body">
-          <p><span class="hl">학부 2학년 공정 견학에서 한일시멘트 공장의 소성로를 처음 본 순간, 거대한 설비가 정밀하게 제어되는 모습에 압도되어 이 산업에서 일하겠다고 결심했습니다.</span> <span class="hl">그날 이후 화학공학 수업 중에서도 반응공학과 공정제어를 집중적으로 공부했고, 진로를 생산기술 분야로 정했습니다.</span> <span class="hl">졸업 학기에는 시멘트 계열사 생산기술팀에서 6개월 인턴으로 근무하며 분쇄 설비 운전 보조를 맡았습니다.</span> 현장에서 배운 것은 책에 없는 운전의 감각과 데이터를 읽는 눈이었습니다. 제조업의 미래는 결국 사람과 기술의 조화에 달려 있다고 생각합니다. 한일시멘트의 생산 현장에서 제 경험을 이어가며 공정 효율화에 기여하고 싶습니다.</p>
+          <p>제목: 스스로 움직이는 사람이 결국 기회를 잡는다 아버지는 제조업 현장에서 주말까지 쉬지 않고 일하셨습니다. 힘든 내색 없이 묵묵히 자리를 지키는 모습은 말보다 깊이 남는 가르침이었습니다. <span class="hl">그 영향으로 저는 초중고 12년간 단 한 번도 결석하지 않았습니다.</span> <span class="hl">몸이 좋지 않은 날에도 나가자는 선택을 반복했고, 환경을 탓하기 전에 먼저 행동하는 태도가 자연스럽게 몸에 배었습니다.</span> 그러나 사람들 앞에서는 여전히 위축되는 순간이 있었습니다. 전환점은 야구장이었습니다. 모두가 함께 소리치는 응원석에서 혼자 침묵하고 있을 때, 가만히 있는 것이 오히려 흐름을 끊는 일임을 처음 실감했습니다. 그날 이후 주변 시선을 두려워하기보다, 지금 내가 해야 할 행동이 무엇인지를 먼저 찾게 되었습니다. 이 변화가 흔들린 순간도 있었습니다. 첫 인턴 생활 초반, 낯선 환경에서 어떻게 움직여야 할지 몰라 소극적으로 지내던 시기였습니다. 그때 저는 가장 가까운 사회 선배인 아버지께 조언을 구했습니다. "신입이 모르는 걸 묻는 건 부끄러운 게 아니라 강점이다"라는 말이 다시 행동하게 만들었습니다. <span class="hl">이후 지시를 기다리는 대신 매일 사무실을 돌며 도울 일을 먼저 찾아 나섰고, 공정 전반의 이해가 빠르게 높아지며 더 넓은 업무를 맡는 기회로 이어졌습니다.</span> 소극적이던 시기에 조언을 구하기로 한 선택이 인턴 기간 전체를 바꾼 결정이었습니다. 타고난 외향인은 아니지만, 필요한 순간에 먼저 나서는 것이 조직에 기여하는 저만의 방식입니다. 돌아보면 저를 바꾼 것은 거창한 계기보다, 두려움을 감수하고 한 번 더 나서보려 했던 선택들이었습니다. 이 책은 수동적이던 제가 스스로 움직이는 사람으로 변해온 과정을 담고 있습니다. 그리고 그 과정에서 배운 한 가지는, 기회는 기다리는 사람이 아니라 먼저 움직이는 사람에게 온다는 것입니다.</p>
         </div>
         <div class="p3-qfooter">
           <div class="p3-skills">
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
-            <span class="p3-skill-tag">직무경험</span>
+            <span class="p3-skill-tag">성실성,</span>
+            <span class="p3-skill-tag">주도성</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">36.27%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val">탐지</span></div>
         </div>
       </div>
 
       <div class="p3-qcard">
         <div class="p3-qhead">
           <span>문항 2</span>
-          <span>직무와 관련된 본인의 경험과 역량을 서술하시오.</span>
+          <span>지원한 직무를 위해 필요한 역량은 무엇이라고 생각하며, 이 역량을 갖추기 위한 노력이나 자신만의 특별한 경험을 작성해 주세요.</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">직무경험</span><span class="vp-grade high">상</span></div><div class="p3-metric-group"><span class="p3-metric-name">직무지식</span><span class="vp-grade mid">중</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무적합도</span><span class="p3-metric-score num">82.87</span></div><div class="p3-metric-group"><span class="p3-metric-name">조직적합도</span><span class="p3-metric-score num">35.02</span></div><div class="p3-metric-group"><span class="p3-metric-name">지원동기</span><span class="p3-metric-score num">66.87</span></div>
         </div>
         <div class="p3-body">
-          <p><span class="hl">인턴 근무 중 분쇄기 전력 사용량이 시간대별로 크게 출렁이는 것을 발견하고, 원인을 찾아보겠다고 자원했습니다.</span> <span class="hl">한 달간 운전 데이터를 시간대별로 비교한 결과, 원료 투입 편차가 큰 시간대에 전력 손실이 집중된다는 것을 확인했습니다.</span> <span class="hl">투입 속도 상한을 조정하는 안을 제안해 시험 적용했고, 해당 시간대 전력 사용량을 눈에 띄게 줄였습니다.</span> <span class="hl">사실 첫 제안은 운전 안정성 우려로 반려되었지만, 운전원분들의 의견을 들어 보완한 두 번째 제안이 채택되었습니다.</span> <span class="hl">이 과정은 생산기술팀 전체의 정기 개선 활동 중 하나로 진행되었습니다.</span> 스스로 묻고 데이터로 답을 찾는 태도야말로 엔지니어의 기본이라고 믿습니다. 입사 후에도 현장의 작은 비효율을 그냥 지나치지 않는 생산 엔지니어가 되겠습니다.</p>
+          <p><span class="hl">생산엔지니어의 핵심은 현장 데이터를 읽고, 이상 신호를 손실이 확산되기 전에 차단하는 것이라고 생각합니다.</span> <span class="hl">동시에 현장, 협력사, 타 부서 등 다양한 이해관계자와 조율하며 문제를 함께 해결하는 역할이기도 합니다.</span> <span class="hl">현장실습을 통해 이 두 가지가 직무의 본질임을 직접 확인했습니다.</span> <span class="hl">주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</span> <span class="hl">당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</span> <span class="hl">작업 과정에서 과도한 밀링이 제품의 대표성을 훼손시킬 수 있음에도 계속해서 밀링 수치를 기록해야 하는 점에 의문이 생겼습니다.</span> <span class="hl">사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</span> <span class="hl">이 관점에서 데이터를 다시 들여다보니, 대부분의 샘플은 0.5mm 밀링으로 판단이 가능했지만 일부는 1.8mm 깊이까지 진행해야 기준을 충족했습니다.</span> 열간가공 이후에도 깊은 층까지 편석이 분포한 경우는 공정 변수가 누적된 결과였으나, 전수 밀링과 측정은 시간이 과도하게 소요되어 지속하기 어려웠습니다. <span class="hl">기존 기록과 LOT 번호를 대조해 설비별 데이터를 비교 분석한 결과, 얇은 샘플일수록 열 방출이 빠르고 전도도 편차가 민감하게 나타난다는 패턴을 확인했습니다.</span> <span class="hl">이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</span> <span class="hl">그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</span> <span class="hl">이러한 성과는 임직원뿐 아니라 협력사 담당자분들의 협조가 있었기에 가능했습니다.</span> <span class="hl">입사 후에도 공정 이상을 조기에 포착하고, 관계자들과 긴밀히 소통하며 납기와 품질을 동시에 지키는 생산엔지니어가 되겠습니다.</span></p>
         </div>
         <div class="p3-qfooter">
           <div class="p3-skills">
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
-            <span class="p3-skill-tag">주도성,</span>
-            <span class="p3-skill-tag">성취지향,</span>
+            <span class="p3-skill-tag">직무지식,</span>
+            <span class="p3-skill-tag">직무동기,</span>
+            <span class="p3-skill-tag">문제해결력,</span>
+            <span class="p3-skill-tag">직무경험,</span>
+            <span class="p3-skill-tag">원칙준수,</span>
+            <span class="p3-skill-tag">회사동기,</span>
+            <span class="p3-skill-tag">전략적사고,</span>
             <span class="p3-skill-tag">실행력,</span>
-            <span class="p3-skill-tag">메타인지역량,</span>
-            <span class="p3-skill-tag">의사소통역량</span>
+            <span class="p3-skill-tag">발전가능성,</span>
+            <span class="p3-skill-tag">의사소통역량,</span>
+            <span class="p3-skill-tag">주도성,</span>
+            <span class="p3-skill-tag">성실성,</span>
+            <span class="p3-skill-tag">책임감,</span>
+            <span class="p3-skill-tag">팀워크역량</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">30.85%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val">탐지</span></div>
         </div>
       </div>
 
@@ -692,75 +711,62 @@ p { margin:0; }
   <!-- 섹션 제목 (첫 상세 페이지 1회) -->
   <div class="blk dt-sec-title"><h2>BP 평가 상세</h2></div>
 
-  <div class="blk dt-cat"><span class="nm">직무적합도</span><span class="score num">80.87점</span></div>
+  <div class="blk dt-cat"><span class="nm">직무적합도</span><span class="score num">82.87점</span></div>
 
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="nm">직무경험</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">시멘트 계열사 생산기술팀 인턴 6개월 — 설비 운전 보조와 개선 제안 실무 경험.</div>
+      <div class="dt-comment">주조 인턴 기간 동안 현장 데이터를 수집하고 분석했으며, 기존의 작업 방식에서 개선안을 도입하여 측정 리드타임을 단축하는 성과를 거두었습니다. 직접 담당한 업무와 성과가 명확하게 드러납니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>졸업 학기에는 시멘트 계열사 생산기술팀에서 6개월 인턴으로 근무하며 분쇄 설비 운전 보조를 맡았습니다.</li>
-        <li>인턴 근무 중 분쇄기 전력 사용량이 시간대별로 크게 출렁이는 것을 발견하고, 원인을 찾아보겠다고 자원했습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="nm">직무지식</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">공정 견학에서 시작된 관심이 전공 심화와 인턴 지원으로 일관되게 이어짐.</div>
+      <div class="dt-comment">생산/공정 관리 직무에 필요한 공정 메커니즘과 데이터 해석의 중요성을 현장 경험을 통해 학습하고, 실제로 공정 변수와 측정 방법 개선에 이를 적용했습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>학부 2학년 공정 견학에서 한일시멘트 공장의 소성로를 처음 본 순간, 거대한 설비가 정밀하게 제어되는 모습에 압도되어 이 산업에서 일하겠다고 결심했습니다.</li>
-        <li>그날 이후 화학공학 수업 중에서도 반응공학과 공정제어를 집중적으로 공부했고, 진로를 생산기술 분야로 정했습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>작업 과정에서 과도한 밀링이 제품의 대표성을 훼손시킬 수 있음에도 계속해서 밀링 수치를 기록해야 하는 점에 의문이 생겼습니다.</li>
+        <li>사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</li>
+        <li>이 관점에서 데이터를 다시 들여다보니, 대부분의 샘플은 0.5mm 밀링으로 판단이 가능했지만 일부는 1.8mm 깊이까지 진행해야 기준을 충족했습니다.</li>
+        <li>기존 기록과 LOT 번호를 대조해 설비별 데이터를 비교 분석한 결과, 얇은 샘플일수록 열 방출이 빠르고 전도도 편차가 민감하게 나타난다는 패턴을 확인했습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무지식</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">분쇄 공정·열효율 관련 지식 적용 사례 확인, 이론적 깊이는 추가 확인 필요.</div>
+      <div class="dt-comment">현장실습과 인턴십을 통해 생산/공정관리 직무의 본질과 실무 경험을 쌓았으며, 데이터 분석 및 공정 개선 경험이 직무 선호와 연결됨을 설명하고 있습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>한 달간 운전 데이터를 시간대별로 비교한 결과, 원료 투입 편차가 큰 시간대에 전력 손실이 집중된다는 것을 확인했습니다.</li>
+        <li>현장실습을 통해 이 두 가지가 직무의 본질임을 직접 확인했습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+        <li>사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
 
-  <div class="blk dt-subcat"><div class="dt-subcat-head"><span class="nm">직무역량</span><span class="dt-badge high">상</span></div></div>
-
-  <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">주도성</span><span class="dt-badge high">상</span></div>
-    <div class="dt-row-body">
-      <div class="dt-comment">문제를 발견하고 개선안을 먼저 제안해 채택까지 이끈 경험.</div>
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>인턴 근무 중 분쇄기 전력 사용량이 시간대별로 크게 출렁이는 것을 발견하고, 원인을 찾아보겠다고 자원했습니다.</li>
-        <li>투입 속도 상한을 조정하는 안을 제안해 시험 적용했고, 해당 시간대 전력 사용량을 눈에 띄게 줄였습니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">성취지향</span><span class="dt-badge high">상</span></div>
-    <div class="dt-row-body">
-      <div class="dt-comment">전력 사용량 절감이라는 측정 가능한 성과를 달성.</div>
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>투입 속도 상한을 조정하는 안을 제안해 시험 적용했고, 해당 시간대 전력 사용량을 눈에 띄게 줄였습니다.</li>
-      </ul>
-    </div>
-  </div>
+  <div class="blk dt-subcat"><div class="dt-subcat-head"><span class="nm">직무역량</span><span class="dt-badge low">하</span></div></div>
 
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">전략적사고</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">데이터 비교로 개선 우선순위를 정한 접근 확인.</div>
+      <div class="dt-comment">공정 리스크를 조기에 차단하기 위해 주요 변수에 따라 업무 프로세스를 변경하는 등 상황을 분석하고 우선순위를 적용하였으나, 장기적 계획이나 다양한 시나리오에 대한 대응 전략의 구체성은 드러나지 않습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>한 달간 운전 데이터를 시간대별로 비교한 결과, 원료 투입 편차가 큰 시간대에 전력 손실이 집중된다는 것을 확인했습니다.</li>
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
@@ -768,21 +774,87 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">실행력</span><span class="dt-badge high">상</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">제안을 시험 적용과 효과 측정까지 직접 수행.</div>
+      <div class="dt-comment">측정 방식 개선을 즉시 실행에 옮겼으며, 결과적으로 리드타임 단축과 신속한 문제 보고로 연결되어 실행 과정과 완수 경험이 뚜렷합니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>투입 속도 상한을 조정하는 안을 제안해 시험 적용했고, 해당 시간대 전력 사용량을 눈에 띄게 줄였습니다.</li>
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="dt-tag">메타인지역량</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="dt-tag">문제해결력</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">실패한 첫 제안에서 보완점을 찾아 재시도한 경험 서술.</div>
+      <div class="dt-comment">공정 내 조성 편차로 인한 문제 상황을 인식하고, 관련 데이터를 직접 수집 및 분석하여 효율적인 검사 방식으로 개선한 경험을 바탕으로 문제 해결을 시도했습니다. 다만, 장애물 극복 및 결과에 대한 정량적 성과는 일부만 제시되었고 본인의 기여와 성과 전달이 명확하게 분리되어 있지 않습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>사실 첫 제안은 운전 안정성 우려로 반려되었지만, 운전원분들의 의견을 들어 보완한 두 번째 제안이 채택되었습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+        <li>작업 과정에서 과도한 밀링이 제품의 대표성을 훼손시킬 수 있음에도 계속해서 밀링 수치를 기록해야 하는 점에 의문이 생겼습니다.</li>
+        <li>기존 기록과 LOT 번호를 대조해 설비별 데이터를 비교 분석한 결과, 얇은 샘플일수록 열 방출이 빠르고 전도도 편차가 민감하게 나타난다는 패턴을 확인했습니다.</li>
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">발전가능성</span><span class="dt-badge low">하</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">업무 과정에서 선배의 조언을 받아 절차적 학습을 선택했으나, 구체적인 성장 목표나 장기적 자기개발에 대한 실행, 학습 결과를 조직 내에 공식적으로 적용한 사례는 찾기 어렵습니다.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</li>
+        <li>입사 후에도 공정 이상을 조기에 포착하고, 관계자들과 긴밀히 소통하며 납기와 품질을 동시에 지키는 생산엔지니어가 되겠습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">주도성</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">지시를 기다리지 않고 스스로 현장 업무를 찾아 나서며 효율적인 검사 방식을 제안하는 등 업무 수행 범위를 확장한 모습이 보입니다. 단, 변화가 조직 전체로 공식화되거나 혁신적 개선의 객관적 인정에 대한 근거는 드러나지 않습니다.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>이후 지시를 기다리는 대신 매일 사무실을 돌며 도울 일을 먼저 찾아 나섰고, 공정 전반의 이해가 빠르게 높아지며 더 넓은 업무를 맡는 기회로 이어졌습니다.</li>
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">원칙준수</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">공정상 요구되는 측정 및 기록 방식을 따르고, 작업 목적의 취지와 절차를 숙지하며 업무에 임하는 태도가 드러납니다. 다만, 복잡한 압박 상황이나 규정 개선의 주도적 사례는 발견되지 않습니다.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+        <li>작업 과정에서 과도한 밀링이 제품의 대표성을 훼손시킬 수 있음에도 계속해서 밀링 수치를 기록해야 하는 점에 의문이 생겼습니다.</li>
+        <li>사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">성실성</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">장기간 무결석의 경험과 몸이 좋지 않은 상황에서도 책임감 있게 일상을 지속한 태도가 나타나며, 현장에서 맡은 역할도 성실하게 수행하였습니다. 그러나 구체적이고 지속적인 노력의 근거가 충분히 강조되지는 않습니다.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>그 영향으로 저는 초중고 12년간 단 한 번도 결석하지 않았습니다.</li>
+        <li>몸이 좋지 않은 날에도 나가자는 선택을 반복했고, 환경을 탓하기 전에 먼저 행동하는 태도가 자연스럽게 몸에 배었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-row">
+    <div class="dt-row-title"><span class="dt-tag">책임감</span><span class="dt-badge low">하</span></div>
+    <div class="dt-row-body">
+      <div class="dt-comment">공정 측정 결과를 신속히 보고하여 문제를 차단하는 등 기본적인 책임감은 보이지만, 예상치 못한 위기 상황에서 주도적으로 전체 상황을 총괄하거나 조직 시스템 개선에 이른 사례는 확인되지 않습니다.</div>
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
@@ -792,7 +864,7 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">리더십역량</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
+      <div class="dt-comment">목표나 방향을 제시하고 구성원을 이끈 경험이 나타나지 않았습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
@@ -801,7 +873,7 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">협상력</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
+      <div class="dt-comment">서로 다른 조건이나 이익을 조율한 경험이나 구체적 협상 사례가 제시되지 않았습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
@@ -810,7 +882,7 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">갈등관리역량</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
+      <div class="dt-comment">업무 중 갈등이나 의견 대립, 그 상황의 조율 및 통합과 관련된 경험이 드러난 내용이 없습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
@@ -819,10 +891,10 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">팀워크역량</span><span class="dt-badge low">하</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">팀 단위 업무 언급은 있으나 본인 성과 중심으로 협업 과정 서술이 약함.</div>
+      <div class="dt-comment">성과 도출에 타인의 협조가 있었음을 언급하였으나, 본인의 구체적인 협력 과정이나 역할 분담, 팀 내에서의 상호작용에 관한 상세한 설명이 부족합니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>이 과정은 생산기술팀 전체의 정기 개선 활동 중 하나로 진행되었습니다.</li>
+        <li>이러한 성과는 임직원뿐 아니라 협력사 담당자분들의 협조가 있었기에 가능했습니다.</li>
       </ul>
     </div>
   </div>
@@ -830,10 +902,11 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">의사소통역량</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">개선안을 운전원들에게 설명하고 의견을 수렴한 경험 확인.</div>
+      <div class="dt-comment">다양한 이해관계자와 협력하여 문제를 함께 해결하였고, 협력사와의 활발한 소통이 성과에 영향을 미쳤음을 언급하고 있으나, 경청 또는 맞춤형 전달 방식과 효과에 대한 구체적 묘사는 다소 부족합니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>사실 첫 제안은 운전 안정성 우려로 반려되었지만, 운전원분들의 의견을 들어 보완한 두 번째 제안이 채택되었습니다.</li>
+        <li>동시에 현장, 협력사, 타 부서 등 다양한 이해관계자와 조율하며 문제를 함께 해결하는 역할이기도 합니다.</li>
+        <li>이러한 성과는 임직원뿐 아니라 협력사 담당자분들의 협조가 있었기에 가능했습니다.</li>
       </ul>
     </div>
   </div>
@@ -841,7 +914,7 @@ p { margin:0; }
   <div class="blk dt-row">
     <div class="dt-row-title"><span class="dt-tag">대인관계역량</span><span class="dt-badge none">-</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">해당 역량을 확인할 수 없음</div>
+      <div class="dt-comment">조직 내외에서 다양한 사람들과 관계를 형성하거나 유지하기 위한 구체적인 행동이나 경험이 드러나지 않았습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <div class="dt-empty">확인된 자기소개서 근거 문장이 없습니다.</div>
     </div>
@@ -850,24 +923,29 @@ p { margin:0; }
   <div class="blk dt-cat"><span class="nm">지원동기</span><span class="score num">66.87점</span></div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">회사동기</span><span class="dt-badge mid">중</span></div>
+    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">견학 경험과 친환경 설비 투자에 대한 관심 서술, 회사 분석 깊이는 보통.</div>
+      <div class="dt-comment">현장실습과 인턴십을 통해 생산/공정관리 직무의 본질과 실무 경험을 쌓았으며, 데이터 분석 및 공정 개선 경험이 직무 선호와 연결됨을 설명하고 있습니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>학부 2학년 공정 견학에서 한일시멘트 공장의 소성로를 처음 본 순간, 거대한 설비가 정밀하게 제어되는 모습에 압도되어 이 산업에서 일하겠다고 결심했습니다.</li>
+        <li>현장실습을 통해 이 두 가지가 직무의 본질임을 직접 확인했습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+        <li>사수에게 확인한 결과, 이 작업이 단순 합,불합격 판단이 아닌 시편 내부의 편석 분포를 확인하는 공정 분석 과정임을 이해하며, 공정 메커니즘을 파악해야 데이터를 제대로 해석할 수 있다는 점을 체감했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
       </ul>
     </div>
   </div>
 
   <div class="blk dt-row">
-    <div class="dt-row-title"><span class="nm">직무동기</span><span class="dt-badge high">상</span></div>
+    <div class="dt-row-title"><span class="nm">회사동기</span><span class="dt-badge mid">중</span></div>
     <div class="dt-row-body">
-      <div class="dt-comment">공정 효율화에 대한 일관된 관심과 경험 축적이 직무 동기로 명확히 연결됨.</div>
+      <div class="dt-comment">생산엔지니어 직무의 역할에 대해 명확한 이해를 기반으로 지원 동기를 밝히고 있으나, 해당 기업에 특화된 분석이나 본인의 강점을 통한 구체적 기여 방안 제시는 부족합니다.</div>
       <div class="dt-srclabel">자기소개서 내용</div>
       <ul class="dt-list">
-        <li>그날 이후 화학공학 수업 중에서도 반응공학과 공정제어를 집중적으로 공부했고, 진로를 생산기술 분야로 정했습니다.</li>
-        <li>인턴 근무 중 분쇄기 전력 사용량이 시간대별로 크게 출렁이는 것을 발견하고, 원인을 찾아보겠다고 자원했습니다.</li>
+        <li>생산엔지니어의 핵심은 현장 데이터를 읽고, 이상 신호를 손실이 확산되기 전에 차단하는 것이라고 생각합니다.</li>
+        <li>동시에 현장, 협력사, 타 부서 등 다양한 이해관계자와 조율하며 문제를 함께 해결하는 역할이기도 합니다.</li>
+        <li>입사 후에도 공정 이상을 조기에 포착하고, 관계자들과 긴밀히 소통하며 납기와 품질을 동시에 지키는 생산엔지니어가 되겠습니다.</li>
       </ul>
     </div>
   </div>
@@ -880,40 +958,65 @@ p { margin:0; }
 
   <div class="blk dt-commentrow">구체적인 경험, 수치, 키워드가 풍부하게 포함되어 있으며 서술의 밀도가 높음</div>
 
-  <div class="blk dt-cat"><span class="nm">본인소개</span><span class="score num">93.35점</span></div>
+  <div class="blk dt-cat"><span class="nm">본인소개</span><span class="score num">83.35점</span></div>
 
   <div class="blk dt-commentrow">대부분의 문장이 본인 주어로 서술되어 있으며, 자신의 경험과 역할이 명확하게 드러남</div>
 
   <div class="blk dt-hardcat"><span class="nm">하드스킬</span></div>
 
   <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn">설비 운전 데이터 분석</span><span class="dt-detect yes">검출</span></div>
-    <div class="dt-hardrow-body">
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>한 달간 운전 데이터를 시간대별로 비교한 결과, 원료 투입 편차가 큰 시간대에 전력 손실이 집중된다는 것을 확인했습니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn">공정 개선 제안</span><span class="dt-detect yes">검출</span></div>
-    <div class="dt-hardrow-body">
-      <div class="dt-srclabel">자기소개서 내용</div>
-      <ul class="dt-list">
-        <li>투입 속도 상한을 조정하는 안을 제안해 시험 적용했고, 해당 시간대 전력 사용량을 눈에 띄게 줄였습니다.</li>
-        <li>사실 첫 제안은 운전 안정성 우려로 반려되었지만, 운전원분들의 의견을 들어 보완한 두 번째 제안이 채택되었습니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn">품질관리기사</span><span class="dt-detect no">미검출</span></div>
+    <div class="dt-hardrow-title"><span class="skn">시멘트 생산 계획·실적 관리</span><span class="dt-detect no">미검출</span></div>
     <div class="dt-hardrow-empty">관련 근거 문장 없음.</div>
   </div>
 
   <div class="blk dt-hardrow">
-    <div class="dt-hardrow-title"><span class="skn">위험물산업기사</span><span class="dt-detect no">미검출</span></div>
+    <div class="dt-hardrow-title"><span class="skn">공정 설계·개선</span><span class="dt-detect yes">검출</span></div>
+    <div class="dt-hardrow-body">
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>이를 바탕으로 매일 아침 샘플 두께를 먼저 측정하고, 편차 발생 가능성이 높은 샘플을 우선 선별하는 방식으로 전환했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-hardrow">
+    <div class="dt-hardrow-title"><span class="skn">공정 안정화·품질관리</span><span class="dt-detect yes">검출</span></div>
+    <div class="dt-hardrow-body">
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>생산엔지니어의 핵심은 현장 데이터를 읽고, 이상 신호를 손실이 확산되기 전에 차단하는 것이라고 생각합니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>기존 기록과 LOT 번호를 대조해 설비별 데이터를 비교 분석한 결과, 얇은 샘플일수록 열 방출이 빠르고 전도도 편차가 민감하게 나타난다는 패턴을 확인했습니다.</li>
+        <li>그 결과 측정 리드타임을 약 30% 단축했고, 미달 LOT를 신속히 보고해 공정 리스크를 조기에 차단할 수 있었습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-hardrow">
+    <div class="dt-hardrow-title"><span class="skn">화공·고분자·신소재 전공 지식</span><span class="dt-detect no">미검출</span></div>
+    <div class="dt-hardrow-empty">관련 근거 문장 없음.</div>
+  </div>
+
+  <div class="blk dt-hardrow">
+    <div class="dt-hardrow-title"><span class="skn">생산·제조 실무 경험</span><span class="dt-detect yes">검출</span></div>
+    <div class="dt-hardrow-body">
+      <div class="dt-srclabel">자기소개서 내용</div>
+      <ul class="dt-list">
+        <li>현장실습을 통해 이 두 가지가 직무의 본질임을 직접 확인했습니다.</li>
+        <li>주조 인턴 기간 동안, ppm 단위의 조성 편차가 인청동 전기전도도 미달로 이어지고 납품 차질과 재작업으로 확산되는 과정을 직접 겪었습니다.</li>
+        <li>당시 저는 설비별 샘플을 수집하여 밀링 작업과 전기전도도 측정을 병행하며 결과를 기록하는 업무를 담당했습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="blk dt-hardrow">
+    <div class="dt-hardrow-title"><span class="skn">동종업계 경력</span><span class="dt-detect no">미검출</span></div>
+    <div class="dt-hardrow-empty">관련 근거 문장 없음.</div>
+  </div>
+
+  <div class="blk dt-hardrow">
+    <div class="dt-hardrow-title"><span class="skn">직무 관련 자격증</span><span class="dt-detect no">미검출</span></div>
     <div class="dt-hardrow-empty">관련 근거 문장 없음.</div>
   </div>
 
@@ -937,6 +1040,8 @@ p { margin:0; }
 <script>
 // ===== P4+ 상세: 블록 흐름 자동 페이지네이션 =====
 // #dt-source의 블록들을 높이 측정 후 A4(.page)로 자동 분할. 헤더/푸터 복제, 헤더 고아 방지.
+// ⚠️ 웹폰트(Noto Sans KR) 로드 후 측정해야 함 — 폴백 폰트로 측정 시 폰트 적용 후 콘텐츠가 늘어나 페이지 넘침(CH: 폰트 타이밍 버그 수정 2026-06-17)
+function __runDetailLayout(){
 (function paginateDetail(){
   const source = document.getElementById('dt-source');
   if (!source) return;
@@ -1032,17 +1137,21 @@ p { margin:0; }
     if (el) el.textContent = (i + 1) + '/' + total;
   });
 })();
+}
+// 폰트 로드 완료 후 페이지네이션+페이지번호 실행 (폴백 폰트 측정으로 인한 넘침 방지)
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(__runDetailLayout); }
+else { __runDetailLayout(); }
 
 const ctx = document.getElementById('radarChart');
 new Chart(ctx, {
   type: 'radar',
   data: {
-    labels: [['직무적합도','80.87'], ['조직적합도','35.02'], ['지원동기','66.87'], ['답변완성도','84.26'], ['구체성','83.16'], ['자기소개','93.35']],
+    labels: [['직무적합도','82.87'], ['조직적합도','35.02'], ['지원동기','66.87'], ['답변적합도','84.26'], ['구체성','83.16'], ['본인소개','83.35']],
     datasets: [
-      { label:'직무별 평균', data:[71.53,29.72,61.17,79.41,75.54,79.11],  /* SDS r25 범례 명칭 — 사용자 승인 예외(CH-013) */
+      { label:'직무별 평균', data:[69.84,40.6,62.49,79.41,75.54,79.51],  /* SDS r25 범례 명칭 — 사용자 승인 예외(CH-013) */
         fill:true, backgroundColor:'rgba(150,164,177,0.30)', borderColor:'#96A4B1',
         borderWidth:1, pointRadius:0, order:2 },
-      { label:'지원자', data:[80.87,35.02,66.87,84.26,83.16,93.35],
+      { label:'지원자', data:[82.87,35.02,66.87,84.26,83.16,83.35],
         fill:true, backgroundColor:'rgba(0,117,255,0.28)', borderColor:'#2EA6FF',
         borderWidth:1.5, pointRadius:0, order:1 }
     ]

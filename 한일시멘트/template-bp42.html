@@ -41,17 +41,18 @@ p { margin:0; }
 .bp-badges { display:flex; flex-direction:column; gap:8px; }
 .bp-badge { border:1px solid #0075ff; border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; color:#0075ff; text-align:center; white-space:nowrap; }
 .bp-badge.fill { background:#e0f3ff; width:132px; }
+.bp-badge.fill.over { background:rgba(215,93,0,0.1); border-color:#d75d00; color:#d75d00; }  /* 3배수 초과 — 미확인 하드스킬색(#d75d00) */
 
 /* ===== summary ===== */
 .summary { background:#e3e3e3; padding:24px; border-radius:0 0 8px 8px; flex-shrink:0; }
-.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:20px; }
+.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }
 .summary-txt { display:flex; align-items:flex-start; justify-content:space-between; padding:4px 0; }
-.summary-headline { font-weight:700; font-size:18px; line-height:2; width:460px; flex-shrink:0; }  /* 폭 제한 — 불릿과의 여백 확보(CH-017) */
-.summary-bullets { font-weight:400; font-size:12px; width:368px; margin:0; padding-left:21px; }  /* Figma 456:1253 h76=12px·1.6·4줄 */
-.summary-bullets li { line-height:1.6; }
+.summary-headline { font-weight:700; font-size:18px; line-height:1.3; width:470px; flex-shrink:0; }  /* 행간 2→1.3·폭 460→300px (2026-06-16 PAC 2열 수용) */
+.summary-bullets { font-weight:400; font-size:12px; width:395px; margin:0; padding-left:18px; }  /* PAC 불릿 1열·12px (응시자별 4~5개 요약) */
+.summary-bullets li { line-height:1.4; margin-bottom:1px; }
 .summary-divider { height:1px; background:#e3e3e3; }
 .summary-pos-title { font-weight:700; font-size:16px; letter-spacing:0.024px; }
-.summary-pos { display:flex; align-items:center; gap:24px; margin-top:16px; }
+.summary-pos { display:flex; align-items:center; gap:24px; margin-top:8px; }
 .summary-pos .cbar-legend { line-height:1; }   /* Figma 라벨 h14 — 행간 압축으로 영역 294px 수납 */
 .summary-pos-score { font-weight:700; font-size:32px; line-height:1.25; }  /* 행높이를 바 영역(42.5px) 이하로 — 서머리 294px 수납 */
 .summary-pos-bars { flex:1; display:flex; flex-direction:column; gap:12px; }
@@ -81,12 +82,12 @@ p { margin:0; }
 .up { color:#0075ff; } .down { color:#d75d00; }
 
 /* grade chips */
-.grade.g-none { background:#e9e9ea; color:#a9a8aa; }  /* 등급 없음(판단불가) — Figma - 칩 */
+.grade.g-none { background:#f4f4f4; color:#7d7d80; }  /* 없음(판단불가)=낮음과 동일색 통일 2026-06-17 */
 .grade { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
 .g-high { background:rgba(0,117,255,0.6); color:#fff; }
 .g-mid { background:#e9e9ea; color:#041D30; }
 .g-low { background:#f4f4f4; color:#7d7d80; }
-.g-none { background:#e9e9ea; color:#a9a8aa; }
+.g-none { background:#f4f4f4; color:#7d7d80; }  /* 없음=낮음 동일색 2026-06-17 */
 
 /* 직무적합도 grade table */
 .jma { height:444px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }  /* Figma 456:1283 카드 444px 고정 */
@@ -186,15 +187,16 @@ p { margin:0; }
 .vp-bottom.warn .blbl { color:#d75d00; }
 .vp-bottom .chips { font-size:14px; color:#041d30; padding:4px 0; }
 .qtable { width:100%; border-top:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; flex-shrink:0; }
-.qrow { height:48px; display:flex; align-items:center; padding:8px 24px; border-bottom:1px solid #e3e3e3; }
+.qrow { min-height:48px; display:flex; align-items:center; gap:16px; padding:10px 24px; border-bottom:1px solid #e3e3e3; }
 .qrow:last-child { border-bottom:none; }
-.qleft { flex:0 0 440px; display:flex; align-items:center; gap:12px; font-size:16px; }
-.qleft .qno { font-weight:700; }
-.qleft .qtext { font-weight:500; }
-.qright { flex:1; display:flex; align-items:center; }
-.qmetric { flex:1; font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; }
+.qleft { flex:1 1 auto; min-width:0; display:flex; align-items:baseline; gap:12px; font-size:16px; }
+.qleft .qno { font-weight:700; flex-shrink:0; white-space:nowrap; }
+.qleft .qtext { font-weight:500; line-height:1.45; }
+.qright { flex:0 0 auto; display:flex; align-items:center; gap:48px; }
+.qmetric { font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; white-space:nowrap; }
 .qmetric .v { letter-spacing:-0.16px; }
 .qmetric .pct { color:#f09000; }
+.qmetric .pct.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P3: 자기소개서 분석 ===== */
 .p3-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -206,19 +208,23 @@ p { margin:0; }
 .p3-legend-hl { background:rgba(0,117,255,0.1); font-size:16px; color:#041D30; padding:2px 6px; white-space:nowrap; }
 .p3-cards-wrap { display:flex; flex-direction:column; gap:24px; width:100%; }
 .p3-qcard { border:1px solid #c6c6c6; border-radius:8px; overflow:hidden; flex-shrink:0; }
-.p3-qhead { background:#f4f4f4; height:52px; display:flex; align-items:center; gap:12px; padding:8px 24px; font-weight:700; font-size:18px; color:#041D30; white-space:nowrap; }
+.p3-qhead { background:#f4f4f4; min-height:52px; display:flex; align-items:center; gap:12px; padding:10px 24px; font-weight:700; font-size:18px; line-height:1.4; color:#041D30; }
+.p3-qhead span:first-child { flex-shrink:0; }  /* 문항 N 줄바꿈 방지 */
 .p3-metric { display:flex; align-items:center; gap:12px; padding:10px 24px; }
 .p3-metric-group { display:flex; align-items:center; gap:8px; }
 .p3-metric-name { font-weight:700; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.p3-metric-score { font-weight:400; font-size:16px; letter-spacing:0.024px; color:#041D30; }
 .p3-body { border-top:1px solid #e3e3e3; border-bottom:1px solid #e3e3e3; padding:12px 24px; font-size:16px; font-weight:400; line-height:1.6; letter-spacing:-0.16px; color:#041D30; }
 .hl { background:rgba(0,117,255,0.1); }
-.p3-qfooter { display:flex; align-items:center; justify-content:space-between; padding:8px 24px; }
-.p3-skills { display:flex; gap:4px; align-items:center; }
+.p3-qfooter { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:8px 24px; }
+.p3-skills { display:flex; gap:4px 6px; align-items:center; flex-wrap:wrap; min-width:0; }
 .p3-skills-label { font-weight:700; font-size:14px; color:#7d7d80; white-space:nowrap; }
-.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; }
+.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; white-space:nowrap; }
+.p3-ai-rate { white-space:nowrap; flex-shrink:0; }
 .p3-ai-rate { display:flex; gap:4px; align-items:center; font-size:16px; letter-spacing:-0.16px; white-space:nowrap; font-weight:400; }
 .p3-ai-lbl { color:#041D30; }
 .p3-ai-val { color:#f09000; min-width:35px; text-align:right; }
+.p3-ai-val.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P4+ : BP 평가 상세 (자동 페이지네이션) ===== */
 .dt-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -237,7 +243,7 @@ p { margin:0; }
 .dt-badge.high { background:rgba(0,117,255,0.6); color:#fff; }
 .dt-badge.mid { background:#e9e9ea; color:#041d30; }
 .dt-badge.low { background:#f4f4f4; color:#a9a8aa; }
-.dt-badge.none { background:#e9e9ea; color:#a9a8aa; }
+.dt-badge.none { background:#f4f4f4; color:#a9a8aa; }  /* 없음=낮음 동일색 2026-06-17 */
 .dt-row-body { flex:1; min-width:0; }
 .dt-comment { font-size:16px; font-weight:500; line-height:1.6; letter-spacing:0.024px; padding:6px 8px 8px; }
 .dt-srclabel { font-weight:700; font-size:14px; color:#939395; line-height:1.6; padding:4px 8px; }
@@ -543,6 +549,8 @@ p { margin:0; }
 <script>
 // ===== P4+ 상세: 블록 흐름 자동 페이지네이션 =====
 // #dt-source의 블록들을 높이 측정 후 A4(.page)로 자동 분할. 헤더/푸터 복제, 헤더 고아 방지.
+// ⚠️ 웹폰트(Noto Sans KR) 로드 후 측정해야 함 — 폴백 폰트로 측정 시 폰트 적용 후 콘텐츠가 늘어나 페이지 넘침(CH: 폰트 타이밍 버그 수정 2026-06-17)
+function __runDetailLayout(){
 (function paginateDetail(){
   const source = document.getElementById('dt-source');
   if (!source) return;
@@ -638,6 +646,10 @@ p { margin:0; }
     if (el) el.textContent = (i + 1) + '/' + total;
   });
 })();
+}
+// 폰트 로드 완료 후 페이지네이션+페이지번호 실행 (폴백 폰트 측정으로 인한 넘침 방지)
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(__runDetailLayout); }
+else { __runDetailLayout(); }
 
 const ctx = document.getElementById('radarChart');
 new Chart(ctx, {

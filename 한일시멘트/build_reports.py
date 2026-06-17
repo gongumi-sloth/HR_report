@@ -9,7 +9,7 @@ import json, glob, os, sys
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(BASE, 'template-bp42.html')
-OUT_DATE = '20260613'
+OUT_DATE = '20260616'
 
 # ── §9-5-⑦ 룰 베이스 텍스트 (참고-SDS-매트릭별근거내용.md) ──
 RULE_TEXTS = {
@@ -44,7 +44,7 @@ GRADE_DT   = {'상': ('high', '상'), '중': ('mid', '중'), '하': ('low', '하
 # factor → 대분류 (P2 vp-cat 표기)
 FACTOR_AREA = {
     '직무경험': '직무적합도', '직무지식': '직무적합도',
-    '주도성': '직무역량', '성취지향': '직무역량', '전략적사고': '직무역량', '실행력': '직무역량', '메타인지역량': '직무역량',
+    '전략적사고': '직무역량', '실행력': '직무역량', '문제해결력': '직무역량', '발전가능성': '직무역량', '주도성': '직무역량', '원칙준수': '직무역량', '성실성': '직무역량', '책임감': '직무역량',
     '리더십역량': '조직적합도', '협상력': '조직적합도', '갈등관리역량': '조직적합도',
     '팀워크역량': '조직적합도', '의사소통역량': '조직적합도', '대인관계역량': '조직적합도',
     '회사동기': '지원동기', '직무동기': '지원동기',
@@ -75,10 +75,10 @@ def validate_lengths(d):
     if len(d['summary']['headline']) > 54:
         errs.append(f"headline {len(d['summary']['headline'])}자 > 54 (헤드라인 폭 460px에서 2줄 초과, CH-017)")
     for i, b in enumerate(d['summary']['bullets']):
-        if len(b) > 29:
-            errs.append(f"불릿{i+1} {len(b)}자 > 29 (1줄 초과): {b}")
-    if len(d['summary']['bullets']) > 4:
-        errs.append(f"불릿 {len(d['summary']['bullets'])}개 > 4")
+        if len(b) > 60:                       # PAC 불릿 그대로 수용(2026-06-16). 실제 넘침은 렌더 overflow로 검증
+            errs.append(f"불릿{i+1} {len(b)}자 > 60: {b}")
+    if len(d['summary']['bullets']) > 10:      # PAC 응시자별 5~9개 → 상한 10
+        errs.append(f"불릿 {len(d['summary']['bullets'])}개 > 10")
     if errs:
         raise RuntimeError(f"{d['meta']['candidate']} §9-8 길이 제약 위반:\n  " + "\n  ".join(errs))
 
@@ -101,7 +101,10 @@ def build(d):
     badges = [f'          <div class="bp-badge">{group} 상위 {bm["percentile"]}%</div>']
     has_cut = m['pass_badge'].get('mode') is not None
     if has_cut:
-        badges.append(f'          <div class="bp-badge fill">{m["pass_badge"]["label"]}</div>')
+        lbl = m['pass_badge']['label']
+        # 긍정(이내·권장)=파랑 fill / 부정(초과·검토 필요)=주황 fill.over (§9-5-①, #d75d00=미확인 하드스킬색)
+        fill_cls = 'fill' if ('이내' in lbl or '권장' in lbl) else 'fill over'
+        badges.append(f'          <div class="bp-badge {fill_cls}">{lbl}</div>')
     T['BADGES_HTML'] = '\n'.join(badges)
 
     # ── 서머리 ──
@@ -182,9 +185,9 @@ def build(d):
         </div>''')
     T['SIDE_BOXES'] = '\n' + '\n        <div class="side-divider"></div>\n'.join(boxes) + '\n      '
 
-    # ── 레이더 (축 순서·명칭은 Figma 고정: 답변완성도/자기소개) ──
+    # ── 레이더 (축 명칭은 타 페이지(완성도 박스·상세)와 동일하게 통일: 답변적합도/본인소개, 2026-06-17) ──
     axes = [('직무적합도', sc['직무적합도']), ('조직적합도', sc['조직적합도']), ('지원동기', sc['지원동기']),
-            ('답변완성도', sc['답변적합도']), ('구체성', sc['구체성']), ('자기소개', sc['본인소개'])]
+            ('답변적합도', sc['답변적합도']), ('구체성', sc['구체성']), ('본인소개', sc['본인소개'])]
     T['RADAR_LABELS'] = '[' + ', '.join(f"['{n}','{f2(v)}']" for n, v in axes) + ']'
     T['RADAR_AVG'] = '[' + ','.join(str(v) for v in bm['radar_avg']) + ']'
     T['RADAR_USER'] = '[' + ','.join(f2(v) for n, v in axes) + ']'
@@ -212,7 +215,7 @@ def build(d):
         <div class="qleft"><span class="qno">문항 {q['no']}</span><span class="qtext">{q['title']}</span></div>
         <div class="qright">
           <div class="qmetric"><span>답변적합도</span><span class="v num">{f2(q['answer_fit'])}</span></div>
-          <div class="qmetric"><span>AI 작성률</span><span class="pct num">{f2(q['ai_rate'])}%</span></div>
+          <div class="qmetric"><span>AI 작성률</span><span class="pct{'' if q['gpk']=='탐지' else ' nd'}">{q['gpk']}</span></div>
         </div>
       </div>''')
     T['QROWS'] = '\n' + '\n'.join(qrows) + '\n    '
@@ -220,7 +223,7 @@ def build(d):
     # ── P3 자기소개서 분석 ──
     qcards = []
     for q in d['essay']['questions']:
-        groups = ''.join(f'<div class="p3-metric-group"><span class="p3-metric-name">{mm["name"]}</span><span class="vp-grade {GRADE_VP[mm["grade"]][0]}">{GRADE_VP[mm["grade"]][1]}</span></div>'
+        groups = ''.join(f'<div class="p3-metric-group"><span class="p3-metric-name">{mm["name"]}</span><span class="p3-metric-score num">{f2(mm["score"])}</span></div>'
                          for mm in q['detected']['metrics'])
         parts = []
         for s in q['sentences']:
@@ -247,7 +250,7 @@ def build(d):
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
             {tags}
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">{f2(q['ai_rate'])}%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val{'' if q['gpk']=='탐지' else ' nd'}">{q['gpk']}</span></div>
         </div>
       </div>''')
     T['P3_QCARDS'] = '\n\n' + '\n\n'.join(qcards) + '\n\n    '

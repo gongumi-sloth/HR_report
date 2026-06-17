@@ -41,17 +41,18 @@ p { margin:0; }
 .bp-badges { display:flex; flex-direction:column; gap:8px; }
 .bp-badge { border:1px solid #0075ff; border-radius:17px; padding:4px 12px; font-weight:700; font-size:14px; color:#0075ff; text-align:center; white-space:nowrap; }
 .bp-badge.fill { background:#e0f3ff; width:132px; }
+.bp-badge.fill.over { background:rgba(215,93,0,0.1); border-color:#d75d00; color:#d75d00; }  /* 3배수 초과 — 미확인 하드스킬색(#d75d00) */
 
 /* ===== summary ===== */
 .summary { background:#e3e3e3; padding:24px; border-radius:0 0 8px 8px; flex-shrink:0; }
-.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:20px; }
+.summary-card { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }
 .summary-txt { display:flex; align-items:flex-start; justify-content:space-between; padding:4px 0; }
-.summary-headline { font-weight:700; font-size:18px; line-height:2; width:460px; flex-shrink:0; }  /* 폭 제한 — 불릿과의 여백 확보(CH-017) */
-.summary-bullets { font-weight:400; font-size:12px; width:368px; margin:0; padding-left:21px; }  /* Figma 456:1253 h76=12px·1.6·4줄 */
-.summary-bullets li { line-height:1.6; }
+.summary-headline { font-weight:700; font-size:18px; line-height:1.3; width:470px; flex-shrink:0; }  /* 행간 2→1.3·폭 460→300px (2026-06-16 PAC 2열 수용) */
+.summary-bullets { font-weight:400; font-size:12px; width:395px; margin:0; padding-left:18px; }  /* PAC 불릿 1열·12px (응시자별 4~5개 요약) */
+.summary-bullets li { line-height:1.4; margin-bottom:1px; }
 .summary-divider { height:1px; background:#e3e3e3; }
 .summary-pos-title { font-weight:700; font-size:16px; letter-spacing:0.024px; }
-.summary-pos { display:flex; align-items:center; gap:24px; margin-top:16px; }
+.summary-pos { display:flex; align-items:center; gap:24px; margin-top:8px; }
 .summary-pos .cbar-legend { line-height:1; }   /* Figma 라벨 h14 — 행간 압축으로 영역 294px 수납 */
 .summary-pos-score { font-weight:700; font-size:32px; line-height:1.25; }  /* 행높이를 바 영역(42.5px) 이하로 — 서머리 294px 수납 */
 .summary-pos-bars { flex:1; display:flex; flex-direction:column; gap:12px; }
@@ -185,15 +186,16 @@ p { margin:0; }
 .vp-bottom.warn .blbl { color:#d75d00; }
 .vp-bottom .chips { font-size:14px; color:#041d30; padding:4px 0; }
 .qtable { width:100%; border-top:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; flex-shrink:0; }
-.qrow { height:48px; display:flex; align-items:center; padding:8px 24px; border-bottom:1px solid #e3e3e3; }
+.qrow { min-height:48px; display:flex; align-items:center; gap:16px; padding:10px 24px; border-bottom:1px solid #e3e3e3; }
 .qrow:last-child { border-bottom:none; }
-.qleft { flex:0 0 440px; display:flex; align-items:center; gap:12px; font-size:16px; }
-.qleft .qno { font-weight:700; }
-.qleft .qtext { font-weight:500; }
-.qright { flex:1; display:flex; align-items:center; }
-.qmetric { flex:1; font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; }
+.qleft { flex:1 1 auto; min-width:0; display:flex; align-items:baseline; gap:12px; font-size:16px; }
+.qleft .qno { font-weight:700; flex-shrink:0; white-space:nowrap; }
+.qleft .qtext { font-weight:500; line-height:1.45; }
+.qright { flex:0 0 auto; display:flex; align-items:center; gap:48px; }
+.qmetric { font-size:16px; color:#041d30; display:flex; gap:6px; align-items:center; white-space:nowrap; }
 .qmetric .v { letter-spacing:-0.16px; }
 .qmetric .pct { color:#f09000; }
+.qmetric .pct.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P3: 자기소개서 분석 ===== */
 .p3-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -205,19 +207,22 @@ p { margin:0; }
 .p3-legend-hl { background:rgba(0,117,255,0.1); font-size:16px; color:#041D30; padding:2px 6px; white-space:nowrap; }
 .p3-cards-wrap { display:flex; flex-direction:column; gap:24px; width:100%; }
 .p3-qcard { border:1px solid #c6c6c6; border-radius:8px; overflow:hidden; flex-shrink:0; }
-.p3-qhead { background:#f4f4f4; height:52px; display:flex; align-items:center; gap:12px; padding:8px 24px; font-weight:700; font-size:18px; color:#041D30; white-space:nowrap; }
+.p3-qhead { background:#f4f4f4; min-height:52px; display:flex; align-items:center; gap:12px; padding:10px 24px; font-weight:700; font-size:18px; line-height:1.4; color:#041D30; }
+.p3-qhead span:first-child { flex-shrink:0; }  /* 문항 N 줄바꿈 방지 */
 .p3-metric { display:flex; align-items:center; gap:12px; padding:10px 24px; }
 .p3-metric-group { display:flex; align-items:center; gap:8px; }
 .p3-metric-name { font-weight:700; font-size:16px; letter-spacing:0.024px; color:#041D30; }
+.p3-metric-score { font-weight:400; font-size:16px; letter-spacing:0.024px; color:#041D30; }
 .p3-body { border-top:1px solid #e3e3e3; border-bottom:1px solid #e3e3e3; padding:12px 24px; font-size:16px; font-weight:400; line-height:1.6; letter-spacing:-0.16px; color:#041D30; }
 .hl { background:rgba(0,117,255,0.1); }
-.p3-qfooter { display:flex; align-items:center; justify-content:space-between; padding:8px 24px; }
-.p3-skills { display:flex; gap:4px; align-items:center; }
+.p3-qfooter { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:8px 24px; }
+.p3-skills { display:flex; gap:4px 6px; align-items:center; flex-wrap:wrap; min-width:0; }
 .p3-skills-label { font-weight:700; font-size:14px; color:#7d7d80; white-space:nowrap; }
-.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; }
-.p3-ai-rate { display:flex; gap:4px; align-items:center; font-size:16px; letter-spacing:-0.16px; white-space:nowrap; font-weight:400; }
+.p3-skill-tag { font-weight:700; font-size:14px; color:#041D30; white-space:nowrap; }
+.p3-ai-rate { display:flex; gap:4px; align-items:center; font-size:16px; letter-spacing:-0.16px; white-space:nowrap; font-weight:400; flex-shrink:0; }
 .p3-ai-lbl { color:#041D30; }
 .p3-ai-val { color:#f09000; min-width:35px; text-align:right; }
+.p3-ai-val.nd { color:#7d7d80; }  /* GPK 미탐지 */
 
 /* ===== P4+ : BP 평가 상세 (자동 페이지네이션) ===== */
 .dt-wrap { flex:1; display:flex; flex-direction:column; padding:24px; overflow:hidden; }
@@ -645,8 +650,8 @@ p { margin:0; }
           <span>지원 동기가 무엇인가요?</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">직무동기</span><span class="vp-grade high">상</span></div>
-          <div class="p3-metric-group"><span class="p3-metric-name">회사동기</span><span class="vp-grade mid">중</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무적합도</span><span class="p3-metric-score num">65.92</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">지원동기</span><span class="p3-metric-score num">62.77</span></div>
         </div>
         <div class="p3-body">
           <p><span class="hl">한일시멘트의 영업 직무는 시멘트·레미콘 등 건자재 제품의 B2B 영업과 거래처 개발, 그리고 고객 니즈 분석 및 수주 관리를 담당하는 것으로 알고 있습니다.</span> 저는 경영학을 전공하고 마케팅·영업전략을 세부적으로 연구했습니다. 학부 시절부터 <span class="hl">산업재 영업 분야에 관심을 두고 건설 시장 동향 분석, 유통채널 최적화 프로젝트에 능동적으로 참여했습니다.</span> <span class="hl">영업 전문가를 꿈꾸면서 고객과의 신뢰 관계 형성이 핵심이라고 생각했습니다.</span> 졸업한 선배들과 이야기를 나눌 때 이론과 실무 사이의 간극이 크다는 것과 현장에서 고객을 직접 만나며 신뢰를 쌓는 것이 중요하다는 이야기를 들었습니다. 그래서 저는 기회가 생길 때마다 현장 경험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 영업 현장에서 근무했습니다. <span class="hl">고객 경험은 돈을 주고도 살 수 없는 소중한 자산이라는 것을 깨달았고,</span> 무엇보다도 현장에서 고객의 신뢰를 한 번 잃으면 회복하기 어렵다는 점을 체감했습니다. 졸업 준비로 바쁜 때에도 건자재 전문 업체의 영업팀에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 <span class="hl">영업 직무를 경험하겠다는 열정</span>이 있었기 때문입니다. 인턴 과정을 거치면서 CRM, 제안서 작성, 거래처 관리 등 다양한 역량의 필요성을 느꼈고 관련 자격시험을 준비하며 실무에 적용해보기도 했습니다.</p>
@@ -654,11 +659,13 @@ p { margin:0; }
         <div class="p3-qfooter">
           <div class="p3-skills">
             <span class="p3-skills-label">자기소개서에서 확인한 지원자 역량:</span>
-            <span class="p3-skill-tag">직무지식,</span>
             <span class="p3-skill-tag">직무경험,</span>
+            <span class="p3-skill-tag">직무지식,</span>
+            <span class="p3-skill-tag">직무동기,</span>
+            <span class="p3-skill-tag">회사동기,</span>
             <span class="p3-skill-tag">주도성</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">32.00%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val">탐지</span></div>
         </div>
       </div>
 
@@ -669,7 +676,7 @@ p { margin:0; }
           <span>성격의 장단점에 대해 서술하세요.</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">직무역량</span><span class="vp-grade low">하</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무적합도</span><span class="p3-metric-score num">65.92</span></div>
         </div>
         <div class="p3-body">
           <p>저는 어릴 때부터 다양한 분야에 관심을 두고 즐겨왔습니다. 흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다. 영업 인턴을 수행하며 제품 지식뿐만 아니라 <span class="hl">커뮤니케이션, 협상, 고객 심리 등 다양한 역량이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</span> 그래서 영업·마케팅과 관련된 유통, 심리, 재무 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다. 다양한 분야를 공부하는 것이 학업이나 실무에 도움이 되기도 하지만, <span class="hl">모두 높은 수준까지 공부하기는 불가능했습니다.</span> 그래서 어떤 분야의 전문가가 되지 못한 것에 아쉬움을 느끼기도 했습니다. <span class="hl">이러한 점을 보완하기 위해 저는 전공인 경영학만큼은 전문가가 되어야겠다고 생각했고,</span> 지금도 전공 강의뿐만 아니라 산업별 리포트와 연구 보고서 등을 꾸준히 찾아보고 최신 시장 동향을 이해하는 데 노력하고 있습니다.</p>
@@ -680,7 +687,7 @@ p { margin:0; }
             <span class="p3-skill-tag">성취지향,</span>
             <span class="p3-skill-tag">주도성</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">32.00%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val">탐지</span></div>
         </div>
       </div>
 
@@ -691,7 +698,7 @@ p { margin:0; }
           <span>자기소개를 해 주세요.</span>
         </div>
         <div class="p3-metric">
-          <div class="p3-metric-group"><span class="p3-metric-name">본인소개</span><span class="vp-grade low">하</span></div>
+          <div class="p3-metric-group"><span class="p3-metric-name">직무적합도</span><span class="p3-metric-score num">65.92</span></div>
         </div>
         <div class="p3-body">
           <p><span class="hl">저의 꿈은 한일시멘트에서 영업 전문가로 일하며 국내 건자재 시장에서 신뢰받는 B2B 파트너가 되고,</span> 나아가서 전략 영업의 전문가로서 모든 부분을 총괄하여 영업 채널을 설계해 보는 것입니다. <span class="hl">학부 프로젝트와 건자재 관련 업체에서 인턴으로 근무하며 거래처 개발 및 수주 프로젝트를 다수 경험했습니다.</span> 프로젝트에 참여하면서 고객 제안서 작성이나 계약 협상 등 다양한 실무 역량을 습득하게 되었고, 이 분야의 전문가가 되고 싶다는 목표가 생겼습니다. 또한 거래처를 직접 발굴하고 <span class="hl">계약을 성사시키는 선배님들의 모습을 보고 크게 감명받았습니다.</span> 한일시멘트에서 영업 직무로 일하게 된다면 다양한 프로젝트에 적극 참여하면서 전공으로 배운 경영 지식을 현업에 적용하는 노하우를 익히고, 건설·자재 산업 전반에 걸친 시장 이해를 구축함으로써 고객이 가장 신뢰하는 영업 전문가가 되겠습니다.</p>
@@ -702,7 +709,7 @@ p { margin:0; }
             <span class="p3-skill-tag">직무경험,</span>
             <span class="p3-skill-tag">직무지식</span>
           </div>
-          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val num">0.00%</span></div>
+          <div class="p3-ai-rate"><span class="p3-ai-lbl">AI 작성률</span><span class="p3-ai-val nd">미탐지</span></div>
         </div>
       </div>
 

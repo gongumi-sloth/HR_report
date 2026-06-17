@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR 품질검토 - 신규 검사요청서 작성</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    color: #041D30;
+    background: #f5f6f8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ───── SIDEBAR ───── */
+  .sidebar {
+    width: 172px;
+    min-width: 172px;
+    background: #fff;
+    border-right: 1px solid #E3E3E3;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .sidebar-logo .logo-prism {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0075FF;
+    letter-spacing: -0.3px;
+    line-height: 1;
+  }
+
+  .sidebar-logo .logo-x {
+    font-size: 11px;
+    font-weight: 400;
+    color: #7D7D80;
+    margin: 2px 0;
+  }
+
+  .sidebar-logo .logo-monster {
+    font-size: 13px;
+    font-weight: 700;
+    color: #041D30;
+    letter-spacing: -0.2px;
+  }
+
+  .nav {
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  .nav-section {
+    margin-bottom: 2px;
+  }
+
+  .nav-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 0 6px;
+  }
+
+  .nav-section-header.active {
+    background: #0075FF;
+    color: #fff;
+  }
+
+  .nav-section-header .nav-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .nav-sub {
+    padding: 2px 0 4px;
+  }
+
+  .nav-sub-item {
+    display: block;
+    padding: 5px 12px 5px 34px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6E777C;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .nav-sub-item:hover {
+    color: #041D30;
+  }
+
+  .nav-sub-item.active {
+    color: #0075FF;
+    font-weight: 600;
+  }
+
+  .nav-sub-item.active::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 14px;
+    background: #0075FF;
+    border-radius: 2px;
+  }
+
+  .nav-divider {
+    height: 1px;
+    background: #F0F0F0;
+    margin: 6px 12px;
+  }
+
+  .nav-solo {
+    display: block;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #041D30;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 0 6px;
+  }
+
+  .nav-solo:hover {
+    background: #f5f6f8;
+  }
+
+  /* Sidebar footer */
+  .sidebar-footer {
+    padding: 10px 14px 14px;
+    border-top: 1px solid #E3E3E3;
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-user-email {
+    font-size: 11px;
+    color: #6E777C;
+    font-weight: 400;
+  }
+
+  .sidebar-user-logout {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6E777C;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .sidebar-support {
+    margin-bottom: 10px;
+  }
+
+  .sidebar-support-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #041D30;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-support-phone {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0075FF;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-support-email {
+    font-size: 11px;
+    color: #6E777C;
+    margin-bottom: 1px;
+  }
+
+  .sidebar-support-hours {
+    font-size: 11px;
+    color: #6E777C;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-links a {
+    font-size: 10px;
+    color: #7D7D80;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sidebar-copyright {
+    font-size: 10px;
+    color: #A9A8AA;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sidebar-meta-qc {
+    font-size: 10px;
+    color: #0075FF;
+    font-weight: 600;
+  }
+
+  .sidebar-meta-ip {
+    font-size: 10px;
+    color: #A9A8AA;
+  }
+
+  .cat-badge {
+    width: 28px;
+    height: 18px;
+    background: #041D30;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+
+  .cat-badge span {
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  /* ───── MAIN ───── */
+  .main {
+    margin-left: 172px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    background: #fff;
+    border-bottom: 1px solid #E3E3E3;
+    padding: 0 28px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .top-bar-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #041D30;
+  }
+
+  .content {
+    padding: 24px 28px;
+    flex: 1;
+  }
+
+  /* ───── FORM CARD ───── */
+  .form-card {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #E3E3E3;
+    overflow: hidden;
+  }
+
+  .form-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .form-breadcrumb {
+    font-size: 14px;
+    font-weight: 600;
+    color: #041D30;
+  }
+
+  .form-breadcrumb .bc-link {
+    color: #7D7D80;
+    font-weight: 400;
+  }
+
+  .form-breadcrumb .bc-sep {
+    margin: 0 6px;
+    color: #A9A8AA;
+  }
+
+  .btn-load {
+    padding: 7px 14px;
+    background: #fff;
+    border: 1px solid #BBBABF;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .btn-load:hover {
+    background: #f5f6f8;
+  }
+
+  /* ───── FORM BODY ───── */
+  .form-body {
+    padding: 0;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px 24px;
+    border-bottom: 1px solid #F0F0F0;
+    min-height: 52px;
+  }
+
+  .form-row:last-child {
+    border-bottom: none;
+  }
+
+  .form-label {
+    width: 140px;
+    min-width: 140px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #041D30;
+    padding-top: 2px;
+    display: flex;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .form-label .required {
+    color: #FF3B30;
+    font-size: 13px;
+  }
+
+  .form-label .info-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #A9A8AA;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #7D7D80;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .form-control {
+    flex: 1;
+  }
+
+  /* Radio type card */
+  .type-cards {
+    display: flex;
+    gap: 12px;
+  }
+
+  .type-card {
+    flex: 1;
+    border: 1.5px solid #E3E3E3;
+    border-radius: 6px;
+    padding: 14px 16px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .type-card.selected {
+    border-color: #0075FF;
+    background: #FAFCFF;
+  }
+
+  .type-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .type-card input[type="radio"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #0075FF;
+    cursor: pointer;
+  }
+
+  .type-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #041D30;
+  }
+
+  .type-card ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 23px;
+  }
+
+  .type-card ul li {
+    font-size: 12px;
+    color: #6E777C;
+    line-height: 1.7;
+    position: relative;
+    padding-left: 10px;
+  }
+
+  .type-card ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #A9A8AA;
+  }
+
+  /* Text inputs */
+  .input-text {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #041D30;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .input-text::placeholder {
+    color: #BBBABF;
+  }
+
+  .input-text:focus {
+    border-color: #0075FF;
+  }
+
+  .input-date {
+    width: 180px;
+    height: 34px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #041D30;
+    outline: none;
+  }
+
+  .input-date:focus {
+    border-color: #0075FF;
+  }
+
+  .input-note {
+    font-size: 11px;
+    color: #7D7D80;
+    margin-top: 5px;
+    line-height: 1.6;
+  }
+
+  .input-note .highlight {
+    color: #0075FF;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .input-note .warn {
+    color: #FF7A00;
+  }
+
+  /* Date row */
+  .date-with-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  /* Spinner */
+  .spinner-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .spinner-label {
+    font-size: 13px;
+    color: #041D30;
+  }
+
+  .spinner {
+    display: flex;
+    align-items: center;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 32px;
+  }
+
+  .spinner input[type="number"] {
+    width: 50px;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+
+  .spinner input[type="number"]::-webkit-inner-spin-button,
+  .spinner input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .spinner-btns {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-left: 1px solid #D0D0D0;
+  }
+
+  .spinner-btn {
+    flex: 1;
+    width: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #f9f9f9;
+    font-size: 9px;
+    color: #7D7D80;
+    user-select: none;
+  }
+
+  .spinner-btn:hover {
+    background: #efefef;
+  }
+
+  .spinner-btn:first-child {
+    border-bottom: 1px solid #D0D0D0;
+  }
+
+  .question-note {
+    font-size: 11px;
+    color: #7D7D80;
+    line-height: 1.6;
+    margin-left: 0;
+  }
+
+  .question-inputs {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .question-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .question-input-label {
+    font-size: 12px;
+    color: #6E777C;
+    width: 44px;
+    flex-shrink: 0;
+  }
+
+  .input-question {
+    flex: 1;
+    height: 34px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+  }
+
+  .input-question:focus {
+    border-color: #0075FF;
+  }
+
+  /* Checkboxes */
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: center;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #0075FF;
+    cursor: pointer;
+  }
+
+  .checkbox-item span {
+    font-size: 13px;
+    color: #041D30;
+    cursor: pointer;
+  }
+
+  /* BP 평가 sub-section */
+  .sub-section {
+    background: #FAFCFF;
+    border-top: 1px solid #EBF4FF;
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 24px;
+  }
+
+  .sub-section-label {
+    width: 140px;
+    min-width: 140px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0075FF;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .sub-section-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .sub-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .sub-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .sub-row-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    width: 90px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .radio-item input[type="radio"] {
+    width: 14px;
+    height: 14px;
+    accent-color: #0075FF;
+    cursor: pointer;
+  }
+
+  .radio-item span {
+    font-size: 13px;
+    color: #041D30;
+    cursor: pointer;
+  }
+
+  .input-score {
+    width: 60px;
+    height: 30px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 0 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: right;
+    outline: none;
+  }
+
+  .input-score:focus {
+    border-color: #0075FF;
+  }
+
+  .score-unit {
+    font-size: 13px;
+    color: #6E777C;
+  }
+
+  /* 확인사항 */
+  .input-textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #041D30;
+    resize: vertical;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  .input-textarea:focus {
+    border-color: #0075FF;
+  }
+
+  /* ───── FORM FOOTER ───── */
+  .form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 24px;
+    border-top: 1px solid #E3E3E3;
+  }
+
+  .btn {
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+  }
+
+  .btn-default {
+    background: #fff;
+    border: 1px solid #BBBABF;
+    color: #041D30;
+  }
+
+  .btn-secondary {
+    background: #F0F0F0;
+    color: #041D30;
+  }
+
+  .btn-primary {
+    background: #0075FF;
+    color: #fff;
+  }
+
+  /* ───── UTILS ───── */
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mt-4 { margin-top: 4px; }
+  .mt-6 { margin-top: 6px; }
+
+  /* Divider inside form */
+  .form-section-divider {
+    height: 1px;
+    background: #F0F0F0;
+    margin: 0 24px;
+  }
+
+  /* 부적격 기준 (라디오 3종) */
+  .bp-criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .criteria-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 30px;
+  }
+
+  .criteria-opt .radio-item {
+    width: 92px;
+    flex-shrink: 0;
+  }
+
+  .criteria-opt .input-score:disabled {
+    background: #F5F6F8;
+    color: #BBBABF;
+    border-color: #E3E3E3;
+    cursor: not-allowed;
+  }
+
+  .criteria-opt .score-unit.muted {
+    color: #BBBABF;
+  }
+
+  .criteria-div {
+    width: 1px;
+    height: 14px;
+    background: #D0D0D0;
+    margin: 0 6px;
+  }
+
+  /* 파일 추가 버튼 (JD/채용공고 공통) */
+  .btn-file {
+    padding: 7px 14px;
+    background: #fff;
+    border: 1px solid #BBBABF;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    flex-shrink: 0;
+  }
+
+  .btn-file:hover {
+    background: #f5f6f8;
+  }
+
+  /* JD/채용공고 첨부 테이블 (BP평가·RP매칭 공통) */
+  .file-add-head {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .file-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #BBBABF;
+    border-bottom: 1px solid #BBBABF;
+    table-layout: fixed;
+  }
+
+  .file-table th {
+    background: rgba(0, 117, 255, 0.06);
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    padding: 8px 14px;
+    text-align: center;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .file-table td {
+    font-size: 12px;
+    color: #041D30;
+    padding: 10px 14px;
+    text-align: center;
+    border-bottom: 1px solid #F0F0F0;
+  }
+
+  .file-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .file-table .col-name { text-align: left; }
+  .file-table th.col-size,
+  .file-table td.col-size { width: 110px; }
+  .file-table th.col-del,
+  .file-table td.col-del { width: 72px; }
+
+  .file-table .empty-row td {
+    color: #BBBABF;
+    padding: 18px 14px;
+    text-align: center;
+  }
+
+  .file-table .file-del-btn {
+    color: #FF3B30;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 12px;
+  }
+
+  /* 숫자 입력란 스피너(증감 버튼) 제거 */
+  .input-score::-webkit-inner-spin-button,
+  .input-score::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .input-score {
+    -moz-appearance: textfield;
+  }
+
+  /* 항목명 'i' 툴팁 */
+  .info-icon {
+    position: relative;
+  }
+
+  .info-icon::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: -6px;
+    top: calc(100% + 9px);
+    width: max-content;
+    max-width: 250px;
+    background: #041D30;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.2px;
+    text-align: left;
+    padding: 9px 11px;
+    border-radius: 6px;
+    white-space: pre-line;
+    box-shadow: 0 3px 10px rgba(4, 29, 48, 0.22);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s;
+    z-index: 300;
+    pointer-events: none;
+  }
+
+  .info-icon::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: calc(100% + 4px);
+    border: 5px solid transparent;
+    border-bottom-color: #041D30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s;
+    z-index: 300;
+    pointer-events: none;
+  }
+
+  .info-icon[data-tip]:hover::after,
+  .info-icon[data-tip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-prism">PRiSM</div>
+    <div class="logo-x">×</div>
+    <div class="logo-monster">monster</div>
+  </div>
+
+  <nav class="nav">
+    <!-- 프리즘 전형 -->
+    <div class="nav-section">
+      <div class="nav-section-header active">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="7.5" y="1" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="1" y="7.5" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="7.5" y="7.5" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.5"/>
+          </svg>
+        </span>
+        프리즘 전형
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item active">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 몬스터 전형 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="#041D30" stroke-width="1.2"/>
+            <circle cx="4.5" cy="6.5" r="1" fill="#041D30"/>
+            <circle cx="9.5" cy="6.5" r="1" fill="#041D30"/>
+            <path d="M5 9.5C5.5 10 6.2 10.5 7 10.5C7.8 10.5 8.5 10 9 9.5" stroke="#041D30" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </span>
+        몬스터 전형
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 교차진단 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7H12M7 2L7 12M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="#041D30" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        교차진단
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 지원자 피드백 -->
+    <div class="nav-solo">
+      <span class="nav-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 3.5C2 2.67 2.67 2 3.5 2H10.5C11.33 2 12 2.67 12 3.5V8.5C12 9.33 11.33 10 10.5 10H8L5.5 12.5V10H3.5C2.67 10 2 9.33 2 8.5V3.5Z" stroke="#041D30" stroke-width="1.2"/>
+        </svg>
+      </span>
+      지원자 피드백
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 평가 운영 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="2" stroke="#041D30" stroke-width="1.2"/>
+            <path d="M7 1.5V3M7 11V12.5M1.5 7H3M11 7H12.5M3.2 3.2L4.2 4.2M9.8 9.8L10.8 10.8M10.8 3.2L9.8 4.2M4.2 9.8L3.2 10.8" stroke="#041D30" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        평가 운영
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">사용자 관리</a>
+        <a class="nav-sub-item">프리즘 평가자 배정</a>
+        <a class="nav-sub-item">몬스터 평가자 배정</a>
+        <a class="nav-sub-item">표절검사 비교문서 관리</a>
+        <a class="nav-sub-item">보안 설정</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <span class="sidebar-user-email">gwchoi@muhayu.com</span>
+      <span class="sidebar-user-logout" title="로그아웃">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5.5 2H3C2.45 2 2 2.45 2 3V11C2 11.55 2.45 12 3 12H5.5" stroke="#7D7D80" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M9.5 9.5L12 7L9.5 4.5M12 7H5.5" stroke="#7D7D80" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+
+    <div class="sidebar-support">
+      <div class="sidebar-support-title">고객센터</div>
+      <div class="sidebar-support-phone">1588-9784</div>
+      <div class="sidebar-support-email">help@copykiller.com</div>
+      <div class="sidebar-support-hours">평일 10:00 ~ 17:00</div>
+    </div>
+
+    <div class="sidebar-links">
+      <a>이용약관</a>
+      <a>개인정보처리방침</a>
+      <a>AI 활용 안내</a>
+      <a>관리기능</a>
+    </div>
+
+    <div class="sidebar-copyright">© 2026 muhayu Inc.</div>
+
+    <div class="sidebar-meta">
+      <span class="sidebar-meta-qc">qc</span>
+      <span class="sidebar-meta-ip">10.52.101.218</span>
+      <div class="cat-badge"><span>CAT</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="main">
+  <div class="top-bar">
+    <span class="top-bar-title">HR 품질검토</span>
+  </div>
+
+  <div class="content">
+    <div class="form-card">
+      <!-- Card Header -->
+      <div class="form-card-header">
+        <div class="form-breadcrumb">
+          <span class="bc-link">검사요청</span>
+          <span class="bc-sep">›</span>
+          신규 검사요청서 작성
+        </div>
+        <button class="btn-load">최근 검사요청서 불러오기</button>
+      </div>
+
+      <!-- Form Body -->
+      <div class="form-body">
+
+        <!-- 등록 자소서 유형 선택 -->
+        <div class="form-row" style="align-items: flex-start; padding-top: 20px; padding-bottom: 20px;">
+          <div class="form-label" style="padding-top: 4px;">등록 자소서 유형 선택</div>
+          <div class="form-control">
+            <div class="type-cards">
+              <!-- 벌크형 -->
+              <div class="type-card selected" id="card-bulk">
+                <div class="type-card-header">
+                  <input type="radio" name="fileType" id="type-bulk" checked>
+                  <label class="type-card-title" for="type-bulk">벌크형</label>
+                </div>
+                <ul>
+                  <li>Excel 파일</li>
+                  <li>하나의 파일에 복수 지원자의 자기소개서 존재</li>
+                  <li>자기소개서 문항 고정</li>
+                  <li>모든 지원자의 검사 결과를 한 번에 제공</li>
+                </ul>
+              </div>
+              <!-- 단건형 -->
+              <div class="type-card" id="card-single">
+                <div class="type-card-header">
+                  <input type="radio" name="fileType" id="type-single">
+                  <label class="type-card-title" for="type-single">단건형</label>
+                </div>
+                <ul>
+                  <li>PDF, 한글(hwp, hwpx), MS워드(docx, doc) 파일</li>
+                  <li>개별 파일 또는 개별 파일을 하나로 묶은 zip 파일</li>
+                  <li>하나의 파일에 지원자 한 명의 자기소개서 존재</li>
+                  <li>자기소개서 문항 자유 또는 고정</li>
+                  <li>서류 접수 시점에 따라 검사 결과 상시 제공</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="form-row">
+          <div class="form-label">제목<span class="required">*</span></div>
+          <div class="form-control">
+            <input type="text" class="input-text" placeholder="예) 무하유 2022 상반기 신입사원 공채채용 - 영업직">
+          </div>
+        </div>
+
+        <!-- 채용직무 -->
+        <div class="form-row">
+          <div class="form-label">
+            채용직무<span class="required">*</span>
+            <span class="info-icon" data-tip="이번 검사요청서로 평가할 채용 직무명을 입력합니다. 여러 직무를 함께 채용하는 경우 쉼표(,)로 구분해 입력하세요. 입력한 직무명은 결과지에 표기됩니다.">i</span>
+          </div>
+          <div class="form-control">
+            <input type="text" class="input-text" placeholder="예) 영업직, 사무운영직, 행정직">
+          </div>
+        </div>
+
+        <!-- 평가파일 등록예정일 -->
+        <div class="form-row" style="align-items: flex-start;">
+          <div class="form-label" style="padding-top: 8px;">평가파일 등록예정일<span class="required">*</span></div>
+          <div class="form-control">
+            <div class="date-with-note">
+              <input type="date" class="input-date">
+              <div class="input-note" style="max-width: 520px; padding-top: 8px;">
+                ※ 평가파일을 등록한 이후에는 검사요청서 수정이 불가능하며, 설정 기한 내 미등록 시 납품일이 변동됩니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 검사결과 납품예정일 -->
+        <div class="form-row" style="align-items: flex-start;">
+          <div class="form-label" style="padding-top: 8px;">검사결과 납품예정일<span class="required">*</span></div>
+          <div class="form-control">
+            <div class="date-with-note">
+              <input type="date" class="input-date">
+              <div class="input-note" style="max-width: 520px; padding-top: 8px;">
+                ※ 납품예정일은 평가파일 등록을 기준으로 <span class="highlight">영업일 기준 최소 3일 이후</span>로 설정 가능합니다.<br>
+                보다 빠른 납품을 희망하실 경우 담당자에게 문의 바랍니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 문항질문 -->
+        <div class="form-row" style="align-items: flex-start;">
+          <div class="form-label" style="padding-top: 6px;">문항질문<span class="required">*</span></div>
+          <div class="form-control">
+            <div class="spinner-wrap">
+              <span class="spinner-label">문항 수</span>
+              <div class="spinner">
+                <input type="number" value="1" min="1" max="10" id="question-count">
+                <div class="spinner-btns">
+                  <div class="spinner-btn" onclick="changeCount(1)">▲</div>
+                  <div class="spinner-btn" onclick="changeCount(-1)">▼</div>
+                </div>
+              </div>
+              <div class="question-note">
+                ※ 모든 검사 설정이 동일한 경우, 채용 직무와 상관 없이 하나의 검사요청서로 작성해주세요.<br>
+                - 문항 수, 질문의 내용, 검사 조건이 다를 경우 검사요청서를 별도로 작성해주세요.
+              </div>
+            </div>
+            <div class="question-inputs" id="question-inputs">
+              <div class="question-input-row">
+                <span class="question-input-label">문항 1</span>
+                <input type="text" class="input-question">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 검사항목 -->
+        <div class="form-row" style="align-items: flex-start;">
+          <div class="form-label" style="padding-top: 4px;">
+            검사항목<span class="required">*</span>
+            <span class="info-icon" data-tip="자기소개서에 적용할 검사 종류를 선택합니다. 복수 선택이 가능하며, BP평가 등 일부 항목은 선택 시 세부 설정이 추가로 표시됩니다.">i</span>
+          </div>
+          <div class="form-control">
+            <div class="checkbox-group">
+              <label class="checkbox-item" for="chk-defect">
+                <input type="checkbox" id="chk-defect">
+                <span>결함검사</span>
+              </label>
+              <label class="checkbox-item" for="chk-plagiarism">
+                <input type="checkbox" id="chk-plagiarism">
+                <span>표절검사</span>
+              </label>
+              <label class="checkbox-item" for="chk-gpt">
+                <input type="checkbox" id="chk-gpt">
+                <span>GPT Killer</span>
+              </label>
+              <label class="checkbox-item" for="chk-blind">
+                <input type="checkbox" id="chk-blind">
+                <span>블라인드</span>
+              </label>
+              <label class="checkbox-item" for="chk-bp">
+                <input type="checkbox" id="chk-bp" checked onchange="toggleBP(this)">
+                <span>BP평가</span>
+              </label>
+              <label class="checkbox-item" for="chk-rp">
+                <input type="checkbox" id="chk-rp" checked onchange="toggleRP(this)">
+                <span>RP매칭</span>
+              </label>
+              <label class="checkbox-item" for="chk-interview">
+                <input type="checkbox" id="chk-interview">
+                <span>면접질문</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- BP평가 sub-section -->
+        <div class="sub-section" id="bp-section">
+          <div class="sub-section-label">
+            · BP평가
+            <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="자기소개서 텍스트의 구조적 특성과 기준 충족 여부를 분석하는 평가입니다. 버전·제외 문항·부적격 기준을 설정할 수 있습니다.">i</span>
+          </div>
+          <div class="sub-section-content">
+
+          <div class="sub-row">
+            <div class="sub-row-label">버전 선택<span class="required">*</span></div>
+            <div class="radio-group">
+              <label class="radio-item" for="bp-v3">
+                <input type="radio" name="bp-version" id="bp-v3" checked>
+                <span>BP평가 v3</span>
+              </label>
+              <label class="radio-item" for="bp-v4">
+                <input type="radio" name="bp-version" id="bp-v4">
+                <span>BP평가 v4</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="sub-row">
+            <div class="sub-row-label">제외 문항</div>
+            <div class="checkbox-group exclude-group" data-prefix="bp">
+              <label class="checkbox-item" for="bp-ex-q1">
+                <input type="checkbox" id="bp-ex-q1">
+                <span>문항1</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="sub-row" style="align-items:flex-start;">
+            <div class="sub-row-label" style="padding-top:6px;">
+              부적격 기준
+              <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="· 점수 기준: BP평가 점수가 설정값 미만인 경우
+· 배수 기준: 점수 순위가 (모집인원 × 배수)에 들지 못한 경우
+· 사용 안 함: 합·불 판정 미적용
+· 결과지 표기: 기준 충족 시 '권장', 미달 시 '검토 필요'">i</span>
+            </div>
+            <div class="bp-criteria">
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-none">
+                  <input type="radio" name="bp-criteria" id="crit-none" value="none" checked onchange="updateBPCriteria()">
+                  <span>사용 안 함</span>
+                </label>
+              </div>
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-score">
+                  <input type="radio" name="bp-criteria" id="crit-score" value="score" onchange="updateBPCriteria()">
+                  <span>점수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="bp-score" min="0" max="100" disabled inputmode="numeric" oninput="clampScore(this)">
+                <span class="score-unit muted" id="bp-score-unit">점 미만 검토 필요</span>
+                <span class="input-note" style="margin:0;">※ 0 ~ 100 사이의 수만 입력</span>
+              </div>
+              <div class="criteria-opt">
+                <label class="radio-item" for="crit-ratio">
+                  <input type="radio" name="bp-criteria" id="crit-ratio" value="ratio" onchange="updateBPCriteria()">
+                  <span>배수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="bp-ratio" min="0" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <span class="score-unit muted" id="bp-ratio-unit">배수 초과 검토 필요</span>
+                <span class="criteria-div"></span>
+                <span class="score-unit muted" id="bp-head-label">모집인원</span>
+                <input type="number" class="input-score" id="bp-headcount" min="1" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <span class="score-unit muted" id="bp-head-unit">명</span>
+              </div>
+            </div>
+          </div>
+
+          </div><!-- /sub-section-content -->
+        </div><!-- /bp-section -->
+
+        <!-- RP매칭 sub-section -->
+        <div class="sub-section" id="rp-section">
+          <div class="sub-section-label">
+            · RP매칭
+            <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="직무기술서(JD)와 자기소개서 내용을 매칭해 직무 적합도를 평가합니다. 제외 문항·부적격 기준을 설정하고, 매칭 기준이 되는 직무기술서를 등록할 수 있습니다.">i</span>
+          </div>
+          <div class="sub-section-content">
+
+          <div class="sub-row">
+            <div class="sub-row-label">제외 문항</div>
+            <div class="checkbox-group exclude-group" data-prefix="rp">
+              <label class="checkbox-item" for="rp-ex-q1">
+                <input type="checkbox" id="rp-ex-q1">
+                <span>문항1</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="sub-row" style="align-items:flex-start;">
+            <div class="sub-row-label" style="padding-top:6px;">부적격 기준</div>
+            <div class="bp-criteria">
+              <div class="criteria-opt">
+                <label class="radio-item" for="rp-crit-none">
+                  <input type="radio" name="rp-criteria" id="rp-crit-none" value="none" checked onchange="updateRPCriteria()">
+                  <span>사용 안 함</span>
+                </label>
+              </div>
+              <div class="criteria-opt">
+                <label class="radio-item" for="rp-crit-score">
+                  <input type="radio" name="rp-criteria" id="rp-crit-score" value="score" onchange="updateRPCriteria()">
+                  <span>점수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="rp-score" min="0" max="100" disabled inputmode="numeric" oninput="clampScore(this)">
+                <span class="score-unit muted" id="rp-score-unit">점 미만 검토 필요</span>
+                <span class="input-note" style="margin:0;">※ 0 ~ 100 사이의 수만 입력</span>
+              </div>
+            </div>
+          </div>
+
+          </div><!-- /sub-section-content -->
+        </div><!-- /rp-section -->
+
+        <!-- JD/채용공고 파일 업로드 (BP평가·RP매칭 공통 / 둘 중 하나만 선택해도 노출, 항상 1개만) -->
+        <div class="sub-section" id="jd-section">
+          <div class="sub-section-label">
+            · 직무기술서 첨부<span class="required">*</span>
+          </div>
+          <div class="sub-section-content">
+
+          <div class="sub-row" style="align-items:flex-start;">
+            <div style="flex:1;">
+              <div class="file-add-head">
+                <button type="button" class="btn-file" onclick="document.getElementById('jd-file').click()">파일 추가</button>
+                <input type="file" id="jd-file" accept=".pdf,.hwp,.hwpx,.docx,.doc" multiple style="display:none" onchange="addJDFiles(this)">
+              </div>
+              <table class="file-table">
+                <thead>
+                  <tr>
+                    <th class="col-name">파일명</th>
+                    <th class="col-size">파일크기</th>
+                    <th class="col-del">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="jd-file-body">
+                  <tr class="empty-row" id="jd-file-empty">
+                    <td colspan="3">등록된 파일이 없습니다.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="input-note" style="margin-top:8px;">
+                ※ 하드스킬 평가(BP평가)·직무 매칭(RP매칭)을 위해 JD 또는 채용공고 파일을 등록해주세요. (PDF, 한글(hwp, hwpx), MS워드(docx, doc) / 파일당 최대 3MB · 총 10MB · 동일 파일명 중복 불가)
+              </div>
+            </div>
+          </div>
+
+          </div><!-- /sub-section-content -->
+        </div><!-- /jd-section -->
+
+        <!-- 확인사항 -->
+        <div class="form-row" style="align-items: flex-start; padding-top: 20px; padding-bottom: 20px;">
+          <div class="form-label" style="padding-top: 4px;">· 확인사항</div>
+          <div class="form-control">
+            <textarea class="input-textarea" style="height:90px;"></textarea>
+          </div>
+        </div>
+
+      </div><!-- /form-body -->
+
+      <!-- Form Footer -->
+      <div class="form-footer">
+        <button class="btn btn-default">나가기</button>
+        <button class="btn btn-secondary">임시저장</button>
+        <button class="btn btn-primary">검사요청</button>
+      </div>
+
+    </div><!-- /form-card -->
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // 라디오 카드 토글
+  document.querySelectorAll('input[name="fileType"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      document.getElementById('card-bulk').classList.remove('selected');
+      document.getElementById('card-single').classList.remove('selected');
+      if (this.id === 'type-bulk') {
+        document.getElementById('card-bulk').classList.add('selected');
+      } else {
+        document.getElementById('card-single').classList.add('selected');
+      }
+    });
+  });
+
+  document.getElementById('card-bulk').addEventListener('click', function() {
+    document.getElementById('type-bulk').checked = true;
+    document.getElementById('card-bulk').classList.add('selected');
+    document.getElementById('card-single').classList.remove('selected');
+  });
+
+  document.getElementById('card-single').addEventListener('click', function() {
+    document.getElementById('type-single').checked = true;
+    document.getElementById('card-single').classList.add('selected');
+    document.getElementById('card-bulk').classList.remove('selected');
+  });
+
+  // 문항 수 스피너
+  function changeCount(delta) {
+    const input = document.getElementById('question-count');
+    const newVal = Math.max(1, Math.min(10, parseInt(input.value) + delta));
+    input.value = newVal;
+    renderQuestionInputs(newVal);
+    updateExcludeCheckboxes(newVal);
+  }
+
+  document.getElementById('question-count').addEventListener('change', function() {
+    const val = Math.max(1, Math.min(10, parseInt(this.value) || 1));
+    this.value = val;
+    renderQuestionInputs(val);
+    updateExcludeCheckboxes(val);
+  });
+
+  function renderQuestionInputs(count) {
+    const container = document.getElementById('question-inputs');
+    container.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+      const row = document.createElement('div');
+      row.className = 'question-input-row';
+      row.innerHTML = `<span class="question-input-label">문항 ${i}</span><input type="text" class="input-question">`;
+      container.appendChild(row);
+    }
+  }
+
+  function updateExcludeCheckboxes(count) {
+    document.querySelectorAll('.exclude-group').forEach(container => {
+      const prefix = container.dataset.prefix || 'ex';
+      container.innerHTML = '';
+      for (let i = 1; i <= count; i++) {
+        const label = document.createElement('label');
+        label.className = 'checkbox-item';
+        label.innerHTML = `<input type="checkbox" id="${prefix}-ex-q${i}"><span>문항${i}</span>`;
+        container.appendChild(label);
+      }
+    });
+  }
+
+  // BP평가 섹션 토글
+  function toggleBP(checkbox) {
+    document.getElementById('bp-section').style.display = checkbox.checked ? '' : 'none';
+    updateJDSection();
+  }
+
+  // RP매칭 섹션 토글
+  function toggleRP(checkbox) {
+    document.getElementById('rp-section').style.display = checkbox.checked ? '' : 'none';
+    updateJDSection();
+  }
+
+  // JD/채용공고 영역: BP평가 또는 RP매칭 중 하나라도 선택되면 1개만 노출
+  function updateJDSection() {
+    const bp = document.getElementById('chk-bp').checked;
+    const rp = document.getElementById('chk-rp').checked;
+    document.getElementById('jd-section').style.display = (bp || rp) ? '' : 'none';
+  }
+  updateJDSection();
+
+  // 부적격 기준 (점수/배수) 입력 활성화
+  function updateBPCriteria() {
+    const mode = document.querySelector('input[name="bp-criteria"]:checked').value;
+    const scoreOn = (mode === 'score');
+    const ratioOn = (mode === 'ratio');
+
+    document.getElementById('bp-score').disabled = !scoreOn;
+    document.getElementById('bp-score-unit').classList.toggle('muted', !scoreOn);
+
+    document.getElementById('bp-ratio').disabled = !ratioOn;
+    document.getElementById('bp-headcount').disabled = !ratioOn;
+    ['bp-ratio-unit', 'bp-head-label', 'bp-head-unit'].forEach(id => {
+      document.getElementById(id).classList.toggle('muted', !ratioOn);
+    });
+  }
+  updateBPCriteria();
+
+  // RP 부적격 기준 (점수 기준만) 입력 활성화
+  function updateRPCriteria() {
+    const mode = document.querySelector('input[name="rp-criteria"]:checked').value;
+    const scoreOn = (mode === 'score');
+    document.getElementById('rp-score').disabled = !scoreOn;
+    document.getElementById('rp-score-unit').classList.toggle('muted', !scoreOn);
+  }
+  updateRPCriteria();
+
+  // 점수 입력 0~100 제한 (BP·RP 공통)
+  function clampScore(el) {
+    el.value = el.value.replace(/[^0-9]/g, '');
+    if (el.value !== '' && parseInt(el.value, 10) > 100) el.value = '100';
+  }
+
+  // JD/채용공고 파일 추가·삭제 (BP평가·RP매칭 공통)
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function addJDFiles(input) {
+    if (!input.files || input.files.length === 0) return;
+    const MAX_FILE = 3 * 1024 * 1024;    // 파일당 최대 3MB
+    const MAX_TOTAL = 10 * 1024 * 1024;  // 전체 합계 최대 10MB
+    const body = document.getElementById('jd-file-body');
+
+    // 기존 등록 파일의 파일명·합계 용량 집계
+    const rows = Array.from(body.querySelectorAll('tr[data-name]'));
+    const names = new Set(rows.map(tr => tr.dataset.name));
+    let total = rows.reduce((sum, tr) => sum + Number(tr.dataset.size || 0), 0);
+
+    const oversize = [], dups = [], overTotal = [];
+    let added = 0;
+    Array.from(input.files).forEach(file => {
+      if (file.size > MAX_FILE) { oversize.push(file.name); return; }
+      if (names.has(file.name)) { dups.push(file.name); return; }
+      if (total + file.size > MAX_TOTAL) { overTotal.push(file.name); return; }
+      const tr = document.createElement('tr');
+      tr.dataset.name = file.name;
+      tr.dataset.size = file.size;
+      tr.innerHTML =
+        '<td class="col-name">' + escapeHtml(file.name) + '</td>' +
+        '<td class="col-size">' + formatFileSize(file.size) + '</td>' +
+        '<td class="col-del"><span class="file-del-btn" onclick="removeJDFile(this)">삭제</span></td>';
+      body.appendChild(tr);
+      names.add(file.name);
+      total += file.size;
+      added++;
+    });
+    if (added > 0) document.getElementById('jd-file-empty').style.display = 'none';
+
+    const msgs = [];
+    if (oversize.length) msgs.push('· 파일당 최대 3MB 초과: ' + oversize.join(', '));
+    if (dups.length) msgs.push('· 이미 등록된 파일명(중복 불가): ' + dups.join(', '));
+    if (overTotal.length) msgs.push('· 전체 합계 10MB 초과: ' + overTotal.join(', '));
+    if (msgs.length) alert('다음 파일은 제외되었습니다.\n' + msgs.join('\n'));
+
+    input.value = '';
+  }
+
+  function removeJDFile(btn) {
+    const row = btn.closest('tr');
+    row.parentNode.removeChild(row);
+    const body = document.getElementById('jd-file-body');
+    if (!body.querySelector('tr:not(.empty-row)')) {
+      document.getElementById('jd-file-empty').style.display = '';
+    }
+  }
+</script>
+</body>
+</html>

@@ -327,7 +327,7 @@ HTML 결과지 파일을 만들거나 수정하기 전에 아래 순서를 반�
 - 경고·검토: #D75D00 (다른 제품 경고색 #FF7A00과 별개)
 - AI 작성 의심 강조: #F09000 (밑줄 `.gpk`, AI 비율 수치)
 - 근거 문장 강조: rgba(0,117,255,0.10) (`.hl`)
-- 등급 표현(높음/중간/낮음/없음, 파랑 계열): 높음 rgba(0,117,255,0.6) / 중간 #E9E9EA / 낮음 #F4F4F4 / 없음 #E9E9EA (텍스트색은 컴포넌트 상세 참조)
+- 등급 표현(높음/중간/낮음/없음, 파랑 계열): 높음 rgba(0,117,255,0.6) / 중간 #E9E9EA / 낮음 #F4F4F4 / 없음 #F4F4F4 (없음=낮음 동일색 통일 2026-06-17 / 텍스트색은 컴포넌트 상세 참조)
 - 레이더 차트: 평균 영역 rgba(150,164,177,0.30)·선 #96A4B1 / 지원자 영역 rgba(0,117,255,0.28)·선 #2EA6FF
 
 ### 폰트
@@ -547,22 +547,22 @@ P4+ 상세 평가는 JS가 각 블록 높이를 측정해 A4 가용 높이(1338p
 - 컨테이너 `.bp-badges`: flex column / gap 8px (종합점수 카드 우측, 점수 아래)
 - 공통 `.bp-badge`: border 1px #0075FF / border-radius 17px / padding 4px 12px / Bold 14px / #0075FF / text-align center / nowrap
 - **outline `.bp-badge` (직군 내 위치)**: 예) "생산직 상위 50%" — 비교집단 내 상위 % (공채형=전형 전체 / 수시형=준거집단)
-- **fill `.bp-badge.fill` (합불 표현)**: bg #E0F3FF / width 132px. **두 기준 중 택1** (접수 단계에서 선택, 미선택 시 결과지에 미표시):
-  - ① n배수 기준: `3배수 이내` / `3배수 미달`
-  - ② 점수 기준: `권장`(50점 이상) / `검토 필요`(50점 미만)
-  - ※ AI기본법상 '적격/부적격' 직접 표현을 피하기 위한 대체 표현 (추천/보류·권장/검토 필요) — SDS r25
+- **fill `.bp-badge.fill` (합불 표현)**: width 132px. **두 기준 중 택1** (접수 단계에서 선택, 미선택 시 결과지에 미표시). **긍정=파랑 `.fill`(bg #E0F3FF·#0075FF), 부정=주황 `.fill.over`(bg rgba(215,93,0,0.1)·border·텍스트 #D75D00 = '확인되지 않은 하드스킬'색)**:
+  - ① n배수 기준: `n배수 이내`(파랑) / `n배수 초과`(주황) — 순위가 n배수 컷을 초과
+  - ② 점수 기준: `권장`(파랑, 50점 이상) / `검토 필요`(주황, 50점 미만)
+  - ※ AI기본법상 '적격/부적격' 직접 표현을 피하기 위한 대체 표현 (추천/보류·권장/검토 필요) — SDS r25. 부정 케이스 주황 톤 통일(2026-06-16)
 - 검증포인트의 상위%/하위% 배지는 `.vp-badge`(아래 검증 포인트) 참조
 
 ### 요약 카드 (P1)
 - **주 사용 제품:** 프리즘 BP
 - 운영 클래스: `.summary`(외곽) / `.summary-card`(본체)
 - 외곽 `.summary`: bg #E3E3E3 / padding 24px / border-radius 0 0 8px 8px (상단 종합점수 카드와 이어지는 하단 모서리)
-- 본체 `.summary-card`: bg #fff / border 1px #E3E3E3 / border-radius 8px / padding 20px 24px / flex column / gap 20px
-- 상단 텍스트 `.summary-txt`: 좌(제목)·우(불릿) 양끝 정렬
-  - 제목 `.summary-headline`: Bold 18px / line-height 2 / width 460px (폭 제한으로 불릿과 간격 확보)
-  - 불릿 `.summary-bullets`: Regular 12px / width 368px / padding-left 21px / li line-height 1.6 (최대 4줄)
+- 본체 `.summary-card`: bg #fff / border 1px #E3E3E3 / border-radius 8px / padding 20px 24px / flex column / gap 12px
+- 상단 텍스트 `.summary-txt`: 좌(제목)·우(불릿) 양끝 정렬. **불릿 시작점 = 응시자 카드 좌/우 분할선(우측 점수카드 좌측 x546)에 정렬**(CH-024)
+  - 제목 `.summary-headline`: Bold 18px / **line-height 1.3 / width 470px** (행간 압축·폭으로 불릿과 정렬·간격 확보)
+  - 불릿 `.summary-bullets`(=PAC 자소서 요약): Regular **12px / width 395px / 1열** / li line-height 1.4. **응시자별 4~5개 권장**. PAC 불릿이 5개 초과/장문이면 폰트·행간·열수 재조정(CH-024). 출처: PAC(자소서 요약 결과), '내용 변경 없이' 적용이 원칙이나 슬롯 초과 시 압축 협의
 - 구분선 `.summary-divider`: height 1px / bg #E3E3E3
-- 위치 표시 `.summary-pos`: flex / align-center / gap 24px / margin-top 16px
+- 위치 표시 `.summary-pos`: flex / align-center / gap 24px / margin-top 8px
   - 소제목 `.summary-pos-title`: Bold 16px / letter-spacing 0.024px
   - 점수 `.summary-pos-score`: Bold 32px Noto Sans(`.num`) / line-height 1.25
   - 막대 영역 `.summary-pos-bars`: flex 1 / column / gap 12px → 비교막대(`cbar`) 사용
@@ -582,7 +582,7 @@ P4+ 상세 평가는 JS가 각 블록 높이를 측정해 A4 가용 높이(1338p
 - 높음 `.g-high`: bg rgba(0,117,255,0.6) / #fff
 - 중간 `.g-mid`: bg #E9E9EA / #041D30
 - 낮음 `.g-low`: bg #F4F4F4 / #7D7D80
-- 없음 `.g-none`: bg #E9E9EA / #A9A8AA (판단불가)
+- 없음 `.g-none`: bg #F4F4F4 / #7D7D80 (판단불가 — 낮음과 동일색 통일 2026-06-17)
 
 ### 직무적합도 카드 (P1)
 - **주 사용 제품:** 프리즘 BP
@@ -665,19 +665,20 @@ P4+ 상세 평가는 JS가 각 블록 높이를 측정해 A4 가용 높이(1338p
 ### 문항별 검사 결과 테이블 (qtable) — P2
 - **주 사용 제품:** 프리즘 BP
 - `.qtable`: width 100% / border-top·bottom 1px #C6C6C6 (둥근 모서리 없음)
-- 행 `.qrow`: height 48px / flex align-center / padding 8px 24px / border-bottom 1px #E3E3E3 (마지막 행 제외)
+- 행 `.qrow`: **min-height 48px(가변 — 긴 문항 2줄 시 자동 확장, CH-022)** / flex align-center / padding 10px 24px / gap 16px / border-bottom 1px #E3E3E3 (마지막 행 제외). 문항번호 `.qno` flex-shrink:0·nowrap, 컬럼 플렉서블(고정 높이 의존 금지)
+- 우측 지표 라벨은 **'AI 작성률'**(베이스라인 일치, CH-033에서 'AI 작성 의심'→환원). 값은 실제 % 미확보로 **GPK 탐지/미탐지**(이진값) 유지 — 탐지 #F09000 / 미탐지 #7D7D80(`.nd`). (% 확보 시 수치 전환 가능)
 - 좌측 `.qleft`(flex 0 0 440px / gap 12px / 16px): 번호 `.qno` Bold + 질문 `.qtext` Medium
-- 우측 `.qright`(flex 1 / align-center): 지표 `.qmetric`(flex 1 / 16px #041D30 / gap 6px) ×N — 값 `.v.num` / AI 작성률 `.pct.num` #F09000
+- 우측 `.qright`(flex 1 / align-center): 지표 `.qmetric`(flex 1 / 16px #041D30 / gap 6px) ×N — 값 `.v.num` / **AI 작성률**(라벨) `.pct` 탐지(#F09000)·미탐지(#7D7D80 `.nd`) — 값은 GPK 이진값(% 미확보, 라벨 환원 CH-033)
 
 ### 자기소개서 분석 (p3-) — P3
 - **주 사용 제품:** 프리즘 BP
 - 래퍼 `.p3-wrap`(flex column / padding 24px) — 상단 `.p3-title-top`(height 48px / space-between): 제목 `.p3-title-bar`(파란 바 `::before` 4×22.3px / h2 Bold 24px) + 범례 `.p3-legend`
   - 범례 `.p3-legend-hl`: bg rgba(0,117,255,0.10) / 16px / padding 2px 6px (근거문장) · `.p3-legend-ai`: border-bottom 2px #F09000 (AI 작성 의심 문장)
 - 카드 묶음 `.p3-cards-wrap`(gap 24px) > 카드 `.p3-qcard`(border 1px #C6C6C6 / radius 8px / overflow hidden)
-  - 헤드 `.p3-qhead`: bg #F4F4F4 / height 52px / gap 12px / padding 8px 24px / Bold 18px (문항번호 + 질문)
-  - 지표 `.p3-metric`(gap 12px / padding 10px 24px): `.p3-metric-group`(이름 `.p3-metric-name` Bold 16px + 등급칩 `.vp-grade`)
+  - 헤드 `.p3-qhead`: bg #F4F4F4 / **min-height 52px(가변 — 긴 질문 줄바꿈 시 자동 확장, CH-027)** / gap 12px / padding 10px 24px / Bold 18px / line-height 1.4 (문항번호+질문). 문항번호 `span:first-child` flex-shrink:0(한 줄 유지). `white-space:nowrap` 금지(질문 잘림 방지)
+  - 지표 `.p3-metric`(gap 12px / padding 10px 24px): `.p3-metric-group`(이름 `.p3-metric-name` Bold 16px + 점수 `.p3-metric-score` **Regular 16px(`.num`)**). **노출 규칙(CH-034)**: 상단=**6개 메트릭(직무적합도·조직적합도·지원동기·답변적합도·구체성·본인소개) + 점수**를 고정 순서로, 해당 문항에 **그 메트릭 영역의 factor가 하나라도 검출되면**(rollup) 표시. 답변적합도·구체성·본인소개는 factor 근거가 없어 미출현. **메트릭은 점수만 있고 상/중/하 등급이 없으므로 등급칩 대신 점수 표기**(원본에 없는 등급 임의부여 금지). `직무역량`(집계)은 컨테이너라 상단에 단독 표기 안 함 — 그 8개 분자가 검출되면 상위 메트릭 `직무적합도`가 대신 뜸
   - 본문 `.p3-body`(border-top·bottom 1px #E3E3E3 / padding 12px 24px / Regular 16px / line-height 1.6): 근거 강조 `.hl`(bg rgba(0,117,255,0.10)) / AI 의심 `.gpk`(border-bottom 2px #F09000)
-  - 푸터 `.p3-qfooter`(space-between / padding 8px 24px): 좌 `.p3-skills`(라벨 `.p3-skills-label` Bold 14px #7D7D80 + 태그 `.p3-skill-tag` Bold 14px #041D30) / 우 `.p3-ai-rate`(라벨 `.p3-ai-lbl` + 값 `.p3-ai-val.num` #F09000 16px)
+  - 푸터 `.p3-qfooter`(align-items flex-start / space-between / gap 16px / padding 8px 24px): 좌 `.p3-skills`(flex-wrap / 라벨 `.p3-skills-label` Bold 14px #7D7D80 + 태그 `.p3-skill-tag` Bold 14px #041D30 **white-space nowrap**) **= 검출된 factor 전부 표시(개수 제한 없음, CH-034)** — 직무역량 집계는 컨테이너라 제외 / 우 `.p3-ai-rate`(flex-shrink 0 / 라벨 `.p3-ai-lbl` "AI 작성률" + 값 `.p3-ai-val` 탐지(#F09000)·미탐지(#7D7D80 `.nd`) 16px — GPK 이진값, 라벨 환원 CH-033)
 
 ### BP 평가 상세 (dt-) — P4+ (자동 페이지네이션)
 - **주 사용 제품:** 프리즘 BP
@@ -686,7 +687,7 @@ P4+ 상세 평가는 JS가 각 블록 높이를 측정해 A4 가용 높이(1338p
 - 대분류 `.dt-cat`(height 40px / padding 0 12px / bg #E3E3E3 / 상하 border 1px #7D7D80): 이름 `.nm` Bold 20px + 점수 `.score.num` Regular 18px
 - 항목 행 `.dt-row`(flex / gap 12px / align-flex-start / padding 8px 0 12px / border-bottom 1px #E3E3E3)
   - 제목 `.dt-row-title`(width 210px / space-between / padding 0 12px): 이름 `.nm` Bold 18px (중분류 하위 항목은 `.dt-tag` Bold 14px) + 등급 `.dt-badge`(margin-top 6.8px)
-  - 등급 `.dt-badge`(height 24px / min-width 24px / radius 4px / Bold 16px): high rgba(0,117,255,0.6)·#fff / mid #E9E9EA·#041D30 / low #F4F4F4·#A9A8AA / none #E9E9EA·#A9A8AA
+  - 등급 `.dt-badge`(height 24px / min-width 24px / radius 4px / Bold 16px): high rgba(0,117,255,0.6)·#fff / mid #E9E9EA·#041D30 / low #F4F4F4·#A9A8AA / none #F4F4F4·#A9A8AA (없음=낮음 동일색 2026-06-17)
   - 본문 `.dt-row-body`(flex 1): 코멘트 `.dt-comment`(Medium 16px / line-height 1.6) + 근거 라벨 `.dt-srclabel`(Bold 14px #939395 "자기소개서 내용") + 근거 리스트 `.dt-list`(li 14px / gap 12px) / 빈 항목 `.dt-empty`(14px #A9A8AA)
 - 중분류 `.dt-subcat`(padding 8px 0 / border-bottom 1px #E3E3E3): 헤드 `.dt-subcat-head`(width 210px): 이름 `.nm` Bold 18px + `.dt-badge` (하위 항목은 `.dt-row`+`.dt-tag`)
 - 코멘트 전용 행 `.dt-commentrow`: min-height 70.5px / padding 10px 12px / Medium 16px
@@ -760,6 +761,6 @@ P4+ 상세 평가는 JS가 각 블록 높이를 측정해 A4 가용 높이(1338p
 - **디자인 시스템을 활용한 실제 작업물(제품 목업·고객사 결과지 등)은 제품/프로젝트별 전용 폴더를 만들어 저장한다** (예: `한일시멘트/`, `리더십진단/`). 결과지 HTML·더미 데이터·빌드 스크립트 등 관련 산출물을 그 폴더에 함께 모은다.
 - 단발성 샘플·실험용 목업만 `output/` 폴더에 둘 수 있다.
 - 파일명: [제품명]-[지원자명]-[날짜].html
-  - 예: `리더십진단/leadership-디자인목업-20260614.html`, `한일시멘트/prism-한일시멘트-응시자1-20260613.html`
+  - 예: `리더십진단/leadership-디자인목업-20260614.html`, `한일시멘트/prism-한일시멘트-지원자1-20260616.html`
 - 한 파일 = 한 지원자의 결과지 / 결과지는 단일 HTML 파일로 제작 (외부 CSS/JS 파일 분리 금지)
 - 로고·아이콘 에셋은 루트의 `logo/`, `icons/` 폴더를 상대 경로(`../logo/`, `../icons/`)로 참조 → 작업 폴더는 **루트 바로 아래 1단계 깊이**로 유지(상대경로 일관성)
