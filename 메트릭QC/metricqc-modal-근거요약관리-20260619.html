@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메트릭QC 검토 모달 · 근거요약/한줄코멘트 관리</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  *{ box-sizing:border-box; }
+
+  :root{
+    --essay:    #2e54c4;   /* 자기소개서 하이라이트(파랑) */
+    --link:     #0075ff;   /* 근거문장 링크 */
+    --ink:      #1a1a1a;
+    --muted:    #7d7d80;
+    --line:     #d3d3d3;
+    --line-dk:  #1d1d1d;
+    --btn:      #f0f0f0;
+    --btn-line: #9a9a9a;
+    --primary:  #0075ff;
+    --th-bg:    #f2f5fa;
+    --edit-bg:  #fffef4;   /* 편집 가능 셀 배경 */
+    /* 등급 색 */
+    --g-none:   #e0342b;   /* 없음(빨강) */
+    --g-low:    #e08e00;   /* 하(주황) */
+    --g-mid:    #444;      /* 중 */
+    --g-high:   #0075ff;   /* 상(파랑) */
+  }
+
+  body{
+    margin:0;
+    padding:16px;
+    background:#e9e9ea;
+    font-family:'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    font-size:14px;
+  }
+
+  /* ── 모달 ── */
+  .modal{
+    width:min(1860px, calc(100vw - 32px));   /* 일반 모니터보다 약간 작은 폭까지 확장 */
+    margin:0 auto;
+    background:#fff;
+    border:1px solid #bdbdbd;
+    box-shadow:0 6px 30px rgba(0,0,0,.18);
+    padding:24px 30px 36px;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:-6px; right:24px;
+    width:42px; height:34px; font-size:16px;
+    background:var(--btn); border:1px solid var(--btn-line);
+    border-radius:4px; cursor:pointer; color:#333;
+  }
+
+  /* ── 헤더 ── */
+  .modal-head{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:20px; margin:6px 0 16px;
+  }
+  .modal-title{ font-size:20px; font-weight:700; }
+  .nav-btns{ display:flex; gap:6px; flex-shrink:0; }
+
+  .btn{
+    font-family:inherit; font-size:13px;
+    background:var(--btn); border:1px solid var(--btn-line);
+    border-radius:4px; padding:6px 11px; cursor:pointer; color:#333;
+    white-space:nowrap;
+  }
+  .btn:hover{ background:#e6e6e6; }
+  .btn.btn-primary{ background:var(--primary); border-color:var(--primary); color:#fff; }
+  .btn.btn-primary:hover{ background:#0064dd; }
+  .btn.btn-nav{ width:36px; height:30px; padding:0; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .btn.btn-sm{ font-size:12px; padding:4px 9px; }
+
+  /* ── (추가) 한 줄 코멘트 ── */
+  .oneliner{
+    border:1px solid #cdddf5;
+    background:#f5f9ff;
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:20px;
+  }
+  .oneliner-top{
+    display:flex; align-items:center; gap:12px; margin-bottom:10px;
+  }
+  .oneliner-label{
+    font-size:15px; font-weight:700; color:#0a4ea8;
+    display:inline-flex; align-items:center; gap:6px; flex-shrink:0;
+  }
+  .oneliner-label::before{
+    content:"AI"; font-size:10px; font-weight:700; color:#fff;
+    background:var(--primary); border-radius:3px; padding:1px 5px;
+  }
+  .oneliner-hint{ font-size:12px; color:var(--muted); flex:1; }
+  .oneliner-btns{ display:flex; gap:6px; flex-shrink:0; }
+  .oneliner-text{
+    width:100%; font-family:inherit; font-size:15px; line-height:1.6; color:#041d30;
+    border:1px solid #c9d8ee; border-radius:6px; background:#fff;
+    padding:10px 12px; resize:vertical; min-height:52px;
+  }
+  .oneliner-text:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 2px rgba(0,117,255,.15); }
+  .oneliner-saved{
+    display:none; font-size:12px; color:#20aa40; font-weight:700; margin-left:4px; align-self:center;
+  }
+  .oneliner-saved.show{ display:inline; }
+
+  /* ── 본문 2단 ── */
+  .modal-body{ display:flex; align-items:flex-start; gap:0; }
+  .col-essay{
+    flex:0 0 560px; width:560px;
+    border-right:1px dashed #c4c4c4;
+    padding-right:22px;
+  }
+  .col-metric{ flex:1; padding-left:22px; min-width:0; }
+
+  /* 문항 / 자기소개서 */
+  .q-title{ font-size:15px; font-weight:700; margin:0 0 12px; }
+  .q-block + .q-block{ margin-top:30px; }
+  .essay{ font-size:15px; line-height:1.95; margin:0; color:var(--ink); }
+  .essay .hl{ color:var(--essay); }
+  .cite{ font-size:11px; vertical-align:sub; color:var(--link); cursor:pointer; }
+  .cite:hover{ text-decoration:underline; }
+  .q-empty{ font-size:15px; color:var(--essay); margin:0; }
+
+  /* ── (추가) 관리 안내 ── */
+  .manage-hint{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px; color:#0a4ea8;
+    background:#eef5ff; border:1px solid #d5e4fb; border-radius:6px;
+    padding:8px 12px; margin-bottom:12px;
+  }
+  .manage-hint .ic{
+    width:18px; height:18px; flex-shrink:0; border-radius:50%;
+    border:1px solid #0a4ea8; color:#0a4ea8; font-size:11px; font-weight:700;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+
+  /* ── factor 근거요약 테이블 ── */
+  .ftable{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .ftable col.c-factor{ width:78px; }
+  .ftable col.c-sum{ width:auto; }
+  .ftable col.c-ref{ width:128px; }
+  .ftable col.c-grade{ width:92px; }
+  .ftable col.c-regen{ width:80px; }
+
+  .ftable th{
+    background:var(--th-bg);
+    border-top:1px solid #b9c4d6; border-bottom:1px solid #b9c4d6;
+    font-size:13px; font-weight:700; color:#1a2b44;
+    padding:10px 8px; text-align:center; line-height:1.35;
+  }
+  .ftable td{
+    border-bottom:1px solid var(--line);
+    padding:10px 8px; vertical-align:middle; font-size:13.5px;
+  }
+  .ftable td.factor{
+    text-align:center; font-weight:700; font-size:14px; line-height:1.35; color:#1a2b44;
+  }
+  .ftable td.ref{ text-align:center; line-height:1.7; }
+  .ftable td.grade{ text-align:center; }
+  .ftable td.regen{ text-align:center; }
+  .ref-link{ color:var(--link); cursor:pointer; white-space:nowrap; }
+  .ref-link:hover{ text-decoration:underline; }
+  .ref-none{ color:var(--muted); }
+
+  /* (추가) 편집 가능한 근거요약 셀 */
+  .ev-summary{
+    font-size:13.5px; line-height:1.6; color:#222;
+    border:1px solid transparent; border-radius:5px;
+    padding:6px 8px; min-height:32px;
+    transition:background .12s, border-color .12s;
+    cursor:text;
+  }
+  .ev-summary:hover{ background:var(--edit-bg); border-color:#e3d9a6; }
+  .ev-summary:focus{ outline:none; background:#fff; border-color:var(--primary); box-shadow:0 0 0 2px rgba(0,117,255,.15); }
+  .ev-summary.flash{ background:#eef5ff; border-color:#bcd6ff; }
+  .ev-edit-tag{
+    display:inline-block; font-size:10px; color:var(--muted);
+    margin-left:2px; vertical-align:middle;
+  }
+
+  /* (추가) 등급 드롭다운 */
+  .grade-sel{
+    font-family:inherit; font-size:13px; font-weight:700;
+    height:28px; width:72px; padding:0 20px 0 9px;
+    border:1px solid var(--ctrl,#b3b3b3); border-radius:4px;
+    background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'><path d='M0 0l4.5 6L9 0z' fill='%23888'/></svg>") no-repeat right 7px center;
+    -webkit-appearance:none; appearance:none; cursor:pointer; text-align:left;
+  }
+  .grade-sel.g-none{ color:var(--g-none); border-color:#eebcb8; }
+  .grade-sel.g-low{  color:var(--g-low);  border-color:#eed7a6; }
+  .grade-sel.g-mid{  color:var(--g-mid); }
+  .grade-sel.g-high{ color:var(--g-high); border-color:#aacdfb; }
+
+  .regen-btn{ font-size:12.5px; }
+  .regen-btn.loading{ color:#888; pointer-events:none; }
+</style>
+</head>
+<body>
+
+  <div class="modal">
+    <button class="modal-close">X</button>
+
+    <!-- 헤더 -->
+    <div class="modal-head">
+      <div class="modal-title">1. oooo (8a68aa0a07f3fc0f1e362e001fe4533d) 김민정</div>
+      <div class="nav-btns">
+        <button class="btn btn-nav">&laquo;</button>
+        <button class="btn btn-nav">&raquo;</button>
+      </div>
+    </div>
+
+    <!-- (추가) 한 줄 코멘트 : 최상단 -->
+    <div class="oneliner">
+      <div class="oneliner-top">
+        <span class="oneliner-label">한 줄 코멘트</span>
+        <span class="oneliner-hint">강점 · 보완점 · 채용담당자 확인사항을 한 문장으로 요약합니다. 직접 수정하거나 재생성할 수 있습니다.</span>
+        <div class="oneliner-btns">
+          <span class="oneliner-saved" id="ol-saved">저장됨 ✓</span>
+          <button class="btn btn-sm" id="ol-regen">재생성</button>
+          <button class="btn btn-sm btn-primary" id="ol-save">저장</button>
+        </div>
+      </div>
+      <textarea class="oneliner-text" id="ol-text" rows="2">화학공학 전공 지식과 다양한 생산 현장 경험·직무 관심도는 강점이나, 분석력·문제해결·전문성의 정량적 성과 근거가 부족합니다. 면접에서 구체적인 문제해결 사례와 성과 수치를 확인할 것을 권장합니다.</textarea>
+    </div>
+
+    <!-- 본문 -->
+    <div class="modal-body">
+
+      <!-- ── 좌: 자기소개서 + 근거문장 링크 ── -->
+      <div class="col-essay">
+
+        <div class="q-block">
+          <p class="q-title">문항 1. 111</p>
+          <p class="essay">무하유의 생산 기술 직무는 생물 공정 운영 및 의약품 원액 생산, 그리고 생물안전 위험성 평가와 현장 개선 등 안전 관리를 하는 것으로 알고 있습니다. 저는 화학공학을 전공하고 고분자, 신소재 공정을 세부적으로 연구했습니다.<span class="hl"> 학부 시절부터 공정 운영이나 생산 기술 분야에 관심을 두고 스마트 팩토리, 자동화 구축 프로젝트에 능동적으로 참여했습니다.</span><span class="cite">[1]</span> 생산 공정 엔지니어를 꿈꾸면서 현장 감각을 쌓는 것이 중요하다고 생각했습니다. 졸업한 선배들과 이야기를 나눌 때 전공을 현업에 바로 적용하기 어렵다는 것과 회사마다 다른 프로세스에 적응하고 배우는 것이 중요하다는 이야기를 들었습니다.<span class="hl"> 그래서 저는 기회가 생길 때마다 현장 체험에 도전해 왔고, 단기 아르바이트와 인턴, 파견직 근무 등 다양한 형태로 여러 분야의 생산 공장에서 근무했습니다.</span><span class="cite">[2]</span> 현장 경험은 돈을 주고도 살 수 없는 소중한 자산이라는 것을 깨달았고, 무엇보다도 현장에서 조금만 방심해도 큰 사고로 이어질 수 있다는 점을 깨달았습니다. 졸업 준비로 바쁜 때에도 신소재 관련 업체의 공장에서 인턴을 모집한다는 것을 알게 되었을 때 주저하지 않고 지원했던 것도 공장 운영과 생산 기술 직무를 경험하겠다는 열정이 있었기 때문입니다.<span class="cite">[3]</span><span class="hl"> 6개월 동안 인턴 과정을 거치면서 소방, 전기 등 다양한 관련 분야 지식의 필요성을 느꼈고 독학으로 자격시험을 준비하며 실무에 적용해보기도 했습니다.</span><span class="cite">[4]</span></p>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 2. 222</p>
+          <p class="essay"><span class="hl">저는 어릴 때부터 다양한 분야에 관심을 두고 즐겨왔습니다. 흥미가 생긴 분야가 있으면 만족할 만한 수준이 될 때까지 연구하고 공부했습니다.</span><span class="cite">[5]</span><span class="hl"> 작년에 LG 화학 생산 관리 직무에서 인턴을 수행하며 화학공학뿐만 아니라 전기, 소방 등 다양한 관련 분야에 지식이 있다면 실무에 크게 도움이 될 수 있다는 것을 깨달았습니다.</span><span class="cite">[6]</span><span class="hl"> 그래서 생산 공정과 관련된 전기, 소방 분야 이론 도서와 자격증 수험서를 통해 독학으로 공부하면서 기회가 있을 때마다 실무에 응용해 보기도 했습니다.</span><span class="cite">[7]</span><span class="hl"> 다양한 분야를 공부하는 것이 학업이나 실무에 도움이 되기도 하지만, 모두 높은 수준까지 공부하기는 불가능했습니다.</span><span class="cite">[8]</span><span class="hl"> 그래서 어떤 분야의 전문가가 되지 못한 것에 아쉬움을 느끼기도 했습니다.</span><span class="cite">[9]</span><span class="hl"> 이러한 점을 보완하기 위해 저는 전공인 화학공학만큼은 전문가가 되어야겠다고 생각했고, 지금도 전공 강의뿐만 아니라 해외 논문과 연구 보고서 등을 꾸준히 찾아보고 최신 기술을 이해하는 데 노력하고 있습니다.</span><span class="cite">[10]</span></p>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 3. 333</p>
+          <p class="essay"><span class="hl">저의 꿈은 LG 화학 공장에서 엔지니어로서 일하며 세계 최고 수준의 안전하고 효율적인 공장으로 발전시키고, 나아가서 공정 운영의 전문가로서 모든 부분을 총괄하여 공장을 설계해 보는 것입니다.</span><span class="cite">[11]</span> 학부 프로젝트와 신소재 관련 분야 공장에서 인턴으로 근무하며 공정 설계와 운영의 기초를 다졌습니다.</p>
+        </div>
+
+      </div>
+
+      <!-- ── 우: factor 근거요약 관리 ── -->
+      <div class="col-metric">
+
+        <div class="manage-hint">
+          <span class="ic">i</span>
+          <span>근거요약은 텍스트를 클릭해 직접 수정할 수 있으며, <b>BP등급</b>을 변경하거나 <b>[재생성]</b>으로 다시 생성할 수 있습니다.</span>
+        </div>
+
+        <table class="ftable">
+          <colgroup>
+            <col class="c-factor"><col class="c-sum"><col class="c-ref"><col class="c-grade"><col class="c-regen">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>역량<br>분자</th>
+              <th>근거요약</th>
+              <th>근거문장</th>
+              <th>BP등급</th>
+              <th>근거<br>재생성</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="factor">전문성</td>
+              <td><div class="ev-summary" contenteditable="true">평가 대상 분야에서의 심화 기술, 자격, 도구 활용, 실무 적용 성과가 확인되지 않습니다. 제시된 내용은 다른 분야의 전공·현장 경험에 머뭅니다.</div></td>
+              <td class="ref"><span class="ref-none">–</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">발전<br>가능성</td>
+              <td><div class="ev-summary" contenteditable="true">실무 필요성을 인식한 뒤 전기·소방 분야를 독학하고 일부 실무 적용을 시도한 점은 보이지만, 학습 계획의 체계성이나 적용 성과가 구체적으로 입증되지는 않았습니다.</div></td>
+              <td class="ref"><span class="ref-link">[4]</span> <span class="ref-link">[6]</span> <span class="ref-link">[7]</span> <span class="ref-link">[10]</span> <span class="ref-link">[14]</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">AI<br>리터러시</td>
+              <td><div class="ev-summary" contenteditable="true">AI 도구, 모델, 자동화형 AI 활용 경험이나 이에 따른 업무 개선 사례가 직접적으로 제시되지 않았습니다.</div></td>
+              <td class="ref"><span class="ref-none">–</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">고객<br>서비스<br>역량</td>
+              <td><div class="ev-summary" contenteditable="true">고객 응대, 요구 파악, 불만 해결 등 고객 관련 사례가 제시되지 않았습니다.</div></td>
+              <td class="ref"><span class="ref-none">–</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">논리<br>분석력</td>
+              <td><div class="ev-summary" contenteditable="true">데이터나 근거를 체계적으로 분석해 원인을 진단하거나 개선안을 도출한 구체적 사례가 없습니다.</div></td>
+              <td class="ref"><span class="ref-none">–</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">전략적<br>사고</td>
+              <td><div class="ev-summary" contenteditable="true">장기 목표와 지향점은 제시했지만, 이를 달성하기 위한 단계별 계획, 우선순위, 자원 배분, 위험 대응 전략은 구체적으로 드러나지 않았습니다.</div></td>
+              <td class="ref"><span class="ref-link">[11]</span> <span class="ref-link">[12]</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">문제<br>해결력</td>
+              <td><div class="ev-summary" contenteditable="true">실무상 필요를 느끼고 관련 지식을 학습해 적용해 보았다는 내용은 있으나, 해결한 문제의 정의·원인·성과가 구체적으로 제시되지 않아 문제해결 사례로는 약합니다.</div></td>
+              <td class="ref"><span class="ref-link">[4]</span> <span class="ref-link">[14]</span> <span class="ref-link">[15]</span> <span class="ref-link">[16]</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">창의성</td>
+              <td><div class="ev-summary" contenteditable="true">새로운 관점으로 문제의 본질을 분석하거나 독창적 아이디어를 도출한 사고 과정이 직접적으로 제시되지 않았습니다.</div></td>
+              <td class="ref"><span class="ref-none">–</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="factor">메타<br>인지</td>
+              <td><div class="ev-summary" contenteditable="true">실무 경험을 통해 지식의 필요성과 자신의 한계를 인식했고, 이를 보완하기 위해 학습을 지속한 점은 드러나지만, 자신의 사고 과정을 점검·조정한 구체적 근거는 제한적입니다.</div></td>
+              <td class="ref"><span class="ref-link">[6]</span> <span class="ref-link">[8]</span> <span class="ref-link">[9]</span> <span class="ref-link">[10]</span></td>
+              <td class="grade"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>없음</option></select></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // 등급 드롭다운 색상
+  const GMAP = { '상':'g-high', '중':'g-mid', '하':'g-low', '없음':'g-none' };
+  function paint(sel){ sel.className = 'grade-sel ' + GMAP[sel.value]; }
+  document.querySelectorAll('.grade-sel').forEach(s => {
+    paint(s);
+    s.addEventListener('change', () => paint(s));
+  });
+
+  // factor 근거요약 재생성 (목업: 로딩 후 셀 하이라이트)
+  document.querySelectorAll('.regen-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cell = btn.closest('tr').querySelector('.ev-summary');
+      const orig = btn.textContent;
+      btn.textContent = '생성 중…';
+      btn.classList.add('loading');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('loading');
+        cell.classList.add('flash');
+        setTimeout(() => cell.classList.remove('flash'), 700);
+      }, 650);
+    });
+  });
+
+  // 한 줄 코멘트 재생성 / 저장 (목업)
+  const olText = document.getElementById('ol-text');
+  const olSaved = document.getElementById('ol-saved');
+  const SAMPLES = [
+    '화학공학 전공 지식과 다양한 생산 현장 경험·직무 관심도는 강점이나, 분석력·문제해결·전문성의 정량적 성과 근거가 부족합니다. 면접에서 구체적인 문제해결 사례와 성과 수치를 확인할 것을 권장합니다.',
+    '현장 중심의 적극적인 직무 탐색과 독학 학습 태도는 돋보이나, 전문성·논리분석력·창의성 영역의 검증 가능한 성과가 드러나지 않습니다. 면접에서 직무 전문성의 깊이를 추가로 확인할 것을 권장합니다.'
+  ];
+  let si = 0;
+  document.getElementById('ol-regen').addEventListener('click', (e) => {
+    const b = e.currentTarget; const t = b.textContent;
+    b.textContent = '생성 중…'; b.disabled = true; olSaved.classList.remove('show');
+    setTimeout(() => {
+      si = (si + 1) % SAMPLES.length;
+      olText.value = SAMPLES[si];
+      b.textContent = t; b.disabled = false;
+    }, 650);
+  });
+  document.getElementById('ol-save').addEventListener('click', () => {
+    olSaved.classList.add('show');
+    setTimeout(() => olSaved.classList.remove('show'), 1800);
+  });
+</script>
+</body>
+</html>

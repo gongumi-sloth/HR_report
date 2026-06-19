@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메트릭QC 검토 모달</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  *{ box-sizing:border-box; }
+
+  :root{
+    --essay:    #2e54c4;   /* 자기소개서 본문(파랑) */
+    --ink:      #1a1a1a;   /* 제목/라벨 텍스트 */
+    --refs:     #333;      /* 근거문장 번호 */
+    --line:     #cfcfcf;   /* 메트릭 행 구분선 */
+    --line-dk:  #1d1d1d;   /* 섹션 헤더 밑줄 */
+    --ctrl:     #b3b3b3;   /* 드롭다운 테두리 */
+    --btn:      #f0f0f0;
+    --btn-line: #9a9a9a;
+    --group-bg: #f6f6f6;
+  }
+
+  body{
+    margin:0;
+    padding:28px;
+    background:#e9e9ea;
+    font-family:'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    font-size:14px;
+  }
+
+  /* ── 모달 ── */
+  .modal{
+    width:1000px;
+    max-width:100%;
+    margin:0 auto;
+    background:#fff;
+    border:1px solid #bdbdbd;
+    box-shadow:0 6px 28px rgba(0,0,0,.18);
+    padding:28px 34px 40px;
+    position:relative;
+  }
+
+  /* 닫기 버튼 */
+  .modal-close{
+    position:absolute;
+    top:-8px;
+    right:24px;
+    width:42px;
+    height:34px;
+    font-size:16px;
+    font-weight:500;
+    background:var(--btn);
+    border:1px solid var(--btn-line);
+    border-radius:4px;
+    cursor:pointer;
+    color:#333;
+  }
+
+  /* ── 헤더(제목 + 점수/버튼) ── */
+  .modal-title{
+    font-size:20px;
+    font-weight:700;
+    margin:6px 0 18px;
+  }
+
+  .score-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:26px;
+  }
+  .score-val{
+    font-size:16px;
+    font-weight:700;
+    margin-right:8px;
+    white-space:nowrap;
+  }
+  .btn{
+    font-family:inherit;
+    font-size:13px;
+    background:var(--btn);
+    border:1px solid var(--btn-line);
+    border-radius:4px;
+    padding:6px 11px;
+    cursor:pointer;
+    color:#333;
+    white-space:nowrap;
+  }
+  .btn:hover{ background:#e6e6e6; }
+  .btn-gap{ width:34px; }
+  .nav-col{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    margin-left:6px;
+  }
+  .btn-nav{
+    width:34px;
+    height:22px;
+    padding:0;
+    font-size:12px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* ── 본문 2단 ── */
+  .modal-body{
+    display:flex;
+    align-items:flex-start;
+    gap:0;
+  }
+  .col-essay{
+    width:530px;
+    flex:0 0 530px;
+    border-right:1px dashed #c4c4c4;
+    padding-right:22px;
+  }
+  .col-metric{
+    flex:1;
+    padding-left:28px;
+  }
+
+  /* 문항 */
+  .q-title{
+    font-size:15px;
+    font-weight:700;
+    margin:0 0 14px;
+  }
+  .q-block + .q-block{ margin-top:48px; }
+
+  .essay{
+    color:var(--essay);
+    font-size:15px;
+    line-height:1.95;
+    margin:0;
+  }
+  .essay p{ margin:0 0 2px; }
+  .essay .para{ margin-top:2px; text-indent:0; }
+  .cite{
+    font-size:11px;
+    vertical-align:sub;
+    color:var(--essay);
+    margin-left:1px;
+  }
+  .q-empty{ color:var(--essay); font-size:15px; margin:0; }
+
+  /* ── 메트릭 패널 ── */
+  .metric-block{ margin-bottom:30px; }
+  .metric-head{
+    font-size:22px;
+    font-weight:700;
+    margin:0 0 2px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--line-dk);
+  }
+
+  .mrow{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:11px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .mlabel{
+    font-weight:700;
+    font-size:15px;
+    width:108px;
+    flex:0 0 108px;
+  }
+  .refs{
+    font-size:14px;
+    color:var(--refs);
+    letter-spacing:1px;
+  }
+
+  /* 드롭다운 */
+  .gsel{
+    font-family:inherit;
+    font-size:13px;
+    height:26px;
+    width:48px;
+    padding:0 18px 0 7px;
+    border:1px solid var(--ctrl);
+    border-radius:3px;
+    background:#f0f0f0 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'><path d='M0 0l4.5 6L9 0z' fill='%23555'/></svg>") no-repeat right 6px center;
+    -webkit-appearance:none;
+    appearance:none;
+    cursor:pointer;
+    color:#222;
+  }
+
+  /* 직무 역량 그룹 행 */
+  .mrow-group{
+    align-items:center;
+    background:var(--group-bg);
+  }
+  .grade-text{
+    font-size:15px;
+    width:40px;
+    flex:0 0 40px;
+    text-align:left;
+  }
+  .subcol{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .subitem{ display:flex; flex-direction:column; gap:5px; }
+  .sublabel{ font-size:15px; }
+  .subctrl{ display:flex; align-items:center; gap:10px; }
+</style>
+</head>
+<body>
+
+  <div class="modal">
+    <button class="modal-close">X</button>
+
+    <div class="modal-title">3. 1 (영업직, 37924ebcd19b0278527ce43e68c63cc2)</div>
+
+    <div class="score-bar">
+      <span class="score-val">점수: 3911</span>
+      <button class="btn">결함검사</button>
+      <button class="btn">검토(사전)반영</button>
+      <button class="btn">사전보기</button>
+      <span class="btn-gap"></span>
+      <button class="btn">선택불용등록</button>
+      <button class="btn">하이라이트 제거</button>
+      <button class="btn">하이라이트 보기</button>
+      <button class="btn">등급 저장</button>
+      <div class="nav-col">
+        <button class="btn btn-nav">&laquo;</button>
+        <button class="btn btn-nav">&raquo;</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- ── 좌: 자기소개서 ── -->
+      <div class="col-essay">
+
+        <div class="q-block">
+          <p class="q-title">문항 1. 자기소개를 해주세요</p>
+          <div class="essay">
+            <p>하반기 1,000명 뽑는 코레일</p>
+            <p>안녕하세요. 저는 남자이며 완두콩입니다.</p>
+            <p class="para">&nbsp;'지난 코네일 상반기 공공기관으로는 가장 많은 1000명을 채용하면서 채용 시장에 훈풍을 불어넣은 코레일이 하반기에도 1000명을 채용할 예정으로, 한 해에 신입사원 총 2000명을 채용하는 것으로 공사가 창립된 2005년 이래 최대 규모다'라는 뉴스를 한 포털에서 보았습니다.<span class="cite">[1]</span> 가슴이 두근거렸습니다. 정부의 공공일자리 확대 기조에 부응하여 청년세대의 취업률을 높일 수 있는 좋은 방책이자, 저에게는 아주 큰 기회이기도 합니다.<span class="cite">[2]</span> data기획 워크 앤 라이프 밸런스가 대두되는 현 시점에서 보장된 육아휴직, 연차와 분리된 병가와 같은 높은 근무 만족도는 저에게 '신의 직장' 이자 제가 평생 몸담을 곳이라고 생각했습니다.<span class="cite">[3]</span></p>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 2. 직무에 지원한 이유와 본인의 역량을 연결해 설명해주세요.</p>
+          <div class="essay">
+            <p class="para">잠실고등학교 무히유의 재무 직무를 성공적으로 수행하기 위해서는 정확한 일처리를 위한 수리적 감각, 회사 경영에서 발생할 수 있는 여러 문제를 해결할 수 있는 문제해결능력, 원만한 협업을 위한 대인관계능력이 필요하다고 생각합니다.<span class="cite">[4]</span> 저는 경제학을 전공하는 과정에서 수리적 감각을 키울 수 있었으며, 대기업 재무 경력을 쌓으며 해당 능력을 크게 향상시켰습니다.<span class="cite">[5]</span> 업무를 수행하며 예상치 못한 상황을 여러 차례 맞았으나, 그 때마다 정확한 문제 상황을 파악하고자 노력했습니다.<span class="cite">[6]</span> 이 때 선례를 참고하는 것이 빠르고 해외개발 정확한 해결에 도움이 된다는 것을 깨닫고, 이를 위한 사내 이해관계자와의 대인관계를 원만하게 하는 것을 게을리 하지 않았습니다.<span class="cite">[7]</span> 그 결과, 단시간 내에 제가 속했던 팀의 중추 인력으로 성장할 수 있었습니다.<span class="cite">[8]</span></p>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 3. 성격의 장단점을 말씀해주세요.</p>
+          <p class="q-empty">ㅇ</p>
+        </div>
+
+      </div>
+
+      <!-- ── 우: 메트릭 ── -->
+      <div class="col-metric">
+
+        <!-- 직무적합도 -->
+        <div class="metric-block">
+          <h3 class="metric-head">직무적합도 3911</h3>
+          <div class="mrow">
+            <span class="mlabel">직무경험</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[5]</span>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">직무지식</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[4] [5]</span>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">직무동기</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[2] [3]</span>
+          </div>
+          <div class="mrow mrow-group">
+            <span class="mlabel">직무 역량</span>
+            <span class="grade-text">하</span>
+            <div class="subcol">
+              <div class="subitem">
+                <div class="sublabel">주도성</div>
+                <div class="subctrl">
+                  <select class="gsel"><option>-</option><option>상</option><option>중</option><option>하</option></select>
+                </div>
+              </div>
+              <div class="subitem">
+                <div class="sublabel">성취지향</div>
+                <div class="subctrl">
+                  <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+                  <span class="refs">[6] [8]</span>
+                </div>
+              </div>
+              <div class="subitem">
+                <div class="sublabel">대인관계 역량</div>
+                <div class="subctrl">
+                  <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+                  <span class="refs">[7]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 조직적합도 -->
+        <div class="metric-block">
+          <h3 class="metric-head">조직적합도 3911</h3>
+          <div class="mrow">
+            <span class="mlabel">리더십 역량</span>
+            <select class="gsel"><option>-</option><option>상</option><option>중</option><option>하</option></select>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">협상력</span>
+            <select class="gsel"><option>-</option><option>상</option><option>중</option><option>하</option></select>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">갈등관리 역량</span>
+            <select class="gsel"><option>-</option><option>상</option><option>중</option><option>하</option></select>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">팀워크 역량</span>
+            <select class="gsel"><option>-</option><option>상</option><option>중</option><option>하</option></select>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">의사소통 역량</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[7]</span>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">대인관계 역량</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[7]</span>
+          </div>
+        </div>
+
+        <!-- 지원동기 -->
+        <div class="metric-block">
+          <h3 class="metric-head">지원동기 3911</h3>
+          <div class="mrow">
+            <span class="mlabel">직무 동기</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[2] [3]</span>
+          </div>
+          <div class="mrow">
+            <span class="mlabel">회사 동기</span>
+            <select class="gsel"><option>하</option><option>상</option><option>중</option><option>-</option></select>
+            <span class="refs">[1] [2] [3]</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
