@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BP평가 결과관리 모달 · 검토</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  *{ box-sizing:border-box; }
+  :root{
+    --essay:#2e54c4; --link:#0075ff; --ink:#1a1a1a; --muted:#7d7d80;
+    --line:#d3d3d3; --btn:#f0f0f0; --btn-line:#9a9a9a; --primary:#0075ff; --th-bg:#f2f5fa;
+    --g-none:#e0342b; --g-low:#e08e00; --g-mid:#444; --g-high:#0075ff; --g-na:#9a9a9a;
+  }
+  body{ margin:0; padding:16px; background:#e9e9ea; font-family:'Noto Sans KR',sans-serif; color:var(--ink); font-size:14px; }
+  .num{ font-family:'Noto Sans','Noto Sans KR',sans-serif; }
+
+  /* ── 모달 ── */
+  .modal{ width:min(1860px,calc(100vw - 32px)); margin:0 auto; background:#fff; border:1px solid #bdbdbd; box-shadow:0 6px 30px rgba(0,0,0,.18); position:relative; max-height:calc(100vh - 40px); display:flex; flex-direction:column; overflow:hidden; }
+  .modal-scroll{ flex:1; overflow-y:auto; padding:22px 30px 32px; }
+  .modal-close{ position:absolute; top:10px; right:14px; z-index:5; width:42px; height:34px; font-size:16px; background:var(--btn); border:1px solid var(--btn-line); border-radius:4px; cursor:pointer; color:#333; }
+
+  /* ── 헤더 ── */
+  .modal-head{ margin:2px 56px 12px 0; }
+  .modal-kicker{ font-size:12px; font-weight:700; color:var(--primary); margin-bottom:2px; }
+  .modal-title{ font-size:20px; font-weight:700; }
+
+  /* ── 액션 바 (점수 + 버튼) ── */
+  .action-bar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-bottom:14px; margin-bottom:18px; border-bottom:1px solid #d3d3d3; }
+  .score{ font-size:15px; font-weight:700; margin-right:auto; }
+  .score b{ color:var(--primary); }
+  .action-btns{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .bar-sep{ width:1px; height:20px; background:#ccc; margin:0 4px; }
+
+  .btn{ font-family:inherit; font-size:13px; background:var(--btn); border:1px solid var(--btn-line); border-radius:4px; padding:6px 11px; cursor:pointer; color:#333; white-space:nowrap; }
+  .btn:hover{ background:#e6e6e6; }
+  .btn.btn-primary{ background:var(--primary); border-color:var(--primary); color:#fff; }
+  .btn.btn-primary:hover{ background:#0064dd; }
+  .btn.btn-nav{ width:34px; padding:6px 0; text-align:center; }
+  .btn.btn-sm{ font-size:12px; padding:4px 9px; }
+  .btn.on{ background:#dbe9ff; border-color:#9fc4f5; color:#0a4ea8; }
+
+  /* ── 한 줄 코멘트 ── */
+  .oneliner{ padding:0 0 18px; margin-bottom:18px; border-bottom:1px solid #e3e3e3; }
+  .oneliner-top{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .oneliner-label{ font-size:15px; font-weight:700; color:#0a4ea8; flex-shrink:0; }
+  .ol-count{ font-size:12px; color:var(--muted); margin-left:auto; align-self:center; }
+  .ol-count.over{ color:var(--g-none); font-weight:700; }
+  .oneliner-btns{ display:flex; gap:6px; align-items:center; flex-shrink:0; }
+  .oneliner-text{ width:100%; font-family:inherit; font-size:15px; line-height:1.6; color:#041d30; border:1px solid #c9d8ee; border-radius:6px; background:#fff; padding:10px 12px; resize:vertical; min-height:52px; }
+  .oneliner-text:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 2px rgba(0,117,255,.15); }
+  .oneliner-saved{ display:none; font-size:12px; color:#20aa40; font-weight:700; }
+  .oneliner-saved.show{ display:inline; }
+
+  /* ── 자소서 특장점 ── */
+  .strengths{ padding:0 0 18px; margin-bottom:18px; border-bottom:1px solid #e3e3e3; }
+  .strengths-top{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .strengths-label{ font-size:15px; font-weight:700; color:#1d7a37; flex-shrink:0; }
+  .strengths-spacer{ flex:1; }
+  .strengths-btns{ display:flex; gap:6px; align-items:center; flex-shrink:0; }
+  .strength-list{ display:flex; flex-direction:column; gap:2px; }
+  .strength-item{ display:flex; align-items:flex-start; gap:8px; }
+  .strength-item .bullet{ color:#20aa40; font-weight:700; margin-top:4px; flex-shrink:0; }
+  .strength-item .txt{ flex:1; font-size:14px; line-height:1.5; color:#1a1a1a; padding:2px; }
+
+  /* ── 본문 2단 ── */
+  .modal-body{ display:flex; align-items:flex-start; gap:0; }
+  .col-essay{ flex:0 0 560px; width:560px; border-right:1px dashed #c4c4c4; padding-right:22px; }
+  .col-metric{ flex:1; padding-left:22px; min-width:0; }
+
+  /* 문항 / 자기소개서 */
+  .q-block + .q-block{ margin-top:26px; }
+  .q-title{ font-size:15px; font-weight:700; margin:0 0 8px; }
+  .q-keyword{ display:inline-block; font-size:14px; font-weight:700; color:#1a1a1a; margin:0 0 6px; }
+  .essay{ font-size:15px; line-height:1.95; margin:0; color:var(--ink); }
+  .essay .hl{ color:var(--essay); border-radius:3px; transition:background .15s, box-shadow .15s; }
+  .essay.hl-off .hl{ color:var(--ink); }
+  .essay .hl.hl-active{ background:rgba(0,117,255,.18); box-shadow:0 0 0 3px rgba(0,117,255,.18); }
+  .cite{ font-size:11px; vertical-align:sub; color:var(--link); cursor:pointer; }
+  .cite:hover{ text-decoration:underline; }
+
+  /* ── 메트릭 > factor 계층 ── */
+  .metric-block + .metric-block{ margin-top:24px; }
+  .metric-h{ font-size:19px; font-weight:700; color:#1a1a1a; margin:0 0 10px; }
+  .metric-h .num{ margin-left:6px; color:#1a1a1a; }
+  .metric-table{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .metric-table col.c-mf{ width:130px; } .metric-table col.c-mg{ width:80px; } .metric-table col.c-sum{ width:auto; } .metric-table col.c-mr{ width:116px; } .metric-table col.c-regen{ width:76px; }
+  .metric-table td{ border-bottom:1px solid #e3e3e3; padding:9px 8px; vertical-align:top; font-size:14px; }
+  .metric-table tr:first-child td{ border-top:1px solid #b9c4d6; }
+  .metric-table td.mf{ background:var(--th-bg); font-weight:700; color:#1a2b44; text-align:left; padding-left:12px; }
+  .metric-table td.mf.sub{ padding-left:24px; font-weight:500; position:relative; }
+  .metric-table td.mf.sub::before{ content:'└'; position:absolute; left:11px; color:#aab; }
+  .metric-table td.grp-head{ background:#eef1f5; font-weight:700; color:#1a2b44; padding:7px 12px; }
+  .metric-table td.grp-head .ov{ margin-left:8px; color:var(--g-low); }
+  .metric-table td.mg{ text-align:center; }
+  .metric-table td.sum{ font-size:13px; line-height:1.55; color:#222; }
+  .metric-table td.mr{ color:var(--link); line-height:1.8; }
+  .metric-table td.regen{ text-align:center; }
+  .ev-summary{ padding:4px 6px; border-radius:5px; transition:background .12s; }
+  .ev-summary.flash{ background:#eef5ff; }
+  .regen-btn{ font-size:12px; }
+  .regen-btn.loading{ color:#888; pointer-events:none; }
+  .ref-none{ color:var(--muted); }
+  .ref-link{ color:var(--link); cursor:pointer; white-space:nowrap; }
+  .ref-link:hover{ text-decoration:underline; }
+
+  /* 등급 드롭다운 */
+  .grade-sel{ font-family:inherit; font-size:13px; font-weight:700; height:28px; width:64px; padding:0 18px 0 9px; border:1px solid #b3b3b3; border-radius:4px; background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'><path d='M0 0l4.5 6L9 0z' fill='%23888'/></svg>") no-repeat right 6px center; -webkit-appearance:none; appearance:none; cursor:pointer; text-align:left; }
+  .grade-sel.g-none{ color:var(--g-none); border-color:#eebcb8; }
+  .grade-sel.g-low{ color:var(--g-low); border-color:#eed7a6; }
+  .grade-sel.g-mid{ color:var(--g-mid); }
+  .grade-sel.g-high{ color:var(--g-high); border-color:#aacdfb; }
+  .grade-sel.g-na{ color:var(--g-na); }
+
+  /* ── 하드스킬 ── */
+  .sec-hs{ margin-top:28px; }
+  .sec-title{ font-size:17px; font-weight:700; color:#1a1a1a; margin:0 0 10px; }
+  .hs-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .hs-meta{ font-size:12px; color:var(--muted); }
+  .hs-table{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .hs-table col.c-skill{ width:auto; } .hs-table col.c-detect{ width:90px; } .hs-table col.c-hsref{ width:150px; } .hs-table col.c-act{ width:78px; }
+  .hs-table th{ background:var(--th-bg); border-top:1px solid #b9c4d6; border-bottom:1px solid #b9c4d6; font-size:13px; font-weight:700; color:#1a2b44; padding:9px 8px; text-align:center; }
+  .hs-table td{ border-bottom:1px solid var(--line); padding:9px 8px; vertical-align:middle; font-size:13.5px; }
+  .hs-table td.skill{ font-weight:700; color:#1a2b44; padding-left:6px; }
+  .hs-table td.detect, .hs-table td.hsref, .hs-table td.act{ text-align:center; }
+  .hs-table td.hsref{ line-height:1.7; }
+  .hs-table tr.flash td{ background:#eef5ff; }
+  .hs-status{ font-size:13.5px; font-weight:700; }
+  .hs-status.detected{ color:#0075ff; }
+  .hs-status.undetected{ color:#e08e00; }
+
+  /* 토스트 */
+  #toast{ position:fixed; left:50%; bottom:32px; transform:translateX(-50%); background:#1f2937; color:#fff; padding:11px 20px; border-radius:6px; font-size:13px; opacity:0; transition:opacity .25s; pointer-events:none; z-index:500; }
+  #toast.show{ opacity:.95; }
+</style>
+</head>
+<body>
+
+<div class="modal">
+  <button class="modal-close" id="m-close">X</button>
+  <div class="modal-scroll">
+
+    <!-- 헤더 -->
+    <div class="modal-head">
+      <div class="modal-kicker">BP평가 결과관리 · 검토</div>
+      <div class="modal-title">2. 3 (영업직, 06537a6f98ed5888e72c3ed7aae8691b)</div>
+    </div>
+
+    <!-- 액션 바 -->
+    <div class="action-bar">
+      <span class="score">점수: <b class="num">4299</b></span>
+      <div class="action-btns">
+        <button class="btn" data-mock="결함검사">결함검사</button>
+        <button class="btn" data-mock="검토(사전)반영">검토(사전)반영</button>
+        <button class="btn" data-mock="사전보기">사전보기</button>
+        <span class="bar-sep"></span>
+        <button class="btn" id="btn-stopword">선택불용등록</button>
+        <button class="btn" id="btn-hl-off">하이라이트 제거</button>
+        <button class="btn on" id="btn-hl-on">하이라이트 보기</button>
+        <button class="btn btn-primary" id="btn-save-grade">등급 저장</button>
+        <button class="btn btn-nav">&laquo;</button>
+        <button class="btn btn-nav">&raquo;</button>
+      </div>
+    </div>
+
+    <!-- 한 줄 코멘트 -->
+    <div class="oneliner">
+      <div class="oneliner-top">
+        <span class="oneliner-label">한 줄 코멘트</span>
+        <span class="ol-count" id="ol-count">0 / 90</span>
+        <div class="oneliner-btns">
+          <span class="oneliner-saved" id="ol-saved">저장됨 ✓</span>
+          <button class="btn btn-sm" id="ol-regen">재생성</button>
+          <button class="btn btn-sm btn-primary" id="ol-save">저장</button>
+        </div>
+      </div>
+      <textarea class="oneliner-text" id="ol-text" rows="2" maxlength="90">성실함과 메모·기록 기반의 꼼꼼한 고객관리는 강점이나, 직무지식·논리분석의 검증된 성과가 부족해 면접 확인을 권장합니다.</textarea>
+    </div>
+
+    <!-- 자소서 특장점 -->
+    <div class="strengths">
+      <div class="strengths-top">
+        <span class="strengths-label">자소서 특장점</span>
+        <span class="strengths-spacer"></span>
+        <div class="strengths-btns">
+          <button class="btn btn-sm" id="st-regen">재생성</button>
+        </div>
+      </div>
+      <div class="strength-list" id="st-list">
+        <div class="strength-item"><span class="bullet">•</span><div class="txt">출근 30분 전 업무 준비·정리 등 성실성과 자기관리 역량이 뚜렷합니다.</div></div>
+        <div class="strength-item"><span class="bullet">•</span><div class="txt">메모·기록 습관을 통한 꼼꼼한 고객·재고 관리 경험이 강점입니다.</div></div>
+        <div class="strength-item"><span class="bullet">•</span><div class="txt">주택영업 현장에서 쌓은 고객 응대·니즈 파악 경험을 갖추고 있습니다.</div></div>
+      </div>
+    </div>
+
+    <!-- 본문 -->
+    <div class="modal-body">
+
+      <!-- 좌: 자기소개서 -->
+      <div class="col-essay essay-wrap">
+        <div class="q-block">
+          <p class="q-title">문항 1. 협업 과정에서 갈등을 해결한 경험을 말씀해주세요.</p>
+          <div class="q-keyword">성실함</div>
+          <p class="essay">
+            <span class="hl">무하유에 지원하게 된 동기는 현재 무하유에 입사하여 다니고 있는 친구의 '강력한 추천'이었습니다. 높은 근무 만족도를 저도 꼭 느끼고 싶었습니다.</span><span class="cite">[1]</span>
+            <span class="hl">고등학교 3년 개근상은 제가 지금까지 주택영업 받아온 상 중에 가장 값진 상입니다.</span><span class="cite">[2]</span>
+            <span class="hl">학업했던 고등학교의 개근 기준이 매우 엄격하여 졸업생 중 개근상을 받은 학생이 10명도 되지 않았습니다.</span><span class="cite">[3]</span>
+            <span class="hl">이를 바탕으로 다음 학기 학생회 행사 기획안에 반영해 전년 대비 평균 참여율을 18%포인트 높였습니다.</span><span class="cite">[4]</span>
+            상당히 받기 힘든 상이기도 하지만, 저의 성실한 학교 생활을 증명할 수 있는 상이어서 가장 기억에 남는 상입니다. 이러한 저의 성실함은 지금까지 일 했던 모든 곳에서 빛을 발했습니다.
+            <span class="hl">항상 출근시간 30분씩 일찍 도착하여 일을 시작하기에 앞서 업무 파악을 하고 주변을 정리하곤 하였습니다.</span><span class="cite">[5]</span>
+            늘 일찍 가는 습관 덕분에 지각은 한 번도 해본 적이 없습니다. '건강보험공단'에서 가장 성실히 일하는 직원이 되겠습니다.
+          </p>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 2. 본인의 강점과 그것을 발휘한 경험을 서술해주세요.</p>
+          <div class="q-keyword">메모의 힘</div>
+          <p class="essay">
+            <span class="hl">저는 항상 아침 30분 일찍 출근하여 주변 정리 후에 하는 일은 바로 메모 체크입니다.</span><span class="cite">[6]</span>
+            <span class="hl">새로운 공지사항과 고객 요청, 불만사항, 주요제품의 재고 현황들을 늘 이메일로 남기고, 휴대전화 메시지로 신속하게 공유하였습니다.</span><span class="cite">[7]</span>
+            <span class="hl">전국 1위 매출의 매장이었지만, 사소한 메모 하나도 놓치지 않으려는 습관 덕분에 고객 응대 누락이 크게 줄었습니다.</span><span class="cite">[8]</span>
+            <span class="hl">특히 재고 현황을 실시간으로 기록·공유해 품절로 인한 판매 기회 손실을 예방했습니다.</span><span class="cite">[9]</span>
+            <span class="hl">이러한 기록 습관은 동료들과의 협업에서도 정보 공백을 메우는 데 큰 도움이 되었습니다.</span><span class="cite">[10]</span>
+          </p>
+        </div>
+
+        <div class="q-block">
+          <p class="q-title">문항 3. 지원 직무를 위해 준비한 노력과 입사 후 목표를 말씀해주세요.</p>
+          <div class="q-keyword">목표 지향</div>
+          <p class="essay">
+            <span class="hl">주택영업 현장에서 다양한 고객을 응대하며 상대의 니즈를 빠르게 파악하는 역량을 길렀습니다.</span><span class="cite">[11]</span>
+            <span class="hl">영업 데이터를 직접 정리·분석해 우선 공략 고객군을 선정하는 방식으로 계약 전환율을 높였습니다.</span><span class="cite">[12]</span>
+            <span class="hl">입사 후에는 고객 신뢰를 최우선으로 하는 영업 담당자가 되고자 합니다.</span><span class="cite">[13]</span>
+            <span class="hl">회사의 성장과 함께 장기적으로 영업 조직을 이끄는 리더로 성장하는 것이 목표입니다.</span><span class="cite">[14]</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- 우: 메트릭 > factor + 하드스킬 -->
+      <div class="col-metric">
+
+        <!-- 직무적합도 -->
+        <div class="metric-block">
+          <p class="metric-h">직무적합도 <span class="num">5867</span></p>
+          <table class="metric-table">
+            <colgroup><col class="c-mf"><col class="c-mg"><col class="c-sum"><col class="c-mr"><col class="c-regen"></colgroup>
+            <tr>
+              <td class="mf">직무경험</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="주택영업 매장에서 고객 응대·재고 관리 등 현장 직무 경험을 서술함.">고객 요청·재고 현황을 기록·공유하고 주택영업 현장에서 고객을 응대한 경험을 제시함.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span> <span class="ref-link">[8]</span> <span class="ref-link">[11]</span> <span class="ref-link">[12]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">직무지식</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="현장 경험 위주이며 직무 전문 지식을 뒷받침하는 구체적 서술은 약함.">재고·데이터 기록 등 실무 경험은 있으나 직무 관련 전문 지식의 구체적 근거는 부족함.</div></td>
+              <td class="mr"><span class="ref-link">[9]</span> <span class="ref-link">[10]</span> <span class="ref-link">[11]</span> <span class="ref-link">[12]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">직무동기</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="추천을 계기로 지원했으며 영업 담당자로서의 목표를 제시함.">지인 추천으로 지원했고, 고객 신뢰 중심의 영업 담당자가 되겠다는 포부를 밝힘.</div></td>
+              <td class="mr"><span class="ref-link">[1]</span> <span class="ref-link">[13]</span> <span class="ref-link">[14]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr><td class="grp-head" colspan="5">직무 역량 <span class="ov">하</span></td></tr>
+            <tr>
+              <td class="mf sub">주도성</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="일찍 출근해 업무를 미리 파악·정리하는 자기주도적 습관을 서술함.">출근 30분 전 업무 파악·정리, 메모 체크 등 스스로 업무를 준비하는 태도가 드러남.</div></td>
+              <td class="mr"><span class="ref-link">[5]</span> <span class="ref-link">[6]</span> <span class="ref-link">[7]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf sub">성취지향</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="꼼꼼한 기록으로 성과를 개선하려는 지향이 일부 확인됨.">기록 습관으로 협업 정보 공백을 메우고 고객 니즈 파악 역량을 길렀다고 서술함.</div></td>
+              <td class="mr"><span class="ref-link">[10]</span> <span class="ref-link">[11]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf sub">대인관계 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="고객·동료와 정보를 공유해 원활히 응대한 경험을 서술함.">고객 요청·불만을 신속히 공유하고 응대 누락을 줄인 경험을 제시함.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span> <span class="ref-link">[8]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- 조직적합도 -->
+        <div class="metric-block">
+          <p class="metric-h">조직적합도 <span class="num">5867</span></p>
+          <table class="metric-table">
+            <colgroup><col class="c-mf"><col class="c-mg"><col class="c-sum"><col class="c-mr"><col class="c-regen"></colgroup>
+            <tr>
+              <td class="mf">리더십 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="행사 기획을 주도한 사례가 단편적으로 제시됨.">학생회 행사 기획안을 주도해 참여율을 높인 경험이 일부 확인됨.</div></td>
+              <td class="mr"><span class="ref-link">[4]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">협상력</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option>하</option><option selected>-</option></select></td>
+              <td class="sum"><span class="ref-none">근거 없음</span></td>
+              <td class="mr"><span class="ref-none">–</span></td>
+              <td class="regen"><span class="ref-none">–</span></td>
+            </tr>
+            <tr>
+              <td class="mf">갈등관리 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="불만 처리 경험이 언급되나 갈등 해결 과정의 구체성은 약함.">고객 불만사항을 신속히 공유·처리한 사례가 단편적으로 제시됨.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">팀워크 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="동료와의 정보 공유로 협업에 기여한 경험을 제시함.">정보를 동료와 공유해 응대 누락을 줄인 협업 경험을 서술함.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span> <span class="ref-link">[8]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">의사소통 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="이메일·메시지를 활용한 정보 공유 방식을 서술함.">공지·요청·불만을 이메일·메시지로 공유한 의사소통 방식을 언급함.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">대인관계 역량</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option selected>중</option><option>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="원활한 정보 공유로 대인관계를 유지한 사례를 언급함.">고객·동료와의 정보 공유로 관계를 원활히 유지한 경험을 제시함.</div></td>
+              <td class="mr"><span class="ref-link">[7]</span> <span class="ref-link">[8]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- 지원동기 -->
+        <div class="metric-block">
+          <p class="metric-h">지원동기 <span class="num">4389</span></p>
+          <table class="metric-table">
+            <colgroup><col class="c-mf"><col class="c-mg"><col class="c-sum"><col class="c-mr"><col class="c-regen"></colgroup>
+            <tr>
+              <td class="mf">직무 동기</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="근무 만족과 영업 담당자로서의 목표를 지원 동기로 밝힘.">높은 근무 만족도를 느끼고 싶다는 동기와 영업 담당자 목표를 제시함.</div></td>
+              <td class="mr"><span class="ref-link">[1]</span> <span class="ref-link">[13]</span> <span class="ref-link">[14]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+            <tr>
+              <td class="mf">회사 동기</td>
+              <td class="mg"><select class="grade-sel"><option>상</option><option>중</option><option selected>하</option><option>-</option></select></td>
+              <td class="sum"><div class="ev-summary" data-alt="지인의 추천이 회사 지원의 주된 계기로 제시됨.">재직 중인 지인의 강력한 추천을 회사 지원 동기로 언급함.</div></td>
+              <td class="mr"><span class="ref-link">[1]</span></td>
+              <td class="regen"><button class="btn btn-sm regen-btn">재생성</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- 하드스킬 근거문장 -->
+        <div class="sec-hs">
+          <p class="sec-title">하드스킬 근거문장</p>
+          <div class="hs-head">
+            <button class="btn btn-sm btn-primary" id="hs-rematch">전체 재매칭</button>
+            <span class="hs-meta" id="hs-meta">JD 하드스킬 7개 · 자소서에서 매칭 (검출 4 / 미검출 3)</span>
+          </div>
+          <table class="hs-table">
+            <colgroup><col class="c-skill"><col class="c-detect"><col class="c-hsref"><col class="c-act"></colgroup>
+            <thead><tr><th>하드스킬</th><th>검출 여부</th><th>근거문장</th><th>재매칭</th></tr></thead>
+            <tbody>
+              <tr><td class="skill">주택영업</td><td class="detect"><span class="hs-status detected">검출</span></td><td class="hsref"><span class="ref-link">[2]</span> <span class="ref-link">[11]</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">고객 관리</td><td class="detect"><span class="hs-status detected">검출</span></td><td class="hsref"><span class="ref-link">[7]</span> <span class="ref-link">[8]</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">재고 관리</td><td class="detect"><span class="hs-status detected">검출</span></td><td class="hsref"><span class="ref-link">[9]</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">영업 데이터 분석</td><td class="detect"><span class="hs-status detected">검출</span></td><td class="hsref"><span class="ref-link">[12]</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">엑셀</td><td class="detect"><span class="hs-status undetected">미검출</span></td><td class="hsref"><span class="ref-none">–</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">제안서 작성</td><td class="detect"><span class="hs-status undetected">미검출</span></td><td class="hsref"><span class="ref-none">–</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+              <tr><td class="skill">CRM 솔루션</td><td class="detect"><span class="hs-status undetected">미검출</span></td><td class="hsref"><span class="ref-none">–</span></td><td class="act"><button class="btn btn-sm hs-rowmatch">재매칭</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // 등급 드롭다운 색상
+  const GMAP = { '상':'g-high', '중':'g-mid', '하':'g-low', '-':'g-na' };
+  function paint(sel){ sel.className = 'grade-sel ' + (GMAP[sel.value] || ''); }
+  document.querySelectorAll('.grade-sel').forEach(s => { paint(s); s.addEventListener('change', () => { paint(s); markDirty(); }); });
+
+  // 토스트
+  var toastEl = document.getElementById('toast'), toastT;
+  function toast(t){ toastEl.textContent = t; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), 2200); }
+
+  // ── 근거문장 클릭 → 자소서 문장 하이라이트 ──
+  const citeMap = {};
+  document.querySelectorAll('.col-essay .cite').forEach(c => { const m = c.textContent.match(/\d+/); if (m) { const prev = c.previousElementSibling; if (prev && prev.classList.contains('hl')) citeMap[m[0]] = prev; } });
+  let activeHl = null;
+  function highlightCite(num){
+    const el = citeMap[num]; if (!el) return;
+    if (activeHl) activeHl.classList.remove('hl-active');
+    el.classList.add('hl-active'); activeHl = el;
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  document.querySelectorAll('.col-essay .cite, .ref-link').forEach(link => {
+    link.style.cursor = 'pointer';
+    link.addEventListener('click', () => { const m = link.textContent.match(/\d+/); if (m) highlightCite(m[0]); });
+  });
+
+  // ── 근거요약 재생성 (읽기전용 · 재생성만, factor별) ──
+  document.querySelectorAll('.regen-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cell = btn.closest('tr').querySelector('.ev-summary');
+      if (!cell) return;
+      const orig = btn.textContent;
+      btn.textContent = '생성 중…'; btn.classList.add('loading');
+      setTimeout(() => {
+        const alt = cell.getAttribute('data-alt');
+        if (alt) { cell.setAttribute('data-alt', cell.textContent.trim()); cell.textContent = alt; }
+        cell.classList.add('flash'); setTimeout(() => cell.classList.remove('flash'), 700);
+        btn.textContent = orig; btn.classList.remove('loading'); markDirty();
+      }, 650);
+    });
+  });
+
+  // ── 하이라이트 보기/제거 ──
+  const essayWrap = document.querySelector('.col-essay');
+  document.getElementById('btn-hl-on').addEventListener('click', function(){ essayWrap.classList.remove('hl-off'); this.classList.add('on'); document.getElementById('btn-hl-off').classList.remove('on'); });
+  document.getElementById('btn-hl-off').addEventListener('click', function(){ essayWrap.classList.add('hl-off'); this.classList.add('on'); document.getElementById('btn-hl-on').classList.remove('on'); });
+
+  // ── 선택불용등록 ──
+  document.getElementById('btn-stopword').addEventListener('click', () => {
+    const sel = (window.getSelection ? window.getSelection().toString() : '').trim();
+    if (!sel) { alert('자소서에서 불용어로 등록할 텍스트를 먼저 선택해 주세요.'); return; }
+    toast('불용어로 등록되었습니다: "' + (sel.length > 20 ? sel.slice(0,20)+'…' : sel) + '"');
+  });
+
+  // ── 기타 액션(목업) ──
+  document.querySelectorAll('.btn[data-mock]').forEach(b => b.addEventListener('click', () => toast('[' + b.dataset.mock + '] 실행 (목업)')));
+
+  // ── 한 줄 코멘트 ──
+  const olText = document.getElementById('ol-text');
+  const olSaved = document.getElementById('ol-saved');
+  const olCount = document.getElementById('ol-count');
+  function updateOlCount(){ const n = olText.value.length; olCount.textContent = n + ' / 90'; olCount.classList.toggle('over', n <= 10 || n >= 90); }
+  olText.addEventListener('input', () => { updateOlCount(); markDirty(); });
+  const SAMPLES = [
+    '성실함과 메모·기록 기반의 꼼꼼한 고객관리는 강점이나, 직무지식·논리분석의 검증된 성과가 부족해 면접 확인을 권장합니다.',
+    '출근 전 준비·기록 습관 등 성실성은 돋보이나, 직무 전문성과 성과의 정량 근거가 약해 면접에서 깊이 확인을 권장합니다.'
+  ];
+  let si = 0;
+  document.getElementById('ol-regen').addEventListener('click', (e) => {
+    const b = e.currentTarget, t = b.textContent; b.textContent = '생성 중…'; b.disabled = true; olSaved.classList.remove('show');
+    setTimeout(() => { si = (si + 1) % SAMPLES.length; olText.value = SAMPLES[si]; updateOlCount(); markDirty(); b.textContent = t; b.disabled = false; }, 650);
+  });
+  document.getElementById('ol-save').addEventListener('click', () => {
+    if (olText.value.length <= 10) { alert('한 줄 코멘트는 10자를 초과해 입력해 주세요.'); olText.focus(); return; }
+    olSaved.classList.add('show'); markClean(); setTimeout(() => olSaved.classList.remove('show'), 1800);
+  });
+
+  // ── 자소서 특장점 (읽기전용 · 재생성 시 즉시 반영) ──
+  const stList = document.getElementById('st-list');
+  function addStrength(text){ const div = document.createElement('div'); div.className = 'strength-item'; div.innerHTML = '<span class="bullet">•</span><div class="txt"></div>'; div.querySelector('.txt').textContent = text || ''; stList.appendChild(div); }
+  const ST_SAMPLES = [
+    ['출근 30분 전 업무 준비·정리 등 성실성과 자기관리 역량이 뚜렷합니다.', '메모·기록 습관을 통한 꼼꼼한 고객·재고 관리 경험이 강점입니다.', '주택영업 현장에서 쌓은 고객 응대·니즈 파악 경험을 갖추고 있습니다.'],
+    ['지각 없는 출근 등 기본기를 갖춘 성실한 근무 태도가 강점입니다.', '고객 요청·재고를 기록·공유해 응대 누락을 줄인 실무 경험이 있습니다.', '전국 1위 매장에서의 영업 경험으로 현장 적응력이 높습니다.']
+  ];
+  let sti = 0;
+  document.getElementById('st-regen').addEventListener('click', e => {
+    const b = e.currentTarget, t = b.textContent; b.textContent = '생성 중…'; b.disabled = true;
+    setTimeout(() => { sti = (sti + 1) % ST_SAMPLES.length; stList.innerHTML = ''; ST_SAMPLES[sti].forEach(s => addStrength(s)); b.textContent = t; b.disabled = false; }, 650);
+  });
+
+  // ── 하드스킬 재매칭 ──
+  document.getElementById('hs-rematch').addEventListener('click', e => {
+    const b = e.currentTarget, t = b.textContent; b.textContent = '재매칭 중…'; b.disabled = true; markDirty();
+    setTimeout(() => { b.textContent = t; b.disabled = false; document.querySelectorAll('.hs-table tbody tr').forEach(r => { r.classList.add('flash'); setTimeout(() => r.classList.remove('flash'), 700); }); }, 750);
+  });
+  document.querySelectorAll('.hs-rowmatch').forEach(btn => {
+    btn.addEventListener('click', () => { const tr = btn.closest('tr'), t = btn.textContent; btn.textContent = '매칭…'; btn.disabled = true; markDirty(); setTimeout(() => { btn.textContent = t; btn.disabled = false; tr.classList.add('flash'); setTimeout(() => tr.classList.remove('flash'), 700); }, 600); });
+  });
+
+  // ── 등급 저장 + 미저장 이탈 가드 ──
+  let dirty = false;
+  function markDirty(){ dirty = true; }
+  function markClean(){ dirty = false; }
+  document.getElementById('btn-save-grade').addEventListener('click', () => { markClean(); toast('등급이 저장되었습니다.'); });
+  window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+  function guardLeave(){ if (!dirty) return; if (confirm('저장하지 않은 변경사항이 있습니다.\n저장하지 않고 나가시겠습니까?')) markClean(); }
+  document.getElementById('m-close').addEventListener('click', guardLeave);
+  document.querySelectorAll('.btn-nav').forEach(b => b.addEventListener('click', guardLeave));
+
+  updateOlCount();
+</script>
+</body>
+</html>

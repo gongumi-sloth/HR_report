@@ -10,7 +10,7 @@ http.createServer((req,res)=>{
   const fp = path.join(ROOT,p);
   fs.readFile(fp,(err,data)=>{
     if(err){res.writeHead(404);res.end('not found');return;}
-    res.writeHead(200,{'Content-Type':TYPES[path.extname(fp)]||'application/octet-stream'});
+    res.writeHead(200,{'Content-Type':TYPES[path.extname(fp)]||'application/octet-stream','Cache-Control':'no-store, no-cache, must-revalidate'});
     res.end(data);
   });
 }).listen(PORT,()=>console.log('static server on '+PORT));

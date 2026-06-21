@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR 품질검토 - 검사요청 확인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    color: #041D30;
+    background: #f5f6f8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .num { font-family: 'Noto Sans', 'Noto Sans KR', sans-serif; }
+
+  /* ───── SIDEBAR ───── */
+  .sidebar {
+    width: 172px;
+    min-width: 172px;
+    background: #fff;
+    border-right: 1px solid #E3E3E3;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .sidebar-logo .logo-prism {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0075FF;
+    letter-spacing: -0.3px;
+    line-height: 1;
+  }
+
+  .sidebar-logo .logo-x {
+    font-size: 11px;
+    font-weight: 400;
+    color: #7D7D80;
+    margin: 2px 0;
+  }
+
+  .sidebar-logo .logo-monster {
+    font-size: 13px;
+    font-weight: 700;
+    color: #041D30;
+    letter-spacing: -0.2px;
+  }
+
+  .nav {
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  .nav-section {
+    margin-bottom: 2px;
+  }
+
+  .nav-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 0 6px;
+  }
+
+  .nav-section-header.active {
+    background: #0075FF;
+    color: #fff;
+  }
+
+  .nav-section-header .nav-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .nav-sub {
+    padding: 2px 0 4px;
+  }
+
+  .nav-sub-item {
+    display: block;
+    padding: 5px 12px 5px 34px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6E777C;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .nav-sub-item:hover {
+    color: #041D30;
+  }
+
+  .nav-sub-item.active {
+    color: #0075FF;
+    font-weight: 600;
+  }
+
+  .nav-sub-item.active::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 14px;
+    background: #0075FF;
+    border-radius: 2px;
+  }
+
+  .nav-divider {
+    height: 1px;
+    background: #F0F0F0;
+    margin: 6px 12px;
+  }
+
+  .nav-solo {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #041D30;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 0 6px;
+  }
+
+  .nav-solo:hover {
+    background: #f5f6f8;
+  }
+
+  .sidebar-footer {
+    padding: 10px 14px 14px;
+    border-top: 1px solid #E3E3E3;
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-user-email { font-size: 11px; color: #6E777C; font-weight: 400; }
+
+  .sidebar-user-logout {
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    color: #6E777C; cursor: pointer; font-size: 13px;
+  }
+
+  .sidebar-support { margin-bottom: 10px; }
+  .sidebar-support-title { font-size: 11px; font-weight: 700; color: #041D30; margin-bottom: 4px; }
+  .sidebar-support-phone { font-size: 13px; font-weight: 700; color: #0075FF; margin-bottom: 2px; }
+  .sidebar-support-email { font-size: 11px; color: #6E777C; margin-bottom: 1px; }
+  .sidebar-support-hours { font-size: 11px; color: #6E777C; }
+
+  .sidebar-links { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 6px; }
+  .sidebar-links a { font-size: 10px; color: #7D7D80; text-decoration: none; cursor: pointer; }
+
+  .sidebar-copyright { font-size: 10px; color: #A9A8AA; margin-bottom: 4px; }
+  .sidebar-meta { display: flex; align-items: center; gap: 6px; }
+  .sidebar-meta-qc { font-size: 10px; color: #0075FF; font-weight: 600; }
+  .sidebar-meta-ip { font-size: 10px; color: #A9A8AA; }
+
+  .cat-badge {
+    width: 28px; height: 18px; background: #041D30; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center; margin-left: auto;
+  }
+  .cat-badge span { font-size: 9px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+
+  /* ───── MAIN ───── */
+  .main {
+    margin-left: 172px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    background: #fff;
+    border-bottom: 1px solid #E3E3E3;
+    padding: 0 28px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .top-bar-title { font-size: 15px; font-weight: 700; color: #041D30; }
+
+  .content { padding: 24px 28px; flex: 1; }
+
+  /* ───── CARD ───── */
+  .form-card {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #E3E3E3;
+    overflow: hidden;
+  }
+
+  .form-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .form-breadcrumb { font-size: 14px; font-weight: 600; color: #041D30; }
+  .form-breadcrumb .bc-link { color: #7D7D80; font-weight: 400; cursor: pointer; }
+  .form-breadcrumb .bc-sep { margin: 0 6px; color: #A9A8AA; }
+
+  .btn-pdf {
+    padding: 7px 14px;
+    background: rgba(0, 117, 255, 0.10);
+    border: 1px solid rgba(0, 117, 255, 0.25);
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0075FF;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn-pdf:hover { background: rgba(0, 117, 255, 0.16); }
+
+  /* ───── CONFIRM BODY ───── */
+  .confirm-body { padding: 24px; }
+
+  .privacy-note {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+
+  .confirm-section { margin-bottom: 28px; }
+  .confirm-section:last-of-type { margin-bottom: 8px; }
+
+  .confirm-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #041D30;
+    margin-bottom: 11px;
+    letter-spacing: -0.2px;
+  }
+
+  /* 직무기술서 — BP평가·RP매칭 공통 적용 패널 (라이선스 섹션과 구분되는 공유 항목) */
+  .jd-shared {
+    border: 1px solid rgba(0, 117, 255, 0.40);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .jd-shared-band {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(0, 117, 255, 0.07);
+    border-bottom: 1px solid rgba(0, 117, 255, 0.20);
+    padding: 11px 18px;
+    font-size: 13px;
+    color: #0075FF;
+  }
+  .jd-shared-band strong { font-weight: 700; }
+  .jd-shared-mark {
+    background: #0075FF;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .jd-shared-inner { padding: 16px 18px 18px; }
+  .jd-shared .jd-title { margin-bottom: 11px; }
+
+  /* 2열 라벨-값 테이블 */
+  .confirm-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .confirm-table th,
+  .confirm-table td {
+    border: 1px solid #E3E3E3;
+    padding: 12px 16px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  .confirm-table th {
+    width: 160px;
+    background: #EAF0F7;
+    color: #56697B;
+    font-weight: 500;
+    text-align: center;
+  }
+  .confirm-table td {
+    color: #041D30;
+    font-weight: 400;
+    text-align: left;
+    line-height: 1.65;
+  }
+
+  /* 등급 테이블 (결함검사 · 블라인드) */
+  .grade-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .grade-table th,
+  .grade-table td {
+    border: 1px solid #E3E3E3;
+    padding: 11px 12px;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+    color: #041D30;
+  }
+  .grade-table thead th {
+    background: #EAF0F7;
+    color: #56697B;
+    font-weight: 500;
+  }
+  .grade-table .col-item {
+    width: 160px;
+    background: #EAF0F7;
+    color: #56697B;
+    font-weight: 500;
+  }
+  .grade-table .grade-col { width: 66px; }
+  .grade-table .mark { color: #FF7A00; font-weight: 700; }
+  .grade-table .al { text-align: left; }
+
+  /* 결함범위 중첩 테이블 */
+  .inner-table { width: 100%; border-collapse: collapse; }
+  .inner-table th,
+  .inner-table td {
+    border: 1px solid #E3E3E3;
+    padding: 7px 10px;
+    font-size: 12px;
+    text-align: center;
+    color: #041D30;
+  }
+  .inner-table th { background: #F4F7FA; color: #56697B; font-weight: 500; }
+  .inner-table th span { color: #A9A8AA; font-weight: 400; }
+  .inner-table .al { text-align: left; }
+  .inner-table .mr10 { margin-right: 14px; }
+
+  /* 값 셀 보조 표기 */
+  .val-orange { color: #FF7A00; font-weight: 600; }
+  .w150 { display: inline-block; width: 168px; color: #56697B; }
+  .crit-pair { display: inline-block; margin-right: 22px; }
+
+  /* 검사항목 체크 라벨 */
+  .exam-items label {
+    display: inline-block;
+    min-width: 110px;
+    margin-right: 6px;
+    font-size: 13px;
+  }
+  .chk-on { color: #FF7A00; font-weight: 700; margin-right: 5px; }
+
+  /* 표절검사 검사범위 */
+  .scope-list div { line-height: 1.95; }
+  .scope-list .w1em { display: inline-block; width: 18px; }
+  .scope-list .w1em.on { color: #FF7A00; font-weight: 700; }
+
+  /* 첨부 파일 링크 */
+  .file-link {
+    display: block;
+    color: #041D30;
+    text-decoration: underline;
+    line-height: 1.95;
+    cursor: pointer;
+  }
+  .file-link:hover { color: #0075FF; }
+
+  /* ───── 이메일 참조 수신자 ───── */
+  .email-box {
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+    padding: 22px 28px 26px;
+  }
+  .email-group-label { font-size: 14px; font-weight: 700; color: #041D30; margin-bottom: 16px; }
+  .email-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 24px; }
+  .email-check { display: flex; align-items: center; gap: 9px; font-size: 14px; color: #041D30; cursor: pointer; }
+  .email-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #0075FF; cursor: pointer; flex-shrink: 0; }
+  .email-divider { height: 1px; background: #E3E3E3; margin: 22px 0; }
+  .email-empty { font-size: 13px; color: #A9A8AA; padding: 2px 0; }
+  .email-save-wrap { display: flex; justify-content: center; margin-top: 8px; }
+
+  .btn {
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    border: none;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-default { background: #fff; border: 1px solid #BBBABF; color: #041D30; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-prism">PRiSM</div>
+    <div class="logo-x">×</div>
+    <div class="logo-monster">monster</div>
+  </div>
+
+  <nav class="nav">
+    <!-- 프리즘 전형 -->
+    <div class="nav-section">
+      <div class="nav-section-header active">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="7.5" y="1" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="1" y="7.5" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.8"/>
+            <rect x="7.5" y="7.5" width="5.5" height="5.5" rx="1" fill="white" fill-opacity="0.5"/>
+          </svg>
+        </span>
+        프리즘 전형
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item active">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 몬스터 전형 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="#041D30" stroke-width="1.2"/>
+            <circle cx="4.5" cy="6.5" r="1" fill="#041D30"/>
+            <circle cx="9.5" cy="6.5" r="1" fill="#041D30"/>
+            <path d="M5 9.5C5.5 10 6.2 10.5 7 10.5C7.8 10.5 8.5 10 9 9.5" stroke="#041D30" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </span>
+        몬스터 전형
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 교차진단 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7H12M7 2L7 12M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="#041D30" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        교차진단
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">검사 요청</a>
+        <a class="nav-sub-item">검사 결과</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 지원자 피드백 -->
+    <div class="nav-solo">
+      <span class="nav-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 3.5C2 2.67 2.67 2 3.5 2H10.5C11.33 2 12 2.67 12 3.5V8.5C12 9.33 11.33 10 10.5 10H8L5.5 12.5V10H3.5C2.67 10 2 9.33 2 8.5V3.5Z" stroke="#041D30" stroke-width="1.2"/>
+        </svg>
+      </span>
+      지원자 피드백
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- 평가 운영 -->
+    <div class="nav-section">
+      <div class="nav-section-header">
+        <span class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="2" stroke="#041D30" stroke-width="1.2"/>
+            <path d="M7 1.5V3M7 11V12.5M1.5 7H3M11 7H12.5M3.2 3.2L4.2 4.2M9.8 9.8L10.8 10.8M10.8 3.2L9.8 4.2M4.2 9.8L3.2 10.8" stroke="#041D30" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        평가 운영
+      </div>
+      <div class="nav-sub">
+        <a class="nav-sub-item">사용자 관리</a>
+        <a class="nav-sub-item">프리즘 평가자 배정</a>
+        <a class="nav-sub-item">몬스터 평가자 배정</a>
+        <a class="nav-sub-item">표절검사 비교문서 관리</a>
+        <a class="nav-sub-item">보안 설정</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <span class="sidebar-user-email">gwchoi@muhayu.com</span>
+      <span class="sidebar-user-logout" title="로그아웃">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5.5 2H3C2.45 2 2 2.45 2 3V11C2 11.55 2.45 12 3 12H5.5" stroke="#7D7D80" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M9.5 9.5L12 7L9.5 4.5M12 7H5.5" stroke="#7D7D80" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+
+    <div class="sidebar-support">
+      <div class="sidebar-support-title">고객센터</div>
+      <div class="sidebar-support-phone">1588-9784</div>
+      <div class="sidebar-support-email">help@copykiller.com</div>
+      <div class="sidebar-support-hours">평일 10:00 ~ 17:00</div>
+    </div>
+
+    <div class="sidebar-links">
+      <a>이용약관</a>
+      <a>개인정보 처리방침</a>
+      <a>AI 활용 안내</a>
+      <a>관리기능</a>
+    </div>
+
+    <div class="sidebar-copyright">© 2026 muhayu Inc.</div>
+
+    <div class="sidebar-meta">
+      <span class="sidebar-meta-qc">qc</span>
+      <span class="sidebar-meta-ip">10.52.101.218</span>
+      <div class="cat-badge"><span>CAT</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="main">
+  <div class="top-bar">
+    <span class="top-bar-title">HR 품질검토</span>
+  </div>
+
+  <div class="content">
+    <div class="form-card">
+      <!-- Card Header (breadcrumb + PDF) -->
+      <div class="form-card-header">
+        <div class="form-breadcrumb">
+          <span class="bc-link">검사요청 확인</span>
+          <span class="bc-sep">›</span>
+          무하유 프리즘 시연 테스트_양승영
+        </div>
+        <button class="btn-pdf">PDF 다운로드</button>
+      </div>
+
+      <!-- Confirm Body -->
+      <div class="confirm-body">
+
+        <div class="privacy-note">개인정보 보유·이용기간: 평가 종료일로부터 12개월 보관 후 파기 (회사 내부 정책 및 관련 법령에 따라 상이할 수 있습니다)</div>
+
+        <!-- 검사 요청자 정보 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">검사 요청자 정보</h2>
+          <table class="confirm-table">
+            <tr><th>담당자</th><td>운영 담당자</td></tr>
+          </table>
+        </div>
+
+        <!-- 1. 채용정보 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">1. 채용정보</h2>
+          <table class="confirm-table">
+            <tr><th>제목</th><td>무하유 프리즘 시연 테스트_양승영</td></tr>
+            <tr><th>채용직무</th><td>재무회계, 제휴영업, 데이터분석가</td></tr>
+            <tr><th>일정정보</th><td>
+              <span class="w150">검사요청일</span> <span class="val-orange num">2026-06-17</span><br>
+              <span class="w150">평가파일 등록예정일</span> <span class="val-orange num">2026-06-17</span><br>
+              <span class="w150">검사결과 납품예정일</span> <span class="val-orange num">2026-06-22</span>
+            </td></tr>
+            <tr><th>지원자 수</th><td><span class="num">6</span> 명</td></tr>
+            <tr><th>검사항목</th><td class="exam-items">
+              <label><span class="chk-on">✔</span>결함검사</label>
+              <label><span class="chk-on">✔</span>표절검사</label>
+              <label><span class="chk-on">✔</span>GPT Killer</label>
+              <label><span class="chk-on">✔</span>블라인드</label>
+              <label><span class="chk-on">✔</span>BP평가</label>
+              <label><span class="chk-on">✔</span>RP매칭</label>
+              <label><span class="chk-on">✔</span>면접질문</label>
+            </td></tr>
+            <tr><th rowspan="5">문항질문</th><td>[문항1] 본인의 성장과정과 이를 통해 형성된 자신만의 핵심 가치관을 기술해 주십시오.</td></tr>
+            <tr><td>[문항2] 지원 직무와 관련하여 본인이 갖춘 전문성이나 역량 개발 노력을 사례 중심으로 기술해 주십시오.</td></tr>
+            <tr><td>[문항3] 학업이나 업무 수행 중 예상치 못한 문제에 직면했을 때, 이를 창의적으로 해결했던 경험을 기술해 주십시오.</td></tr>
+            <tr><td>[문항4] 공동의 목표를 달성하기 위해 타인과 협력하고 갈등을 원만하게 중재했던 경험을 기술해 주십시오.</td></tr>
+            <tr><td>[문항5] 입사 후 달성하고자 하는 단기적 및 장기적 목표와 본인의 커리어 로드맵을 기술해 주십시오.</td></tr>
+          </table>
+        </div>
+
+        <!-- 2. 결함검사 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">2. 결함검사</h2>
+          <table class="grade-table">
+            <thead>
+              <tr>
+                <th class="col-item" rowspan="2">항목</th>
+                <th colspan="3">등급</th>
+                <th rowspan="2">세부사항</th>
+              </tr>
+              <tr>
+                <th class="grade-col">중대</th><th class="grade-col">의심</th><th class="grade-col">참고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-item">글자수</td>
+                <td class="mark">✔</td><td></td><td></td>
+                <td style="padding:0">
+                  <table class="inner-table">
+                    <tr><th style="width:90px;">문항</th><th>결함범위 <span>(글자수)</span></th></tr>
+                    <tr><td>문항1</td><td class="al"><span class="mr10">최소 : 1</span><span>최대 : 200</span></td></tr>
+                    <tr><td>문항2</td><td class="al"><span class="mr10">최소 : 1</span><span>최대 : 200</span></td></tr>
+                    <tr><td>문항3</td><td class="al"><span class="mr10">최소 : 1</span><span>최대 : 200</span></td></tr>
+                    <tr><td>문항4</td><td class="al"><span class="mr10">최소 : 1</span><span>최대 : 200</span></td></tr>
+                    <tr><td>문항5</td><td class="al"><span class="mr10">최소 : 1</span><span>최대 : 200</span></td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td class="col-item">반복단어</td><td class="mark">✔</td><td></td><td></td><td></td></tr>
+              <tr><td class="col-item">반복문장</td><td class="mark">✔</td><td></td><td></td><td></td></tr>
+              <tr><td class="col-item">반복문항</td><td class="mark">✔</td><td></td><td></td><td></td></tr>
+              <tr><td class="col-item">질문반복</td><td class="mark">✔</td><td></td><td></td><td></td></tr>
+              <tr><td class="col-item">내용부족</td><td class="mark">✔</td><td></td><td></td><td></td></tr>
+              <tr><td class="col-item">맞춤법</td><td></td><td class="mark">✔</td><td></td><td class="al"></td></tr>
+              <tr><td class="col-item">비속어</td><td></td><td class="mark">✔</td><td></td><td class="al"></td></tr>
+              <tr><td class="col-item">타기업지원</td><td></td><td class="mark">✔</td><td></td><td class="al">무하유</td></tr>
+              <tr><td class="col-item">자사명오기재</td><td></td><td class="mark">✔</td><td></td><td class="al">무하유</td></tr>
+            </tbody>
+          </table>
+          <table class="confirm-table" style="margin-top:16px;">
+            <tr><th>부적격 기준</th><td><span class="crit-pair">중대결함 <span class="val-orange num">5</span> 개 이상</span>의심결함 <span class="val-orange num">5</span> 개 이상</td></tr>
+            <tr><th>제외 문항</th><td>없음</td></tr>
+          </table>
+        </div>
+
+        <!-- 3. 표절검사 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">3. 표절검사</h2>
+          <table class="confirm-table">
+            <tr><th>어절 기준</th><td><span class="num">5</span> 어절 이상 일치</td></tr>
+            <tr><th>검사 범위</th><td class="scope-list">
+              <div><span class="w1em on">✔</span> 지원자간</div>
+              <div><span class="w1em on">✔</span> 카피킬러 DB</div>
+              <div><span class="w1em"></span> 기관/기업 보유 DB (제공시에만)</div>
+              <div><span class="w1em"></span> 동일 지원자 자소서 비교 제외 (지원자 고유 식별 정보 제공시에만)</div>
+            </td></tr>
+            <tr><th>부적격 기준</th><td><span class="crit-pair">전체표절률 <span class="val-orange num">60</span> % 이상</span>문항표절률 <span class="val-orange num">60</span> % 이상</td></tr>
+            <tr><th>제외 문항</th><td>없음</td></tr>
+          </table>
+        </div>
+
+        <!-- 4. GPT Killer -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">4. GPT Killer</h2>
+          <table class="confirm-table">
+            <tr><th>제외 문항</th><td>없음</td></tr>
+            <tr><th>부적격 기준</th><td><span class="val-orange num">3</span> 문항 이상</td></tr>
+          </table>
+        </div>
+
+        <!-- 5. 블라인드 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">5. 블라인드</h2>
+          <table class="grade-table">
+            <thead>
+              <tr>
+                <th class="col-item" rowspan="2">항목</th>
+                <th colspan="3">등급</th>
+                <th rowspan="2">표기방식</th>
+              </tr>
+              <tr>
+                <th class="grade-col">중대</th><th class="grade-col">의심</th><th class="grade-col">참고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="col-item">지원자명</td><td></td><td class="mark">✔</td><td></td><td>마스킹</td></tr>
+              <tr><td class="col-item">출신대학교명</td><td></td><td class="mark">✔</td><td></td><td>마스킹</td></tr>
+              <tr><td class="col-item">성별</td><td></td><td class="mark">✔</td><td></td><td>마스킹</td></tr>
+              <tr><td class="col-item">연령</td><td></td><td class="mark">✔</td><td></td><td>마스킹</td></tr>
+              <tr><td class="col-item">종교</td><td></td><td class="mark">✔</td><td></td><td>마스킹</td></tr>
+            </tbody>
+          </table>
+          <table class="confirm-table" style="margin-top:16px;">
+            <tr><th>부적격 기준</th><td>의심위반 <span class="val-orange num">3</span> 개 이상</td></tr>
+            <tr><th>제외 문항</th><td>없음</td></tr>
+          </table>
+        </div>
+
+        <!-- 6. BP평가 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">6. BP평가</h2>
+          <table class="confirm-table">
+            <tr><th>버전</th><td>BP평가 v4</td></tr>
+            <tr><th>전형 통과 기준</th><td><span class="val-orange num">30</span> 점 미만</td></tr>
+            <tr><th>제외 문항</th><td>없음</td></tr>
+          </table>
+        </div>
+
+        <!-- 7. RP매칭 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">7. RP매칭</h2>
+          <table class="confirm-table">
+            <tr><th>부적격 기준</th><td><span class="val-orange num">30</span> 점 미만</td></tr>
+            <tr><th>제외 문항</th><td>없음</td></tr>
+          </table>
+        </div>
+
+        <!-- 직무기술서 (BP평가·RP매칭 공통 적용 — 라이선스 단위와 별개의 공유 항목) -->
+        <div class="confirm-section jd-shared">
+          <div class="jd-shared-band">
+            <span class="jd-shared-mark">공통</span>
+            <span>BP평가 · RP매칭에 <strong>공통 적용되는 항목</strong>입니다</span>
+          </div>
+          <div class="jd-shared-inner">
+            <table class="confirm-table">
+              <tr><th>직무기술서<br>첨부파일</th><td>
+                <a class="file-link">재무회계.hwpx</a>
+                <a class="file-link">헥토파이낸셜_직무기술서_제휴영업4팀.xlsx</a>
+                <a class="file-link">데이터분석가.txt</a>
+              </td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- 8. 면접질문 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">8. 면접질문</h2>
+          <table class="confirm-table">
+            <tr><th>제외 문항</th><td>없음</td></tr>
+            <tr><th>GPT 의심문항</th><td>표시</td></tr>
+          </table>
+        </div>
+
+        <!-- 이메일 참조 수신자 -->
+        <div class="confirm-section">
+          <h2 class="confirm-section-title">◻ 이메일 참조 수신자</h2>
+          <div class="email-box">
+            <div class="email-group-label">고객사</div>
+            <div class="email-grid">
+              <label class="email-check"><input type="checkbox"><span>김주홍(zzangtra)</span></label>
+              <label class="email-check"><input type="checkbox"><span>영업1유닛 (hrteam)</span></label>
+              <label class="email-check"><input type="checkbox"><span>이은진(eunjin0043)</span></label>
+              <label class="email-check"><input type="checkbox"><span>이재희(jhlee)</span></label>
+              <label class="email-check"><input type="checkbox"><span>평가자(jhkang_test)</span></label>
+              <label class="email-check"><input type="checkbox"><span>평가자3(yngdng)</span></label>
+              <label class="email-check"><input type="checkbox"><span>홍길동(test)</span></label>
+            </div>
+
+            <div class="email-divider"></div>
+
+            <div class="email-group-label">대행사</div>
+            <div class="email-empty">등록된 대행사 수신자가 없습니다.</div>
+
+            <div class="email-divider"></div>
+
+            <div class="email-save-wrap">
+              <button class="btn btn-default">이메일 수신자 저장</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /confirm-body -->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

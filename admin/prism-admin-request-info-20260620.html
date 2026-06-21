@@ -708,7 +708,7 @@
     font-size: 12px;
     font-weight: 600;
     color: #041D30;
-    width: 90px;
+    width: 104px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -837,7 +837,7 @@
     margin: 0 24px;
   }
 
-  /* 부적격 기준 (라디오 3종) */
+  /* 전형 통과 기준 (사용여부 라디오 + 점수·배수 복수 체크박스) */
   .bp-criteria {
     display: flex;
     flex-direction: column;
@@ -872,6 +872,66 @@
     height: 14px;
     background: #D0D0D0;
     margin: 0 6px;
+  }
+
+  /* 전형 통과 기준 - 사용 여부 라디오 (사용 안 함 / 사용함) */
+  .criteria-use {
+    gap: 18px;
+  }
+
+  .criteria-use .radio-item {
+    width: auto;
+  }
+
+  /* 전형 통과 기준 - 점수·배수 체크박스 (입력칸 정렬 위해 고정 폭) */
+  .criteria-opt .checkbox-item.criteria-chk {
+    width: 92px;
+    flex-shrink: 0;
+  }
+
+  .checkbox-item.criteria-chk.disabled span {
+    color: #BBBABF;
+  }
+
+  .checkbox-item.criteria-chk.disabled,
+  .checkbox-item.criteria-chk.disabled span {
+    cursor: not-allowed;
+  }
+
+  /* 복수 평가 선택 시 안내문구 */
+  .multi-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 2px;
+    padding: 8px 12px;
+    background: #EBF4FF;
+    border: 1px solid #B3D4FF;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #041D30;
+    line-height: 1.5;
+    max-width: 560px;
+  }
+
+  .multi-notice b {
+    font-weight: 700;
+    color: #0075FF;
+  }
+
+  .multi-notice .multi-notice-ico {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #0075FF;
+    color: #0075FF;
+    font-size: 9px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
   }
 
   /* 파일 추가 버튼 (JD/채용공고 공통) */
@@ -1286,7 +1346,7 @@
             <span class="info-icon" data-tip="자기소개서에 적용할 검사 종류를 선택합니다. 복수 선택이 가능하며, BP평가 등 일부 항목은 선택 시 세부 설정이 추가로 표시됩니다.">i</span>
           </div>
           <div class="form-control">
-            <div class="checkbox-group">
+            <div class="checkbox-group" id="exam-items">
               <label class="checkbox-item" for="chk-defect">
                 <input type="checkbox" id="chk-defect">
                 <span>결함검사</span>
@@ -1323,7 +1383,7 @@
         <div class="sub-section" id="bp-section">
           <div class="sub-section-label">
             · BP평가
-            <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="자기소개서 텍스트의 구조적 특성과 기준 충족 여부를 분석하는 평가입니다. 버전·제외 문항·부적격 기준을 설정할 수 있습니다.">i</span>
+            <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="자기소개서 텍스트의 구조적 특성과 기준 충족 여부를 분석하는 평가입니다. 버전·제외 문항·전형 통과 기준을 설정할 수 있습니다.">i</span>
           </div>
           <div class="sub-section-content">
 
@@ -1353,31 +1413,27 @@
 
           <div class="sub-row" style="align-items:flex-start;">
             <div class="sub-row-label" style="padding-top:6px;">
-              부적격 기준
-              <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="· 점수 기준: BP평가 점수가 설정값 미만인 경우
-· 배수 기준: 점수 순위가 (모집인원 × 배수)에 들지 못한 경우
-· 사용 안 함: 합·불 판정 미적용
+              전형 통과 기준
+              <span class="info-icon" style="border-color:#0075FF; color:#0075FF;" data-tip="· 배수 기준: 점수 순위가 (모집인원 × 배수)를 초과하면 '검토 필요'
+· 점수 기준: BP평가 점수가 설정값 미만이면 '검토 필요'
+· 배수·점수 복수 선택 가능
+· 사용 안 함: 통과/검토 판정 미적용
 · 결과지 표기: 기준 충족 시 '권장', 미달 시 '검토 필요'">i</span>
             </div>
             <div class="bp-criteria">
-              <div class="criteria-opt">
-                <label class="radio-item" for="crit-none">
-                  <input type="radio" name="bp-criteria" id="crit-none" value="none" checked onchange="updateBPCriteria()">
+              <div class="criteria-opt criteria-use">
+                <label class="radio-item" for="bp-use-off">
+                  <input type="radio" name="bp-criteria-use" id="bp-use-off" value="off" checked onchange="updateBPCriteria()">
                   <span>사용 안 함</span>
                 </label>
-              </div>
-              <div class="criteria-opt">
-                <label class="radio-item" for="crit-score">
-                  <input type="radio" name="bp-criteria" id="crit-score" value="score" onchange="updateBPCriteria()">
-                  <span>점수 기준</span>
+                <label class="radio-item" for="bp-use-on">
+                  <input type="radio" name="bp-criteria-use" id="bp-use-on" value="on" onchange="updateBPCriteria()">
+                  <span>사용함</span>
                 </label>
-                <input type="number" class="input-score" id="bp-score" min="0" max="100" disabled inputmode="numeric" oninput="clampScore(this)">
-                <span class="score-unit muted" id="bp-score-unit">점 미만 검토 필요</span>
-                <span class="input-note" style="margin:0;">※ 0 ~ 100 사이의 수만 입력</span>
               </div>
               <div class="criteria-opt">
-                <label class="radio-item" for="crit-ratio">
-                  <input type="radio" name="bp-criteria" id="crit-ratio" value="ratio" onchange="updateBPCriteria()">
+                <label class="checkbox-item criteria-chk" for="bp-crit-ratio">
+                  <input type="checkbox" id="bp-crit-ratio" disabled onchange="updateBPCriteria()">
                   <span>배수 기준</span>
                 </label>
                 <input type="number" class="input-score" id="bp-ratio" min="0" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
@@ -1386,6 +1442,19 @@
                 <span class="score-unit muted" id="bp-head-label">모집인원</span>
                 <input type="number" class="input-score" id="bp-headcount" min="1" disabled inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 <span class="score-unit muted" id="bp-head-unit">명</span>
+              </div>
+              <div class="criteria-opt">
+                <label class="checkbox-item criteria-chk" for="bp-crit-score">
+                  <input type="checkbox" id="bp-crit-score" disabled onchange="updateBPCriteria()">
+                  <span>점수 기준</span>
+                </label>
+                <input type="number" class="input-score" id="bp-score" min="0" max="100" disabled inputmode="numeric" oninput="clampScore(this)">
+                <span class="score-unit muted" id="bp-score-unit">점 미만 검토 필요</span>
+                <span class="input-note" style="margin:0;">※ 0 ~ 100 사이의 수만 입력</span>
+              </div>
+              <div class="multi-notice" id="bp-multi-notice" style="display:none;">
+                <span class="multi-notice-ico">i</span>
+                <span>BP평가를 포함해 2개 이상의 평가를 선택하여, <b>모든 평가 결과를 기준으로 판정</b>합니다.</span>
               </div>
             </div>
           </div>
@@ -1483,9 +1552,9 @@
 
       <!-- Form Footer -->
       <div class="form-footer">
-        <button class="btn btn-default">나가기</button>
-        <button class="btn btn-secondary">임시저장</button>
-        <button class="btn btn-primary">검사요청</button>
+        <button type="button" class="btn btn-default">나가기</button>
+        <button type="button" class="btn btn-secondary">임시저장</button>
+        <button type="button" class="btn btn-primary" onclick="submitRequest()">검사요청</button>
       </div>
 
     </div><!-- /form-card -->
@@ -1578,11 +1647,22 @@
   }
   updateJDSection();
 
-  // 부적격 기준 (점수/배수) 입력 활성화
+  // 전형 통과 기준: 사용 여부(라디오) + 점수·배수 복수 선택(체크박스)
   function updateBPCriteria() {
-    const mode = document.querySelector('input[name="bp-criteria"]:checked').value;
-    const scoreOn = (mode === 'score');
-    const ratioOn = (mode === 'ratio');
+    const use = document.querySelector('input[name="bp-criteria-use"]:checked').value === 'on';
+    const scoreChk = document.getElementById('bp-crit-score');
+    const ratioChk = document.getElementById('bp-crit-ratio');
+
+    // '사용 안 함'이면 하위 체크박스 비활성화(+ 선택 해제)
+    scoreChk.disabled = !use;
+    ratioChk.disabled = !use;
+    scoreChk.closest('.checkbox-item').classList.toggle('disabled', !use);
+    ratioChk.closest('.checkbox-item').classList.toggle('disabled', !use);
+    if (!use) { scoreChk.checked = false; ratioChk.checked = false; }
+
+    // 각 체크박스가 켜져 있을 때만 해당 입력칸 활성화
+    const scoreOn = use && scoreChk.checked;
+    const ratioOn = use && ratioChk.checked;
 
     document.getElementById('bp-score').disabled = !scoreOn;
     document.getElementById('bp-score-unit').classList.toggle('muted', !scoreOn);
@@ -1594,6 +1674,33 @@
     });
   }
   updateBPCriteria();
+
+  // BP평가 포함 2개 이상 검사항목(라이선스) 선택 시 안내문구 노출
+  function updateBPMultiNotice() {
+    const notice = document.getElementById('bp-multi-notice');
+    if (!notice) return;
+    const bpOn = document.getElementById('chk-bp').checked;
+    const count = document.querySelectorAll('#exam-items input[type="checkbox"]:checked').length;
+    notice.style.display = (bpOn && count >= 2) ? '' : 'none';
+  }
+  document.getElementById('exam-items').addEventListener('change', updateBPMultiNotice);
+  updateBPMultiNotice();
+
+  // 검사요청 제출 검증
+  function submitRequest() {
+    // BP평가 전형 통과 기준: '사용함'인데 배수·점수 모두 미선택 시 차단
+    if (document.getElementById('chk-bp').checked) {
+      const use = document.querySelector('input[name="bp-criteria-use"]:checked').value === 'on';
+      const ratioOn = document.getElementById('bp-crit-ratio').checked;
+      const scoreOn = document.getElementById('bp-crit-score').checked;
+      if (use && !ratioOn && !scoreOn) {
+        alert("BP평가 전형 통과 기준을 '사용함'으로 선택한 경우\n배수 기준·점수 기준 중 하나 이상을 선택해주세요.");
+        document.getElementById('bp-crit-ratio').focus();
+        return;
+      }
+    }
+    // (목업) 검증 통과 — 실제 구현 시 제출 처리
+  }
 
   // RP 부적격 기준 (점수 기준만) 입력 활성화
   function updateRPCriteria() {

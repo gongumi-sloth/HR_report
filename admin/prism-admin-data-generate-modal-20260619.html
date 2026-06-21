@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR 품질검토 - 자료 생성 등록</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    color: #041D30;
+    background: #e9edf2;
+    min-height: 100vh;
+  }
+
+  .num { font-family: 'Noto Sans', 'Noto Sans KR', sans-serif; }
+
+  /* ───── BACKDROP ───── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 29, 48, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  /* ───── MODAL SHELL ───── */
+  .modal {
+    width: 1000px;
+    max-width: 100%;
+    max-height: 92vh;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(4, 29, 48, 0.28);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #E3E3E3;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #041D30;
+    letter-spacing: -0.2px;
+  }
+
+  .modal-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: #7D7D80;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { background: #F0F0F0; color: #041D30; }
+
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px 24px 24px;
+  }
+
+  /* ───── FILENAME ROW ───── */
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .file-row .file-label {
+    width: 88px;
+    min-width: 88px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #041D30;
+  }
+
+  .input-text {
+    flex: 1;
+    height: 36px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #041D30;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input-text:focus { border-color: #0075FF; }
+  .input-text::placeholder { color: #BBBABF; }
+
+  /* ───── SECTION TITLE ───── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #041D30;
+    letter-spacing: -0.2px;
+  }
+
+  .section-block { margin-bottom: 26px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  /* shared checkbox / radio look */
+  .chk {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .chk input[type="checkbox"],
+  .chk input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #0075FF;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .chk span { font-size: 13px; color: #041D30; cursor: pointer; }
+
+  .selectall span { font-weight: 600; }
+
+  /* ───── CATEGORY TABLE (7 columns) ───── */
+  .cat-table {
+    display: flex;
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .cat-col {
+    flex: 1 1 0;
+    min-width: 0;
+    border-right: 1px solid #E3E3E3;
+    display: flex;
+    flex-direction: column;
+  }
+  .cat-col:last-child { border-right: none; }
+
+  .cat-col-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 58px;              /* 고정 높이 → 1~2줄 무관하게 헤더 구분선 일직선 정렬 */
+    padding: 8px 12px;
+    background: #FAFBFC;
+    border-bottom: 1px solid #E3E3E3;
+  }
+  .cat-col-head input[type="checkbox"] {
+    width: 16px; height: 16px; accent-color: #0075FF; cursor: pointer; flex-shrink: 0;
+  }
+  .cat-col-head .cat-name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #041D30;
+    cursor: pointer;
+    word-break: keep-all;
+  }
+
+  .cat-col-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  /* sub checkbox item (wraps with checkbox top-aligned) */
+  .ci {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .ci input[type="checkbox"] {
+    width: 15px; height: 15px; accent-color: #0075FF; cursor: pointer;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .ci span {
+    font-size: 13px;
+    color: #041D30;
+    line-height: 1.45;
+    cursor: pointer;
+    word-break: keep-all;
+  }
+
+  /* PAC bullet list (no checkboxes) */
+  .cat-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .cat-bullets li {
+    position: relative;
+    padding-left: 12px;
+    font-size: 13px;
+    color: #041D30;
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+  .cat-bullets li::before {
+    content: '•';
+    position: absolute;
+    left: 1px;
+    top: 0;
+    color: #7D7D80;
+  }
+
+  /* ───── OPTIONS TABLE (그 외 선택) ───── */
+  .opt-table {
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .opt-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #E3E3E3;
+  }
+  .opt-row:last-child { border-bottom: none; }
+
+  .opt-label {
+    width: 150px;
+    min-width: 150px;
+    background: #F5F6F8;
+    border-right: 1px solid #E3E3E3;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #041D30;
+  }
+
+  .opt-content {
+    flex: 1;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .opt-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 44px;
+  }
+
+  .opt-note {
+    font-size: 12px;
+    color: #7D7D80;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+  }
+
+  /* ───── FOOTER ───── */
+  .modal-footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #E3E3E3;
+  }
+
+  .btn {
+    min-width: 96px;
+    padding: 9px 22px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-default { background: #fff; border: 1px solid #BBBABF; color: #041D30; }
+  .btn-secondary { background: #F0F0F0; color: #041D30; }
+  .btn-primary { background: #0075FF; color: #fff; }
+
+  /* ───── 목업 전용: 버전 전환 토글 (실제 구현 시 미출력) ───── */
+  .mock-toggle {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #D0D0D0;
+    border-radius: 8px;
+    padding: 6px 8px;
+    box-shadow: 0 2px 10px rgba(4, 29, 48, 0.18);
+  }
+  .mock-toggle .mt-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #7D7D80;
+    padding: 0 4px;
+  }
+  .mock-toggle button {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #041D30;
+    background: #fff;
+    border: 1px solid #D0D0D0;
+    border-radius: 6px;
+    padding: 6px 11px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .mock-toggle button.active {
+    background: #0075FF;
+    border-color: #0075FF;
+    color: #fff;
+  }
+
+  /* 버전 전환: 숨김 (.modal display:flex 우선순위 상쇄) */
+  .modal[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<!-- 목업 전용: 두 버전 전환 토글 (실제 구현/PDF 출력에는 표시되지 않음) -->
+<div class="mock-toggle">
+  <span class="mt-label">목업 보기</span>
+  <button type="button" data-show="a">자료 생성 등록</button>
+  <button type="button" data-show="b" class="active">서류결과 자료생성</button>
+</div>
+
+<div class="modal-backdrop">
+
+  <!-- ===== 버전 A: 자료 생성 등록 (체크박스형 · 7열) ===== -->
+  <div class="modal" data-v="a" hidden>
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <span class="modal-title">자료 생성 등록</span>
+      <button class="modal-close" type="button" aria-label="닫기">&times;</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- 파일명 -->
+      <div class="file-row">
+        <label class="file-label">파일명</label>
+        <input class="input-text" type="text" value="[서류]2026 프리즘 서류전형 샘플">
+      </div>
+
+      <!-- 자료항목 선택 -->
+      <div class="section-block">
+        <div class="section-head">
+          <span class="section-title">자료항목 선택</span>
+          <label class="chk selectall">
+            <input type="checkbox" id="selectAll" checked>
+            <span>전체선택</span>
+          </label>
+        </div>
+
+        <div class="cat-table">
+
+          <!-- 1. 결함검사 -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">결함검사</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>결함개수</span></label>
+              <label class="ci"><input type="checkbox" checked><span>상세목록</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 2. 표절검사 -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">표절검사</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>표절률</span></label>
+              <label class="ci"><input type="checkbox" checked><span>표절문장 상세</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 3. 블라인드 -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">블라인드</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>블라인드 개수</span></label>
+              <label class="ci"><input type="checkbox" checked><span>상세목록</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 4. BP평가 -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">BP평가</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>점수</span></label>
+              <label class="ci"><input type="checkbox" checked><span>메트릭 항목별 등급</span></label>
+              <label class="ci"><input type="checkbox" checked><span>BP평가 상세(근거 문장)</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 5. RP매칭 -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">RP매칭</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>점수</span></label>
+              <label class="ci"><input type="checkbox" checked><span>매칭문장</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 6. GPT Killer -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">GPT Killer</span>
+            </div>
+            <div class="cat-col-body">
+              <label class="ci"><input type="checkbox" checked><span>표절 문항 수</span></label>
+              <label class="ci"><input type="checkbox" checked><span>본문</span></label>
+            </div>
+          </div>
+
+          <!-- 7. PAC (bullets, not checkboxes) -->
+          <div class="cat-col">
+            <div class="cat-col-head">
+              <input type="checkbox" class="cat-master" checked>
+              <span class="cat-name">PAC</span>
+            </div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>지원자 업무 성향 한줄 분석</li>
+                <li>지원자 특장점 요약</li>
+                <li>문항별 요약</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 그 외 선택 -->
+      <div class="section-block">
+        <div class="section-head">
+          <span class="section-title">그 외 선택</span>
+        </div>
+
+        <div class="opt-table">
+
+          <!-- 검사요약 -->
+          <div class="opt-row">
+            <div class="opt-label">검사요약</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="summary" checked><span>포함</span></label>
+                <label class="chk"><input type="radio" name="summary"><span>미포함</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 통합본문 -->
+          <div class="opt-row">
+            <div class="opt-label">통합본문</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="body" checked><span>통합본문으로 생성</span></label>
+                <label class="chk"><input type="radio" name="body"><span>개별본문으로 생성</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 본문마스킹 -->
+          <div class="opt-row">
+            <div class="opt-label">본문마스킹</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="masking" checked><span>모든 설정 (마스킹, 하이라이트)</span></label>
+                <label class="chk"><input type="radio" name="masking"><span>마스킹 설정 항목만</span></label>
+                <label class="chk"><input type="radio" name="masking"><span>본문 마스킹 안함</span></label>
+              </div>
+              <div class="opt-note">※ 블라인드 표기방식 중 '하이라이트'만 요청하셨을 경우, '모든 설정'을 체크해 주세요.</div>
+            </div>
+          </div>
+
+          <!-- 지원자번호 -->
+          <div class="opt-row">
+            <div class="opt-label">지원자번호</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="checkbox"><span>지원자번호를 표시함</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 면접질문 -->
+          <div class="opt-row">
+            <div class="opt-label">면접질문</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="checkbox"><span>면접질문을 자료에 포함</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 글자크기 -->
+          <div class="opt-row">
+            <div class="opt-label">글자크기</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="fontsize"><span>작게<span class="num">(9pt)</span></span></label>
+                <label class="chk"><input type="radio" name="fontsize" checked><span>보통<span class="num">(11pt)</span></span></label>
+                <label class="chk"><input type="radio" name="fontsize"><span>크게<span class="num">(13pt)</span></span></label>
+                <label class="chk"><input type="radio" name="fontsize"><span>매우크게<span class="num">(15pt)</span></span></label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button class="btn btn-default" type="button">닫기</button>
+      <button class="btn btn-secondary" type="button">이전</button>
+      <button class="btn btn-primary" type="button">자료생성등록</button>
+    </div>
+
+  </div>
+  <!-- ===== /버전 A ===== -->
+
+  <!-- ===== 버전 B: 서류결과 자료생성 (불릿형 · 5열 · 선택 2행, 체크박스 없음) ===== -->
+  <div class="modal" data-v="b">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <span class="modal-title">서류결과 자료생성</span>
+      <button class="modal-close" type="button" aria-label="닫기">&times;</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- 파일명 -->
+      <div class="file-row">
+        <label class="file-label">파일명</label>
+        <input class="input-text" type="text" value="[서류]test-복사-테스트-복사-복사">
+      </div>
+
+      <!-- 자료항목 -->
+      <div class="section-block">
+        <div class="section-head">
+          <span class="section-title">자료항목</span>
+        </div>
+
+        <div class="cat-table">
+
+          <!-- 결함검사 -->
+          <div class="cat-col">
+            <div class="cat-col-head"><span class="cat-name">결함검사</span></div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>결함개수</li>
+                <li>상세목록</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 표절검사 -->
+          <div class="cat-col">
+            <div class="cat-col-head"><span class="cat-name">표절검사</span></div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>표절률</li>
+                <li>표절문장 상세</li>
+                <li>비교문서목록</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 블라인드 -->
+          <div class="cat-col">
+            <div class="cat-col-head"><span class="cat-name">블라인드</span></div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>블라인드 개수</li>
+                <li>상세목록</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- BP평가 -->
+          <div class="cat-col">
+            <div class="cat-col-head"><span class="cat-name">BP평가</span></div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>점수</li>
+                <li>메트릭 항목별 등급</li>
+                <li>BP평가 상세(근거 문장)</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- GPT Killer -->
+          <div class="cat-col">
+            <div class="cat-col-head"><span class="cat-name">GPT Killer</span></div>
+            <div class="cat-col-body">
+              <ul class="cat-bullets">
+                <li>표절 문항 수</li>
+                <li>본문</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 선택 -->
+      <div class="section-block">
+        <div class="section-head">
+          <span class="section-title">선택</span>
+        </div>
+
+        <div class="opt-table">
+
+          <!-- 본문마스킹 -->
+          <div class="opt-row">
+            <div class="opt-label">본문마스킹</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="b-masking"><span>모든 설정 (마스킹, 하이라이트)</span></label>
+                <label class="chk"><input type="radio" name="b-masking"><span>마스킹 설정 항목만</span></label>
+                <label class="chk"><input type="radio" name="b-masking"><span>본문 마스킹 안함</span></label>
+              </div>
+              <div class="opt-note">※ 블라인드 표기방식 중 '하이라이트'만 요청하셨을 경우, '모든 설정'을 체크해 주세요.</div>
+            </div>
+          </div>
+
+          <!-- 글자크기 -->
+          <div class="opt-row">
+            <div class="opt-label">글자크기</div>
+            <div class="opt-content">
+              <div class="opt-group">
+                <label class="chk"><input type="radio" name="b-fontsize"><span>작게<span class="num">(9pt)</span></span></label>
+                <label class="chk"><input type="radio" name="b-fontsize"><span>보통<span class="num">(11pt)</span></span></label>
+                <label class="chk"><input type="radio" name="b-fontsize"><span>크게<span class="num">(13pt)</span></span></label>
+                <label class="chk"><input type="radio" name="b-fontsize"><span>매우크게<span class="num">(15pt)</span></span></label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button class="btn btn-default" type="button">닫기</button>
+      <button class="btn btn-secondary" type="button">이전</button>
+      <button class="btn btn-primary" type="button">자료생성등록</button>
+    </div>
+
+  </div>
+  <!-- ===== /버전 B ===== -->
+
+</div>
+
+<script>
+  // ── 목업 전용: 두 버전 전환 ──
+  const variants = {
+    a: document.querySelector('.modal[data-v="a"]'),
+    b: document.querySelector('.modal[data-v="b"]')
+  };
+  document.querySelectorAll('.mock-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const show = btn.dataset.show;
+      Object.entries(variants).forEach(([k, el]) => { el.hidden = (k !== show); });
+      document.querySelectorAll('.mock-toggle button')
+        .forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+
+  // ── 버전 A: 전체선택 / 카테고리 마스터 체크박스 연동 ──
+  const modalA = variants.a;
+  const selectAll = modalA.querySelector('#selectAll');
+  const allChecks = () => Array.from(modalA.querySelectorAll('.cat-col input[type="checkbox"]'));
+
+  selectAll.addEventListener('change', () => {
+    allChecks().forEach(c => c.checked = selectAll.checked);
+  });
+
+  modalA.querySelectorAll('.cat-col').forEach(col => {
+    const master = col.querySelector('.cat-master');
+    const subs = Array.from(col.querySelectorAll('.cat-col-body input[type="checkbox"]'));
+    if (!master) return;
+
+    master.addEventListener('change', () => {
+      subs.forEach(c => c.checked = master.checked);
+      syncSelectAll();
+    });
+    subs.forEach(sub => sub.addEventListener('change', () => {
+      master.checked = subs.length > 0 && subs.every(c => c.checked);
+      syncSelectAll();
+    }));
+  });
+
+  function syncSelectAll() {
+    const all = allChecks();
+    selectAll.checked = all.length > 0 && all.every(c => c.checked);
+  }
+</script>
+</body>
+</html>
