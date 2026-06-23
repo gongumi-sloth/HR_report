@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직무기술서 목록</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; font-size: 14px; color: #222; background: #f2f3f5; }
+
+  /* header */
+  #header { background: #fff; border-bottom: 1px solid #d8dce1; }
+  #header .content { display: flex; align-items: center; gap: 14px; padding: 0 24px; height: 48px; color: #b9bec4; }
+  #header a { color: #333; text-decoration: none; }
+  #header .fl { font-weight: 700; font-size: 16px; color: #2b3a4b; margin-right: auto; }
+  #header button { height: 26px; padding: 0 10px; border: 1px solid #c8cdd3; background: #fff; border-radius: 4px; cursor: pointer; font-size: 12px; color: #444; }
+  #header span { color: #333; }
+  #header .content > a:not(.fl) { color: #2b6cb0; font-size: 13px; }
+
+  nav { padding: 12px 24px; color: #888; font-size: 13px; }
+  nav a { color: #2b6cb0; text-decoration: none; cursor: pointer; }
+
+  h1 { font-size: 24px; font-weight: 700; color: #1f2937; margin: 4px 24px 4px; }
+  .subtitle { margin: 0 24px 16px; color: #6b7280; font-size: 13px; }
+  .subtitle b { color: #374151; }
+
+  /* 하드스킬 제목 영역 */
+  .hs-titlebar { margin: 0 24px 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .hs-titlebar .hs-name { font-weight: 700; color: #1f2937; font-size: 16px; }
+  .hs-titlebar .hs-id { color: #6b7280; font-size: 13px; }
+  .hs-titlebar label { color: #6b7280; font-size: 13px; }
+  .hs-titlebar input.hs-name-input { height: 32px; padding: 0 10px; border: 1px solid #c8cdd3; border-radius: 4px; font-size: 14px; width: 320px; }
+
+  /* card */
+  .card { max-width: 920px; margin: 0 24px 20px; background: #fff; border: 1px solid #e2e5e9; border-radius: 6px; padding: 24px 28px 28px; }
+
+  .form-row { margin-top: 22px; }
+  .form-row:first-child { margin-top: 0; }
+
+  h3.highlight { font-size: 17px; font-weight: 700; color: #1f2937; margin: 0; padding-left: 10px; border-left: 4px solid #2b6cb0; line-height: 1.2; display: inline-block; vertical-align: middle; }
+  .count { margin-left: 10px; font-size: 13px; color: #2b6cb0; font-weight: 600; vertical-align: middle; }
+  .unsaved { margin-left: 10px; font-size: 12px; color: #d97706; vertical-align: middle; }
+
+  .jd-text { width: 100%; height: 240px; box-sizing: border-box; padding: 10px; border: 1px solid #CCC; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 14px; line-height: 1.55; margin-top: 10px; }
+  .help { margin-top: 6px; color: #666; font-size: 0.9em; line-height: 1.5; }
+
+  .row-actions { margin-top: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  /* buttons */
+  .btn { height: 32px; padding: 0 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid #c8cdd3; background: #fff; color: #374151; }
+  .btn:hover { background: #f5f6f8; }
+  .btn-primary-o { border-color: #2b6cb0; color: #2b6cb0; }
+  .btn-primary-o:hover { background: #eef4fd; }
+  .btn-sub { height: 30px; padding: 0 12px; font-size: 12px; color: #888; }
+  .button1 { padding: 11px 32px; background: #2b6cb0; color: #fff; border: none; border-radius: 5px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .button1:hover { background: #245a96; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .extract-msg { font-size: 13px; color: #2b6cb0; }
+  .extract-msg.warn { color: #d97706; }
+
+  /* skill chips */
+  .skill-list { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; }
+  .skill { display: inline-flex; align-items: center; height: 30px; box-sizing: border-box; margin: 0 6px 6px 0; padding: 0 6px 0 11px; border: 1px solid #CCC; border-radius: 4px; background: #FFF; font-size: 13px; }
+  .skill .x { margin-left: 7px; height: 22px; min-width: 22px; padding: 0 6px; border: none; background: #eef0f3; color: #999; border-radius: 3px; cursor: pointer; font-size: 12px; line-height: 1; }
+  .skill .x:hover { background: #e2e5e9; color: #555; }
+  .skill-add { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 6px 4px; }
+  .skill-add input[type='text'] { height: 30px; padding: 0 10px; border: 1px solid #c8cdd3; border-radius: 4px; font-size: 13px; width: 200px; }
+  .skill-add .btn { height: 30px; }
+  .empty-hint { color: #9aa1a9; font-size: 13px; padding: 4px 0; }
+
+  /* confirmed area */
+  .confirmed-area { border-color: #cdd9ea; }
+  .confirmed-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .confirmed-head .spacer { margin-left: auto; }
+  .conf-time { font-size: 12px; color: #6b7280; }
+  .confirmed-list { margin-top: 14px; display: flex; flex-wrap: wrap; }
+  .confirmed-list .skill { background: #eef4fd; border-color: #bcd3f0; padding: 0 12px; }
+  .empty-conf { color: #9aa1a9; font-size: 13px; padding: 8px 0; }
+
+  /* save sub-label */
+  .save-sub { margin-top: 8px; color: #6b7280; font-size: 12px; }
+
+  /* saved record */
+  .saved-block { margin-top: 16px; }
+  .saved-block:first-child { margin-top: 14px; }
+  .saved-label { font-size: 13px; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 8px; }
+  .saved-label .count { margin-left: 0; }
+  .saved-meta { font-weight: 400; color: #9aa1a9; font-size: 12px; }
+  .saved-jd { margin: 8px 0 0; padding: 12px 14px; background: #f7f8fa; border: 1px solid #e2e5e9; border-radius: 4px; max-height: 150px; overflow: auto; white-space: pre-wrap; font-family: inherit; font-size: 13px; line-height: 1.55; color: #374151; }
+
+  /* ===== 직무기술서 목록 페이지 ===== */
+  .basic-width { margin: 0 24px; }
+  #page-list h1 { text-align: center; font-size: 30px; margin: 12px 24px 20px; }
+
+  #page-list .search { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+  #page-list .search input[type='text'] { height: 34px; border: 1px solid #c8cdd3; border-radius: 4px; padding: 0 10px; font-size: 13px; background: #fafbfc; color: #333; }
+  #page-list .search input[type='submit'] { height: 34px; padding: 0 16px; border: 1px solid #c8cdd3; border-radius: 4px; background: #f1f3f5; cursor: pointer; font-size: 13px; color: #333; }
+  #page-list .search input[type='submit']:hover { background: #e7eaee; }
+
+  #page-list .ar { text-align: right; }
+  #page-list .gen-link { margin-bottom: 6px; }
+  #page-list .gen-link a { color: #2b6cb0; font-size: 14px; text-decoration: none; }
+  #page-list .gen-link a:hover { text-decoration: underline; }
+  #page-list #listCount { margin-bottom: 10px; font-size: 14px; color: #333; }
+  #page-list #listCount strong { color: #1f2937; }
+
+  #page-list table.list { border-collapse: collapse; }
+  #page-list table.list.basic-width { width: calc(100% - 48px); }
+  #page-list table.list th { font-size: 15px; font-weight: 700; color: #1f2937; padding: 12px 10px; border-top: 2px solid #4b5563; border-bottom: 1px solid #4b5563; text-align: center; }
+  #page-list table.list td { font-size: 14px; color: #333; padding: 11px 10px; border-bottom: 1px solid #e5e7eb; text-align: center; word-break: keep-all; }
+  #page-list table.list td.al { text-align: left; }
+  #page-list table.list a.edit-link { color: #2b6cb0; text-decoration: none; cursor: pointer; }
+  #page-list table.list a.edit-link:hover { text-decoration: underline; }
+  #page-list table.list .link { color: #2b6cb0; cursor: pointer; }
+  #page-list table.list .link:hover { text-decoration: underline; }
+  #page-list table.list .none { color: #c4c9cf; }
+  #page-list table.list a.add-link { color: #9aa1a9; text-decoration: none; cursor: pointer; }
+  #page-list table.list a.add-link:hover { color: #2b6cb0; text-decoration: underline; }
+
+  #page-list .pagination { text-align: center; margin: 18px 0 28px; }
+  #page-list .pagination a, #page-list .pagination span { display: inline-block; min-width: 28px; padding: 4px 8px; margin: 0 2px; color: #2b6cb0; cursor: pointer; text-decoration: none; font-size: 13px; }
+  #page-list .pagination .cur { color: #1f2937; font-weight: 700; cursor: default; }
+
+  /* toast */
+  #toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%); background: #1f2937; color: #fff; padding: 11px 20px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 500; }
+  #toast.show { opacity: 0.95; }
+
+  footer { padding: 20px 24px 32px; font-size: 12px; color: #888; line-height: 1.6; }
+  footer .red { color: #d23b3b; }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="content">
+    <a href="#" class="fl">manager</a>
+    <button>어둡게</button>
+    <button style="margin-right:40px;">밝게</button>
+    <span>최고운 (SUPER)</span> ❘
+    <a href="#">마이메뉴</a> ❘
+    <a href="#">비밀번호변경</a> ❘
+    <a href="#">로그아웃</a>
+  </div>
+</header>
+
+<!-- ════════════════ 페이지 1 : 직무기술서 목록 ════════════════ -->
+<div id="page-list">
+  <nav><a href="#">홈</a> ❯ <a href="#">도메인목록</a> ❯ <a href="#">직무기술서목록</a></nav>
+  <h1>직무기술서</h1>
+
+  <form id="searchForm" class="search basic-width" onsubmit="return false;">
+    <input type="text" id="searchDomain" placeholder="도메인 아이디(필수)" value="qc" style="width:100px;">
+    <input type="text" id="searchKeyword" placeholder="아이디 또는 제목" style="width:260px;">
+    <input type="submit" value="확인">
+  </form>
+
+  <div class="ar basic-width gen-link">
+    <a href="#" onclick="onTagCreate(); return false;">태그형식 직무기술서 생성</a>
+    <a href="#" onclick="createHardskill(); return false;" style="margin-left:18px;">하드스킬 직무기술서 생성</a>
+  </div>
+  <div class="basic-width" id="listCount">전체 <strong>87</strong>건</div>
+
+  <table class="list basic-width">
+    <thead>
+      <tr>
+        <th>아이디</th>
+        <th>제목</th>
+        <th>태그형식</th>
+        <th>하드스킬</th>
+        <th>작성일</th>
+        <th>복사</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody id="listBody"></tbody>
+  </table>
+
+  <div class="pagination">
+    <span class="cur">1</span>
+    <a onclick="onPage(2)">2</a>
+    <a onclick="onPage(3)">3</a>
+  </div>
+</div>
+
+<!-- ════════════════ 페이지 2 : 하드스킬 관리 ════════════════ -->
+<div id="page-hardskill" style="display:none;">
+  <nav><a href="#">홈</a> ❯ <a href="#">도메인목록</a> ❯ <a onclick="showList(); return false;">직무기술서목록</a> ❯ <a href="#">하드스킬</a></nav>
+
+  <h1>하드스킬 관리</h1>
+  <div class="hs-titlebar" id="hsTitlebar"></div>
+  <div style="margin: 0 24px 16px;">
+    <input type="button" class="btn" value="← 목록으로" onclick="showList()">
+  </div>
+
+  <!-- ───── 편집 영역 ───── -->
+  <div class="card">
+    <div class="form-row">
+      <h3 class="highlight">직무기술서 텍스트</h3>
+      <textarea id="jdText" class="jd-text" placeholder="직무기술서 텍스트를 붙여넣으세요."></textarea>
+      <div class="row-actions">
+        <input type="button" value="하드스킬 추출 / 재생성" class="btn btn-primary-o" onclick="onExtract()">
+        <span class="extract-msg" id="extractMsg"></span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <h3 class="highlight">하드스킬 키워드</h3>
+      <span class="count" id="editCount">0개</span>
+      <span class="unsaved" id="unsaved" style="display:none;">● 미저장 변경</span>
+      <div class="skill-list" id="editList">
+        <div class="skill-add">
+          <input type="text" id="addInput" maxlength="30" placeholder="키워드 직접 입력 후 Enter">
+          <input type="button" value="추가" class="btn" onclick="onAdd()">
+        </div>
+      </div>
+      <div class="row-actions">
+        <input type="button" value="전체 삭제" class="btn btn-sub" onclick="onClearAll()">
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:24px;">
+      <input type="button" class="button1" value="직무기술서 저장" onclick="onSave()">
+      <div class="save-sub">직무기술서 텍스트와 확정 하드스킬을 함께 저장합니다.</div>
+    </div>
+  </div>
+
+  <!-- ───── 저장 영역 ───── -->
+  <div class="card confirmed-area">
+    <div class="confirmed-head">
+      <h3 class="highlight">저장된 직무기술서</h3>
+      <span class="spacer"></span>
+      <input type="button" id="revertBtn" value="저장 상태로 되돌리기" class="btn btn-sub" onclick="onEdit()" style="display:none;">
+      <span class="conf-time" id="confTime"></span>
+    </div>
+
+    <div id="savedBody">
+      <div class="saved-block">
+        <div class="saved-label">직무기술서 텍스트 <span class="saved-meta" id="savedJdMeta"></span></div>
+        <pre class="saved-jd" id="savedJd"></pre>
+      </div>
+      <div class="saved-block">
+        <div class="saved-label">하드스킬 <span class="count" id="confCount">0개</span></div>
+        <div class="confirmed-list" id="confList"></div>
+      </div>
+    </div>
+
+    <div class="empty-conf" id="savedEmpty" style="display:none;">아직 저장된 내용이 없습니다. 위에서 직무기술서 텍스트와 하드스킬을 편집한 뒤 <b>[직무기술서 저장]</b>을 누르세요.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="red">* 본 서비스에 포함된 정보의 전부 또는 일부를 무단으로 제 3자에게 공개, 배포, 복사 또는 사용하는 것은 엄격히 금지되며, 유출 시 민·형사상 처벌될 수 있습니다.</div>
+  <div>Copyright(C) MUHAYU Inc. All rights reserved.</div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+  /* ══════════════════════════════════════════════════
+     공통
+  ══════════════════════════════════════════════════ */
+  var toastEl = document.getElementById("toast"), toastT;
+  function toast(t){
+    toastEl.textContent = t; toastEl.classList.add("show");
+    clearTimeout(toastT);
+    toastT = setTimeout(function(){ toastEl.classList.remove("show"); }, 2200);
+  }
+  function escapeHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  /* ══════════════════════════════════════════════════
+     목업 데이터
+     - 하드스킬 저장본(HS_DATA)은 맨 위 2건(ID 100, 99)만 보유
+     - 각 직무기술서는 태그형식(tag) / 하드스킬(hs)을 독립적으로 가짐
+       → tag만, hs만, 둘 다 모두 가능
+  ══════════════════════════════════════════════════ */
+  var JD_HR =
+"[채용 직무] HR 연구원/컨설턴트\n\n" +
+"[주요 업무]\n" +
+"- HR 데이터 분석 및 통계 기반 인사이트 도출\n" +
+"- 채용·평가 솔루션 컨설팅 및 고객사 대상 리포트 작성\n" +
+"- 설문/검사 결과의 정량 분석 및 시각화 (Excel, Tableau)\n" +
+"- SQL 기반 데이터 추출 및 가공\n\n" +
+"[자격 요건]\n" +
+"- 통계 및 데이터 분석 역량 보유\n" +
+"- Excel, PowerPoint 활용 능력\n" +
+"- 원활한 커뮤니케이션 및 문서 작성 능력\n\n" +
+"[우대 사항]\n" +
+"- SQL, Tableau, Power BI 활용 경험\n" +
+"- 영어 커뮤니케이션 가능자";
+
+  var JD_BACKEND =
+"[채용 직무] 백엔드 개발자 (신입/경력)\n\n" +
+"[주요 업무]\n" +
+"- Java, Spring Boot 기반 백엔드 서버 개발 및 운영\n" +
+"- RESTful API 설계 및 구현\n" +
+"- MySQL, Redis 기반 데이터베이스 설계·운영\n" +
+"- AWS 클라우드 인프라 구성 및 Docker, Kubernetes 기반 배포 환경 구축\n" +
+"- Git을 활용한 형상관리 및 협업\n\n" +
+"[자격 요건]\n" +
+"- Java 또는 Python 개발 경험 보유\n" +
+"- SQL 및 데이터베이스 활용 능력\n" +
+"- 원활한 커뮤니케이션 및 문제 해결 역량\n\n" +
+"[우대 사항]\n" +
+"- 대용량 트래픽 처리 경험, Kafka 사용 경험\n" +
+"- 데이터 분석 및 통계 지식";
+
+  // 하드스킬 저장본(더미) — 맨 위 2건만
+  var HS_DATA = {
+    100: { jd: JD_HR,      skills: ["데이터 분석","통계","Excel","Tableau","SQL","PowerPoint","Power BI","영어"], savedAt: "2026-06-23 10:12" },
+    99:  { jd: JD_BACKEND, skills: ["Java","Python","Spring Boot","RESTful API","MySQL","Redis","AWS","Docker","Kubernetes","Git","SQL","Kafka","데이터 분석","통계"], savedAt: "2026-06-17 14:30" }
+  };
+
+  var DOMAIN_ID = "qc";
+  var JOBDESCS = [
+    { id:100, title:"무하유 HR 연구원/컨설턴트",                              date:"2026-06-23", tag:true,  hs:true  }, // 둘 다
+    { id:99,  title:"TEST",                                                   date:"2026-06-17", tag:false, hs:true  }, // 하드스킬만
+    { id:98,  title:"2025년 - 영업기획 (복사본)",                            date:"2025-11-21", tag:true,  hs:false },
+    { id:97,  title:"2023년 서울관광재단 기간제근로자 채용_관광·MICE_마케팅 - 복사", date:"2024-06-04", tag:true, hs:false },
+    { id:96,  title:"LH_인턴_채용 - 복사",                                    date:"2024-04-23", tag:true,  hs:false },
+    { id:95,  title:"경희대학교 - 전산 - 복사",                              date:"2024-04-01", tag:true,  hs:false },
+    { id:93,  title:"2023 직무기술서_양식",                                   date:"2023-08-08", tag:true,  hs:false },
+    { id:91,  title:"한양대학교 - 일반행정 - 복사 - 복사",                   date:"2023-05-04", tag:true,  hs:false },
+    { id:90,  title:"2021_하반기_금호석유화학_투자사관리 - 복사",            date:"2023-02-03", tag:true,  hs:false },
+    { id:89,  title:"2021_하반기_금호석유화학_브랜드마케팅 - 복사",          date:"2023-02-03", tag:true,  hs:false },
+    { id:88,  title:"2022년 하반기 대졸 신입사원 - 객실판촉 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:87,  title:"2022년 하반기 대졸 신입사원 - 환경 안전 - 복사",        date:"2023-02-03", tag:true,  hs:false },
+    { id:86,  title:"2022년 하반기 대졸 신입사원 - 설비(기계) 설비(전기) - 복사", date:"2023-02-03", tag:true, hs:false },
+    { id:85,  title:"2022년 하반기 대졸 신입사원 - 품질관리 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:84,  title:"2022년 하반기 대졸 신입사원 - 생산 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:83,  title:"2022년 하반기 대졸 신입사원 - 해외영업 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:82,  title:"2022년 하반기 대졸 신입사원 - 창호기술개발 - 복사",     date:"2023-02-03", tag:true,  hs:false },
+    { id:81,  title:"2022년 하반기 대졸 신입사원 - 건자재국내영업 - 복사",   date:"2023-02-03", tag:true,  hs:false },
+    { id:80,  title:"2022년 하반기 대졸 신입사원 - 국내영업 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:79,  title:"2022년 하반기 대졸 신입사원 - 연구지원 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:78,  title:"2022년 하반기 대졸 신입사원 - 영업기획 - 복사",         date:"2023-02-03", tag:true,  hs:false },
+    { id:77,  title:"2022년 하반기 대졸 신입사원 - 총무 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:76,  title:"2022년 하반기 대졸 신입사원 - 물류 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:75,  title:"2022년 하반기 대졸 신입사원 - 구매 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:74,  title:"2022년 하반기 대졸 신입사원 - 구매 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:73,  title:"2022년 하반기 대졸 신입사원 - 구매 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:72,  title:"2022년 하반기 대졸 신입사원 - 인사 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:71,  title:"2022년 하반기 대졸 신입사원 - IT(시스템 운영) - 복사",  date:"2023-02-03", tag:true,  hs:false },
+    { id:70,  title:"2022년 하반기 대졸 신입사원 - 재무 - 복사",             date:"2023-02-03", tag:true,  hs:false },
+    { id:69,  title:"무하시연-사무행정 - 복사",                              date:"2023-05-04", tag:true,  hs:false }
+  ];
+
+  function findJob(id){ return JOBDESCS.filter(function(j){ return j.id === id; })[0]; }
+
+  /* ══════════════════════════════════════════════════
+     페이지 1 : 직무기술서 목록
+  ══════════════════════════════════════════════════ */
+  function renderList(keyword){
+    var kw = (keyword || "").trim().toLowerCase();
+    var rows = JOBDESCS.filter(function(j){
+      if(!kw) return true;
+      return String(j.id).indexOf(kw) !== -1 || j.title.toLowerCase().indexOf(kw) !== -1;
+    });
+    document.getElementById("listBody").innerHTML = rows.map(function(j){
+      var tagCell = j.tag
+        ? '<a class="edit-link" onclick="onTagEdit(' + j.id + ')">태그형식</a>'
+        : '<a class="add-link" onclick="onTagAdd(' + j.id + ')">+ 추가</a>';
+      var hsCell = j.hs
+        ? '<a class="edit-link" onclick="openHardskill(' + j.id + ')">하드스킬</a>'
+        : '<a class="add-link" onclick="openHardskill(' + j.id + ')">+ 추가</a>';
+      return '<tr>'
+        + '<td>' + j.id + '</td>'
+        + '<td class="al">' + escapeHtml(j.title) + '</td>'
+        + '<td>' + tagCell + '</td>'
+        + '<td>' + hsCell + '</td>'
+        + '<td>' + j.date + '</td>'
+        + '<td><span class="link" onclick="onCopy(' + j.id + ')">복사</span></td>'
+        + '<td><span class="link" onclick="onDelete(' + j.id + ')">삭제</span></td>'
+        + '</tr>';
+    }).join("");
+    document.getElementById("listCount").innerHTML = kw
+      ? ('검색결과 <strong>' + rows.length + '</strong>건')
+      : ('전체 <strong>87</strong>건');
+  }
+
+  function onTagEdit(id){ toast("태그형식(가중치) 편집 화면은 본 목업 범위 밖입니다. (ID " + id + ")"); }
+  function onTagAdd(id){ toast("태그형식 추가 화면은 본 목업 범위 밖입니다. (ID " + id + ")"); }
+  function onTagCreate(){ toast("태그형식 직무기술서 생성 화면은 본 목업 범위 밖입니다."); }
+  function onCopy(id){ toast("복사 (목업): 직무기술서 " + id + " 복사"); }
+  function onDelete(id){ if(confirm("직무기술서 " + id + "을(를) 삭제할까요?")) toast("삭제 (목업): 직무기술서 " + id); }
+  function onPage(n){ toast("목업: 1페이지 데이터만 포함되어 있습니다. (요청 " + n + "페이지)"); }
+
+  // 신규 직무기술서에 부여될 ID (목업: 최대 ID + 1)
+  function nextId(){
+    var max = 0;
+    JOBDESCS.forEach(function(j){ if(j.id > max) max = j.id; });
+    return max + 1;
+  }
+
+  // 제목 영역: 기존=이름+ID(읽기전용) / 신규=이름 입력 + 부여 예정 ID
+  function renderHsTitle(isNew, id, name){
+    var bar = document.getElementById("hsTitlebar");
+    if(isNew){
+      bar.innerHTML =
+        '<label for="hsNameInput">직무기술서 이름</label>'
+        + '<input type="text" id="hsNameInput" class="hs-name-input" maxlength="100" placeholder="직무기술서 이름을 입력하세요">'
+        + '<span class="hs-id">부여 예정 ID ' + id + '</span>';
+    } else {
+      bar.innerHTML =
+        '<span class="hs-name">' + escapeHtml(name) + '</span>'
+        + '<span class="hs-id">ID ' + id + '</span>';
+    }
+  }
+
+  /* 목록의 [하드스킬]/[+ 추가] → 기존 직무기술서의 하드스킬 관리 화면 (저장본 있으면 반영, 없으면 빈 편집) */
+  function openHardskill(id){
+    var j = findJob(id);
+    hsIsNew = false;
+    loadHardskillData(HS_DATA[id] || null);
+    renderHsTitle(false, id, j ? j.title : "");
+    gotoHardskill();
+  }
+  /* [하드스킬 직무기술서 생성] → 빈 하드스킬 관리 화면 (신규: 이름 입력 + 부여 예정 ID) */
+  function createHardskill(){
+    hsIsNew = true;
+    loadHardskillData(null);
+    renderHsTitle(true, nextId());
+    gotoHardskill();
+  }
+  function gotoHardskill(){
+    document.getElementById("page-list").style.display = "none";
+    document.getElementById("page-hardskill").style.display = "";
+    window.scrollTo(0, 0);
+  }
+  function showList(){
+    document.getElementById("page-hardskill").style.display = "none";
+    document.getElementById("page-list").style.display = "";
+    window.scrollTo(0, 0);
+  }
+
+  /* ══════════════════════════════════════════════════
+     페이지 2 : 하드스킬 관리
+  ══════════════════════════════════════════════════ */
+  // 목업: 추출용 내장 하드스킬 사전
+  var DICT = ["Java","Python","JavaScript","TypeScript","Kotlin","Swift","C++","C#","PHP","Ruby","SQL","MySQL","PostgreSQL","Oracle","MongoDB","Redis","Spring Boot","Node.js","React","Vue","Angular","Django","Flask","AWS","Azure","GCP","Docker","Kubernetes","Git","Linux","Jenkins","Kafka","Hadoop","Spark","Tableau","Power BI","Excel","PowerPoint","SAP","ERP","Figma","Photoshop","Illustrator","RESTful API","CI/CD","머신러닝","딥러닝","데이터 분석","통계","회계","재무","세무","마케팅","영어","중국어","일본어"];
+
+  var jdTextEl = document.getElementById("jdText");
+
+  var editSkills = [];        // 편집 중 키워드(중간 산출물)
+  var confirmedSkills = [];   // 저장된 하드스킬(최종본)
+  var savedJdText = "";       // 저장된 직무기술서 텍스트
+  var hasSaved = false;
+  var hsIsNew = false;        // 신규 직무기술서 생성 진입 여부
+
+  var editList = document.getElementById("editList");
+  var addArea = editList.querySelector(".skill-add");
+  var addInput = document.getElementById("addInput");
+  var editCountEl = document.getElementById("editCount");
+  var unsavedEl = document.getElementById("unsaved");
+  var extractMsg = document.getElementById("extractMsg");
+  var confList = document.getElementById("confList");
+  var confCountEl = document.getElementById("confCount");
+  var confTimeEl = document.getElementById("confTime");
+  var savedBody = document.getElementById("savedBody");
+  var savedEmpty = document.getElementById("savedEmpty");
+  var savedJdEl = document.getElementById("savedJd");
+  var savedJdMeta = document.getElementById("savedJdMeta");
+  var revertBtn = document.getElementById("revertBtn");
+
+  // 화면 진입 시 데이터 세팅: data가 있으면 저장본 반영, null이면 빈 화면(신규)
+  function loadHardskillData(data){
+    if(data){
+      jdTextEl.value = data.jd;
+      savedJdText = data.jd;
+      editSkills = data.skills.slice();
+      confirmedSkills = data.skills.slice();
+      hasSaved = true;
+      confTimeEl.textContent = "최종 저장: " + data.savedAt;
+    } else {
+      jdTextEl.value = "";
+      savedJdText = "";
+      editSkills = [];
+      confirmedSkills = [];
+      hasSaved = false;
+      confTimeEl.textContent = "";
+    }
+    setMsg("", false);
+    renderEdit();
+    renderConfirmed();
+  }
+
+  function norm(s){ return s.trim().toLowerCase(); }
+  function has(arr, val){ return arr.some(function(x){ return norm(x) === norm(val); }); }
+
+  // 사전 용어가 텍스트에 포함되는지 (한글=부분일치, 영문=단어경계)
+  function termInText(text, term){
+    if(/[가-힣]/.test(term)) return text.indexOf(term) !== -1;
+    var esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp("(^|[^A-Za-z0-9+#.])" + esc + "($|[^A-Za-z0-9+#.])", "i").test(text);
+  }
+
+  function makeChip(value, removable){
+    var span = document.createElement("span");
+    span.className = "skill";
+    span.appendChild(document.createTextNode(value));
+    if(removable){
+      var x = document.createElement("button");
+      x.type = "button";
+      x.className = "x";
+      x.textContent = "X";
+      x.onclick = function(){ onRemove(value); };
+      span.appendChild(x);
+    }
+    return span;
+  }
+
+  function renderEdit(){
+    Array.prototype.slice.call(editList.querySelectorAll("span.skill")).forEach(function(s){ s.remove(); });
+    var hint = editList.querySelector(".empty-hint");
+    if(hint) hint.remove();
+    editSkills.forEach(function(sk){ editList.insertBefore(makeChip(sk, true), addArea); });
+    editCountEl.textContent = editSkills.length + "개";
+    updateUnsaved();
+  }
+
+  function sameSet(a, b){
+    if(a.length !== b.length) return false;
+    var sa = a.map(norm).sort(), sb = b.map(norm).sort();
+    return sa.every(function(v, i){ return v === sb[i]; });
+  }
+
+  function isDirty(){
+    return !sameSet(editSkills, confirmedSkills) || jdTextEl.value !== savedJdText;
+  }
+
+  function updateUnsaved(){
+    var dirty = isDirty();
+    unsavedEl.style.display = dirty ? "" : "none";
+    revertBtn.style.display = (hasSaved && dirty) ? "" : "none";
+  }
+
+  function renderConfirmed(){
+    if(!hasSaved){
+      savedBody.style.display = "none";
+      savedEmpty.style.display = "";
+      return;
+    }
+    savedBody.style.display = "";
+    savedEmpty.style.display = "none";
+
+    // 저장된 직무기술서 텍스트 스냅샷
+    savedJdEl.textContent = savedJdText;
+    savedJdMeta.textContent = "(" + savedJdText.length + "자 저장됨)";
+
+    // 저장된 하드스킬(최종본)
+    confList.innerHTML = "";
+    if(confirmedSkills.length === 0){
+      var d = document.createElement("div");
+      d.className = "empty-conf";
+      d.textContent = "저장된 하드스킬이 없습니다.";
+      confList.appendChild(d);
+    } else {
+      confirmedSkills.forEach(function(sk){ confList.appendChild(makeChip(sk, false)); });
+    }
+    confCountEl.textContent = confirmedSkills.length + "개";
+  }
+
+  function onExtract(){
+    var text = document.getElementById("jdText").value;
+    if(!text.trim()){ setMsg("직무기술서 텍스트를 입력하세요.", true); return; }
+    var found = DICT.filter(function(t){ return termInText(text, t); });
+    var added = 0, dup = 0;
+    found.forEach(function(t){
+      if(has(editSkills, t)) { dup++; }
+      else { editSkills.push(t); added++; }
+    });
+    renderEdit();
+    if(found.length === 0) setMsg("추출된 키워드가 없습니다. 직접 추가해 주세요.", true);
+    else setMsg(added + "개 추출" + (dup ? " (중복 " + dup + "개 제외)" : ""), false);
+  }
+
+  function setMsg(t, warn){ extractMsg.textContent = t; extractMsg.className = "extract-msg" + (warn ? " warn" : ""); }
+
+  function onAdd(){
+    var v = addInput.value.trim();
+    if(!v) return;
+    if(has(editSkills, v)){ toast("이미 추가된 키워드입니다."); addInput.select(); return; }
+    editSkills.push(v);
+    addInput.value = "";
+    renderEdit();
+    addInput.focus();
+  }
+
+  function onRemove(value){
+    editSkills = editSkills.filter(function(x){ return norm(x) !== norm(value); });
+    renderEdit();
+  }
+
+  function onClearAll(){
+    if(editSkills.length === 0){ setMsg("", false); return; }
+    if(confirm("편집 중인 키워드를 모두 삭제할까요?")){ editSkills = []; setMsg("", false); renderEdit(); }
+  }
+
+  function onSave(){
+    if(hsIsNew){
+      var nameEl = document.getElementById("hsNameInput");
+      if(nameEl && !nameEl.value.trim()){ toast("직무기술서 이름을 입력하세요."); nameEl.focus(); return; }
+    }
+    if(!jdTextEl.value.trim()){ setMsg("직무기술서 텍스트를 입력하세요.", true); jdTextEl.focus(); return; }
+    if(editSkills.length === 0 && !confirm("저장할 하드스킬이 없습니다. 하드스킬 없이 저장할까요?")) return;
+    if(!isDirty()){ toast("변경 사항이 없습니다."); return; }
+    savedJdText = jdTextEl.value;          // 직무기술서 텍스트 저장
+    confirmedSkills = editSkills.slice();  // 하드스킬 최종본만 저장
+    hasSaved = true;
+    confTimeEl.textContent = "최종 저장: " + fmtNow();
+    renderConfirmed();
+    updateUnsaved();
+    toast("직무기술서(텍스트 + 하드스킬)가 저장되었습니다.");
+  }
+
+  function onEdit(){
+    if(!confirm("저장 이후의 편집 내용을 버리고, 저장된 상태로 되돌릴까요?")) return;
+    editSkills = confirmedSkills.slice();
+    jdTextEl.value = savedJdText;
+    renderEdit();
+    setMsg("", false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    toast("저장된 직무기술서로 되돌렸습니다.");
+  }
+
+  function fmtNow(){
+    var d = new Date();
+    function p(n){ return (n < 10 ? "0" : "") + n; }
+    return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  addInput.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); onAdd(); } });
+  jdTextEl.addEventListener("input", updateUnsaved);
+
+  /* ══════════════════════════════════════════════════
+     초기화
+  ══════════════════════════════════════════════════ */
+  document.getElementById("searchForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    renderList(document.getElementById("searchKeyword").value);
+  });
+
+  loadHardskillData(null);   // 하드스킬 페이지 초기 빈 상태
+  renderList();              // 목록 페이지 (기본 노출 화면)
+</script>
+
+</body>
+</html>
