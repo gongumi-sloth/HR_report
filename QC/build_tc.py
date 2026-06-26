@@ -24,13 +24,23 @@ BORDER = Border(left=thin, right=thin, top=thin, bottom=thin)
 HEADERS = ["담당","TC ID","대분류","중분류","우선\n순위","테스트 시나리오(케이스명)","사전조건",
            "테스트 절차","입력/조건","기대결과",
            "QC결과","실행일","QC담당자",
-           "결함 내용","심각도","개발 수정상태","재확인(QC)","비고"]
-# 그룹별 헤더색 (맨 앞 '담당' 포함 TC정의 10칸)
-HCOLORS = [C_TCDEF]*10 + [C_QC]*3 + [C_DEFECT]*4 + [C_ETC]
-WIDTHS  = [10,10,14,16,7,30,22,30,18,40, 9,11,10, 28,9,13,12,16]
+           "결함 내용","심각도","개발 수정상태","재확인(QC)","비고","구분"]
+# 그룹별 헤더색 (맨 앞 '담당' 포함 TC정의 10칸 / 끝에 비고·구분)
+HCOLORS = [C_TCDEF]*10 + [C_QC]*3 + [C_DEFECT]*4 + [C_ETC]*2
+WIDTHS  = [10,10,14,16,7,30,22,30,18,40, 9,11,10, 28,9,13,12,16,10]
 
-# 컬럼 인덱스(1-base) — 맨 앞 '담당' 추가로 TC ID 이후 전부 +1
-COL_TCID=2; COL_PRIO=5; COL_QC=11; COL_SEV=15; COL_FIX=16; COL_RECHK=17
+# 컬럼 인덱스(1-base) — 맨 앞 '담당'(+1) / 끝에 '구분'
+COL_TCID=2; COL_PRIO=5; COL_QC=11; COL_SEV=15; COL_FIX=16; COL_RECHK=17; COL_GUBUN=19
+
+# ---- 작업자 분배 (작업자N = SC-N; (가) 방식) ----
+WORKERS=7  # 작업자 수(=시나리오 수). 변경 시 여기만 수정
+SCEN_OWNER={  # 시나리오-의존 케이스(케이스명 앞 코드) → 담당 작업자. 사람만 바꿔 끼우면 됨
+ "Q1":1,"Q2":1,"Q3":4,"Q4":4,"Q5":4,"Q6":4,"Q7":4,"Q8":4,
+ "E1":1,"E2":1,"E3":1,"E4":1,"E5":1,"E6":1,"E7":4,
+ "S1":1,"S2":1,"S3":3,"S4":2,"S5":6,"T1":6,"T2":6,"V1":7,"V2":7,
+ "W1":1,"W2":7,"W3":4,"W4":6,"W5":7,"W6":4,"W7":5,"W8":5,"W9":5,
+ "X1":4,"X2":4,"X3":1,"X4":4,"X5":5,"U1":2}
+_common_ctr=[0]  # 공통 라운드로빈 카운터
 
 PROC = {"D":"매니저 화면 분석값과 결과지 노출값을 글자·자릿수 단위로 대조",
         "R":"기대결과의 규칙대로 기대값을 재계산한 뒤 결과지와 대조",
@@ -64,6 +74,8 @@ RPT = [
 ("C. 점수 정확성","P1","C12 미니막대","fill width=메트릭 점수, .dot-avg=avg.해당, .dot-top=top10.해당","R"),
 ("C. 점수 정확성","P2","C13 막대 범례 수치","'평균(점수)'=avg.*, '상위 10%(점수)'=top10.* (2자리). 합불 모드 시 컷 범례=cut.label+cut.score","D"),
 ("C. 점수 정확성","P2","C14 위치점 범위","위치 점 left가 0~100% 범위를 벗어나지 않음(음수/100 초과 없음)","S"),
+("C. 점수 정확성","P2","C15 메트릭 평균 미만 부정 하이라이팅","직무/조직/지원동기 역량별 점수가 동일 직무 평균 미만이면 부정적 의미 하이라이팅 적용(평균 이상은 미적용)(SDS BP콘텐츠상세 3-2)","R"),
+("C. 점수 정확성","P2","C16 메트릭 상위10% 긍정 하이라이팅","역량별 점수가 상위 10% 기준 이상이면 긍정적 의미 하이라이팅 적용(3개 메트릭 공통)","R"),
 ("D. 등급 정확성","P1","D1 직무적합도 factor 등급","evaluation.직무적합도 중 level=factor 3개(직무경험·직무지식·직무동기)가 .gc-left .grow에 순서·등급 일치","D"),
 ("D. 등급 정확성","P1","D2 직무역량 소제목 등급","level=subcat-header 항목이 .gc-right-head에 표시","D"),
 ("D. 등급 정확성","P1","D3 직무역량 하위 8항목 등급","level=sub 8항목(전략적사고~책임감)이 .srow에 순서·등급 일치(홀수 시 빈칸 행 1개 자동)","D"),
@@ -74,9 +86,10 @@ RPT = [
 ("E. 합불 배지","P1","E1 직군 위치 배지","항상 출력. 텍스트='{benchmarks.group} 상위 {benchmarks.percentile}%'","D"),
 ("E. 합불 배지","P1","E2 합불 배지 출력 여부","meta.pass_badge.mode=null이면 .bp-badge.fill·.dot-cut·컷 범례 모두 미출력, null 아니면 출력","R"),
 ("E. 합불 배지","P1","E3 합불 배지 텍스트","meta.pass_badge.label과 일치","D"),
-("E. 합불 배지","P1","E4 합불 배지 색 분기","'이내'/'권장'→.fill(파랑 #e0f3ff), '초과'/'검토 필요'→.fill.over(주황 #d75d00)","R"),
+("E. 합불 배지","P1","E4 합불 배지 색 분기","'이내'/'권장'→.fill(파랑 #e0f3ff), '미만'/'초과'/'검토 필요'→.fill.over(주황 #d75d00)","R"),
 ("E. 합불 배지","P1","E5 컷 막대 동반","합불 모드일 때만 요약막대에 컷 점(.dot-cut)+컷 범례(cut.label+cut.score) 동반","R"),
 ("E. 합불 배지","P2","E6 합불 배지 정책 불변·전 라이선스 적용","합불 배지(적격/검토 필요) 사용 여부는 모든 라이선스에 적용. 4.2에서 정책·기능 변경 없음(기존 로직 유지, 모든 경우의 수를 다 표현하진 않음)","R"),
+("E. 합불 배지","P1","E7 종합결과 페이지 합불 칩","복수 라이선스 종합결과 페이지에도 배수/점수 기준 칩이 단독과 동일 규칙으로 표시(이내/권장 파랑, 초과/검토 필요 주황). 텍스트·색 모두 일치","R"),
 ("F. 검증 포인트","P2","F1 강점 카드","verification.strengths와 개수·순서 일치, 배지 클래스 .vp-badge.up","D"),
 ("F. 검증 포인트","P2","F2 검토 카드","verification.reviews와 개수·순서 일치, 배지 클래스 .vp-badge.down","D"),
 ("F. 검증 포인트","P2","F3 factor명·등급칩",".nm=factor, .vp-grade=등급 매핑(상/중/하/-)","D"),
@@ -86,14 +99,14 @@ RPT = [
 ("F. 검증 포인트","P2","F7 하단 하드스킬 칩","강점카드 하단=확인된 하드스킬(검출), 검토카드 하단=확인되지 않은 하드스킬(미검출)","R"),
 ("G. 문항·자소서","P1","G1 문항 테이블 행 수","essay.questions 개수와 일치, 각 행 '문항 {no}'+title","D"),
 ("G. 문항·자소서","P1","G2 답변적합도 값",".qmetric .v = question.answer_fit(2자리)","D"),
-("G. 문항·자소서","P1","G3 AI 작성 의심 표기",".pct=question.gpk(탐지/미탐지). 탐지→주황(#f09000), 미탐지→.nd 회색. ai_rate(%)는 미노출","R"),
+("G. 문항·자소서","P1","G3 문항별 AI 작성률 % 표기","문항별 검사 결과 행에 'AI 작성률 N%' 동반 표기(SDS BP콘텐츠상세 3-5·예 2%·32%). .pct=AI 작성률(%), 임계 이상 주황(#f09000)·미만 .nd 회색. ※4.2 변경: 탐지/미탐지 이진표기→작성률 % 노출","R"),
 ("G. 문항·자소서","P1","G4 P3 카드 수","essay.questions 개수와 일치, 헤드 '문항 {no}'+title","D"),
 ("G. 문항·자소서","P1","G5 본문=sentences 전체",".p3-body에 모든 sentences[].text가 누락 없이 순서대로 포함","D"),
 ("G. 문항·자소서","P1","G6 근거문장 강조",".hl이 sentences[].hl==true 문장만 감쌈, false 문장엔 강조 없음","R"),
 ("G. 문항·자소서","P2","G7 P3 본문 gpk 밑줄 제거","P3 본문에 문장단위 gpk 밑줄 없음(문항 단위 .p3-ai-val만 표기)","S"),
 ("G. 문항·자소서","P1","G8 메트릭 칩",".p3-metric-group=detected.metrics(name+등급칩), 개수·순서 일치","D"),
 ("G. 문항·자소서","P1","G9 역량 태그",".p3-skill-tag=detected.factors, 개수·순서 일치(쉼표 구분)","D"),
-("G. 문항·자소서","P1","G10 문항 AI 작성 의심",".p3-ai-val=gpk(탐지/미탐지), 색 분기 G3 동일","R"),
+("G. 문항·자소서","P1","G10 자소서분석 답변 AI 작성률 %","P3 답변 하단 우측에 'AI 작성률 N%' 표기(SDS 4.자소서분석·예 32.12%·0.00%). .p3-ai-val=작성률(%), 색 분기 G3 동일. ※4.2 변경: 탐지/미탐지→% 노출","R"),
 ("H. 응답완성도","P2","H1 3박스 존재","답변적합도·구체성·본인소개 순서로 .side-box 3개","S"),
 ("H. 응답완성도","P1","H2 점수=scores",".side-score=scores.*(2자리)","D"),
 ("H. 응답완성도","P2","H3 코멘트=short_text",".side-cmt=completeness.*.short_text 문구 일치","D"),
@@ -159,6 +172,9 @@ RPT = [
 ("R. 평가요약·지원자현황","P2","R2 지원자 현황 막대(위치막대)","지원자 현황 막대 = 종합점수/메트릭 아래 위치막대(cbar)로 표현(figma 확인 2026-06-24). C11~C13(막대 위치·범례)으로 검증","R"),
 ("S. 전형 통과 여부","P1","S1 전형 통과 여부 텍스트","'적격/부적격' 대신 '전형 통과 기준'(종합점수/배수 기준) 텍스트로 표기(AI기본법 표현 준수)","S"),
 ("S. 전형 통과 여부","P1","S2 상위 n% 표기","BP평가 점수에 직군 내 상위 n%가 동반 표기","D"),
+("S. 전형 통과 여부","P1","S3 배수 기준 결과지 표기","접수 '배수 기준' 설정 시: 점수 상위가 선발예정인원×배수 이내면 'N배수 이내'(권장·파랑), 초과 순번은 'N배수 미만'(검토 필요·주황) 기재(SDS BP콘텐츠상세 3-1)","R"),
+("S. 전형 통과 여부","P1","S4 점수 기준 결과지 표기","접수 '점수 기준' 설정 시: 기준점수 이상 '권장(N점 이상)', 미만 '검토 필요(N점 미만)' 기재. 배수·점수 두 옵션 중 하나만 적용","R"),
+("S. 전형 통과 여부","P1","S5 전형통과 기준점수 출처·위치","기준 점수=단독검사 시 BP(종합)점수, 복수 라이선스 시 종합결과 페이지의 '프리즘 종합 점수'. 단독→BP결과지, 복수→종합결과 페이지에 전형통과 여부 표시. 접수 '사용 안 함' 시 미표기","R"),
 ("T. GPK 분석·과금","P2","T1 자소서 분석 GPK 기본 노출","자기소개서 분석 내용에 GPK 결과(AI 작성률·AI 작성 의심 문장)가 기본 제공","S"),
 ("T. GPK 분석·과금","P2","T2 GPK 미선택 고객사 과금 미반영","GPK 라이선스 미선택 고객사도 분석 시 GPK 실행하되 수불부·사용량에 미집계(백엔드/과금 검증)","R"),
 ("U. 엑셀 결과지","P1","U1 전형 통과 여부 텍스트","엑셀파일 결과지에 변경된 전형 통과 여부 텍스트가 반영","D"),
@@ -166,6 +182,20 @@ RPT = [
 ("U. 엑셀 결과지","P2","U3 점수·등급 원본 일치","엑셀 결과지 값이 원본 데이터와 일치(누락·혼입 없음)","D"),
 ("V. 타 라이선스 페이지","P2","V1 비-BP 검사 결과 페이지 렌더 정상","결함·표절·블라인드·GPK 등 BP 외 검사 결과 페이지가 깨짐·잘림·빈 페이지 없이 정상 렌더(4.2에서 콘텐츠 미변경, family 디자인 표현만 적용)","E"),
 ("V. 타 라이선스 페이지","P2","V2 합불 표현 워딩 통일","결과지 전반에서 합불 표현이 '권장/검토 필요'(전형 통과 기준)로 표기되고 '적격/부적격' 직접표현이 어느 페이지에도 없음","S"),
+("W. 라이선스 조합","P1","W1 BP 단독(1종)","BP평가만 선택 시: 종합결과 페이지 없음, 결과지 상단 응시자 정보, BP 4.0 콘텐츠 정상 렌더","S"),
+("W. 라이선스 조합","P3","W2 비-BP 단독(1종)","결함/표절/GPK/블라인드/프리즘Q/PAC/RP 중 1종 단독 시: 각 단독 결과지가 종합결과 없이 정상 렌더(현행 유지)","E"),
+("W. 라이선스 조합","P1","W3 BP+1종(2종)","BP+1종(예 BP+표절) 시: 종합결과 페이지 생성(판정+요약 2종), 각 라이선스 결과지 상단 응시자 정보 없음","S"),
+("W. 라이선스 조합","P2","W4 BP+GPK(2종)","BP+GPK 시: 자소서 분석에 AI 작성률·의심문장 임베드, GPK 미선택 고객사 과금 미반영","R"),
+("W. 라이선스 조합","P2","W5 비-BP 2종","BP 없는 2종(예 표절+블라인드) 시: 종합결과 요약에 BP 미포함, 정상 렌더","S"),
+("W. 라이선스 조합","P2","W6 BP+프리즘Q+PAC 중복 확인","프리즘Q(면접질문)·PAC(특장점)을 독립 라이선스로도 선택 시, BP 내부 임베드분과 중복/충돌 없이 표현되는지","R"),
+("W. 라이선스 조합","P2","W7 BP+3종(4종)","BP 포함 4종(예 BP+표절+블라인드+RP) 시: 종합결과 요약 4종 표시, 페이지 정상","S"),
+("W. 라이선스 조합","P2","W8 BP 포함 6종","BP 포함 6종 시: 다종 요약·페이지 증가에도 종합결과 구성 정상","S"),
+("W. 라이선스 조합","P1","W9 전체 8종","전체 8종 선택 시: 종합결과 요약 8종, 종합결과 페이지 1페이지 이내 유지(넘침 없음)","M"),
+("X. 통합본문","P1","X1 통합본문 ON 통합 표시","통합본문 ON 시: 선택한 검사(결함·표절·GPK·블라인드·BP·RP 중 선택분)의 근거가 자소서 원문 1부에 통합 하이라이트로 표시","S"),
+("X. 통합본문","P1","X2 통합본문 ON 개별 본문 제거","통합본문 ON 시: 개별 검사 페이지에서 자소서 본문이 빠짐(본문 중복 없음)","S"),
+("X. 통합본문","P2","X3 통합본문 OFF","통합본문 OFF 시: 개별 검사 페이지에 자소서 본문 포함, 통합본문 페이지 없음","S"),
+("X. 통합본문","P1","X4 선택 검사만 반영","통합본문에 선택한 검사만 표시. 프리즘Q(면접질문)·PAC(요약)은 본문 마킹 검사가 아니라 통합본문 대상 아님","R"),
+("X. 통합본문","P2","X5 다중 하이라이트 구분","여러 라이선스 하이라이트가 한 본문에 공존 시 색·표시가 라이선스별로 구분되고 겹침/누락 없이 렌더","E"),
 ]
 
 def rpt_rows():
@@ -277,6 +307,7 @@ ADM = [
 ("하드스킬 키워드 관리","P2","키워드 삭제/추가","하드스킬 키워드 존재","삭제·수동 추가","-","하드스킬 키워드 삭제 및 수동 추가 가능"),
 ("프리즘워크-다운로드 설정","P2","BP 콘텐츠 옵션 변경","프리즘워크 다운로드 설정","옵션 확인","-","변경된 BP 콘텐츠에 맞춰 다운로드 옵션이 변경됨"),
 ("프리즘워크-다운로드 설정","P2","'BP평가 상세(근거 문장)' 명칭","다운로드 설정","옵션명 확인","-","'근거문장' 옵션명이 'BP평가 상세(근거 문장)'로 변경 반영"),
+("프리즘워크-다운로드 설정","P1","통합본문 옵션 동작","다운로드 설정 · 복수 검사 선택됨","통합본문 ON/OFF 선택 후 다운로드","-","ON 시 선택 검사 출처가 자소서 1부에 통합되고 개별 검사 본문은 제거 / OFF 시 개별 본문 포함, 통합본문 없음"),
 ]
 
 def adm_rows():
@@ -317,21 +348,33 @@ def add_cf(ws,n):
     ws.conditional_formatting.add(rng_fix,CellIsRule(operator="equal",formula=['"수정완료"'],fill=PatternFill("solid",fgColor=FILL_DONE)))
     Lp=get_column_letter(COL_PRIO); rng_p=f"{Lp}2:{Lp}{n+1}"
     ws.conditional_formatting.add(rng_p,CellIsRule(operator="equal",formula=['"P1"'],fill=PatternFill("solid",fgColor=FILL_P1)))
+    Lg=get_column_letter(COL_GUBUN); rng_g=f"{Lg}2:{Lg}{n+1}"
+    ws.conditional_formatting.add(rng_g,CellIsRule(operator="equal",formula=['"시나리오"'],fill=PatternFill("solid",fgColor="DEEBF7")))
 
 def write_sheet(title,prefix,rows):
     ws=wb.create_sheet(title)
     style_header(ws)
     for i,r in enumerate(rows,1):
         tcid=f"{prefix}-{i:03d}"
-        # r=[대분류,중분류,우선순위,케이스명,사전조건,절차,입력,기대결과,비고]
-        # 컬럼: 1=담당(공란) / 2=TCID / 3-10=TC정의 / 11-17=QC·결함(공란) / 18=비고
-        vals=[""]+[tcid]+r[:8]+[""]*7+[r[8]]
+        # 구분: 결과지 중 옵션 의존(E·Q·S·T·V·W·X 그룹 + U1)=시나리오, 그 외 공통
+        if prefix=="RPT":
+            code=str(r[3]).split()[0]
+            gubun="시나리오" if (r[1][0] in "EQSTVWX" or code=="U1") else "공통"
+        else:
+            code=""; gubun="공통"
+        # 담당 분배(작업자N=SC-N): 시나리오-의존=해당 시나리오 / 공통=라운드로빈
+        if gubun=="시나리오":
+            dam=f"작업자{SCEN_OWNER.get(code,1)}"
+        else:
+            dam=f"작업자{_common_ctr[0]%WORKERS+1}"; _common_ctr[0]+=1
+        # 컬럼: 1=담당 / 2=TCID / 3-10=TC정의 / 11-17=QC·결함 / 18=비고 / 19=구분
+        vals=[dam]+[tcid]+r[:8]+[""]*7+[r[8]]+[gubun]
         rr=i+1
         for c,v in enumerate(vals,1):
             cell=ws.cell(rr,c,v)
             cell.font=F(size=9)
             cell.alignment=Alignment(vertical="top",wrap_text=True,
-                horizontal="center" if c in (1,COL_TCID,COL_PRIO,COL_QC,COL_SEV,COL_FIX,COL_RECHK) else "left")
+                horizontal="center" if c in (1,COL_TCID,COL_PRIO,COL_QC,COL_SEV,COL_FIX,COL_RECHK,COL_GUBUN) else "left")
             cell.border=BORDER
             if i%2==0:
                 if cell.fill.fgColor.rgb in (None,"00000000"):
@@ -395,6 +438,52 @@ def build_status_sheet():
     ws.freeze_panes=f"A{hrow+1}"
 build_status_sheet()
 
+# ---- 시나리오 시트 (옵션 조합별 셋업 매트릭스) ----
+SCENARIOS = [
+("SC-1 단독·점수권장","BP 단독","점수기준 → 권장","OFF","B 정수민","단독 구성(W1·Q1·Q2) · 점수기준 권장칩(S4·E) · 통합본문 OFF=개별본문(X3)"),
+("SC-2 단독·점수검토필요","BP 단독","점수기준 → 검토 필요","OFF","C 김도윤","단독 구성(W1) · 점수기준 검토필요 주황칩(S4·E4)"),
+("SC-3 단독·배수","BP 단독","배수기준","OFF","A 홍길동","단독 구성(W1) · 배수기준 'N배수 이내/미만'칩(S3·E4)"),
+("SC-4 복수·통합본문","BP+표절+블라인드","점수기준","ON","A 홍길동","복수 종합결과 구성(W3·Q3~Q7) · 종합결과 칩(E7) · 통합본문 ON+개별본문 제거(X1·X2)"),
+("SC-5 전체·통합본문","전체 8종","배수기준","ON","A 홍길동","전체 8종 종합결과 1p 이내(W9) · 통합본문 다중 하이라이트(X5)"),
+("SC-6 전형통과 미사용","BP+GPK","사용 안 함","OFF","A 홍길동","전형통과 미표기(S5) · GPK-BP 연동·과금(W4·T)"),
+("SC-7 비-BP·통합본문","결함+표절","해당 없음","ON","A 홍길동","BP 없는 복수(W5) · 통합본문 ON(X1)"),
+]
+def build_scenario_sheet():
+    ws=wb.create_sheet("시나리오")
+    ws.sheet_view.showGridLines=False
+    ws.cell(1,1,"테스트 시나리오 — 옵션(라이선스 × 전형통과 × 통합본문) 조합 + 작업자 분배·진행").font=F(bold=True,size=13,color="1F4E79")
+    ws.cell(2,1,"작업자N = SC-N 담당. 분배/완료/남은은 자동 집계(TC 시트 [담당]=작업자N 기준). 공통 TC도 작업자들에게 나눠 배정됨.").font=F(size=10,color="595959")
+    hdr=["시나리오","라이선스 조합","전형통과 기준","통합본문","샘플 자소서","적용 TC(주)","담당","분배","완료","남은","상태"]
+    widths=[19,20,15,8,12,28,9,7,7,7,9]
+    hrow=4
+    for c,(h,w) in enumerate(zip(hdr,widths),1):
+        cell=ws.cell(hrow,c,h); cell.font=F(bold=True,color="FFFFFF",size=10)
+        cell.fill=PatternFill("solid",fgColor=C_TCDEF); cell.alignment=Alignment(horizontal="center",vertical="center",wrap_text=True); cell.border=BORDER
+        ws.column_dimensions[get_column_letter(c)].width=w
+    ws.row_dimensions[hrow].height=24
+    SNS3=("TC_결과지","TC_API","TC_어드민")
+    for i,row in enumerate(SCENARIOS,1):
+        r=hrow+i
+        bun="+".join([f"COUNTIF('{s}'!$A$2:$A$2000,$G{r})" for s in SNS3])
+        done="+".join([f"COUNTIFS('{s}'!$A$2:$A$2000,$G{r},'{s}'!$K$2:$K$2000,\"<>\")" for s in SNS3])
+        vals=list(row)+[f"작업자{i}",f"={bun}",f"={done}",f"=H{r}-I{r}",""]
+        for c,v in enumerate(vals,1):
+            cell=ws.cell(r,c,v); cell.font=F(size=10)
+            cell.alignment=Alignment(vertical="center",wrap_text=True,horizontal="center" if c in (4,5,7,8,9,10,11) else "left"); cell.border=BORDER
+    last=hrow+len(SCENARIOS)
+    tr=last+1
+    ws.cell(tr,7,"합계").font=F(bold=True,size=10); ws.cell(tr,7).alignment=Alignment(horizontal="center")
+    for c,col in ((8,"H"),(9,"I"),(10,"J")):
+        ws.cell(tr,c,f"=SUM({col}{hrow+1}:{col}{last})"); ws.cell(tr,c).font=F(bold=True,size=10); ws.cell(tr,c).alignment=Alignment(horizontal="center")
+    dv=DataValidation(type="list",formula1='"미착수,진행중,완료"',allow_blank=True)
+    ws.add_data_validation(dv); dv.add(f"K{hrow+1}:K{last}")
+    ws.conditional_formatting.add(f"K{hrow+1}:K{last}",CellIsRule(operator="equal",formula=['"완료"'],fill=PatternFill("solid",fgColor=FILL_PASS)))
+    n=tr+2
+    ws.cell(n,1,"※ 검수자: 본인 시트에서 [담당]을 작업자N(내 번호)으로 필터 → 내 TC만(공통 일부 + 내 시나리오). [구분]으로 공통/시나리오 구분.").font=F(size=9,color="595959")
+    ws.cell(n+1,1,"※ 분배 합계 = 230(전 TC 배정). 완료 = QC결과 입력된 행. 작업자N → 실제 이름으로 바꾸려면 TC시트 [담당]과 이 G열을 함께 치환.").font=F(size=9,color="595959")
+    ws.freeze_panes=f"A{hrow+1}"
+build_scenario_sheet()
+
 # ---- 가이드/대시보드 ----
 g=wb["Sheet"]; g.title="가이드"
 g.sheet_view.showGridLines=False
@@ -422,7 +511,7 @@ g.row_dimensions[6].height=24; g.row_dimensions[7].height=24
 
 # ── 시작하기 (처음이라면) ──
 put("B9","■ 시작하기 — 처음이라면 이 3가지만 하면 됩니다",bold=True,size=13,color="1F4E79")
-start=["1) 내 담당 시트를 엽니다 — [TC_결과지] · [TC_API] · [TC_어드민] 중 배정받은 영역만 보면 됩니다 (209개를 한 번에 볼 필요 없음).",
+start=["1) 내 담당 시트를 열고 [담당]을 '작업자N'(내 번호)으로 필터 → 내 TC만 나옵니다(공통 일부 + 내 시나리오). 전부 볼 필요 없음.",
        "2) 각 행을 실행한 뒤 [QC결과] 칸에서 Pass / Fail / N/A / Blocked 를 선택하고, [실행일] · [QC담당자] 를 적습니다.",
        "3) Fail 일 때만 [결함 내용] · [심각도] 를 적습니다. 이후 개발이 고치면 다시 확인하는 흐름으로 이어집니다.",
        "※ 1차 점검에서 채울 칸은 [QC결과] · [실행일] · [QC담당자] 3칸뿐입니다. 나머지는 결함이 났을 때만 — 처음부터 모든 칸을 채우려 하지 마세요."]
@@ -542,15 +631,15 @@ for i,(lab,val) in enumerate(fixs):
 rn=rd+7
 put(f"B{rn}","※ 테스트 가능 전제(시트별 우선 확인)",bold=True,size=11,color="595959")
 notes=["· [범위] 웹 결과지는 이번 프로젝트 범위 밖 — PDF·엑셀 결과지만 검증(SDS).",
-       "· TC_결과지: 샘플 자소서를 접수→분석→결과지까지 돌린 산출물 검증. 값은 매니저 화면 분석값과 대조. 단일/복수 라이선스·엑셀·타 라이선스 페이지(Q~V) 포함.",
+       "· TC_결과지: 샘플 자소서를 접수→분석→결과지까지 돌린 산출물 검증. 값은 매니저 화면 분석값과 대조. 단일/복수 라이선스·조합·통합본문·엑셀(Q~X) 포함.",
        "· TC_API: execute API·공방 프롬프트 배포 후 테스트 가능. 미배포 항목은 Blocked 처리.",
        "· TC_어드민: 어드민 화면 구현분 기준(접수·매니저·설정 포함). 세부 기대값은 화면정의서 확정 시 갱신 필요.",
        "· [확인필요-PM] 하드스킬 입력 방식(파일 업로드 vs plain text)·공방 프롬프트명은 PM 확정 후 반영. 비고 '확인 필요' 행 참조.",
        "· 미구현 기능의 TC는 삭제하지 말고 Blocked로 두어 구현 완료 시 재실행할 것."]
 for i,s in enumerate(notes): put(f"B{rn+1+i}",s,size=9,color="595959")
 
-wb.move_sheet("가이드",-(len(wb.sheetnames)-1))
-wb.move_sheet("구현현황",-(len(wb.sheetnames)-2))
+_order=["가이드","구현현황","시나리오","TC_결과지","TC_API","TC_어드민"]
+wb._sheets.sort(key=lambda s:_order.index(s.title) if s.title in _order else 99)
 wb.active=0
 import os
 out="/Users/gon/Documents/GitHub/HR_report/QC/프리즘BP-4.2-테스트케이스-20260624.xlsx"
