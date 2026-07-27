@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>체크포인트 개선 시안 (컨펌용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#E9E9EA;color:#041D30;font-size:16px;line-height:1.6;padding:24px 0;}
+  .page{width:990px;height:1399px;overflow:hidden;background:#fff;margin:0 auto 24px;position:relative;display:flex;flex-direction:column;}
+
+  .doc-top{height:27px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-bottom:1px solid #939395;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .doc-top h1{font-size:12px;font-weight:600;letter-spacing:-0.24px;}
+  .doc-top .cand{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:-0.24px;}
+  .doc-top .cand .div{width:1px;height:11px;background:#041D30;}
+  .doc-top .cand .idnum{font-weight:300;}
+  .pcontent{flex:1;padding:20px 24px 0;overflow:hidden;}
+  .foot{height:34px;flex-shrink:0;display:flex;align-items:center;gap:15px;padding:0 24px;border-top:1px solid #7D7D80;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .foot .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .foot .brand-name{font-size:12px;font-weight:600;letter-spacing:-0.24px;}
+  .foot-c{flex:1;font-size:7px;font-weight:600;color:#6E777C;line-height:1.5;padding:0 10px;}
+  .pnum{font-size:12px;font-weight:600;}
+
+  .sec-title{display:flex;align-items:center;height:24px;border-left:4px solid #939395;padding-left:8px;font-size:24px;font-weight:700;line-height:1;margin:12px 0;}
+  .guide{position:relative;padding:0 2px 0 32px;margin:0 0 20px;font-size:14px;line-height:1.6;color:#7D7D80;}
+  .guide::before{content:"";position:absolute;left:2px;top:1px;width:20px;height:20px;background:url("../icons/icon_info.svg") center / 16.6px auto no-repeat;}
+  .guide b{font-weight:700;color:#7D7D80;}
+
+  /* 시안 구분 라벨 (컨펌용 표기 — 실제 결과지 미노출) */
+  .draft-label{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#0075FF;background:rgba(0,117,255,0.08);border-radius:4px;padding:2px 8px;margin:8px 0;}
+
+  /* 블록 타이틀 바 (기존 유지 — 맥락용) */
+  .sec-head{height:36px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 8px;border-bottom:1px solid #C6C6C6;margin-bottom:16px;}
+  .sh-left{display:flex;align-items:center;gap:8px;}
+  .sh-icon{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;}
+  .sh-title{font-size:18px;font-weight:700;}
+  .sh-right{font-size:14px;color:#041D30;white-space:nowrap;}
+  .sec-head.v-deep{background:rgba(255,213,231,0.3);}
+
+  /* ═══ 개선안: 체크포인트 역량 카드 = P1 핵심 역량 카드와 동일 레이아웃 ═══ */
+  .cpv2{border:1px solid #C6C6C6;border-radius:8px;padding:16px 20px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;}
+  .cpv2.is-core{background:rgba(255,243,219,0.3);}
+  .cpv2-head{display:flex;align-items:center;gap:12px;}
+  .cpv2-name{font-size:18px;font-weight:700;}
+  .corebadge{display:inline-flex;align-items:center;background:#FFF3DB;border-radius:4px;padding:4px;font-size:12px;font-weight:700;color:#F09000;line-height:1;white-space:nowrap;}
+  /* 상/하 정보 — Figma 233-2885 텍스트형: Regular 16 + 등급 Bold 16 */
+  .cpv2-grade{margin-left:auto;font-size:16px;font-weight:400;letter-spacing:-0.16px;color:#041D30;white-space:nowrap;}
+  .cpv2-grade b{font-weight:700;letter-spacing:0.024px;}
+
+  .vuln{border:1px solid #E3E3E3;border-radius:8px;padding:12px;font-size:14px;line-height:1.6;background:#fff;}
+  .vuln-lb{color:#7D7D80;white-space:nowrap;}
+  .vuln-lb::after{content:' |';color:#7D7D80;}
+  .q{font-size:16px;font-weight:700;letter-spacing:0.024px;line-height:1.6;}
+  .qtag{display:inline-flex;align-items:center;height:18px;border-radius:3px;background:#F0F0F0;color:#696969;font-size:12px;font-weight:700;padding:0 6px;margin-right:6px;vertical-align:middle;position:relative;top:-2px;}
+
+  /* 개선안: 답변 예시 — 둥근 박스 제거, 불렛 구분 */
+  .ansv2{list-style:none;padding-left:8px;margin:0 0 4px;display:flex;flex-direction:column;gap:4px;}
+  .ansv2 li{position:relative;padding-left:14px;font-size:14px;line-height:1.6;color:#041D30;}
+  .ansv2 li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:#041D30;}
+  .ansv2 .lb{font-weight:400;}
+  .ansv2 .lb::after{content:' | ';color:#7D7D80;font-weight:400;}
+
+  .note-box{border:1px solid #C6C6C6;border-radius:8px;padding:20px 24px;margin-top:24px;display:flex;flex-direction:column;gap:8px;}
+  .note-box .nt{font-size:16px;font-weight:700;}
+  .note-box li{font-size:14px;line-height:1.7;color:#041D30;margin-left:18px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-top"><h1>2026_무하유_서비스기획자_채용</h1><div class="cand"><span>홍*동</span><span class="div"></span><span class="idnum">MUHA0001</span></div></div>
+  <div class="pcontent">
+
+    <div class="sec-title">체크포인트 개선 시안</div>
+    <div class="guide">컨펌용 시안입니다 — 결과지에는 아직 반영하지 않았습니다.<br><b>개선 ①</b> 답변 예시: 둥근 박스 제거 → 불렛으로 두 항 구분 &nbsp;·&nbsp; <b>개선 ②</b> 역량 단위 레이아웃: P1 핵심 역량 카드와 동일한 카드형(역량명 Bold 18 헤더) &nbsp;·&nbsp; <b>개선 ③</b> 상/하 정보: 칩 → 텍스트형 「AI 인터뷰 <b>상</b> / 역량검사 <b>하</b>」 (Figma 233-2885)</div>
+
+    <div class="sec-head v-deep"><span class="sh-left"><span class="sh-icon"><img src="../icons/icon_check.svg" alt=""></span><span class="sh-title">집중 점검 역량</span></span><span class="sh-right">AI 인터뷰와 역량검사에서 불일치하는 역량</span></div>
+
+    <span class="draft-label">시안 A — 꼬리질문형 (AI 인터뷰 상 · 역량검사 하) + 핵심역량</span>
+    <div class="cpv2 is-core">
+      <div class="cpv2-head">
+        <span class="cpv2-name">문제해결력</span>
+        <span class="corebadge">핵심역량</span>
+        <span class="cpv2-grade">AI 인터뷰 <b>상</b> / 역량검사 <b>하</b></span>
+      </div>
+      <div class="vuln"><span class="vuln-lb">AI 인터뷰</span> 근본 원인을 찾아 해결하는 태도를 강점으로 제시했지만, 실제 문제를 어떻게 정의하고 해결책을 검증했는지에 대한 구체적 사례가 필요합니다.</div>
+      <div class="q"><span class="qtag">경험 검증</span>Q. 말씀하신 해결책을 실제로 어떤 순서로 실행하셨는지 단계별로 설명해 주시겠어요?</div>
+      <ul class="ansv2">
+        <li><span class="lb">바람직한 답변</span>문제 정의→원인 분석→대안 선정→실행→검증의 순서를 실제 사례로 제시하고 각 단계의 판단 근거를 든다.</li>
+        <li><span class="lb">부족한 답변</span>"상황에 맞게 해결했다"처럼 순서 없이 뭉뚱그리거나 결과만 말하고 과정을 제시하지 못한다.</li>
+      </ul>
+      <div class="q"><span class="qtag">자기 인식</span>Q. 그 해결이 근본 원인을 짚은 것인지, 다시 판단한다면 무엇을 다르게 하시겠어요?</div>
+      <ul class="ansv2">
+        <li><span class="lb">바람직한 답변</span>당시 놓친 변수나 대안을 스스로 짚고 다시 한다면 어떤 기준으로 다르게 접근할지 설명한다.</li>
+        <li><span class="lb">부족한 답변</span>"그때가 최선이었다"며 개선점을 떠올리지 못하거나 원인을 외부로 돌린다.</li>
+      </ul>
+    </div>
+
+    <span class="draft-label">시안 B — 추천질문형 (AI 인터뷰 하 · 역량검사 상)</span>
+    <div class="cpv2">
+      <div class="cpv2-head">
+        <span class="cpv2-name">긍정성</span>
+        <span class="cpv2-grade">AI 인터뷰 <b>하</b> / 역량검사 <b>상</b></span>
+      </div>
+      <div class="vuln"><span class="vuln-lb">AI 인터뷰</span> 어려운 상황에 대한 답변이 짧아, 실제 대처 태도나 회복 경험이 구체적으로 확인되지 않았습니다.</div>
+      <div class="q"><span class="qtag">의지 확인</span>Q. 본인이 힘든 상황에서도 유지하고 싶은 업무 태도는 무엇입니까?</div>
+      <ul class="ansv2">
+        <li><span class="lb">바람직한 답변</span>유지하려는 태도를 이유·경험과 함께 구체적으로 제시하고 직무 상황과 연결한다.</li>
+        <li><span class="lb">부족한 답변</span>"긍정적으로 하겠다"처럼 막연하게 답하고 근거를 제시하지 못한다.</li>
+      </ul>
+      <div class="q"><span class="qtag">가상 상황</span>Q. 팀 전체가 실패 가능성을 크게 보고 있다면, 어떻게 분위기를 전환할지 말씀해 주세요.</div>
+      <ul class="ansv2">
+        <li><span class="lb">바람직한 답변</span>현실 인정→작은 성공 경험 설계→역할 분담 등 단계적이고 실행 가능한 전환 방안을 제시한다.</li>
+        <li><span class="lb">부족한 답변</span>"괜찮다고 격려한다"처럼 구체성 없이 감정적 대응에 그친다.</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <span class="nt">컨펌 요청 사항</span>
+      <li>답변 예시 불렛(개선 ①)은 <b>P1 핵심 역량 카드의 답변 예시에도 동일 적용</b>됩니다 (같은 컴포넌트).</li>
+      <li>AI 인터뷰 근거(회색 보더 박스)는 유지했습니다 — 근거도 박스 제거를 원하시면 말씀해 주세요.</li>
+      <li>P1 핵심 역량 카드 우측의 등급 표기(컬러칩 <span style="display:inline-flex;width:32px;height:16px;background:rgba(0,117,255,0.6);border-radius:2px;color:#fff;font-size:10px;font-weight:700;align-items:center;justify-content:center;vertical-align:middle;">상</span>)도 이 텍스트형으로 통일할까요, 아니면 P1은 컬러칩을 유지할까요?</li>
+    </div>
+
+  </div>
+  <div class="foot"><span class="brand"><img src="../logo/logo_prism.png" alt="PRISM" style="height:16px;"><img src="../logo/logo_monster.png" alt="Ai monster" style="height:10px;"><span class="brand-name">교차진단</span></span><span class="foot-c">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</span><span class="pnum">시안</span></div>
+</div>
+</body></html>
