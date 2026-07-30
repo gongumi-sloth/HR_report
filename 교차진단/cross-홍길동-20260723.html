@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://center.muhayu.com/file/down/6a4fd34fd1a2dd5d6372029c -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교차검증 결과지</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#151d2b; --ink-soft:#5b6577; --line:#e6eaf0; --line-strong:#ccd4e0;
+    --paper:#fff; --band:#f1f3f7; --navy:#0f2033; --navy-soft:#eef2f8;
+    /* PDF 팔레트 (몬x역 교차진단) */
+    --c-verify:#1e9e4a; --c-verify-bg:#e4f6ea;   /* 검증된/역량 신뢰 = 그린 */
+    --c-deep:#ff006b;   --c-deep-bg:#ffe3ef;      /* 집중 점검/하등급 = 핑크 */
+    --c-explore:#704ad9;--c-explore-bg:#efe9fb;   /* 심층 탐색/집중 탐색 = 퍼플 */
+    --c-blue:#0075ff;   --c-blue-bg:#e6f0ff;      /* 브랜드/상등급/검증 헤더 = 블루 */
+    --c-blue-mid:#66abff;                         /* 중등급 = 미드 블루 */
+    --c-weak:#9a7b12;   --c-weak-bg:#f7f0d9;      /* 취약한 = 앰버 */
+    --c-etc:#6a7385;    --c-etc-bg:#eef0f4;       /* 기타 = 그레이 */
+    --c-scen:#704ad9;   --c-scen-bg:#efe9fb;      /* 시나리오/탐색 = 퍼플 */
+    --core-hl:#fdf6d5;                            /* 핵심역량 강조 = 연노랑 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    background:#d9dde4;color:var(--ink);font-size:11px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;padding:24px 0;}
+  .page{width:794px;height:1123px;overflow:hidden;background:var(--paper);margin:0 auto 26px;
+    position:relative;box-shadow:0 4px 20px rgba(30,40,60,.14);
+    display:flex;flex-direction:column;page-break-after:always;}
+  .page:last-child{page-break-after:avoid;}
+  .pcontent{flex:1;min-height:0;overflow:hidden;padding:18px 44px 16px;}
+  @page{size:A4;margin:0;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @media print{
+    body{background:#fff;padding:0;}
+    .page{margin:0 auto;box-shadow:none;}
+  }
+
+  /* 문서 헤더 (27px) — 디자인 시스템 공통 */
+  .doc-header{height:27px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+    padding:0 24px;border-bottom:1px solid #939395;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .doc-header .dh-title{font-size:12px;font-weight:600;letter-spacing:-.24px;color:#041D30;}
+  .doc-header .dh-info{display:flex;align-items:center;gap:6px;}
+  .doc-header .dh-job{font-size:12px;font-weight:600;letter-spacing:-.24px;color:#041D30;}
+  .doc-header .dh-div{width:1px;height:11px;background:#041D30;}
+  .doc-header .dh-num{font-size:12px;font-weight:300;letter-spacing:-.24px;color:#041D30;}
+  /* 푸터 (34px) — 디자인 시스템 공통 (교차진단: prism+monster 로고) */
+  .footer{height:34px;flex-shrink:0;border-top:1px solid #7D7D80;padding:0 24px;
+    display:flex;align-items:center;gap:15px;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .footer .ft-left{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .footer .ft-left img.lg-prism{height:14px;width:auto;display:block;}
+  .footer .ft-left img.lg-monster{height:10px;width:auto;display:block;}
+  .footer .ft-product{font-size:12px;font-weight:600;letter-spacing:-.24px;color:#041D30;}
+  .footer .ft-copy{flex:1;padding:0 10px;font-size:7px;font-weight:600;line-height:1.5;color:#6E777C;}
+  .footer .ft-page{font-size:12px;font-weight:600;letter-spacing:-.24px;color:#041D30;}
+  /* 안내사항 (AI 고지 · 개인정보) — 마지막 페이지 하단 필수 */
+  .report-info{background:#fff;border:1px solid #C6C6C6;border-radius:8px;padding:24px 28px;
+    display:flex;flex-direction:column;gap:16px;margin-top:18px;page-break-inside:avoid;break-inside:avoid;}
+  .report-info-item{display:flex;gap:8px;align-items:flex-start;}
+  .help-icon{width:20px;height:20px;flex-shrink:0;border:1.5px solid #7D7D80;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-style:italic;font-weight:700;
+    font-family:Georgia,serif;color:#7D7D80;margin-top:1px;}
+  .report-info-text{flex:1;font-size:13px;font-weight:400;color:#041D30;line-height:1.7;text-align:justify;}
+  .eyebrow{font-size:8.5px;font-weight:800;letter-spacing:.14em;color:var(--c-blue);
+    text-transform:uppercase;margin-bottom:3px;}
+  .sec-title{font-size:12.5px;font-weight:800;color:var(--navy);
+    display:flex;align-items:center;gap:7px;margin:18px 0 9px;}
+  .sec-title::before{content:"";width:3px;height:14px;background:#939395;border-radius:2px;}
+  .sec-title .tag{margin-left:auto;font-size:9px;font-weight:600;color:var(--ink-soft);
+    background:var(--band);padding:3px 9px;border-radius:20px;}
+
+  /* 헤더 카드 */
+  /* 1페이지 상단: 네이비 배경 컨테이너 (PDF 톤) */
+  .hero-wrap{background:#495e76;border-radius:14px;padding:15px 15px 13px;margin-bottom:14px;}
+  .hero-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:3px 7px 12px;}
+  .hero-head h1{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+  .hero-head .hh-right{font-size:10px;font-weight:700;color:#cfd8e4;white-space:nowrap;}
+  .hero{border:none;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 8px rgba(15,25,45,.18);}
+  .hero-main{display:grid;grid-template-columns:1.15fr 1fr 1.35fr;background:linear-gradient(90deg,#ffffff 0%,#ecf4ff 46%,#ffffff 84%);}
+  .hero-cell{padding:15px 18px;border-right:1px solid var(--line);}
+  .hero-cell:last-child{border-right:none;}
+  .hero-role{font-size:9px;color:var(--ink-soft);font-weight:700;letter-spacing:.03em;}
+  .hero-name{font-size:23px;font-weight:800;color:var(--navy);margin:2px 0 1px;letter-spacing:-.02em;}
+  .hero-id{font-size:9px;color:#9aa1ad;font-weight:600;letter-spacing:.06em;}
+  .src-row{display:flex;align-items:center;justify-content:space-between;margin-top:7px;}
+  .src-row+.src-row{margin-top:5px;}
+  .src-label{font-size:9.5px;font-weight:700;color:var(--ink);}
+  .pill{font-size:8.5px;font-weight:800;padding:3px 10px;border-radius:20px;}
+  .pill.ok{background:#fff;color:var(--c-blue);border:1px solid var(--c-blue);}
+  .pill.warn{background:#fff;color:var(--c-weak);border:1px solid #d9c98c;}
+  .pill.no{background:#fff;color:var(--c-deep);border:1px solid #ffb0d0;}
+  .hero-type-label{font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--c-blue);text-transform:uppercase;}
+  .hero-type{font-size:18px;font-weight:800;color:var(--navy);margin:3px 0 6px;letter-spacing:-.02em;}
+  .hero-type-desc{font-size:9.5px;color:var(--ink-soft);line-height:1.55;}
+  .hero-note{background:var(--navy-soft);padding:9px 18px;font-size:9px;color:var(--ink-soft);
+    display:flex;gap:14px;align-items:center;border-top:1px solid var(--line);}
+  .hero-note b{color:var(--navy);font-weight:800;white-space:nowrap;}
+  .chk-list{display:flex;gap:6px;flex-wrap:wrap;}
+  .chk{font-size:8.5px;font-weight:700;padding:2px 8px;border-radius:5px;background:#fff;
+    border:1px solid var(--line-strong);color:var(--ink);}
+
+  /* 가이드 박스 */
+  .guide{background:var(--band);border:1px dashed var(--line-strong);border-radius:9px;
+    padding:8px 13px;margin:8px 0 10px;font-size:9px;color:var(--ink-soft);line-height:1.5;}
+  .guide b{color:var(--navy);}
+
+  /* 검증 결과 요약 — 색 블록 그리드 */
+  .summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:4px 0 4px;}
+  .sm-card{border:1px solid var(--line);border-radius:10px;padding:13px 12px 11px;position:relative;overflow:hidden;background:#fff;}
+  .sm-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+  .sm-card .sm-k{font-size:9.5px;font-weight:800;color:var(--ink);}
+  .sm-card .sm-sub{font-size:7.5px;font-weight:600;color:var(--ink-soft);margin-top:1px;}
+  .sm-card .sm-v{font-size:25px;font-weight:800;line-height:1;margin-top:10px;letter-spacing:-.02em;}
+  .sm-card .sm-v small{font-size:12px;font-weight:700;color:var(--ink-soft);}
+  .sm-card .sm-gauge{height:5px;background:#eef1f6;border-radius:3px;overflow:hidden;margin-top:9px;}
+  .sm-card .sm-gauge span{display:block;height:100%;border-radius:3px;}
+  .sm-card .sm-n{font-size:8px;font-weight:600;color:#9aa1ad;margin-top:6px;}
+  .sm-deep::before{background:var(--c-deep);} .sm-deep .sm-v{color:var(--c-deep);}
+  .sm-explore::before{background:var(--c-explore);} .sm-explore .sm-v{color:var(--c-explore);}
+  .sm-verify::before{background:var(--c-verify);} .sm-verify .sm-v{color:var(--c-verify);}
+  .sm-weak::before{background:var(--c-weak);} .sm-weak .sm-v{color:var(--c-weak);}
+  .sm-etc::before{background:#7b8494;} .sm-etc .sm-v{color:#7b8494;}
+  .sm-bar{display:none;}
+
+  /* 매트릭스 */
+  table{width:100%;border-collapse:collapse;font-size:9.5px;}
+  .mtx th{background:var(--band);color:var(--navy);font-weight:800;font-size:9px;padding:7px 8px;text-align:left;border-bottom:2px solid var(--line-strong);}
+  .mtx th:nth-child(n+3){text-align:center;}
+  .mtx td{padding:5px 8px;border-bottom:1px solid var(--line);}
+  .mtx td.col-c{text-align:center;}
+  .mtx tr:last-child td{border-bottom:none;}
+  .grp-cell{font-weight:800;color:var(--navy);font-size:9px;background:var(--band);
+    vertical-align:middle;width:56px;text-align:center;}
+  .cap-name{font-weight:600;}
+  .g{font-weight:800;font-size:10px;}
+  .g-H{color:var(--navy);} .g-M{color:var(--ink-soft);} .g-L{color:var(--c-deep);} .g-N{color:#9aa1ad;}
+  .lab{display:inline-block;font-size:8.5px;font-weight:800;padding:2px 9px;border-radius:20px;min-width:78px;}
+  .lab-verify{background:#fff;color:var(--c-verify);border:1px solid #a5dcb8;}
+  .lab-deep{background:#fff;color:var(--c-deep);border:1px solid #ffb0d0;}
+  .lab-explore{background:#fff;color:var(--c-explore);border:1px solid #cdb8f0;}
+  .lab-weak{background:#fff;color:var(--c-weak);border:1px solid #ddc98f;}
+  .lab-etc{background:#fff;color:var(--c-etc);border:1px solid #ccd2db;}
+  /* 카테고리 칩 (핵심역량·집중점검 라벨 — 섹션 헤더 바 색과 통일) */
+  .catchip{display:inline-block;font-size:8.5px;font-weight:800;padding:2px 10px;border-radius:20px;border:1px solid transparent;white-space:nowrap;}
+  .cat-verify{background:var(--c-blue-bg);color:var(--c-blue);border-color:#a9cbf5;}
+  .cat-deep{background:var(--c-deep-bg);color:var(--c-deep);border-color:#ffbdd7;}
+  .cat-explore{background:var(--c-explore-bg);color:var(--c-explore);border-color:#d0bdf0;}
+  .cat-weak{background:#eef1f6;color:#57616f;border-color:#cbd3de;}
+  .cat-etc{background:var(--c-etc-bg);color:#57616f;border-color:#cdd3dd;}
+  .core-row td:not(.grp-cell){background:var(--core-hl);}
+  .core-badge{font-size:7.5px;font-weight:800;color:var(--c-weak);background:var(--c-weak-bg);
+    padding:1px 5px;border-radius:4px;margin-left:5px;}
+  .core-star{color:var(--c-weak);margin-left:3px;}
+  .core-tag{display:inline-block;font-size:7.5px;font-weight:800;color:var(--c-weak);
+    background:var(--c-weak-bg);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;}
+
+  /* 체크포인트 */
+  .cp-block{margin-bottom:13px;}
+  .cp-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 13px;border-radius:8px 8px 0 0;
+    font-weight:800;font-size:11.5px;}
+  .cp-head .cph-cond{font-size:9px;font-weight:600;opacity:.9;}
+  .cp-head .cph-cond b{font-weight:800;}
+  .cp-head.deep{background:var(--c-deep-bg);color:var(--c-deep);}
+  .cp-head.explore{background:var(--c-explore-bg);color:var(--c-explore);}
+  .cp-head.verify{background:var(--c-verify-bg);color:var(--c-verify);}
+  .cp-head.weak{background:var(--c-weak-bg);color:var(--c-weak);}
+  .cp-body{border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;}
+  .cp-desc{font-size:8.5px;color:var(--ink-soft);padding:7px 12px 6px;border-bottom:1px dashed var(--line);line-height:1.55;}
+  .cp-item{padding:8px 12px;border-bottom:1px solid var(--line);}
+  .cp-item:last-child{border-bottom:none;}
+  .cp-block.tight .cp-item{padding:6px 12px;}
+  .cn{font-size:10px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .grade-mini{font-size:8px;font-weight:700;color:var(--ink-soft);}
+  .grade-mini em{font-style:normal;font-weight:800;}
+  .vuln{font-size:8.5px;color:var(--ink);background:var(--band);border-radius:6px;
+    padding:7px 10px;margin-top:5px;line-height:1.55;}
+  .vuln-lb{display:inline-block;font-size:7.5px;font-weight:800;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line-strong);border-radius:4px;padding:1px 6px;margin-right:5px;white-space:nowrap;}
+  .vuln-txt{display:inline;}
+  .st{font-size:7px;font-weight:800;padding:1px 6px;border-radius:4px;margin-right:5px;white-space:nowrap;}
+  .st-강{background:var(--c-deep);color:#fff;}
+  .st-중{background:var(--c-weak-bg);color:var(--c-weak);}
+  .st-약{background:var(--c-etc-bg);color:var(--c-etc);}
+  .q{font-size:9px;color:var(--ink);margin-top:5px;line-height:1.5;}
+  .qtag{font-size:7px;font-weight:800;padding:1px 5px;border-radius:4px;margin-right:6px;vertical-align:middle;}
+  .qtag-deep{background:var(--c-deep-bg);color:var(--c-deep);}
+  .qtag-explore{background:var(--c-explore-bg);color:var(--c-explore);}
+  .qtag-scen{background:var(--c-scen-bg);color:var(--c-scen);}
+  .qtag-value{background:var(--c-verify-bg);color:var(--c-verify);}
+  .qtag-attitude{background:var(--c-weak-bg);color:var(--c-weak);}
+  .q-aim{font-size:7.5px;color:var(--ink-soft);margin-left:6px;font-weight:600;}
+  .cmt{font-size:9px;color:var(--ink-soft);margin-top:4px;line-height:1.55;}
+
+  /* 분류 카드 (3p) */
+  .cls-block{margin-bottom:11px;}
+  /* 섹션 카테고리 바 (PDF 톤: 아이콘 + 제목 + 우측 등급조건) */
+  .sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    border-radius:9px;padding:9px 14px;margin-bottom:8px;border:1px solid transparent;}
+  .sh-left{display:flex;align-items:center;gap:9px;}
+  .sh-icon{width:22px;height:22px;border-radius:50%;background:#fff;flex:none;
+    display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,30,50,.13);}
+  .sh-icon svg{width:13px;height:13px;display:block;}
+  .sh-title{font-size:12px;font-weight:800;color:var(--navy);letter-spacing:-.01em;}
+  .sh-right{font-size:9px;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+  .sec-head.v-deep{background:var(--c-deep-bg);border-color:#ffd0e2;}
+  .sec-head.v-deep .sh-icon{color:var(--c-deep);}
+  .sec-head.v-explore{background:var(--c-explore-bg);border-color:#ddd0f5;}
+  .sec-head.v-explore .sh-icon{color:var(--c-explore);}
+  .sec-head.v-verify{background:var(--c-blue-bg);border-color:#a9cbf5;}
+  .sec-head.v-verify .sh-icon{color:var(--c-blue);}
+  .sec-head.v-weak{background:#eef1f6;border-color:#ccd4de;}
+  .sec-head.v-weak .sh-icon{color:#5b6577;}
+  .sec-head.v-etc{background:var(--c-etc-bg);border-color:#ccd3dd;}
+  .sec-head.v-etc .sh-icon{color:#5b6577;}
+  .ch-pill{display:inline-block;font-size:8.5px;font-weight:800;border-radius:50%;
+    width:18px;height:18px;line-height:17px;text-align:center;background:#fff;border:1px solid var(--line-strong);}
+  .ch-H{color:var(--navy);} .ch-M{color:var(--ink-soft);} .ch-L{color:var(--c-deep);} .ch-N{color:#9aa1ad;}
+  .cls-head{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;margin-bottom:5px;}
+  .cls-head .icon{width:16px;height:16px;border-radius:5px;display:grid;place-items:center;
+    font-size:9px;color:#fff;font-weight:800;}
+  .cls-head .cnt{margin-left:auto;font-size:8.5px;font-weight:700;color:var(--ink-soft);
+    background:var(--band);padding:2px 9px;border-radius:20px;}
+  .cls-desc{font-size:8.5px;color:var(--ink-soft);margin-bottom:6px;line-height:1.55;}
+  .cap-grid{display:grid;grid-template-columns:1fr;gap:0;}
+  .cap-card{padding:9px 4px;border-bottom:1px solid var(--line);
+    display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;}
+  .cap-card:last-child{border-bottom:none;}
+  .cap-card .ccn{display:flex;align-items:center;gap:6px;flex:none;}
+  .cap-card .ccn .namepill{font-size:9.5px;font-weight:800;color:var(--ink);background:var(--band);border-radius:7px;padding:6px 12px;min-width:120px;text-align:center;}
+  .cap-card .ccc{font-size:9px;color:var(--ink-soft);line-height:1.55;}
+  .cap-inline{display:flex;flex-wrap:wrap;gap:6px;}
+  .cap-chip{border:1px solid var(--line);border-radius:20px;padding:3px 10px;font-size:8.5px;
+    display:flex;align-items:center;gap:6px;}
+  .cap-chip .ccn{font-weight:800;color:var(--ink);}
+  .cap-chip .ccg{font-size:7.5px;font-weight:700;color:var(--ink-soft);}
+  .next-box{background:var(--navy);color:#fff;border-radius:10px;padding:13px 16px;margin-top:8px;}
+  /* 기타 역량 (업로드 디자인 참고: 역량명 pill + AI 인터뷰/역량검사 등급 배지, 2열) */
+  .etc-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 18px;}
+  .etc-row{display:flex;align-items:center;gap:7px;}
+  .etc-row.is-core{background:var(--core-hl);border-radius:8px;padding:3px 8px;}
+  .etc-name{flex:none;min-width:96px;font-size:9px;font-weight:700;color:var(--ink);
+    background:var(--band);border-radius:7px;padding:6px 10px;text-align:center;}
+  .etc-src{font-size:8px;font-weight:600;color:var(--ink-soft);}
+  .gpill{display:inline-block;font-size:8px;font-weight:800;border-radius:5px;padding:2px 7px;min-width:20px;text-align:center;}
+  .gpill-H{background:#0075ff;color:#fff;}
+  .gpill-M{background:rgba(0,117,255,.6);color:#fff;}
+  .gpill-L{background:#ff006b;color:#fff;}
+  .gpill-N{background:#e9e9ea;color:#7d7d80;}
+  .next-box .nl{font-size:8.5px;font-weight:800;letter-spacing:.1em;opacity:.7;text-transform:uppercase;}
+  .next-box .nt{font-size:11px;font-weight:700;margin-top:4px;line-height:1.5;}
+
+  /* 고객사 핵심 역량 풀세트 카드 */
+  /* 고객사 핵심 역량 2단 카드 (좌: 라벨·역량명·설명 / 우: 질문·근거) */
+  .core-item{border:1px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;}
+  /* 상단 헤더: 라벨+역량명(좌) / 게이지(우) 가로 배치 */
+  .core-top{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .core-title{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .core-cap{font-size:13px;font-weight:800;color:var(--ink);}
+  .core-gauge{display:flex;gap:16px;flex:none;}
+  .cg-item{display:flex;align-items:center;gap:6px;}
+  .gg-row{display:flex;align-items:center;gap:6px;}
+  .gg-lb{font-size:8px;font-weight:700;color:var(--ink-soft);flex:none;}
+  .gg-track{display:flex;gap:2px;width:52px;}
+  .gg-cell{height:7px;flex:1;background:#eef1f6;border-radius:2px;}
+  .gg-val{font-size:9px;font-weight:800;flex:none;}
+  /* 본문: 설명 + 근거/질문 전체 폭 */
+  .core-desc{font-size:8.5px;color:var(--ink-soft);line-height:1.55;margin-top:9px;padding-bottom:8px;border-bottom:1px dashed var(--line);}
+  .core-body{margin-top:8px;}
+  .core-body .q{margin-top:4px;}
+  .core-body .vuln{margin-top:0;margin-bottom:6px;}
+  .core-body .cmt{margin-top:0;}
+
+  /* 검증/취약 2단 세로 카드 (핵심역량과 한 페이지에 넣기 위한 압축) */
+  .cap-card-v{display:none;}
+  .corechip{font-size:7.5px;font-weight:800;color:var(--c-scen);background:#fff;border:1px solid #d9cef2;border-radius:5px;padding:1px 6px;margin-left:1px;}
+  /* 핵심역량 통일 마커 — 작은 네이비 배지 */
+  .corebadge{display:inline-block;font-size:7px;font-weight:800;color:#3e5170;background:#e9eef5;border:1px solid #ccd6e4;border-radius:4px;padding:1px 6px;margin-left:5px;vertical-align:middle;letter-spacing:.02em;white-space:nowrap;}
+  .cp-item.is-core{background:var(--c-scen-bg);}
+  .cp-card.is-core{background:var(--core-hl);}
+  .ans{background:var(--band);border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin:5px 0 2px;}
+  .ans-row{font-size:8px;line-height:1.55;display:flex;gap:6px;}
+  .ans-row+.ans-row{margin-top:3px;padding-top:3px;border-top:1px dashed var(--line);}
+  .ans-lb{flex:none;font-weight:800;white-space:nowrap;}
+  .ans-lb.good{color:var(--c-verify);}
+  .ans-lb.poor{color:var(--ink-soft);}
+  .ans-tx{color:var(--ink);}
+  .cp-sec{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 13px;border-radius:8px;font-weight:800;font-size:11.5px;margin-top:4px;}
+  .cp-sec.deep{background:var(--c-deep-bg);color:var(--c-deep);}
+  .cp-sec.explore{background:var(--c-explore-bg);color:var(--c-explore);}
+  .cp-sec-c{font-size:9px;font-weight:600;}
+  .cp-sec-c b{font-weight:800;}
+  .cp-sec-desc{font-size:8.5px;color:var(--ink-soft);line-height:1.55;margin:6px 2px 8px;}
+  .cp-card{border:1px solid var(--line);border-radius:9px;padding:10px 13px;margin-bottom:8px;}
+  .cp-card-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px;}
+  .cp-card-name{font-size:12px;font-weight:800;color:var(--ink);}
+  .cap-card.is-core{background:var(--core-hl);border-radius:6px;}
+  .etc-name.is-core{background:var(--c-scen-bg);color:var(--c-scen);}
+  .corestar{font-size:7px;font-weight:800;color:var(--c-scen);margin-left:3px;}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div id="doc"></div>
+
+<script>
+/* =========================================================
+   교차검증 로직 (연구노트 r5 + 스펙 문서 반영)
+   ========================================================= */
+const CAPS=[
+  {g:'인지',name:'전문성'},{g:'인지',name:'발전가능성'},{g:'인지',name:'AI리터러시'},
+  {g:'인지',name:'고객서비스 역량'},{g:'인지',name:'논리분석력'},{g:'인지',name:'전략적 사고'},
+  {g:'인지',name:'문제해결력'},{g:'인지',name:'창의성'},{g:'인지',name:'메타인지 역량'},
+  {g:'태도',name:'책임감'},{g:'태도',name:'실행력'},{g:'태도',name:'성실성'},
+  {g:'태도',name:'주도성'},{g:'태도',name:'긍정성'},{g:'태도',name:'성취지향'},
+  {g:'태도',name:'원칙 준수'},{g:'태도',name:'스트레스 관리 역량'},
+  {g:'협업',name:'리더십 역량'},{g:'협업',name:'갈등관리 역량'},{g:'협업',name:'협상력'},
+  {g:'협업',name:'팀워크 역량'},{g:'협업',name:'의사소통 역량'},{g:'협업',name:'대인관계 역량'},
+];
+
+// 고객사 선택 핵심 역량 (예시 3개 고정 · 연동 전)
+const CORE=['전문성','책임감','원칙 준수','문제해결력'];
+
+// 샘플 후보자 등급 [AI면접, 역량검사]
+// [몬스터(AI 인터뷰), 역량검사] — PDF(몬x역_교차진단) 매트릭스 등급과 일치
+const SAMPLE={
+  '전문성':['H','H'],'발전가능성':['N','M'],'AI리터러시':['M','M'],
+  '고객서비스 역량':['H','H'],'논리분석력':['H','H'],'전략적 사고':['M','M'],
+  '문제해결력':['H','L'],'창의성':['H','H'],'메타인지 역량':['M','L'],
+  '책임감':['H','H'],'실행력':['H','H'],'성실성':['H','L'],
+  '주도성':['H','L'],'긍정성':['L','H'],'성취지향':['L','H'],
+  '원칙 준수':['N','M'],'스트레스 관리 역량':['M','M'],
+  '리더십 역량':['N','L'],'갈등관리 역량':['H','L'],'협상력':['H','L'],
+  '팀워크 역량':['H','H'],'의사소통 역량':['L','H'],'대인관계 역량':['H','M'],
+};
+
+// 교차 패턴 → 5개 역량군
+// 심층검증(deep): HL / 심층탐색(explore): LH,NH / 검증된(verify): HH,MM
+// 취약한(weak): LL / 기타(etc): HM,MH,ML,LM,NM,NL
+const PATTERN={
+  HH:{key:'verify',label:'검증된 역량'},
+  LL:{key:'weak',  label:'취약한 역량'},
+  HL:{key:'deep',  label:'집중 점검 역량'},
+  LH:{key:'explore',label:'심층 탐색 역량'}, NH:{key:'explore',label:'심층 탐색 역량'},
+  HM:{key:'etc',label:'보통 역량'}, MH:{key:'etc',label:'보통 역량'}, MM:{key:'etc',label:'보통 역량'},
+  ML:{key:'etc',label:'보통 역량'}, LM:{key:'etc',label:'보통 역량'},
+  NM:{key:'etc',label:'진단불가 역량'}, NL:{key:'etc',label:'진단불가 역량'},
+};
+function classOf(c){
+  if(c==='HH') return 'verify';
+  if(c==='HL') return 'deep';
+  if(c==='LH'||c==='NH') return 'explore';
+  if(c==='LL') return 'weak';
+  if(c==='NM'||c==='NL') return 'na';
+  return 'ref';
+}
+
+// 집중 점검 — 면접 답변 근거(취약성) + 강도
+const VULN={
+  '논리분석력':'데이터를 분석해 개선안을 도출하고, 기준 변경 전후의 결과를 시뮬레이션하며 분포와 합불자 변화를 비교한 뒤 실제 도입까지 연결한 과정이 확인됩니다. 이후에도 채용 점수와 입사 후 성과의 연계성을 점검하며 타당성을 검토한 점에서 분석이 단편적이지 않고 문제 원인을 확인하는 흐름으로 이어집니다. 분석 결과를 기준 변경과 현장 적용으로 연결했고, 그 뒤 일정 기간 추가 검증까지 수행하여 의사결정에 활용한 점이 드러납니다.',
+  '문제해결력':'근본 원인을 찾아 해결하는 태도를 강점으로 제시했지만, 실제 문제를 어떻게 정의하고 해결책을 검증했는지에 대한 구체적 사례가 필요합니다.',
+  '주도성':'데이터 분배, 분위기 전환, 자동화 제안을 스스로 했다고 표현했지만, 주도한 범위와 조직 내 권한의 한계를 어떻게 다뤘는지 확인이 필요합니다.',
+  '갈등관리 역량':'부정적인 성향의 동료와 1시간 미팅을 통해 문제를 해결했다고 했지만, 갈등의 쟁점과 합의 과정이 구체적으로 확인되지 않습니다.',
+  '의사소통 역량':'분석 결과를 발표할 때 상대가 통계 전문가가 아니라는 점을 고려해 전문 용어를 일상적인 표현과 친숙한 사례로 바꿔 설명하였습니다. 또한 현장의 이해관계자가 공감하고 이해할 수 있도록 메시지를 조정해 전달했으며, 기준 변경이 필요한 상황에서도 데이터를 근거로 변경 전후를 검토해 합의 가능한 형태로 소통한 점이 확인됩니다. 이러한 내용은 정보 격차가 있는 대상에게 설명 방식을 조정하고, 오해를 줄이며, 실제 기준 적용으로 이어지게 한 흐름으로 볼 수 있습니다.',
+};
+// 심층 탐색 — AI 인터뷰에서 근거가 부족했던 이유(답변 근거)
+const VULN_EXP={
+  '갈등관리 역량':'갈등 상황을 다룬 경험을 묻는 질문에 원론적인 답변에 그쳐, 실제 중재 경험이나 대응 방식이 구체적으로 드러나지 않았습니다.',
+  '창의성':'새로운 시도에 대한 답변이 간결해, 실제로 창의적 접근을 실행한 사례가 충분히 확인되지 않았습니다.',
+  '메타인지 역량':'자기 인식을 묻는 질문에 표면적인 답변에 그쳐, 강점·약점에 대한 성찰의 깊이가 드러나지 않았습니다.',
+  '긍정성':'어려운 상황에 대한 답변이 짧아, 실제 대처 태도나 회복 경험이 구체적으로 확인되지 않았습니다.',
+  '성취지향':'목표 추구에 대한 발화가 부족해, 실제 성취 경험이나 몰입 수준이 드러나지 않았습니다.',
+  '협상력':'협상 관련 질문에 일반적인 답변에 그쳐, 실제 조율·설득 경험이 구체적으로 확인되지 않았습니다.',
+};
+function vulnStrength(t){
+  if(!t) return null;
+  if(/드러나지 않|확인되지 않|나타나지 않/.test(t)) return '강';
+  if(/구체적이지 않|모호|제한적|구체적 사례가 필요|구체성이 부족/.test(t)) return '중';
+  if(/필요합니다/.test(t)) return '약';
+  return '중';
+}
+// 집중 점검 — 면접 답변에 대한 꼬리 질문 2개 (실행 구체성 / 깊이·메타인지)
+const Q_DEEP={
+  '논리분석력':[['배점 변경 전후의 점수 분포와 합불자 변화를 비교할 때 사용한 지표와 시뮬레이션 조건은 무엇이었으며, 변경안이 더 타당하다고 결론 내린 논리적 기준은 무엇입니까?','경험 검증'],
+    ['채용 점수와 입사 후 성과의 연계성을 검토할 때 표본 규모, 직무 차이, 평가자 편차와 같은 오차 요인을 어떻게 확인하고 해석하셨는지 말씀해 주세요.','자기 인식']],
+  '문제해결력':[['말씀하신 해결책을 실제로 어떤 순서로 실행하셨는지 단계별로 설명해 주시겠어요?','경험 검증'],
+    ['그 해결이 근본 원인을 짚은 것인지, 다시 판단한다면 무엇을 다르게 하시겠어요?','자기 인식']],
+  '주도성':[['그 제안을 실제 실행으로 옮기기까지 본인이 주도한 범위를 구체적으로 말씀해 주세요.','경험 검증'],
+    ['그 판단이 본인 주도였는지 팀의 결정이었는지, 스스로 어떻게 구분하시나요?','자기 인식']],
+  '갈등관리 역량':[['그 1시간 미팅에서 실제로 오간 쟁점과 본인이 중재한 부분을 구체적으로 말씀해 주세요.','경험 검증'],
+    ['상대가 끝내 수용하지 않았다면, 본인 접근의 어떤 점을 바꿨을까요?','자기 인식']],
+  '의사소통 역량':[['배점 변경 분석을 비전문가에게 설명할 때 어떤 통계 용어를 어떤 일상적 표현이나 사례로 바꾸었으며, 상대가 분포와 변별력의 차이를 이해했다고 확인한 방법은 무엇입니까?','경험 검증'],
+    ['기준 변경을 설명한 뒤 이해관계자가 분석 결과를 다르게 해석하거나 반대했던 사례는 무엇이었으며, 오해의 원인을 어떻게 파악하고 메시지를 다시 조정하셨는지 말씀해 주세요.','자기 인식']],
+};
+// 심층 탐색 — 추천 질문 2개 (라벨: 의지/태도, 가치관, 시나리오)
+const Q_EXPLORE={
+  '전문성':[['지원하신 직무에서 가장 먼저 깊이 있게 익히고 싶은 실무 지식은 무엇입니까?','의지 확인'],
+    ['처음 접하는 업무를 짧은 기한 안에 수행해야 한다면, 어떤 기준과 절차로 접근할지 말씀해 주세요.','가상 상황']],
+  '발전가능성':[['입사 후 가장 먼저 성장시키고 싶은 업무 역량은 무엇입니까?','의지 확인'],
+    ['입사 후 동기보다 업무 습득이 느리다고 느낀다면, 어떻게 개선할지 말씀해 주세요.','가상 상황']],
+  'AI리터러시':[['지원 직무에서 AI를 활용해보고 싶은 업무 영역은 무엇입니까?','의지 확인'],
+    ['AI가 제안한 답변이 그럴듯하지만 근거가 불명확하다면, 어떻게 검증할지 말씀해 주세요.','가상 상황']],
+  '고객서비스 역량':[['고객 응대에서 본인이 가장 개선하고 싶은 역량은 무엇입니까?','의지 확인'],
+    ['고객이 감정적으로 불만을 표현하는 상황이라면, 어떻게 응대할지 말씀해 주세요.','가상 상황']],
+  '논리분석력':[['논리적으로 생각하는 힘을 키우기 위해 평소 어떤 연습을 하고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['상사가 빠른 결론을 요청하지만 근거가 부족하다면, 어떻게 대응할지 말씀해 주세요.','가상 상황']],
+  '전략적 사고':[['지원 직무에서 전략적으로 생각하기 위해 가장 배우고 싶은 부분은 무엇입니까?','의지 확인'],
+    ['팀의 단기 요청과 장기 목표가 충돌한다면, 어떻게 판단할지 말씀해 주세요.','가상 상황']],
+  '문제해결력':[['문제해결력을 키우기 위해 평소 어떤 사고 습관을 갖고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['마감 직전 예상치 못한 오류가 발견된다면, 어떤 순서로 대응할지 말씀해 주세요.','가상 상황']],
+  '창의성':[['업무에서 새로운 관점을 얻기 위해 평소 어떤 정보를 접하고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['모두가 기존 방식대로만 처리하려는 업무에서 개선점이 보인다면, 어떻게 제안할지 말씀해 주세요.','가상 상황']],
+  '메타인지 역량':[['자신의 업무 수준을 객관적으로 확인하기 위해 어떤 피드백을 받고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['본인은 잘했다고 생각한 업무에 낮은 평가를 받는다면, 어떻게 받아들일지 말씀해 주세요.','가상 상황']],
+  '책임감':[['맡은 일을 끝까지 해내기 위해 평소 어떤 점을 의식하고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['맡은 업무가 예상보다 늦어질 것 같다면, 어떤 방식으로 공유할지 말씀해 주세요.','가상 상황']],
+  '실행력':[['업무를 시작할 때 망설임을 줄이기 위해 어떤 습관을 갖고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['해야 할 일은 명확하지만 방법이 완벽하지 않다면, 어떻게 시작할지 말씀해 주세요.','가상 상황']],
+  '성실성':[['성실하게 업무를 수행하기 위해 입사 후 만들고 싶은 루틴은 무엇입니까?','의지 확인'],
+    ['반복 업무가 계속되어 집중력이 떨어진다면, 어떻게 관리할지 말씀해 주세요.','가상 상황']],
+  '주도성':[['입사 후 스스로 먼저 파악하고 싶은 업무 영역은 무엇입니까?','의지 확인'],
+    ['맡은 업무를 마쳤지만 추가 지시가 없는 상황이라면, 어떻게 행동할지 말씀해 주세요.','가상 상황']],
+  '긍정성':[['본인이 힘든 상황에서도 유지하고 싶은 업무 태도는 무엇입니까?','의지 확인'],
+    ['팀 전체가 실패 가능성을 크게 보고 있다면, 어떻게 분위기를 전환할지 말씀해 주세요.','가상 상황']],
+  '성취지향':[['입사 후 꼭 달성해보고 싶은 직무적 목표는 무엇입니까?','의지 확인'],
+    ['목표 달성이 어려워 보이는 중간 결과가 나왔다면, 어떻게 대응할지 말씀해 주세요.','가상 상황']],
+  '원칙 준수':[['원칙을 지키는 태도를 유지하기 위해 평소 어떤 점을 의식하고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['마감이 급해 일부 확인 절차를 생략하자는 제안을 받는다면, 어떻게 대응할지 말씀해 주세요.','가상 상황']],
+  '스트레스 관리 역량':[['긴장되는 상황에서도 차분함을 유지하기 위해 어떤 습관을 갖고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['마감이 몰려 압박감이 큰 상황이라면, 어떤 순서로 마음과 업무를 정리할지 말씀해 주세요.','가상 상황']],
+  '리더십 역량':[['입사 후 동료들과 함께 목표를 맞추기 위해 어떤 노력을 하고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['팀원들이 목표를 다르게 이해하고 있다면, 어떻게 방향을 맞출지 말씀해 주세요.','가상 상황']],
+  '갈등관리 역량':[['의견 차이를 줄이기 위해 평소 어떤 소통 습관을 갖고 싶으신지 말씀해 주세요.','의지 확인'],
+    ['동료와 업무 우선순위에 대한 의견이 다르다면, 어떻게 조율할지 말씀해 주세요.','가상 상황']],
+  '협상력':[['본인이 협상력을 키우기 위해 가장 배우고 싶은 소통 방식은 무엇입니까?','의지 확인'],
+    ['타 부서가 우리 팀 일정과 맞지 않는 요청을 한다면, 어떻게 조율할지 말씀해 주세요.','가상 상황']],
+  '팀워크 역량':[['팀워크를 높이기 위해 평소 실천할 수 있는 작은 행동은 무엇입니까?','의지 확인'],
+    ['팀원 간 업무량 차이가 커 보인다면, 어떻게 기여할지 말씀해 주세요.','가상 상황']],
+  '의사소통 역량':[['상대의 말을 정확히 이해하기 위해 본인이 신경 쓰고 싶은 부분은 무엇입니까?','의지 확인'],
+    ['상사의 지시가 모호하게 느껴진다면, 어떻게 확인할지 말씀해 주세요.','가상 상황']],
+  '대인관계 역량':[['새로운 조직에서 좋은 관계를 만들기 위해 가장 먼저 실천하고 싶은 행동은 무엇입니까?','의지 확인'],
+    ['처음 만난 동료들과 빠르게 협업해야 한다면, 어떻게 관계를 시작할지 말씀해 주세요.','가상 상황']],
+};
+
+// 행동 예측 코멘트 (검증된 / 취약한)
+const PREDICT={
+  '전문성':{verify:'맡은 직무 분야에 대한 전문 지식과 경험을 바탕으로 신속정확하게 문제를 해결하며 조직 전체의 역량을 향상하는데 기여합니다.',weak:'직무 수행에 필요한 지식과 경험이 부족하여 문제 해결에 어려움을 겪고, 업무 완성도가 떨어지거나 조직의 성과 달성에 대한 기여도가 제한됩니다.'},
+  '발전가능성':{verify:'자기 주도적으로 학습하고 새로운 지식과 기술을 업무에 적극 적용하여 단기간 내 성장과 조직 기여를 이룹니다.',weak:'학습 의지와 자기 개발 노력이 부족하고, 타인의 피드백을 잘 수용하지 않아 매사 수동적이고 부정적인 인상을 줄 수 있습니다.'},
+  'AI리터러시':{verify:'최신 AI 기술과 동향을 이해하고 이를 업무에 효과적으로 적용하여 성과를 창출하며, 조직의 AI 활용 역량 향상에 기여합니다.',weak:'AI 기술에 대한 이해와 활용 역량이 부족하여 업무 적용에 어려움이 있으며, 조직의 효율성과 성과 향상에 제한이 있습니다.'},
+  '고객서비스 역량':{verify:'고객의 입장과 의도를 정확하게 파악하고 능동적으로 문제를 해결하여 장기적인 신뢰관계를 구축할 수 있습니다.',weak:'고객의 입장과 의도를 충분히 파악하지 못하고 문제 해결이 수동적이어서 신뢰관계 형성과 고객 만족도 확보에 어려움이 있습니다.'},
+  '논리분석력':{verify:'복잡한 정보를 다양한 관점에서 신속하게 분석하며, 논리적 사고를 통해 조직 내 전략적 의사결정에 기여할 수 있습니다.',weak:'분석 과정에서의 체계성과 일관성이 부족하여 비논리적인 결론을 도출하고, 비약적인 의사결정으로 인해 상대방의 신뢰를 얻지 못할 수 있습니다.'},
+  '전략적 사고':{verify:'조직 목표를 기반으로 장기적인 전략과 체계적인 실행 계획을 수립하고 우선순위를 세워 업무를 추진하여 안정적으로 목표 달성을 이끌어냅니다.',weak:'목표 설정과 실행 계획 수립이 체계적이지 않고 전략적 접근이 부족하여, 업무 추진 과정에서 방향성 확보와 목표 달성에 어려움이 있습니다.'},
+  '문제해결력':{verify:'문제의 원인을 정확히 파악하고 체계적인 해결책을 수립·실행하여 안정적으로 목표 달성을 이끌어냅니다.',weak:'문제의 원인을 파악하는 데 시간이 소요되고, 기존 방식에 매몰되어 대응이 늦으며, 해결 방식이 일시적인 미봉책에 그치는 경우가 있습니다.'},
+  '창의성':{verify:'기존 방식에서 벗어난 실용적이고 혁신적인 아이디어를 제시하고 이를 실행하여 업무의 효율성과 새로운 가치를 창출할 수 있습니다.',weak:'새로운 아이디어나 접근 방식에 대한 시도가 부족하고, 기존 방식을 그대로 답습하여 업무 개선이 더딥니다.'},
+  '메타인지 역량':{verify:'자신의 강점과 한계를 객관적으로 파악하고 이를 업무에 적절히 반영하며, 피드백을 수용해 지속적인 성장과 성과 향상을 이끌어냅니다.',weak:'자신의 강점과 한계를 객관적으로 인식하지 못하고 피드백 수용이 제한적이어서, 업무 수행 방식의 개선과 성과 향상에 어려움이 있습니다.'},
+  '책임감':{verify:'맡은 업무를 끝까지 책임지고 수행하며 문제를 사전에 인지하고 적극적으로 대응하여 기한 내에 결과를 도출하고 조직 목표 달성에 기여합니다.',weak:'자기 일이라는 책임 의식이 부족하여 업무 기한을 준수하지 못하거나 문제 발생 시 외부로 원인을 돌리려 합니다.'},
+  '실행력':{verify:'계획을 구체적인 행동으로 빠르게 전환하고 실행 과정에서 발생하는 문제에 신속히 대응하여, 기한 내에 우수한 품질의 결과를 안정적으로 도출합니다.',weak:'실행 불가능한 계획을 세워 목표 달성이 어려울 수 있고, 주어진 업무를 미루어 기대 이하 품질의 결과물을 산출할 수 있습니다.'},
+  '성실성':{verify:'맡은 업무를 꾸준하고 성실하게 수행하며 자기 관리를 바탕으로 기한 내에 완성도 높은 결과를 도출합니다.',weak:'업무를 지속하는 끈기가 부족하여 중간에 포기하거나 지연되는 상황이 잦고, 이로 인해 결과물의 품질이 미흡할 수 있습니다.'},
+  '주도성':{verify:'주어진 업무 외에도 추가 과제를 찾아 수행하고, 문제 발생 시 즉시 해결책을 제시하며 팀 목표 달성에 기여합니다.',weak:'주어진 업무만 수행하고, 문제 상황에서는 다른 사람에게 해결을 맡기거나 지시를 기다려 업무 지연이 발생할 수 있습니다.'},
+  '긍정성':{verify:'스트레스 상황에서도 자신을 잘 관리하며, 팀원에게 긍정적인 에너지를 전달하고 문제 해결에 적극적으로 임합니다.',weak:'어려운 상황에서 쉽게 지치거나 낙담하며, 문제를 회피하고 팀 분위기에 부정적인 영향을 줄 수 있습니다.'},
+  '성취지향':{verify:'목표를 향한 꾸준한 열정과 노력을 보이며, 어려움에도 포기하지 않고 끝까지 성과를 달성합니다.',weak:'목표 달성을 위한 열정과 노력이 일시적이고, 어려운 상황에서 쉽게 포기하여 단기적인 성과 산출에 그칩니다.'},
+  '원칙 준수':{verify:'규범과 원칙을 철저히 준수하며, 정직하고 투명하게 행동하여 조직의 신뢰를 쌓고 팀원에게도 모범을 보입니다.',weak:'규범과 원칙을 따르지 않거나 편법에 의존하여, 업무에서 신뢰를 잃고 조직에 부정적인 영향을 줄 수 있습니다.'},
+  '스트레스 관리 역량':{verify:'스트레스를 능숙하게 관리하며, 압박 상황에서도 침착하게 대응하고 팀의 분위기를 긍정적으로 이끌어 성과를 유지합니다.',weak:'스트레스를 제대로 관리하지 못해, 업무 장면이나 대인 관계에서 감정적으로 대응하며 팀 분위기를 저하시킬 수 있습니다.'},
+  '리더십 역량':{verify:'목표를 명확히 설정하고 팀원들을 동기부여하며, 갈등 상황에서도 조율하여 조직의 성과를 효과적으로 달성합니다.',weak:'팀원에게 비전과 방향을 제시하지 못해 동기부여를 하지 못하고, 갈등 조율이 미흡하여 조직 목표 달성이 더딥니다.'},
+  '갈등관리 역량':{verify:'갈등 상황을 신속하게 파악하고 중재하며, 관련자의 감정을 고려해 모두가 수용 가능한 해결책을 제시합니다.',weak:'갈등 발생 시 상황 파악과 중재가 더디고, 개입을 꺼려 문제를 방치하거나 해결 과정에서 팀 분위기를 악화시킬 수 있습니다.'},
+  '협상력':{verify:'협상 과정에서 상대방 요구와 조직 이익을 균형 있게 고려하며, 전략적 양보와 설득으로 모두가 만족하는 결과를 도출합니다.',weak:'협상에서 상대방 입장을 충분히 반영하지 못하거나 고집을 부려, 조직 이익 손실이나 관계 악화를 초래할 수 있습니다.'},
+  '팀워크 역량':{verify:'팀 내에서 적극적으로 협력하고 의견을 조율하며, 갈등을 최소화해 목표 달성과 팀 분위기 향상에 기여합니다.',weak:'팀워크에 소극적이고, 팀원과의 갈등을 제대로 해결하지 못해, 팀의 목표 달성이나 협력적인 분위기 형성에서 소외될 수 있습니다.'},
+  '의사소통 역량':{verify:'상대방의 의견을 경청하고 명확하게 전달하며, 피드백을 적절히 제공해 팀 내 의사소통과 협력을 강화합니다.',weak:'의견 경청이나 전달이 미흡하여 정보 누락과 오해가 발생하고, 팀 내 소통에서 문제가 생겼을 때 회피하려 합니다.'},
+  '대인관계 역량':{verify:'다양한 사람들과 원만한 관계를 유지하고, 갈등 상황에서도 긍정적이고 건설적으로 해결하여 협력과 성과를 높입니다.',weak:'사람들과의 관계 형성에 소극적이고, 협력과 소통에 미흡하여 조직 내에서 장기적인 관계를 유지하는 데 어려움을 겪습니다.'},
+};
+
+const TYPE_DESC={
+  '역량 미확인형':'AI 인터뷰 응답 내용 부족 등으로 판단 가능한 역량 정보가 제한적입니다. 대면 면접으로 실제 직무 역량을 다각도로 검증하시길 권장합니다.',
+  '보완 필요형':'여러 역량에서 기준 이하 수준이 반복 확인됩니다. 실제 직무 상황의 수행 리스크와 약점 보완 의지를 철저히 검토하시길 권장합니다.',
+  '핵심 인재형':'여러 지표에서 주요 직무 역량이 일관되게 높게 확인되었습니다. 특별한 리스크가 없다면 조직 적합성 위주로 검증하시길 권장합니다.',
+  '자기 PR형':'AI 인터뷰에서 드러난 표현과 실제 역량검사 결과 간 차이가 있습니다. 어필된 성과·경험에 집중 점검 질문으로 실제 보유 수준을 가려내시길 권장합니다.',
+  '숨은 실력자형':'AI 인터뷰에서의 표현은 다소 간결하고 담백하지만, 탄탄한 기초 역량이 역량검사로 확인되었습니다. 탐색 질문으로 숨겨진 실무 강점을 확인하시길 권장합니다.',
+  '실무 강점형':'높은 수준의 역량을 다수 보유하며 면접 답변과 실제 역량의 균형이 우수합니다. 실무에서 즉각적·안정적인 직무 수행이 기대됩니다.',
+  '발전 가능형':'현재 실무 경험의 양은 적지만 기초 잠재력이 우수합니다. 탐색·시나리오 질문으로 장기 성장 가능성을 검토하시길 권장합니다.',
+  '안정적 균형형':'특정 역량에 치우치거나 부족함 없이 전반적으로 안정적인 밸런스를 갖췄습니다. 조직·팀 문화와의 적합성을 평가하시길 권장합니다.',
+};
+
+/* ---------------- 계산 ---------------- */
+function compute(data){
+  const cnt={HH:0,HM:0,HL:0,MH:0,MM:0,ML:0,LH:0,LM:0,LL:0,NH:0,NM:0,NL:0};
+  const rows=[];
+  CAPS.forEach(c=>{
+    const [iv,tv]=data[c.name]||['N','N'];
+    const cd=iv+tv; cnt[cd]++;
+    rows.push({...c,iv,tv,code:cd,pat:PATTERN[cd],cls:classOf(cd),core:CORE.includes(c.name)});
+  });
+  const OBS=23-(cnt.NM+cnt.NL);
+  const pct=n=>OBS>0?Math.round(n/OBS*100):0;
+  const STR=pct(cnt.HH), LAT=pct(cnt.LH+cnt.NH), MNT=pct(cnt.HL), WK=pct(cnt.LL);
+  const ETC=pct(cnt.HM+cnt.MH+cnt.MM+cnt.ML+cnt.LM);
+  let type; const N3=cnt.NH+cnt.NM+cnt.NL;
+  if(N3>=10) type='역량 미확인형';
+  else if(WK>25) type='보완 필요형';
+  else if(STR>=45&&WK<=10&&MNT<35) type='핵심 인재형';
+  else if(MNT>=35&&STR<=30) type='자기 PR형';
+  else if(LAT>=30&&STR>=25&&MNT<35) type='숨은 실력자형';
+  else if((cnt.HH+cnt.HM)>=8&&WK<=15) type='실무 강점형';
+  else if(LAT>=25&&STR<25) type='발전 가능형';
+  else type='안정적 균형형';
+  return {cnt,rows,OBS,STR,LAT,MNT,WK,ETC,type};
+}
+const R=compute(SAMPLE);
+const gtxt={H:'상',M:'중',L:'하',N:'없음'};
+
+/* (헤더/본문은 하단 페이지네이터에서 생성) */
+
+/* ================= 공통 헬퍼 ================= */
+const labClass={verify:'cat-verify',deep:'cat-deep',explore:'cat-explore',weak:'cat-weak',etc:'cat-etc',ref:'cat-etc',na:'cat-etc'};
+const patName={verify:'검증된 역량',deep:'집중 점검 역량',explore:'심층 탐색 역량',weak:'취약한 역량',etc:'기타'};
+function gcell(v){return `<span class="g g-${v}">${gtxt[v]}</span>`;}
+function gradeMini(r){return `<span class="grade-mini">AI 인터뷰 <em>${gtxt[r.iv]}</em> · 검사 <em>${gtxt[r.tv]}</em></span>`;}
+// 등급 4단계 시각 게이지 (상=3 / 중=2 / 하=1 / 없음=0)
+const gLevel={H:3,M:2,L:1,N:0};
+const gColor={H:'#0075ff',M:'#7b8494',L:'#ff006b',N:'#c9d1de'};
+function gradeGauge(label,v){
+  const lv=gLevel[v];
+  const cells=[1,2,3].map(i=>`<span class="gg-cell${i<=lv?' on':''}" style="${i<=lv?`background:${gColor[v]};`:''}"></span>`).join('');
+  return `<div class="gg-row"><span class="gg-lb">${label}</span><span class="gg-track">${cells}</span><span class="gg-val" style="color:${v==='N'?'#9aa1ad':gColor[v]}">${gtxt[v]}</span></div>`;
+}
+
+// 집중점검 꼬리질문 렌더
+function deepQ(r){
+  const qs=Q_DEEP[r.name]||[['실제 실행 과정을 단계별로 구체적으로 말씀해 주세요.','경험 검증'],['다시 판단한다면 무엇을 다르게 하시겠어요?','자기 인식']];
+  const dTag={'경험 검증':'qtag-deep','자기 인식':'qtag-attitude'};
+  return qs.map(q=>`<div class="q"><span class="qtag ${dTag[q[1]]||'qtag-deep'}">${q[1]}</span>${q[0]}</div>`).join('');
+}
+// 심층탐색 추천질문 렌더
+function exploreQ(r){
+  const qs=Q_EXPLORE[r.name]||[['해당 역량에 대한 본인의 생각을 말씀해 주세요.','의지·태도'],['관련 상황이 온다면 어떻게 하시겠어요?','가상 상황']];
+  const tagCls={'의지·태도':'qtag-attitude','의지 확인':'qtag-attitude','태도 확인':'qtag-attitude','가치관':'qtag-value','가상 상황':'qtag-scen'};
+  return qs.map(q=>`<div class="q"><span class="qtag ${tagCls[q[1]]||'qtag-explore'}">${q[1]}</span>${q[0]}</div>`).join('');
+}
+/* ===== 답변 예시(바람직/부족) — 질문 텍스트로 매칭 ===== */
+const ANS={
+  '배점 변경 전후의 점수 분포와 합불자 변화를 비교할 때 사용한 지표와 시뮬레이션 조건은 무엇이었으며, 변경안이 더 타당하다고 결론 내린 논리적 기준은 무엇입니까?':
+    {good:'합격선·표준편차·상하위 구간 이동 같은 사용 지표와 “동일 응시자 집단에 신·구 배점을 적용”한 시뮬레이션 조건을 구체적으로 제시하고, 변별력이 개선된 근거를 수치로 설명한다.',
+     poor:'“데이터를 보니 바뀐 기준이 더 나아 보였다”처럼 사용한 지표나 판단 기준을 제시하지 못하고 인상 위주로 답한다.'},
+  '채용 점수와 입사 후 성과의 연계성을 검토할 때 표본 규모, 직무 차이, 평가자 편차와 같은 오차 요인을 어떻게 확인하고 해석하셨는지 말씀해 주세요.':
+    {good:'표본 규모의 한계, 직무별 성과 정의 차이, 평가자 편차를 스스로 짚고 이를 보정하거나 해석에 반영한 방식까지 언급한다.',
+     poor:'“성과가 높게 나왔으니 타당하다”처럼 오차 요인 자체를 인식하지 못하고 결과만 단정한다.'},
+  '배점 변경 분석을 비전문가에게 설명할 때 어떤 통계 용어를 어떤 일상적 표현이나 사례로 바꾸었으며, 상대가 분포와 변별력의 차이를 이해했다고 확인한 방법은 무엇입니까?':
+    {good:'“표준편차→점수가 퍼진 정도”처럼 실제로 바꾼 표현을 제시하고, 되질문·요약 확인으로 상대의 이해를 점검한 방법을 설명한다.',
+     poor:'“쉽게 풀어서 설명했다”라고만 하고 바꾼 표현이나 이해 확인 방법을 구체적으로 제시하지 못한다.'},
+  '기준 변경을 설명한 뒤 이해관계자가 분석 결과를 다르게 해석하거나 반대했던 사례는 무엇이었으며, 오해의 원인을 어떻게 파악하고 메시지를 다시 조정하셨는지 말씀해 주세요.':
+    {good:'결과를 다르게 해석한 실제 사례와 그 원인(전제 공유 부족 등)을 파악해 메시지를 재구성한 과정을 구체적으로 설명한다.',
+     poor:'“대체로 잘 전달됐다”며 반대·오해 사례를 떠올리지 못하거나 원인 분석 없이 넘어간다.'},
+  '업무에서 새로운 관점을 얻기 위해 평소 어떤 정보를 접하고 싶으신지 말씀해 주세요.':
+    {good:'타 산업 사례, 사용자 관찰, 사내 다른 직무의 방식 등 구체적 정보원을 들고 이를 업무에 연결하려는 이유까지 제시한다.',
+     poor:'“여러 가지를 두루 보겠다”처럼 정보원이나 활용 의도가 막연하다.'},
+  '모두가 기존 방식대로만 처리하려는 업무에서 개선점이 보인다면, 어떻게 제안할지 말씀해 주세요.':
+    {good:'개선 필요성을 데이터·사례로 정리하고, 기존 방식을 존중하며 소규모 시범 적용을 제안하는 등 현실적 실행 경로를 제시한다.',
+     poor:'“그냥 바꾸자고 말하겠다”처럼 근거나 설득·실행 방안 없이 주장만 한다.'},
+  '의견 차이를 줄이기 위해 평소 어떤 소통 습관을 갖고 싶으신지 말씀해 주세요.':
+    {good:'상대 의견을 먼저 요약해 확인하고 사실과 감정을 분리하는 등 실천 가능한 습관을 제시하고 그 이유를 설명한다.',
+     poor:'“잘 대화하겠다”처럼 실천 가능한 습관이나 기준이 드러나지 않는다.'},
+  '동료와 업무 우선순위에 대한 의견이 다르다면, 어떻게 조율할지 말씀해 주세요.':
+    {good:'공동 목표·마감 기준을 근거로 우선순위를 재정렬하고, 필요 시 상급자·기준을 활용해 합의하는 절차를 단계적으로 제시한다.',
+     poor:'“제 방식대로 하거나 상대에게 맞춘다”처럼 조율 기준 없이 한쪽으로 치우친 대응을 말한다.'},
+};
+function ansBoxes(q){
+  const a=ANS[q]; if(!a) return '';
+  return `<div class="ans"><div class="ans-row"><span class="ans-lb good">바람직한 답변:</span><span class="ans-tx">${a.good}</span></div><div class="ans-row"><span class="ans-lb poor">부족한 답변:</span><span class="ans-tx">${a.poor}</span></div></div>`;
+}
+function deepQA(r){
+  const qs=Q_DEEP[r.name]||[['실제 실행 과정을 단계별로 구체적으로 말씀해 주세요.','경험 검증'],['다시 판단한다면 무엇을 다르게 하시겠어요?','자기 인식']];
+  const dTag={'경험 검증':'qtag-deep','자기 인식':'qtag-attitude'};
+  return qs.map(q=>`<div class="q"><span class="qtag ${dTag[q[1]]||'qtag-deep'}">${q[1]}</span>${q[0]}</div>${ansBoxes(q[0])}`).join('');
+}
+function exploreQA(r){
+  const qs=Q_EXPLORE[r.name]||[['해당 역량에 대한 본인의 생각을 말씀해 주세요.','의지·태도'],['관련 상황이 온다면 어떻게 하시겠어요?','가상 상황']];
+  const tagCls={'의지·태도':'qtag-attitude','의지 확인':'qtag-attitude','태도 확인':'qtag-attitude','가치관':'qtag-value','가상 상황':'qtag-scen'};
+  return qs.map(q=>`<div class="q"><span class="qtag ${tagCls[q[1]]||'qtag-explore'}">${q[1]}</span>${q[0]}</div>${ansBoxes(q[0])}`).join('');
+}
+// 한 역량을 "풀세트 카드"로 (핵심 역량 섹션용) — 좌: 라벨·역량명·등급 / 우: 설명·근거·질문
+function coreCard(r){
+  const pk=r.cls;
+  let desc='', right='';
+  if(pk==='deep'){
+    desc='역량검사 대비 AI 인터뷰에서 높게 평가된 역량입니다. 답변의 진위와 실제 보유 수준을 꼬리 질문으로 추적하세요.';
+    const v=VULN[r.name]?`<div class="vuln"><span class="vuln-lb">AI 인터뷰</span><div class="vuln-txt">${VULN[r.name]}</div></div>`:'';
+    right=`${v}${deepQA(r)}`;
+  }else if(pk==='explore'){
+    desc='역량검사는 우수하나 AI 인터뷰가 부족한 역량입니다. 추천 질문으로 발현 가능성을 확인하세요.';
+    const ev=VULN_EXP[r.name]||(r.iv==='N'?'해당 역량에 대한 발화가 확인되지 않아 AI 인터뷰 기반 판단이 어렵습니다.':'AI 인터뷰 답변에서 이 역량을 뒷받침하는 근거가 충분히 드러나지 않았습니다.');
+    const v=`<div class="vuln"><span class="vuln-lb">AI 인터뷰</span><div class="vuln-txt">${ev}</div></div>`;
+    right=`${v}${exploreQA(r)}`;
+  }else if(pk==='verify'){
+    desc='두 결과 모두 높게 확인된 검증된 강점입니다.';
+    const c=(PREDICT[r.name]&&PREDICT[r.name].verify)||'두 전형에서 일관되게 높은 수준을 보여 실무에서 안정적으로 발휘될 것으로 예측됩니다.';
+    right=`<div class="cmt">${c}</div>`;
+  }else if(pk==='weak'){
+    desc='두 결과 공통으로 낮게 확인되어 보완·관리가 필요한 역량입니다.';
+    const c=(PREDICT[r.name]&&PREDICT[r.name].weak)||'두 전형 공통으로 낮게 확인되어 보완·관리가 필요할 것으로 예측됩니다.';
+    right=`<div class="cmt">${c}</div>`;
+  }else if(r.cls==='na'){
+    desc='AI 인터뷰 판단 근거가 부족하여 교차 진단이 어려운 역량으로, 등급 정보만 참고하세요.';
+    right=`<div class="cmt">AI 인터뷰에서 드러난 정보가 부족하여 역량검사 결과와의 대조가 어렵습니다.</div>`;
+  }else{
+    desc='두 결과가 오차 범위 내 차이를 보여 적절한 수준으로 보유한 것으로 판단되는 역량입니다.';
+    right=`<div class="cmt">전반적으로 무난한 일관성을 보이며 해당 역량을 적절한 수준으로 보유한 것으로 판단됩니다. 대면 면접에서 실제 수행 수준을 확인하시길 권장합니다.</div>`;
+  }
+  return `<div class="core-item ${pk}">
+    <div class="core-top">
+      <div class="core-title">
+        <span class="catchip ${labClass[pk]}">${r.pat.label}</span>
+        <span class="core-cap">${r.name}</span>
+      </div>
+      <div class="core-gauge"><span class="cg-item"><span class="gg-lb">AI 인터뷰</span>${gPill(r.iv)}</span><span class="cg-item"><span class="gg-lb">역량검사</span>${gPill(r.tv)}</span></div>
+    </div>
+    <div class="core-desc">${desc}</div>
+    <div class="core-body">${right}</div>
+  </div>`;
+}
+
+/* ================= 흐름 구성(전 섹션) + 역량 단위 페이지네이션 ================= */
+const gcellL=gcell;
+// 핵심역량 섹션: 개발자 디자인 참고용으로 6개 케이스를 모두 노출 (데모 데이터 — 매트릭스/타 섹션과 무관)
+const capG=Object.fromEntries(CAPS.map(c=>[c.name,c.g]));
+const SHOWCASE=[['전문성','HH'],['문제해결력','HL'],['긍정성','LH'],['전략적 사고','MM'],['성실성','LL'],['원칙 준수','NM']];
+const coreRows=SHOWCASE.map(([name,code])=>({name,g:capG[name],iv:code[0],tv:code[1],code,pat:PATTERN[code],cls:classOf(code),core:true}));
+const verifyItems=R.rows.filter(r=>r.cls==='verify');
+const weakItems=R.rows.filter(r=>r.cls==='weak');
+const deepItems=R.rows.filter(r=>r.cls==='deep');
+const expItems=R.rows.filter(r=>r.cls==='explore');
+const refItems=R.rows.filter(r=>r.cls==='ref');
+const naItems=R.rows.filter(r=>r.cls==='na');
+
+const deepNames=deepItems.map(r=>r.name), expNames=expItems.map(r=>r.name);
+let advice;
+if(deepNames.length) advice=`집중 점검 역량(${deepNames.slice(0,3).join(', ')} 등)의 실행 과정과 진위를 꼬리 질문으로 가려내시길 권장합니다.`;
+else if(expNames.length) advice=`잠재된 역량(${expNames.slice(0,3).join(', ')} 등)의 발현 가능성을 추천 질문으로 확인하시길 권장합니다.`;
+else if(['핵심 인재형','실무 강점형','안정적 균형형'].includes(R.type)) advice='우리 조직·팀과 잘 맞는 사람인지 확인하시길 권장합니다.';
+else advice='조직 적합성과 성장 가능성을 종합적으로 검토하시길 권장합니다.';
+const checks=deepNames.length?deepNames:(expNames.length?expNames:[]);
+const chipHTML=checks.length?checks.slice(0,5).map(n=>`<span class="chk">${n}</span>`).join(''):`<span class="chk">조직 적합성 검증</span>`;
+
+/* 헬퍼 재정의 */
+function condPill(v){return `<span class="ch-pill ch-${v}">${gtxt[v]}</span>`;}
+const ICONS={
+  deep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20"/></svg>',
+  explore:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.2" stroke-dasharray="3 2.6"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/></svg>',
+  verify:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>',
+  weak:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8l6 5 6-5"/><path d="M6 14l6 5 6-5"/></svg>',
+  etc:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="9" r="1.8"/><circle cx="13" cy="6.8" r="1.8"/><circle cx="17.6" cy="11" r="1.8"/><circle cx="9" cy="15" r="1.8"/><circle cx="15" cy="16.6" r="1.8"/></svg>',
+};
+function secHead(variant,title,cond){return `<div class="sec-head v-${variant}"><div class="sh-left"><span class="sh-icon">${ICONS[variant]||''}</span><span class="sh-title">${title}</span></div><div class="sh-right">${cond}</div></div>`;}
+function classCard(items,color,ck,emptyMsg){
+  if(!items.length) return `<div class="cls-desc" style="margin-bottom:10px;">${emptyMsg}</div>`;
+  return '<div class="cap-grid">'+items.map(r=>{
+    const c=(PREDICT[r.name]&&PREDICT[r.name][ck])||(ck==='verify'?'두 결과에서 일관되게 높은 수준을 보여 실무에서 안정적으로 발휘될 것으로 예측됩니다.':'두 결과에서 공통으로 낮게 확인되어 보완·관리가 필요할 것으로 예측됩니다.');
+    return `<div class="cap-card${r.core?' is-core':''}"><div class="ccn"><span class="namepill">${r.name}</span>${r.core?'<span class="corebadge">핵심 역량</span>':''}</div><div class="ccc">${c}</div></div>`;
+  }).join('')+'</div>';
+}
+function gPill(v){return `<span class="gpill gpill-${v}">${gtxt[v]}</span>`;}
+function etcRows(items){ return '<div class="etc-grid">'+items.map(r=>`<div class="etc-row${r.core?' is-core':''}"><span class="etc-name">${r.name}</span>${r.core?'<span class="corebadge">핵심 역량</span>':''}<span class="etc-src">몬스터</span>${gPill(r.iv)}<span class="etc-src">역량검사</span>${gPill(r.tv)}</div>`).join('')+'</div>'; }
+function cpCard(r,qfn,exp){
+  const cls=exp?'explore':'deep';
+  const label=exp?'잠재된 역량':'확인할 역량';
+  let v;
+  if(exp){
+    const ev=VULN_EXP[r.name]||(r.iv==='N'?'해당 역량에 대한 발화가 확인되지 않아 AI 인터뷰 기반 판단이 어렵습니다.':'AI 인터뷰 답변에서 이 역량을 뒷받침하는 근거가 충분히 드러나지 않았습니다.');
+    v=`<div class="vuln"><span class="vuln-lb">AI 인터뷰</span><div class="vuln-txt">${ev}</div></div>`;
+  }else{
+    v=VULN[r.name]?`<div class="vuln"><span class="vuln-lb">AI 인터뷰</span><div class="vuln-txt">${VULN[r.name]}</div></div>`:'';
+  }
+  return `<div class="cp-card ${cls}${r.core?' is-core':''}"><div class="cp-card-head"><span class="catchip ${labClass[cls]}">${label}</span><span class="cp-card-name">${r.name}</span>${r.core?'<span class="corebadge">핵심 역량</span>':''}${gradeMini(r)}</div>${v}${qfn(r)}</div>`;
+}
+
+/* 매트릭스 (한 덩어리) */
+const MTX_ORDER=['전문성','발전가능성','AI리터러시','고객서비스 역량','논리분석력','전략적 사고','문제해결력','창의성','메타인지 역량','책임감','성실성','실행력','주도성','긍정성','성취지향','원칙 준수','스트레스 관리 역량','리더십 역량','의사소통 역량','팀워크 역량','협상력','갈등관리 역량','대인관계 역량'];
+const MTX_PAT={HH:['역량 신뢰 가능','verify'],HM:['역량 신뢰 가능','verify'],HL:['집중 검증 필요','deep'],MH:['역량 신뢰 가능','verify'],MM:['역량 신뢰 가능','verify'],ML:['역량 신뢰 가능','verify'],LH:['집중 탐색 권장','explore'],LM:['역량 신뢰 가능','verify'],LL:['역량 신뢰 가능','verify'],NH:['집중 탐색 권장','explore'],NM:['탐색 권장','etc'],NL:['탐색 권장','etc']};
+function rowHTML(r){const [pl,pc]=MTX_PAT[r.code]||['-','etc'];return `<td class="cap-name">${r.name}${r.core?'<span class="corebadge">핵심 역량</span>':''}</td><td class="col-c">${gcell(r.iv)}</td><td class="col-c">${gcell(r.tv)}</td><td class="col-c"><span class="lab lab-${pc}">${pl}</span></td>`;}
+const byName=Object.fromEntries(R.rows.map(r=>[r.name,r]));
+const grpLabel={'인지':'인지 역량','태도':'태도 역량','협업':'협업 역량'};
+const orderedRows=MTX_ORDER.map(n=>byName[n]).filter(Boolean);
+const mtxRowsHTML=orderedRows.map((r,idx)=>{const prev=orderedRows[idx-1];let g='';if(!prev||prev.g!==r.g){let span=1;for(let j=idx+1;j<orderedRows.length&&orderedRows[j].g===r.g;j++)span++;g=`<td class="grp-cell" rowspan="${span}">${grpLabel[r.g]||r.g}</td>`;}return `<tr class="${r.core?'core-row':''}">${g}${rowHTML(r)}</tr>`;}).join('');
+const matrixHTML=`<table class="mtx"><colgroup><col style="width:64px"><col><col style="width:80px"><col style="width:80px"><col style="width:132px"></colgroup><thead><tr><th>역량 분류</th><th>역량</th><th>몬스터</th><th>역량검사</th><th>교차 패턴</th></tr></thead><tbody>${mtxRowsHTML}</tbody></table>`;
+
+/* 히어로 */
+const heroHTML=`<div class="hero-wrap"><div class="hero-head"><h1>2026_무하유_서비스기획자_채용</h1><span class="hh-right">몬스터 × 역량검사 교차진단</span></div><div class="hero"><div class="hero-main">
+  <div class="hero-cell"><div class="hero-role">서비스기획</div><div class="hero-name">홍길동</div><div class="hero-id">MUHA0001</div></div>
+  <div class="hero-cell"><div class="src-row"><span class="src-label">몬스터</span><span class="pill ok">평가 근거 충분</span></div><div class="src-row"><span class="src-label">역량검사</span><span class="pill ok">응답 신뢰 양호</span></div><div style="font-size:8px;color:#9aa1ad;margin-top:8px;line-height:1.5;">몬스터와 역량검사 결과 모두 신뢰도 있게 확보되어 종합 해석 및 비교에 활용합니다.</div></div>
+  <div class="hero-cell"><div class="hero-type-label">인재 유형</div><div class="hero-type">${R.type}</div><div class="hero-type-desc">${TYPE_DESC[R.type]}</div></div>
+</div><div class="hero-note"><b>다음 전형에서 확인할 역량</b><div class="chk-list">${chipHTML}</div></div></div></div>`;
+
+/* ===== 흐름 유닛 ===== */
+const units=[];
+units.push({t:'hero',html:heroHTML});
+units.push({t:'title',html:`<div class="sec-title">핵심 역량</div>`});
+coreRows.forEach(r=>units.push({t:'item',html:coreCard(r)}));
+
+units.push({t:'title',html:`<div class="sec-title">검증된 역량 · 취약한 역량</div>`});
+units.push({t:'item',html:`<div class="cls-block">${secHead('verify','검증된 역량',`AI 인터뷰 ${condPill('H')} / 역량검사 ${condPill('H')}`)}<div class="cls-desc">두 결과 모두 높게 확인되어, 실무에서 안정적으로 발휘될 것으로 예측되는 역량입니다.</div>${classCard(verifyItems,'var(--c-verify)','verify','두 전형 모두에서 높은 수준을 보이는 역량이 확인되지 않습니다.')}</div>`});
+units.push({t:'item',html:`<div class="cls-block">${secHead('weak','취약한 역량',`AI 인터뷰 ${condPill('L')} / 역량검사 ${condPill('L')}`)}<div class="cls-desc">두 결과 공통으로 낮게 확인되어, 보완·관리가 필요할 것으로 예측되는 역량입니다.</div>${classCard(weakItems,'var(--c-weak)','weak','전형 전반에서 취약한 수준으로 분류되거나 개선이 시급한 역량은 확인되지 않습니다.')}</div>`});
+
+units.push({t:'title',html:`<div class="sec-title">교차진단 매트릭스</div><div class="guide">각 역량의 <b>AI 인터뷰</b>·<b>역량검사</b> 등급을 나란히 놓고 두 결과의 조합으로 <b>교차 패턴</b>을 판정합니다. <b>핵심</b> 표시 역량을 가장 먼저 확인하시길 권장합니다.</div>`});
+units.push({t:'item',html:matrixHTML});
+
+const DEEP_DESC='AI 인터뷰에서는 높은 수준으로 확인되나, 역량검사에서 낮은 수준으로 나타난 역량은 집중 점검 역량으로 분류됩니다. 역량의 실제 보유 수준과 답변의 진위 여부를 세밀하게 추적할 필요가 있습니다.';const DEEP_EMPTY='AI 인터뷰에서는 높은 수준으로 확인되나, 역량검사에서 낮은 수준으로 나타난 역량은 집중 점검 역량으로 분류됩니다. 역량검사에서 드러난 수준 대비 AI 인터뷰에서 과장하여 표현했거나 추가 추적이 필요한 역량은 확인되지 않습니다.';const EXP_DESC='역량검사에서는 높은 수준으로 확인되나, AI 인터뷰에서 낮은 수준 혹은 진단 불가로 나타난 역량은 집중 점검 역량으로 분류됩니다. 역량검사 지표는 우수하나 AI 인터뷰 당시 긴장이나 시간 부족으로 답변 근거가 부족할 수 있어, 추천 질문을 통해 해당 역량의 발현 가능성을 확인하시길 권장합니다.';const EXP_EMPTY='역량검사에서는 높은 수준으로 확인되나, AI 인터뷰에서 낮은 수준 혹은 진단 불가로 나타난 역량은 집중 점검 역량으로 분류됩니다. 역량검사 대비 AI 인터뷰에서 잠재력을 보이는 역량이 확인되지 않습니다.';
+const CP_INTRO='AI 인터뷰와 역량검사 간 결과가 일치하지 않는 역량만을 선별하여, 면접관이 현장에서 즉시 활용할 수 있는 맞춤형 질문을 제공합니다.<br>· <b>AI 인터뷰 상 / 역량검사 하</b> : AI 인터뷰 답변을 바탕으로 구체적인 꼬리 질문을 던져, 실제 실행 과정과 지원자가 보유한 역량의 진위 및 깊이를 검증합니다.<br>· <b>AI 인터뷰 하 / 역량검사 상</b> : 엄선된 추천 질문을 활용하여, 지원자의 내재된 의지·가치관과 가상 시나리오 상황에서의 대처 행동을 입체적으로 파악합니다.';
+const ANSNOTE=' 각 질문의 <b>바람직한 답변</b>·<b>부족한 답변</b> 예시를 평가 기준으로 활용하세요.';
+units.push({t:'title',html:`<div class="sec-title">역량별 체크포인트</div><div class="guide">${CP_INTRO}</div>`});
+units.push({t:'title',html:`${secHead('deep','집중 점검 역량','AI 인터뷰와 역량검사에서 불일치하는 역량')}<div class="cp-sec-desc">${deepItems.length?DEEP_DESC+ANSNOTE:DEEP_EMPTY}</div>`});
+deepItems.forEach(r=>units.push({t:'item',html:cpCard(r,deepQA,false)}));
+// 심층 탐색 역량 헤더 제거 — 집중 점검 역량에 통합 (아래 잠재된 역량 카드의 보라 칩은 유지)
+expItems.forEach(r=>units.push({t:'item',html:cpCard(r,exploreQA,true)}));
+
+units.push({t:'title',html:`<div class="sec-title">기타 역량</div><div class="guide">등급 차이가 무난하거나(보통 역량) 판단 근거가 부족한(진단불가 역량) 영역으로, 개별 등급 정보만 참고용으로 제시합니다.</div>`});
+if(refItems.length) units.push({t:'item',html:`<div class="cls-block">${secHead('etc','보통 역량','오차 범위 내 차이')}<div class="cls-desc">AI 인터뷰와 역량검사에서 오차 범위 내 차이를 보여 적절한 수준으로 보유한 것으로 판단되는 역량입니다.</div>${etcRows(refItems)}</div>`});
+if(naItems.length) units.push({t:'item',html:`<div class="cls-block">${secHead('etc','진단불가 역량',`AI 인터뷰 ${condPill('N')}`)}<div class="cls-desc">AI 인터뷰에서의 판단 근거가 부족하여 교차 진단이 불가한 역량입니다.</div>${etcRows(naItems)}</div>`});
+units.push({t:'item',html:`<div class="next-box"><div class="nl">다음 전형 권장 사항</div><div class="nt">${advice}</div></div>`});
+
+/* 안내사항 (AI 고지 · 개인정보 법령 고지) — 모든 결과지 공통, 마지막 페이지 */
+units.push({t:'item',html:`<div class="report-info">
+  <div class="report-info-item"><span class="help-icon">i</span><div class="report-info-text">본 리포트는 AI 기술을 활용하여 면접 답변 내 텍스트의 구조적 특성과 기준 충족 여부를 분석한 참고 자료입니다. 본 결과는 자동으로 합격/불합격을 결정하지 않으며, 채용과 관련된 모든 최종 판단은 사람의 검토를 통해 이루어집니다. AI 분석에는 기술적 한계가 존재할 수 있으며, 단일 결과에 의존하지 않고 종합적인 판단 자료로 활용하시기 바랍니다.</div></div>
+  <div class="report-info-item"><span class="help-icon">i</span><div class="report-info-text">본 문서에 포함된 개인정보는 「개인정보보호법」 및 「채용절차의 공정화에 관한 법률」에 따라 처리되며, 채용 이외의 목적으로 사용하거나 제3자에게 제공할 수 없습니다.</div></div>
+</div>`});
+
+/* ===== 페이지네이터 (역량 단위 · 상단부터 채움) ===== */
+const doc=document.getElementById('doc');
+const HEADER_HTML=`<div class="doc-header"><span class="dh-title">2026_무하유_서비스기획자_채용</span><div class="dh-info"><span class="dh-job">서비스기획</span><span class="dh-div"></span><span class="dh-num">MUHA0001</span></div></div>`;
+const FOOTER_HTML=`<div class="footer"><div class="ft-left"><img class="lg-prism" src="../logo/logo_prism.png" alt="PRISM" onerror="this.style.display='none'"><img class="lg-monster" src="../logo/logo_monster.png" alt="Ai monster" onerror="this.style.display='none'"><span class="ft-product">교차진단</span></div><div class="ft-copy">Copyright © 2026 muhayu Inc. All rights reserved.<br>본 결과의 평가 기준, 문항, 분석 내용 등 모든 지적재산권은 ㈜무하유에 귀속됩니다. 무단 복제 및 재배포를 금합니다.</div><span class="ft-page"></span></div>`;
+function makePage(first){
+  const p=document.createElement('div'); p.className='page';
+  p.innerHTML=HEADER_HTML+`<div class="pcontent"></div>`+FOOTER_HTML;
+  doc.appendChild(p); return p;
+}
+let page=makePage(true), content=page.querySelector('.pcontent');
+const MAXBOT=1073;
+function contentBottom(){ const k=content.children; if(!k.length) return content.getBoundingClientRect().top; return k[k.length-1].getBoundingClientRect().bottom; }
+function overflow(){ return contentBottom() - page.getBoundingClientRect().top > MAXBOT; }
+function kidsFrom(html){ const w=document.createElement('div'); w.innerHTML=html.trim(); return [...w.children]; }
+units.forEach(u=>{
+  const kids=kidsFrom(u.html);
+  kids.forEach(k=>{ k.dataset.t=u.t; content.appendChild(k); });
+  if(overflow()){
+    kids.forEach(k=>content.removeChild(k));
+    const carry=[];
+    while(content.lastElementChild && content.lastElementChild.dataset.t==='title'){ carry.unshift(content.removeChild(content.lastElementChild)); }
+    page=makePage(false); content=page.querySelector('.pcontent');
+    carry.forEach(k=>content.appendChild(k));
+    kids.forEach(k=>content.appendChild(k));
+  }
+});
+const allPages=[...doc.querySelectorAll('.page')];
+allPages.forEach((p,i)=>{ const pn=p.querySelector('.ft-page'); if(pn) pn.textContent=`${i+1}/${allPages.length}`; });
+
+</script>
+
+
+</body></html>

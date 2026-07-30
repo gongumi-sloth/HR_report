@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>검증된 역량 행 시안 (컨펌용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ═══ 무하유 HR 결과지 디자인 시스템 적용 (교차진단 · 몬스터 × 역량검사) ═══ */
+  @page { size: A4; margin: 0; }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#E9E9EA;color:#041D30;font-size:16px;line-height:1.6;padding:24px 0;}
+  .num{font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .page{width:990px;height:1399px;overflow:hidden;background:#fff;margin:0 auto 24px;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+  .page:last-child{page-break-after:avoid;}
+  @media print{body{background:#fff;padding:0;}.page{margin:0;}}
+
+  /* 문서 헤더 — 공통 27px */
+  .doc-top{height:27px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-bottom:1px solid #939395;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .doc-top h1{font-size:12px;font-weight:600;letter-spacing:-0.24px;color:#041D30;}
+  .doc-top .cand{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:-0.24px;color:#041D30;}
+  .doc-top .cand .div{width:1px;height:11px;background:#041D30;}
+  .doc-top .cand .idnum{font-weight:300;}
+
+  /* 콘텐츠 영역 (타입 에리어 942px) */
+  .pcontent{flex:1;padding:20px 24px 0;overflow:hidden;}
+
+  /* 푸터 — 공통 34px */
+  .foot{height:34px;flex-shrink:0;display:flex;align-items:center;gap:15px;padding:0 24px;border-top:1px solid #7D7D80;font-family:'Noto Sans','Noto Sans KR',sans-serif;}
+  .foot .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .foot .brand img{display:block;width:auto;}
+  .foot .brand-name{font-size:12px;font-weight:600;letter-spacing:-0.24px;color:#041D30;}
+  .foot-c{flex:1;font-size:7px;font-weight:600;color:#6E777C;line-height:1.5;padding:0 10px;}
+  .pnum{font-size:12px;font-weight:600;color:#041D30;}
+
+  /* 페이지 타이틀 — 교차진단 변형 (좌측 4px #939395 바) */
+  .sec-title{display:flex;align-items:center;height:24px;border-left:4px solid #939395;padding-left:8px;font-size:24px;font-weight:700;line-height:1;color:#041D30;margin:24px 0 12px;}
+.pcontent > .sec-title:first-child{margin-top:4px;}
+.cls-block + .sec-title{margin-top:48px;}  /* 기타 역량: 기본 24 + 24 추가 */  /* 페이지 첫 타이틀: pcontent 패딩 20 포함 렌더 24px */
+  .sec-title .tag{display:none;}
+  .eyebrow{display:none;}
+
+  /* 가이드 안내문 (공용 — icon_info 20px + Regular 14 #7D7D80) */
+  .guide{position:relative;padding:0 2px 0 32px;margin:0 0 20px;font-size:14px;line-height:1.6;color:#7D7D80;background:none;border:none;border-radius:0;}
+  .guide::before{content:"";position:absolute;left:2px;top:1px;width:20px;height:20px;background:url("data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE2LjY2NjciIGhlaWdodD0iMTYuNjY2NyIgdmlld0JveD0iMCAwIDE2LjY2NjcgMTYuNjY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTcuNSA0LjE2NjY3SDkuMTY2NjdWNS44MzMzM0g3LjVWNC4xNjY2N1pNNy41IDcuNUg5LjE2NjY3VjEyLjVINy41VjcuNVpNOC4zMzMzMyAwQzMuNzMzMzMgMCAwIDMuNzMzMzMgMCA4LjMzMzMzQzAgMTIuOTMzMyAzLjczMzMzIDE2LjY2NjcgOC4zMzMzMyAxNi42NjY3QzEyLjkzMzMgMTYuNjY2NyAxNi42NjY3IDEyLjkzMzMgMTYuNjY2NyA4LjMzMzMzQzE2LjY2NjcgMy43MzMzMyAxMi45MzMzIDAgOC4zMzMzMyAwWk04LjMzMzMzIDE1QzQuNjU4MzMgMTUgMS42NjY2NyAxMi4wMDgzIDEuNjY2NjcgOC4zMzMzM0MxLjY2NjY3IDQuNjU4MzMgNC42NTgzMyAxLjY2NjY3IDguMzMzMzMgMS42NjY2N0MxMi4wMDgzIDEuNjY2NjcgMTUgNC42NTgzMyAxNSA4LjMzMzMzQzE1IDEyLjAwODMgMTIuMDA4MyAxNSA4LjMzMzMzIDE1WiIgZmlsbD0iIzkzOTM5NSIvPgo8L3N2Zz4K") center / 16.6px auto no-repeat;}
+  
+.core-guide{background:#F4F4F4;border-radius:8px;padding:16px 18px;margin:16px 0;}
+.legend-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+.legend-item{display:flex;align-items:flex-start;gap:12px;}
+.legend-item .catchip{flex-shrink:0;min-width:128px;justify-content:center;}
+.legend-txt{font-size:14px;line-height:1.55;color:#041D30;}
+
+  /* 지원자 카드 — 교차진단 변형 (1P 문서 헤더 아래 전폭 배치 — 좌우·상단 여백 0) */
+  .hero-wrap{background:#495E76;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:24px;margin:0;flex-shrink:0;}
+  .hero-head{display:flex;justify-content:space-between;align-items:center;padding:0;}
+  .hero-head h1{font-size:24px;font-weight:700;color:#fff;letter-spacing:0;}
+  .hero-head .hh-right{font-size:12px;font-weight:600;color:#fff;font-family:'Noto Sans','Noto Sans KR',sans-serif;letter-spacing:-0.24px;white-space:nowrap;}
+  .hero{background:#C6C6C6;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;gap:1px;border:none;box-shadow:none;}
+  .hero-main{display:flex;gap:1px;background:none;}
+  .hero-left{flex:1;background:#fff;display:flex;min-width:0;}
+  .hero-cell-info{flex:1;min-width:150px;min-height:128px;box-sizing:border-box;padding:0 20px;display:flex;flex-direction:column;gap:6px;justify-content:center;}
+  .hero-role{font-size:18px;font-weight:700;line-height:1.4;color:#041D30;letter-spacing:0;white-space:nowrap;}
+  .hero-name{font-size:32px;font-weight:700;line-height:1.4;color:#041D30;margin:0;letter-spacing:0;white-space:nowrap;}
+  .hero-id{font-size:16px;color:#041D30;font-weight:400;letter-spacing:-0.16px;line-height:1.6;white-space:nowrap;}
+  .hero-diag{flex-shrink:0;min-height:128px;box-sizing:border-box;padding:20px;display:flex;align-items:center;gap:16px;background:linear-gradient(270deg,#EEF6FF 0%,#FFFFFF 100%);}
+  .src-col{display:flex;flex-direction:column;gap:8px;}
+  .src-row{display:flex;align-items:center;gap:6px;margin:0;}
+  .src-row+.src-row{margin:0;}
+  .src-label{width:64px;min-width:64px;font-size:16px;font-weight:700;color:#041D30;}
+  /* 근거칩 (진단 신뢰도 배지 — 정상 outline / 주의 #F09000 / 불가 #FF3B30) */
+  .pill{height:30px;display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;border-radius:17px;font-size:14px;font-weight:700;white-space:nowrap;background:#fff;}
+  .pill.ok{color:#0075FF;border:1px solid #0075FF;}
+  .pill.warn{color:#fff;border:1px solid #F09000;background:#F09000;}
+  .pill.no{color:#fff;border:1px solid #FF3B30;background:#FF3B30;}
+  .src-note{width:160px;font-size:12px;font-weight:700;text-align:right;line-height:1.6;color:#041D30;flex:none;}
+  .src-note b{color:#0075FF;font-weight:700;}
+  .hero-type-cell{flex-shrink:0;background:#fff;width:340px;box-sizing:border-box;padding:20px;}
+  .hero-type{font-size:24px;font-weight:700;line-height:1.4;color:#041D30;margin:0;letter-spacing:0;}
+  .hero-type-desc{font-size:14px;color:#041D30;line-height:1.6;padding-top:8px;}
+  .hero-type-label{display:none;}
+  .hero-note{background:#fff;padding:20px 24px;display:flex;gap:12px;align-items:flex-start;border-top:none;font-size:14px;color:#7D7D80;}
+  .hero-note b{width:188px;flex-shrink:0;font-size:14px;font-weight:400;color:#7D7D80;line-height:1.6;padding-top:2px;white-space:normal;}
+  .chk-list{flex:1;display:flex;flex-wrap:wrap;gap:8px 4px;}
+  .chk{height:24px;box-sizing:border-box;background:#F4F4F4;border-radius:16px;padding:2px 8px;display:inline-flex;align-items:center;font-size:14px;font-weight:400;color:#7D7D80;border:none;}
+
+  /* 교차진단 매트릭스 — 5열 (역량 분류 세로 병합) */
+  table{width:100%;border-collapse:collapse;font-size:16px;}
+  .mtx{border-top:1px solid #041D30;border-bottom:1px solid #041D30;}
+  .mtx th{height:36px;background:#F4F4F4;border-bottom:1px solid #A9A8AA;font-size:16px;font-weight:500;color:#041D30;padding:0 12px;text-align:left;}
+  .mtx th:nth-child(n+3){text-align:center;}
+  .mtx td{height:48px;padding:0 12px;border-bottom:1px solid #E3E3E3;font-size:16px;vertical-align:middle;}
+  .mtx td.col-c{text-align:center;}
+  .mtx tr:last-child td{border-bottom:none;}
+  .grp-cell{background:#F4F4F4;font-weight:500;font-size:16px;color:#041D30;text-align:center;vertical-align:middle;border-right:1px solid #E3E3E3;width:90px;}
+.grp-cell.grp-last{border-bottom:1px solid #041D30;}
+  .cap-name{font-weight:500;}
+  .g{font-weight:700;font-size:16px;color:#041D30;display:inline-block;min-width:48px;}
+  .g-H{opacity:1;} .g-M{opacity:.6;} .g-L{opacity:.5;} .g-N{opacity:.3;}
+  .lab{font-size:14px;font-weight:700;white-space:nowrap;}
+  .lab-verify{color:#20AA40;}
+  .lab-check{color:#F09000;}
+  .lab-deep{color:#FF006B;}
+  .lab-explore{color:#704AD9;}
+  .lab-weak{color:#7D7D80;}
+  .lab-etc{color:#7D7D80;}
+  .core-row td:not(.grp-cell){background:rgba(255,243,219,0.3);}
+
+  /* 핵심역량 태그 (시스템 — bg #FFF3DB · Bold 12 #F09000) */
+  .corebadge{display:inline-flex;align-items:center;background:#FFF3DB;border:none;border-radius:4px;padding:4px;font-size:12px;font-weight:700;color:#F09000;line-height:1;margin-left:6px;vertical-align:middle;white-space:nowrap;letter-spacing:0;}
+
+  /* 교차패턴 칩 (가변폭 — 카드 헤더용) */
+  .catchip{display:inline-flex;align-items:center;height:24px;box-sizing:border-box;background:#fff;border:1px solid #E3E3E3;border-radius:12px;padding:0 12px;font-size:14px;font-weight:700;white-space:nowrap;}
+  .cat-verify{background:#fff;color:#20AA40;border-color:#E3E3E3;}
+  .cat-deep{background:#fff;color:#FF006B;border-color:#E3E3E3;}
+  .cat-explore{background:#fff;color:#704AD9;border-color:#E3E3E3;}
+  .cat-weak{background:#fff;color:#7D7D80;border-color:#E3E3E3;}
+  .cat-etc{background:#fff;color:#7D7D80;border-color:#E3E3E3;}
+
+  /* 체크포인트 블록 타이틀 바 (h36 · 하단 1px #C6C6C6 · 아이콘 24 + Bold 18) */
+  .sec-head{height:36px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 8px;border:none;border-bottom:1px solid #C6C6C6;border-radius:0;margin:32px 0 16px;}
+  .sh-left{display:flex;align-items:center;gap:8px;}
+  .sh-icon{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;background:none;box-shadow:none;border-radius:0;flex:none;}
+  .sh-icon img{display:block;}
+  .sh-title{font-size:18px;font-weight:700;color:#041D30;letter-spacing:0;}
+  .sh-right{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:400;color:#7D7D80;white-space:nowrap;}
+  .sh-right b{font-weight:700;}
+  .sec-head.v-deep{background:rgba(255,213,231,0.3);}
+  .sec-head.v-explore{background:rgba(124,82,241,0.1);}
+  .sec-head.v-verify{background:rgba(0,117,255,0.05);}
+  .sec-head.v-weak{background:#E3E3E3;}
+  .sec-head.v-etc{background:#F4F4F4;}
+  .ch-pill{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;box-sizing:border-box;border-radius:12px;background:#fff;border:none;font-size:14px;font-weight:700;color:#041D30;line-height:1;padding:0 4px;width:auto;}
+
+  /* 분류 안내문 = 가이드 안내문 */
+  .cls-desc,.cp-sec-desc{position:relative;padding:0 2px 0 32px;margin:0 0 16px;font-size:14px;color:#7D7D80;line-height:1.6;}
+.cp-sub{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 2px;border-bottom:1px solid #E3E3E3;margin:16px 0 12px;}
+.cp-sub .nm{font-size:16px;font-weight:700;color:#041D30;}
+.cp-sub .sh-right b{color:#041D30;}
+  .cls-desc::before,.cp-sec-desc::before{content:"";position:absolute;left:2px;top:1px;width:20px;height:20px;background:url("data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE2LjY2NjciIGhlaWdodD0iMTYuNjY2NyIgdmlld0JveD0iMCAwIDE2LjY2NjcgMTYuNjY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTcuNSA0LjE2NjY3SDkuMTY2NjdWNS44MzMzM0g3LjVWNC4xNjY2N1pNNy41IDcuNUg5LjE2NjY3VjEyLjVINy41VjcuNVpNOC4zMzMzMyAwQzMuNzMzMzMgMCAwIDMuNzMzMzMgMCA4LjMzMzMzQzAgMTIuOTMzMyAzLjczMzMzIDE2LjY2NjcgOC4zMzMzMyAxNi42NjY3QzEyLjkzMzMgMTYuNjY2NyAxNi42NjY3IDEyLjkzMzMgMTYuNjY2NyA4LjMzMzMzQzE2LjY2NjcgMy43MzMzMyAxMi45MzMzIDAgOC4zMzMzMyAwWk04LjMzMzMzIDE1QzQuNjU4MzMgMTUgMS42NjY2NyAxMi4wMDgzIDEuNjY2NjcgOC4zMzMzM0MxLjY2NjY3IDQuNjU4MzMgNC42NTgzMyAxLjY2NjY3IDguMzMzMzMgMS42NjY2N0MxMi4wMDgzIDEuNjY2NjcgMTUgNC42NTgzMyAxNSA4LjMzMzMzQzE1IDEyLjAwODMgMTIuMDA4MyAxNSA4LjMzMzMzIDE1WiIgZmlsbD0iIzkzOTM5NSIvPgo8L3N2Zz4K") center / 16.6px auto no-repeat;}
+  .cls-block{margin-bottom:20px;}
+  
+  /* 역량명 칩 (metrix — w126 · bg #F4F4F4 · r8) */
+  .namepill,.etc-name{display:inline-flex;align-items:center;justify-content:center;width:140px;min-width:140px;min-height:26px;box-sizing:border-box;flex-shrink:0;background:#F4F4F4;border-radius:8px;padding:0 8px;font-size:14px;font-weight:400;color:#041D30;text-align:center;}
+
+  /* 해설형 행 (검증된·취약한) */
+  .cap-grid{display:flex;flex-direction:column;gap:16px;}
+  .cap-card{display:flex;gap:12px;align-items:flex-start;border:none;border-radius:0;padding:0;}
+  .cap-card:last-child{border:none;}
+  .cap-card .ccn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .cap-card .ccn .corebadge{margin-left:0;}
+  .cap-card .ccc{flex:1;font-size:14px;color:#041D30;line-height:1.6;padding-top:2px;}
+  .cap-card.is-core{background:rgba(255,243,219,0.3);border-radius:8px;padding:4px 8px;}
+  .cap-card .corebadge{flex:none;margin:0;align-self:center;}
+
+  /* 집중 점검 역량 카드 — P1 핵심 역량 카드와 동일 레이아웃, 등급은 텍스트형 (컨펌 2026-07-28) */
+  .cp-card{border:1px solid #C6C6C6;border-radius:8px;padding:16px 20px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;}
+  .cp-card.is-core{background:rgba(255,243,219,0.3);}
+  .cpv2-head{display:flex;align-items:center;gap:12px;}
+  .cp-name{font-size:18px;font-weight:700;color:#041D30;}
+  .cp-grade{margin-left:auto;font-size:16px;font-weight:400;letter-spacing:-0.16px;color:#041D30;white-space:nowrap;}
+  .cp-grade b{font-weight:700;letter-spacing:0.024px;}
+  .vuln{border:1px solid #E3E3E3;border-radius:8px;padding:12px;font-size:14px;line-height:1.6;background:#fff;margin:0;color:#041D30;}
+  .vuln-lb{font-weight:400;color:#7D7D80;white-space:nowrap;}
+  .vuln-lb::after{content:' | ';color:#7D7D80;font-weight:400;}
+  .vuln-txt{display:inline;color:#041D30;}
+  .q{font-size:16px;font-weight:700;letter-spacing:0.024px;color:#041D30;line-height:1.6;margin:0;}
+  .qtag{display:inline-flex;align-items:center;height:18px;box-sizing:border-box;border-radius:3px;background:#F0F0F0;color:#696969;font-size:12px;font-weight:700;padding:0 6px;margin-right:6px;vertical-align:middle;position:relative;top:-2px;}
+  .qtag-deep,.qtag-explore,.qtag-scen,.qtag-value,.qtag-attitude{background:#F0F0F0;color:#696969;}
+  .q-aim{display:none;}
+  .cmt{font-size:14px;color:#041D30;line-height:1.6;margin:0;}
+  /* Q&A 묶음 — 질문+답변 예시가 한 덩어리, 묶음 단위 상하 여백 (2026-07-28) */
+  .qa{padding:8px 0;display:flex;flex-direction:column;gap:8px;}
+  /* 답변 예시 — 불렛 구분, 박스·볼드 없음 (컨펌 2026-07-28) */
+  .ansv2{list-style:none;padding-left:8px;margin:0;display:flex;flex-direction:column;gap:4px;}
+  .ansv2 li{position:relative;padding-left:14px;font-size:14px;line-height:1.6;color:#041D30;}
+  .ansv2 li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:#041D30;}
+  .ansv2 .lb{font-weight:400;}
+  .ansv2 .lb::after{content:' | ';color:#7D7D80;}
+
+  /* 핵심 역량 쇼케이스 카드 */
+  .core-item{border:1px solid #C6C6C6;border-radius:8px;padding:16px 20px;margin-bottom:12px;}
+  .core-top{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .core-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .core-cap{font-size:18px;font-weight:700;color:#041D30;}
+  .core-gauge{display:flex;gap:16px;flex:none;align-items:center;}
+  .cg-item{display:flex;align-items:center;gap:8px;}
+  .gg-lb{font-size:14px;font-weight:400;color:#939395;flex:none;}
+  .core-body{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+  .core-body:empty{display:none;margin:0;}
+  .core-desc{display:none;}
+
+  /* 기타 역량 — 등급 대조형 2열 (기타역량 컬러칩 32×16) */
+  .etc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;}
+  .etc-row{display:flex;align-items:center;gap:12px;}
+  .etc-row.is-core{background:rgba(255,243,219,0.3);border-radius:8px;padding:3px 8px;}
+  .etc-row .corebadge{margin-left:auto;}
+  .etc-src{font-size:14px;font-weight:400;color:#939395;}
+  .gpill{display:inline-flex;align-items:center;justify-content:center;width:32px;min-width:32px;height:16px;border-radius:2px;font-size:10px;font-weight:700;padding:0;text-align:center;}
+  .gpill-H{background:#0075FF;color:#fff;}
+  .gpill-M{background:rgba(0,117,255,0.6);color:#fff;}
+  .gpill-L{background:#FF006B;color:#fff;}
+  .gpill-N{background:#E9E9EA;color:#7D7D80;}
+
+  /* 마지막 페이지 안내사항 */
+  .report-info{border:1px solid #C6C6C6;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:12px;margin-top:40px;}
+  .report-info-item{display:flex;gap:8px;align-items:flex-start;}
+  .help-icon{width:22px;height:22px;border:1.5px solid #7D7D80;border-radius:50%;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-style:italic;font-weight:700;color:#7D7D80;flex-shrink:0;margin-top:2px;}
+  .report-info-text{flex:1;font-size:16px;line-height:1.6;color:#7D7D80;text-align:justify;}
+
+
+
+
+/* ── 시안 전용 ── */
+.opt-row{display:flex;align-items:center;gap:10px;margin:22px 0 10px;}
+.opt-label{display:inline-flex;align-items:center;border:1px solid #0075FF;color:#0075FF;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap;}
+.opt-desc{font-size:12px;color:#7D7D80;}
+.demo .sec-head{margin:0 0 12px;}
+.demo .cls-desc{margin-bottom:12px;}
+/* A안 디벨롭: 텍스트형 (이름 Bold 14 = 설명과 동일 크기) */
+.capA{display:flex;gap:12px;align-items:flex-start;padding:0 8px;}
+.capA.is-core{background:rgba(255,243,219,0.3);border-radius:8px;padding:4px 8px;}
+.capA .ccnA{flex-shrink:0;width:172px;display:flex;align-items:center;gap:6px;}
+.capA .cap-nm{font-size:14px;font-weight:700;color:#041D30;line-height:1.6;}
+.capA .ccc{padding-top:0;}
+/* A-2: 행 구분선 변형 */
+.lined .cap-grid{gap:12px;}
+.lined .capA{padding:0 8px 12px;border-bottom:1px solid #E3E3E3;}
+.lined .capA.is-core{padding:4px 8px 12px;}
+.lined .capA:last-child{border-bottom:none;padding-bottom:0;}
+</style></head>
+<body>
+<div class="page">
+  <div class="doc-top"><h1>2026_무하유_서비스기획자_채용</h1><div class="cand"><span>홍*동</span><span class="div"></span><span class="idnum">MUHA0001</span></div></div>
+  <div class="pcontent">
+    <div class="sec-title" style="margin-top:4px;">검증된 역량 행 시안 — A안 디벨롭</div>
+    <div class="guide">A안(텍스트형·이름 Bold 14·핵심역량 태그 이름 옆) 단독 검토용입니다. 실제 검증된 역량 7행 전체를 원문 설명 그대로 배치해 비핵심 역량이 연속되는 구간(고객서비스~창의성, 실행력~팀워크)의 행 구분감을 확인할 수 있습니다. 행 간격은 결과지 원본 값(16px)입니다.</div>
+    <div class="opt-row"><span class="opt-label">A-1 · 구분선 없음</span><span class="opt-desc">여백(16px)만으로 행 구분 — 현재 상태</span></div>
+    <div class="demo"><div class="sec-head v-verify"><div class="sh-left"><span class="sh-icon"><img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE1LjQzNSIgdmlld0JveD0iMCAwIDE0IDE1LjQzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTEgMTMuNDM1SDEzQzEzLjU1IDEzLjQzNSAxNCAxMy44ODUgMTQgMTQuNDM1QzE0IDE0Ljk4NSAxMy41NSAxNS40MzUgMTMgMTUuNDM1SDFDMC40NSAxNS40MzUgMCAxNC45ODUgMCAxNC40MzVDMCAxMy44ODUgMC40NSAxMy40MzUgMSAxMy40MzVaTTYuMDEgOS4zMzVDNS4yMyAxMC4xMDUgMy45NyAxMC4xMDUgMy4xOSA5LjMyNUwxIDcuMTM1QzAuNDUgNi41ODUgMC40NiA1LjY5NSAxLjAzIDUuMTY1QzEuNTcgNC42NDUgMi40MyA0LjY2NSAyLjk1IDUuMTg1TDQuNiA2LjgzNUwxMS4wMyAwLjQwNUMxMS41NyAtMC4xMzUgMTIuNDQgLTAuMTM1IDEyLjk4IDAuNDA1TDEzLjAyIDAuNDQ1QzEzLjU2IDAuOTg1IDEzLjU2IDEuODY1IDEzLjAxIDIuNDA1TDYuMDEgOS4zMzVaIiBmaWxsPSIjMDA3NUZGIi8+Cjwvc3ZnPgo=" alt=""></span><span class="sh-title">검증된 역량</span></div><div class="sh-right">AI 인터뷰 <span class="ch-pill ch-H">상</span> / 역량검사 <span class="ch-pill ch-H">상</span></div></div><div class="cls-desc">두 결과 모두 높게 확인되어, 실무에서 안정적으로 발휘될 것으로 예측되는 역량입니다.</div><div class="cap-grid"><div class="capA is-core"><div class="ccnA"><span class="cap-nm">전문성</span><span class="corebadge">핵심역량</span></div><div class="ccc">맡은 직무 분야에 대한 전문 지식과 경험을 바탕으로 신속정확하게 문제를 해결하며 조직 전체의 역량을 향상하는데 기여합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">고객서비스 역량</span></div><div class="ccc">고객의 입장과 의도를 정확하게 파악하고 능동적으로 문제를 해결하여 장기적인 신뢰관계를 구축할 수 있습니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">논리분석력</span></div><div class="ccc">복잡한 정보를 다양한 관점에서 신속하게 분석하며, 논리적 사고를 통해 조직 내 전략적 의사결정에 기여할 수 있습니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">창의성</span></div><div class="ccc">기존 방식에서 벗어난 실용적이고 혁신적인 아이디어를 제시하고 이를 실행하여 업무의 효율성과 새로운 가치를 창출할 수 있습니다.</div></div><div class="capA is-core"><div class="ccnA"><span class="cap-nm">책임감</span><span class="corebadge">핵심역량</span></div><div class="ccc">맡은 업무를 끝까지 책임지고 수행하며 문제를 사전에 인지하고 적극적으로 대응하여 기한 내에 결과를 도출하고 조직 목표 달성에 기여합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">실행력</span></div><div class="ccc">계획을 구체적인 행동으로 빠르게 전환하고 실행 과정에서 발생하는 문제에 신속히 대응하여, 기한 내에 우수한 품질의 결과를 안정적으로 도출합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">팀워크 역량</span></div><div class="ccc">팀 내에서 적극적으로 협력하고 의견을 조율하며, 갈등을 최소화해 목표 달성과 팀 분위기 향상에 기여합니다.</div></div></div></div>
+<div class="opt-row"><span class="opt-label">A-2 · 구분선 추가</span><span class="opt-desc">행 사이 흐린 회색(#E3E3E3) 헤어라인 — 매트릭스 행 구분선과 동일 토큰</span></div>
+<div class="demo lined"><div class="sec-head v-verify"><div class="sh-left"><span class="sh-icon"><img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE1LjQzNSIgdmlld0JveD0iMCAwIDE0IDE1LjQzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTEgMTMuNDM1SDEzQzEzLjU1IDEzLjQzNSAxNCAxMy44ODUgMTQgMTQuNDM1QzE0IDE0Ljk4NSAxMy41NSAxNS40MzUgMTMgMTUuNDM1SDFDMC40NSAxNS40MzUgMCAxNC45ODUgMCAxNC40MzVDMCAxMy44ODUgMC40NSAxMy40MzUgMSAxMy40MzVaTTYuMDEgOS4zMzVDNS4yMyAxMC4xMDUgMy45NyAxMC4xMDUgMy4xOSA5LjMyNUwxIDcuMTM1QzAuNDUgNi41ODUgMC40NiA1LjY5NSAxLjAzIDUuMTY1QzEuNTcgNC42NDUgMi40MyA0LjY2NSAyLjk1IDUuMTg1TDQuNiA2LjgzNUwxMS4wMyAwLjQwNUMxMS41NyAtMC4xMzUgMTIuNDQgLTAuMTM1IDEyLjk4IDAuNDA1TDEzLjAyIDAuNDQ1QzEzLjU2IDAuOTg1IDEzLjU2IDEuODY1IDEzLjAxIDIuNDA1TDYuMDEgOS4zMzVaIiBmaWxsPSIjMDA3NUZGIi8+Cjwvc3ZnPgo=" alt=""></span><span class="sh-title">검증된 역량</span></div><div class="sh-right">AI 인터뷰 <span class="ch-pill ch-H">상</span> / 역량검사 <span class="ch-pill ch-H">상</span></div></div><div class="cls-desc">두 결과 모두 높게 확인되어, 실무에서 안정적으로 발휘될 것으로 예측되는 역량입니다.</div><div class="cap-grid"><div class="capA is-core"><div class="ccnA"><span class="cap-nm">전문성</span><span class="corebadge">핵심역량</span></div><div class="ccc">맡은 직무 분야에 대한 전문 지식과 경험을 바탕으로 신속정확하게 문제를 해결하며 조직 전체의 역량을 향상하는데 기여합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">고객서비스 역량</span></div><div class="ccc">고객의 입장과 의도를 정확하게 파악하고 능동적으로 문제를 해결하여 장기적인 신뢰관계를 구축할 수 있습니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">논리분석력</span></div><div class="ccc">복잡한 정보를 다양한 관점에서 신속하게 분석하며, 논리적 사고를 통해 조직 내 전략적 의사결정에 기여할 수 있습니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">창의성</span></div><div class="ccc">기존 방식에서 벗어난 실용적이고 혁신적인 아이디어를 제시하고 이를 실행하여 업무의 효율성과 새로운 가치를 창출할 수 있습니다.</div></div><div class="capA is-core"><div class="ccnA"><span class="cap-nm">책임감</span><span class="corebadge">핵심역량</span></div><div class="ccc">맡은 업무를 끝까지 책임지고 수행하며 문제를 사전에 인지하고 적극적으로 대응하여 기한 내에 결과를 도출하고 조직 목표 달성에 기여합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">실행력</span></div><div class="ccc">계획을 구체적인 행동으로 빠르게 전환하고 실행 과정에서 발생하는 문제에 신속히 대응하여, 기한 내에 우수한 품질의 결과를 안정적으로 도출합니다.</div></div><div class="capA"><div class="ccnA"><span class="cap-nm">팀워크 역량</span></div><div class="ccc">팀 내에서 적극적으로 협력하고 의견을 조율하며, 갈등을 최소화해 목표 달성과 팀 분위기 향상에 기여합니다.</div></div></div></div>
+  </div>
+  <div class="foot"><span class="brand"><span class="brand-name">교차진단</span></span><span class="foot-c">검증된 역량 행 시안 — 컨펌용</span><span class="pnum">1 / 1</span></div>
+</div>
+</body></html>
